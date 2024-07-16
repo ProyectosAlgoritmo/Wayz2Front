@@ -1,0 +1,162 @@
+
+.custom-header {
+    background-color: white; /* Change this value to the desired color */
+    border-bottom: 1px solid #C8CBD9; /* Color and thickness of the line */
+    align-items: center;
+}
+
+.toolbar-item-spacer {
+    flex: 1 1 auto;
+}
+
+.custom-titleHeader {
+    margin-right: 15px;
+    font-size: 14px;
+    margin-bottom: -3px;
+}
+
+.custom-titleCompany{
+    
+    margin-right: 20px;
+    font-size: 16px;
+    color: #5A67BA;
+    font-weight: bold; 
+
+}
+
+
+
+.app-container {
+    height: 100%;
+    margin: 0;
+    background-color: white;
+}  
+
+.app-sidenav {
+    background-color: rgb(166, 171, 200, 0.3);
+    transition: width 0.3s;
+    border-radius: 0 !important;
+
+}
+  
+
+  
+.app-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: rgba(39, 50, 64, 0.8);
+} 
+
+.custom-content {
+    background-color: white; /* Change this value to the desired color */
+  }
+  
+
+  
+.custom-menu {
+    background-color: transparent; /* Transparent background */
+    color: rgba(39, 50, 64, 0.8);
+    margin-bottom: 16px;
+}
+  
+  .custom-menu mat-expansion-panel-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Allow content to wrap to multiple lines */
+  }
+
+  .custom-menu mat-expansion-panel-header span {
+    flex: 1 1 auto; /* Permite que el texto ocupe el espacio disponible */
+    margin-left: 10px; /* Ajusta este valor para mayor separación */
+    word-break: break-word; /* Permite que las palabras largas se rompan y se ajusten al contenedor */
+    font-weight: normal; /* Ajusta el grosor de la fuente */
+    font-size: 14px; /* Ajusta el tamaño de la fuente si es necesario */
+  }
+
+  .custom-menu mat-list-item span {
+    font-weight: normal; /* Ajusta el grosor de la fuente */
+    font-size: 14px; /* Ajusta el tamaño de la fuente si es necesario */
+  }
+
+  
+  
+  .custom-menu mat-expansion-panel-header mat-icon {
+    margin-right: 10px; /* Adjust this value for more separation */
+    align-self: center; /* Ensure the icon is centered */
+  }
+  
+  .custom-menu mat-expansion-panel-header span {
+    flex: 1 1 auto; /* Allow the text to take up available space */
+    margin-left: 10px; /* Adjust this value for more separation */
+    word-break: break-word; /* Allow long words to break and fit the container */
+  }
+  
+  .mat-icon {
+    color: #5A67BA; /* Change this value to the desired color for the icons */
+  }
+  
+  /* Ensure mat-menu-item icons are visible */
+  mat-menu mat-icon {
+    color: inherit; /* Inherit color from parent or set a specific color */
+  }
+
+  .custom-title {
+    display: block; /* Asegúrate de que se comporte como un bloque */
+    margin-top: 20px; /* Ajusta este valor según sea necesario */
+    margin-bottom: 20px; /* Ajusta este valor según sea necesario */
+    margin-left: 30px;
+  }
+
+ 
+.custom-menu mat-nav-list span {
+    font-weight: normal; /* Ajusta el grosor de la fuente */
+    font-size: 14px; /* Ajusta el tamaño de la fuente si es necesario */
+    color: rgba(39, 50, 64, 0.8);
+}
+
+.nav-item {
+    position: relative; /* Necesario para el pseudo-elemento */
+    border-left: 3px solid #5A67BA;
+    border-radius: 0 !important;
+    margin-left: 10px;
+}
+
+.nav-item:hover{
+  background-color: rgba(112, 127, 221, 0.1) !important; /* Cambiar este color según sea necesario */
+}
+
+.nav-item:focus,
+.nav-item:active {
+    background-color: rgba(112, 127, 221, 0.3) !important; /* Cambiar este color según sea necesario */
+}
+
+
+.mat-expansion-panel.mat-expanded,
+.mat-expansion-panel:hover,
+.mat-expansion-panel:focus,
+.mat-expansion-panel:active {
+  background-color: rgba(112, 127, 221, 0.1) !important; /* Cambiar este color según sea necesario */
+}
+
+.mat-expansion-panel:not(.mat-expanded) {
+    border-radius: 0 !important;
+}
+
+.selected-item{
+    border-radius: 0 !important;
+    background-color: rgba(112, 127, 221, 0.3) /* Cambia este color según tu necesidad */    
+}
+
+.nav-itemNoExpend{
+    border-radius: 0 !important;
+}
+
+
+
+
+  
+  
+  
+  

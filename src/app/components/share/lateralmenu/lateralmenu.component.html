@@ -1,0 +1,98 @@
+<mat-toolbar color="primary" class="custom-header">
+    <button mat-icon-button (click)="increase()" matTooltip="Menu" class="boton-menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span class="custom-titleCompany">STRATEGIC VIEW</span>
+
+    <span class="toolbar-item-spacer"></span>
+
+    <span class="custom-titleHeader"> ANA ROJAS DUQUE</span>
+
+    <button mat-icon-button matTooltip="Notificaciones">
+        <mat-icon>notifications</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAcScountMenu">
+        <mat-icon>account_circle</mat-icon>
+    </button> 
+    <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
+        <button mat-menu-item routerLink="#">
+            <mat-icon>person</mat-icon><span>Cuenta</span>
+        </button>
+        <button mat-menu-item routerLink="#">
+            <mat-icon>settings</mat-icon><span>Configuración</span>
+        </button>
+        <button mat-menu-item routerLink="#">
+            <mat-icon>help</mat-icon><span>Ayuda</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item routerLink="#">
+            <mat-icon>exit_to_app</mat-icon>Cerrar sesión
+        </button>
+    </mat-menu>
+
+    
+</mat-toolbar>
+
+<mat-sidenav-container class="app-container"  >
+    <mat-sidenav #sidenav mode="side" [class.mat-elevation-z4]="true" 
+    opened="true"
+    [ngStyle]="{ 'width.px': sidenavWidth }"
+    class="app-sidenav"
+    >
+        
+        <mat-nav-list>
+
+
+            <span *ngIf="isExpanded" class="custom-title">MENU</span>
+
+            <mat-accordion multi="false" *ngIf="isExpanded">
+            <mat-expansion-panel [class.mat-elevation-z0]="true" class="custom-menu" [expanded]="selectedMenuItem === 'dashboard'" (click)="increase('dashboard', false)">
+                <mat-expansion-panel-header>
+                  <mat-icon>dashboard</mat-icon><span>Dashboard</span> 
+                </mat-expansion-panel-header>
+                 <mat-nav-list>
+                    <a mat-list-item routerLink="/dashboard" class="nav-item"><span>Dashboard</span></a>
+                </mat-nav-list>
+            </mat-expansion-panel>
+
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true" class="custom-menu"  [expanded]="selectedMenuItem === 'execution'" (click)="increase('execution', false)">
+                <mat-expansion-panel-header>
+                    <mat-icon>equalizer</mat-icon><span>Ejecución y estrategia</span>
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <a mat-list-item routerLink="/" class="nav-item"><span>iOS</span></a>
+                    <a mat-list-item routerLink="/dashboard" class="nav-item"><span>Android</span></a>
+                </mat-nav-list>
+            </mat-expansion-panel>  
+
+            <mat-expansion-panel [class.mat-elevation-z0]="true" class="custom-menu" [expanded]="selectedMenuItem === 'innovation'" (click)="increase('innovation', false)">
+                <mat-expansion-panel-header>
+                    <mat-icon>lightbulb_outline</mat-icon><span>Innovacíon y tecnología</span>
+                </mat-expansion-panel-header>
+                <mat-nav-list>
+                    <a mat-list-item routerLink="/" class="nav-item"><span>Spring</span></a>
+                    <a mat-list-item routerLink="/" class="nav-item"><span>Spring</span></a>
+                </mat-nav-list>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+
+          <mat-nav-list *ngIf="!isExpanded" >
+            <a mat-list-item (click)="increase('dashboard', true)" class="nav-itemNoExpend" [ngClass]="{'selected-item': selectedMenuItem === 'dashboard'}"><mat-icon>dashboard</mat-icon></a>
+            <a mat-list-item (click)="increase('execution', true)" class="nav-itemNoExpend" [ngClass]="{'selected-item': selectedMenuItem === 'execution'}"><mat-icon>equalizer</mat-icon></a>
+            <a mat-list-item (click)="increase('innovation', true)" class="nav-itemNoExpend" [ngClass]="{'selected-item': selectedMenuItem === 'innovation'}"><mat-icon>lightbulb_outline</mat-icon></a>
+          </mat-nav-list>
+
+
+
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="custom-content">
+        <div class="app-sidenav-content" >
+            
+            <router-outlet></router-outlet> 
+        </div>
+     
+    </mat-sidenav-content>
+</mat-sidenav-container> 
