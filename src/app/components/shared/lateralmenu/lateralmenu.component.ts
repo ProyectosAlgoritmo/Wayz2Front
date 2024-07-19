@@ -15,6 +15,7 @@ import { RouterModule, Routes }   from '@angular/router';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-lateralmenu',
@@ -31,6 +32,8 @@ export class LateralmenuComponent {
   sidenavWidth = 230;
 
   selectedMenuItem: string | null = null;
+
+  constructor(private authservice: AuthService){}
 
 
   increase(menuItem: string | null = null, expand: boolean | null = true){
@@ -49,6 +52,11 @@ export class LateralmenuComponent {
     if (menuItem) {
       this.selectedMenuItem = menuItem;
     }
+  }
+
+  logout()
+  {
+    this.authservice.logout(); 
   }
   
 }

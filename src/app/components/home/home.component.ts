@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LateralmenuComponent } from '../share/lateralmenu/lateralmenu.component';
+import { LateralmenuComponent } from '../shared/lateralmenu/lateralmenu.component';
 
 @Component({
   selector: 'app-home',

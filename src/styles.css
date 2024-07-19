@@ -2,3 +2,29 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.loading {
+    background: transparent !important;
+    box-shadow: none !important; /* Opcional: elimina la sombra del cuadro */
+}
+
+.custom-swal {
+    width: 320px !important; /* Ajusta el ancho según tus necesidades */
+    padding: 1.25rem !important; /* Ajusta el padding según tus necesidades */
+  }
+  
+  .custom-swal .swal2-title {
+    font-size: 20px !important; /* Ajusta el tamaño del título */
+  }
+  
+  .custom-swal .swal2-html-container {
+    font-size: 15px !important; /* Ajusta el tamaño del texto */
+  }
+  
+  .custom-swal .swal2-icon {
+    font-size: 12px !important; /* Ajusta el tamaño del icono */
+  }
+  
+  .custom-swal .swal2-actions .swal2-styled {
+    font-size: 15px !important; /* Ajusta el tamaño del texto del botón */
+  }

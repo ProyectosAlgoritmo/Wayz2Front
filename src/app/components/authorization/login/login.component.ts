@@ -8,7 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
+import { AuxService } from '../../../services/aux-service.service';
 
 @Component({
   selector: 'app-login',
@@ -31,8 +33,9 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
   private accesoServicio = inject(AuthService);
+  isLogged = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private auxService: AuxService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -44,21 +47,32 @@ export class LoginComponent {
     this.hidePassword = !this.hidePassword;
   }
 
+  ngOnInit() {
+    this.isLogged = this.authService.isAuthenticatedBool();
+
+    if (this.isLogged) {
+      this.router.navigate(['/home']);
+    }
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Form Value:', this.loginForm.value);
-      // Lógica de inicio de sesión aquí
 
-      this.accesoServicio.login("prueba", "prueba").subscribe({
+      const email = this.loginForm.value.email;
+      const password = this.loginForm.value.password;
+      
+      this.accesoServicio.login(email, password).subscribe({
         next:(data) => {
-          if(data.isSuccess){
-            //guardamos en el local storage del navegador el token
-            //que devuelve la api (/pai/InicioSesion)
-            localStorage.setItem("token", data.token);
-            
+          if(data.success){
+             this.auxService.ventanaCargando();
+             this.auxService.AlertWarning("Iniciar sesión",data.message); 
+             if(data.message == "Credenciales correctas"){
+              this.auxService.ventanaCargando();
+              this.router.navigate(['/dashboard']);
+             } 
+
           }else{
-            //Aviso de que las credenciales son incorretas
-            alert("Correo/contraseña incorrectas");
+            alert("Error desconocido");
           }
         },
         error: (error) => {
