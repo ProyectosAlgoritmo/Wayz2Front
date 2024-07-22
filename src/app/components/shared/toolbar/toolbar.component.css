@@ -1,0 +1,23 @@
+.custom-header {
+    background-color: white;
+    border-bottom: 1px solid #C8CBD9;
+    align-items: center;
+}
+
+.toolbar-item-spacer {
+    flex: 1 1 auto;
+}
+
+.custom-titleHeader {
+    margin-right: 15px;
+    font-size: 14px;
+    margin-bottom: -3px;
+  }
+  
+  .custom-titleCompany {
+    margin-right: 20px;
+    font-size: 16px;
+    color: #5A67BA;
+    font-weight: bold;
+  }
+  

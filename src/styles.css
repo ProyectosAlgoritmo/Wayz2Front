@@ -28,3 +28,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   .custom-swal .swal2-actions .swal2-styled {
     font-size: 15px !important; /* Ajusta el tamaño del texto del botón */
   }
+
+  .mat-icon {
+    color: #5A67BA;
+  }
+
+  

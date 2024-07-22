@@ -64,12 +64,14 @@ export class LoginComponent {
       this.accesoServicio.login(email, password).subscribe({
         next:(data) => {
           if(data.success){
-             this.auxService.ventanaCargando();
-             this.auxService.AlertWarning("Iniciar sesión",data.message); 
+             //this.auxService.AlertWarning("Inicia Sesión",data.message); 
              if(data.message == "Credenciales correctas"){
-              this.auxService.ventanaCargando();
+              //this.auxService.ventanaCargando();
               this.router.navigate(['/dashboard']);
-             } 
+             }else{
+              this.auxService.ventanaCargando();
+              this.auxService.AlertWarning("Inicia Sesión",data.message); 
+             }
 
           }else{
             alert("Error desconocido");

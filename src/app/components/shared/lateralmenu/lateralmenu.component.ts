@@ -8,7 +8,6 @@ import { MatListModule } from '@angular/material/list';
 import { RouterOutlet } from '@angular/router';
 import { MatSidenav } from '@angular/material/sidenav';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule, Routes }   from '@angular/router';
@@ -16,6 +15,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
+import { SharedStateService } from '../../../services/shared-state.service';
+
 
 @Component({
   selector: 'app-lateralmenu',
@@ -33,20 +34,20 @@ export class LateralmenuComponent {
 
   selectedMenuItem: string | null = null;
 
-  constructor(private authservice: AuthService){}
+  constructor(private authservice: AuthService, private sharedStateService: SharedStateService){}
+
+  ngOnInit(): void {
+    this.sharedStateService.isExpanded$.subscribe(isExpanded => {
+      this.isExpanded = isExpanded;
+    });
+  }
 
 
   increase(menuItem: string | null = null, expand: boolean | null = true){
 
     if(expand){
-      if(this.isExpanded)
-        { 
-          this.sidenavWidth = 60;
-        }
-      else{
-        this.sidenavWidth = 230;
-      }
       this.isExpanded = !this.isExpanded
+      this.sharedStateService.toggleSidenav();
     }
 
     if (menuItem) {

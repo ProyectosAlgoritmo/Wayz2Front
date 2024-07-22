@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SharedStateService } from '../../services/shared-state.service';
 
 @Component({
   selector: 'app-keyperformanindicators',
@@ -8,5 +9,13 @@ import { Component } from '@angular/core';
   styleUrl: './keyperformanindicators.component.css'
 })
 export class KeyperformanindicatorsComponent {
+
+  constructor(private sharedStateService: SharedStateService){}
+
+  ngOnInit(): void {
+    this.sharedStateService.toggleSidenavVisible(true);
+  }
+
+ 
 
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LateralmenuComponent } from '../shared/lateralmenu/lateralmenu.component';
+import { SharedStateService } from '../../services/shared-state.service';
 
 @Component({
   selector: 'app-home',
@@ -9,5 +10,11 @@ import { LateralmenuComponent } from '../shared/lateralmenu/lateralmenu.componen
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+
+  constructor(private sharedStateService: SharedStateService){}
+
+  ngOnInit(): void {
+    this.sharedStateService.toggleSidenavVisible(false);
+  }
 
 }

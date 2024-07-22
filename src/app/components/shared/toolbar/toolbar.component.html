@@ -1,0 +1,29 @@
+<mat-toolbar color="primary" class="custom-header">
+    <button mat-icon-button  matTooltip="Menu"  class="boton-menu" (click)="toggleSidenav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="custom-titleCompany">STRATEGIC VIEW</span>
+    <span class="toolbar-item-spacer"></span>
+    <span class="custom-titleHeader"> ANA ROJAS DUQUE</span>
+    <button mat-icon-button matTooltip="Notificaciones">
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAccountMenu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
+      <button mat-menu-item routerLink="#">
+        <mat-icon>person</mat-icon><span>Cuenta</span>
+      </button>
+      <button mat-menu-item routerLink="#">
+        <mat-icon>settings</mat-icon><span>Configuración</span>
+      </button>
+      <button mat-menu-item routerLink="/dashboard">
+        <mat-icon>help</mat-icon><span>Ayuda</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>Cerrar sesión
+      </button>
+    </mat-menu>
+  </mat-toolbar>
