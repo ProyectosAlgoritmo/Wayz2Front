@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 
   //private apiUrl = 'https://localhost:7278/api'
-  private apiUrl = 'https://3.135.240.110:5215/api'
+  private apiUrl = 'https://3.135.240.110:5000/api'
   private token = '';
 
 
