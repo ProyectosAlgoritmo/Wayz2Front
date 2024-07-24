@@ -31,6 +31,7 @@ import { SharedStateService } from '../../../services/shared-state.service';
 export class LateralmenuComponent {
   isExpanded = true;
   sidenavWidth = 230;
+  permisos: any[] = [];
 
   selectedMenuItem: string | null = null;
 
@@ -40,6 +41,10 @@ export class LateralmenuComponent {
     this.sharedStateService.isExpanded$.subscribe(isExpanded => {
       this.isExpanded = isExpanded;
     });
+
+    this.permisos = this.authservice.getPermisos();
+
+    console.log(this.permisos); 
   }
 
 

@@ -1,0 +1,30 @@
+.mat-elevation-z8 {
+    margin: 0px;
+  }
+  
+  .mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .filter-container {
+    margin: 20px 0;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: transparent; /* Cambia el color de fondo a transparente */
+  }
+  
+  .mat-form-field-appearance-fill .mat-form-field-flex .mat-form-field-infix {
+    padding: 0; /* Opcional: Ajusta el padding si es necesario */
+  }
+  

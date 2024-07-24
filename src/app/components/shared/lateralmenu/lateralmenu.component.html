@@ -1,37 +1,22 @@
- <mat-nav-list>
-    <span *ngIf="isExpanded" class="custom-title">MENU</span>
-    <mat-accordion multi="false" *ngIf="isExpanded">
-      <mat-expansion-panel [class.mat-elevation-z0]="true" class="custom-menu" [expanded]="selectedMenuItem === 'dashboard'" (click)="increase('dashboard', false)">
+<mat-nav-list>
+  <span *ngIf="isExpanded" class="custom-title">MENU</span>
+  <mat-accordion multi="false" *ngIf="isExpanded">
+    <ng-container *ngFor="let permiso of permisos">
+      <mat-expansion-panel [class.mat-elevation-z0]="true" class="custom-menu" [expanded]="selectedMenuItem === permiso.nombrePermiso" (click)="increase(permiso.nombrePermiso, false)">
         <mat-expansion-panel-header>
-          <mat-icon>dashboard</mat-icon><span>Dashboard</span>
+          <mat-icon>{{ permiso.icon }}</mat-icon><span>{{ permiso.nombrePermiso }}</span>
         </mat-expansion-panel-header>
         <mat-nav-list>
-          <a mat-list-item routerLink="/dashboard" class="nav-item"><span>Dashboard</span></a>
+          <ng-container *ngFor="let hijo of permiso.permisosHijos">
+            <a mat-list-item [routerLink]="hijo.url" class="nav-item"><span>{{ hijo.nombrePermiso }}</span></a>
+          </ng-container>
         </mat-nav-list>
       </mat-expansion-panel>
-      <mat-expansion-panel [class.mat-elevation-z0]="true" class="custom-menu" [expanded]="selectedMenuItem === 'execution'" (click)="increase('execution', false)">
-        <mat-expansion-panel-header>
-          <mat-icon>equalizer</mat-icon><span>Ejecución y estrategia</span>
-        </mat-expansion-panel-header>
-        <mat-nav-list>
-          <a mat-list-item routerLink="/" class="nav-item"><span>iOS</span></a>
-          <a mat-list-item routerLink="/dashboard" class="nav-item"><span>Android</span></a>
-        </mat-nav-list>
-      </mat-expansion-panel>
-      <mat-expansion-panel [class.mat-elevation-z0]="true" class="custom-menu" [expanded]="selectedMenuItem === 'innovation'" (click)="increase('innovation', false)">
-        <mat-expansion-panel-header>
-          <mat-icon>lightbulb_outline</mat-icon><span>Innovacíon y tecnología</span>
-        </mat-expansion-panel-header>
-        <mat-nav-list>
-          <a mat-list-item routerLink="/" class="nav-item"><span>Spring</span></a>
-          <a mat-list-item routerLink="/" class="nav-item"><span>Spring</span></a>
-        </mat-nav-list>
-      </mat-expansion-panel>
-    </mat-accordion>
-    <mat-nav-list *ngIf="!isExpanded">
-      <a mat-list-item (click)="increase('dashboard', true)" class="nav-itemNoExpend" [ngClass]="{'selected-item': selectedMenuItem === 'dashboard'}"><mat-icon>dashboard</mat-icon></a>
-      <a mat-list-item (click)="increase('execution', true)" class="nav-itemNoExpend" [ngClass]="{'selected-item': selectedMenuItem === 'execution'}"><mat-icon>equalizer</mat-icon></a>
-      <a mat-list-item (click)="increase('innovation', true)" class="nav-itemNoExpend" [ngClass]="{'selected-item': selectedMenuItem === 'innovation'}"><mat-icon>lightbulb_outline</mat-icon></a>
-    </mat-nav-list>
+    </ng-container>
+  </mat-accordion>
+  <mat-nav-list *ngIf="!isExpanded">
+    <ng-container *ngFor="let permiso of permisos">
+      <a mat-list-item (click)="increase(permiso.nombrePermiso, true)" class="nav-itemNoExpend" [ngClass]="{'selected-item': selectedMenuItem === permiso.nombrePermiso}"><mat-icon>{{ permiso.icon }}</mat-icon></a>
+    </ng-container>
   </mat-nav-list>
-  
+</mat-nav-list>

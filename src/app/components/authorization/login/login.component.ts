@@ -67,7 +67,7 @@ export class LoginComponent {
              //this.auxService.AlertWarning("Inicia Sesión",data.message); 
              if(data.message == "Credenciales correctas"){
               //this.auxService.ventanaCargando();
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/']);
              }else{
               this.auxService.ventanaCargando();
               this.auxService.AlertWarning("Inicia Sesión",data.message); 

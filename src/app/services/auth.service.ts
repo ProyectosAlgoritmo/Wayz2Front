@@ -9,8 +9,8 @@ import { map } from 'rxjs/operators';
 })
 export class AuthService {
 
-  //private apiUrl = 'https://localhost:7278/api'
-  private apiUrl = 'http://3.135.240.110:81/api'
+  private apiUrl = 'https://localhost:7278/api'
+  //private apiUrl = 'http://3.135.240.110:81/api'
   private token = '';
 
 
@@ -35,13 +35,19 @@ export class AuthService {
       .pipe(map(user => {
         // Guarda detalles de usuario y token en el local storage para mantener al usuario logueado
         if(user.data != null){
-        localStorage.setItem('token', JSON.stringify(user.payload));
+        localStorage.setItem('token', user.data.payload);
+        localStorage.setItem('permisos', JSON.stringify(user.data.permisos));
         this.loggedIn.next(true);     
         }
         return user;
         
 
       }));
+  }
+
+  getPermisos(): any[] {
+    const permisos = localStorage.getItem('permisos');
+    return permisos ? JSON.parse(permisos) : [];
   }
 
   logout() {
