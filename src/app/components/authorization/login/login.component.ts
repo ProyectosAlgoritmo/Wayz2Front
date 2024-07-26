@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { AuxService } from '../../../services/aux-service.service';
+import { SharedModule } from '../../shared/shared.module';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ import { AuxService } from '../../../services/aux-service.service';
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
+    SharedModule
   ]
 })
 export class LoginComponent {
@@ -34,6 +36,7 @@ export class LoginComponent {
   hidePassword = true;
   private accesoServicio = inject(AuthService);
   isLogged = false;
+  hide = true;
 
   constructor(private fb: FormBuilder, private router: Router, private authService: AuthService, private auxService: AuxService) {
     this.loginForm = this.fb.group({
@@ -60,24 +63,28 @@ export class LoginComponent {
 
       const email = this.loginForm.value.email;
       const password = this.loginForm.value.password;
+
+
+      this.auxService.ventanaCargando();
       
       this.accesoServicio.login(email, password).subscribe({
         next:(data) => {
           if(data.success){
-             //this.auxService.AlertWarning("Inicia Sesión",data.message); 
+
              if(data.message == "Credenciales correctas"){
-              //this.auxService.ventanaCargando();
-              this.router.navigate(['/']);
+                this.router.navigate(['/']);
              }else{
-              this.auxService.ventanaCargando();
+              this.auxService.cerrarVentanaCargando();
               this.auxService.AlertWarning("Inicia Sesión",data.message); 
              }
 
           }else{
+            this.auxService.cerrarVentanaCargando();
             alert("Error desconocido");
           }
         },
         error: (error) => {
+          this.auxService.cerrarVentanaCargando();
           console.log(error.message);
         },
       })

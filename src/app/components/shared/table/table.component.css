@@ -1,0 +1,23 @@
+  
+  table {
+    width: 100%;
+    background-color: transparent; /* Color de fondo blanco para la tabla */
+  }
+  
+  .first-row th {
+    background-color: transparent; /* Color de fondo para la primera fila */
+    font-size: 14px;
+    padding: 8px;
+  }
+  
+  .other-rows td {
+    background-color: transparent; /* Color de fondo para las otras filas */
+    padding: 8px; /* Ajusta el padding según sea necesario */
+    border-bottom: solid 0.1px lightgrey; /* Ajusta la línea de separación */
+  }
+  
+  .text-left {
+    text-align: center;
+  }
+  
+  

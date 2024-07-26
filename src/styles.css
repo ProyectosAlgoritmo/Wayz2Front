@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
+
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -7,6 +10,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background: transparent !important;
     box-shadow: none !important; /* Opcional: elimina la sombra del cuadro */
 }
+
+/* Diseño de las notificaciones*/
 
 .custom-swal {
     width: 320px !important; /* Ajusta el ancho según tus necesidades */
@@ -29,13 +34,59 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-size: 15px !important; /* Ajusta el tamaño del texto del botón */
   }
 
+  /* termina diseño de las notificaciones*/
+
+
+  /* Diseños de las compartidos*/
+
   .mat-icon {
     color: #5A67BA;
   }
 
+  .spacer {
+    flex: 1 1 auto;
+  }
 
-  .Backgroundwhite {
-    background-color: white;
+
+  /*Design inputs mat-form-field*/
+  
+  
+ .mat-mdc-text-field-wrapper {
+  background-color: transparent !important;
+  border-bottom: none !important;
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+  }
+
+  /* termina diseños de las compartidos*/
+
+  /* Remover el borde azul en Chrome */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+    box-shadow: 0 0 0 30px rgb(2555, 255, 255, 0.6) inset !important;
+    -webkit-text-fill-color: #000 !important; /* Cambia el color del texto si es necesario */
 }
+
+/* Remover el borde azul en Firefox */
+input:-moz-autofill,
+input:-moz-autofill:hover,
+input:-moz-autofill:focus,
+input:-moz-autofill:active {
+    box-shadow: 0 0 0 30px white inset !important;
+}
+
+/* Remover el borde azul en Edge */
+input:-ms-autofill,
+input:-ms-autofill:hover,
+input:-ms-autofill:focus,
+input:-ms-autofill:active {
+    box-shadow: 0 0 0 30px white inset !important;
+}
+
 
   

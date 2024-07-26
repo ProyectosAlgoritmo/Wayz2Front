@@ -1,20 +1,40 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.background {
+  background: linear-gradient(135deg, transparent 50%, #EDE7F6  50%), 
+  linear-gradient(45deg,  #FFFFFF   50%,  #EDE7F6  50%);
+  background-size: 100% 100%, 100% 100%;
+  background-position: top left, bottom right;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .login-container {
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
   }
   
   .login-card {
-    width: 450px;
-    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
   }
   
   mat-card-title {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
   
   mat-card-actions {
@@ -75,4 +95,5 @@
   .signin:hover {
     color: #303f9f;
   }
+  
   

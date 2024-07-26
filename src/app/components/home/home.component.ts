@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-import { LateralmenuComponent } from '../shared/lateralmenu/lateralmenu.component';
 import { SharedStateService } from '../../services/shared-state.service';
 import { PermisosService } from '../../services/permisos.service';
 import { AuxService } from '../../services/aux-service.service';
@@ -15,6 +14,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { SharedModule } from '../shared/shared.module';
+
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 
 
@@ -25,25 +29,12 @@ export interface UserData {
   sexo: string;
 }
 
-const USERS_DATA: UserData[] = [
-  {usuario: 'jperez', nombre: 'Juan', apellido: 'Perez', sexo: 'Masculino'},
-  {usuario: 'mgomez', nombre: 'Martin', apellido: 'Gomez', sexo: 'Masculino'},
-  {usuario: 'ngarcia', nombre: 'Nicolas', apellido: 'Garcia', sexo: 'Masculino'},
-  {usuario: 'naliaga', nombre: 'Nicolle', apellido: 'Aliaga', sexo: 'Femenino'},
-  {usuario: 'jgonzalez', nombre: 'Janet', apellido: 'Gonzalez', sexo: 'Femenino'},
-  {usuario: 'tmarcuzzi', nombre: 'Tomas', apellido: 'Marcuzzi', sexo: 'Masculino'},
-
-  {usuario: 'ngarcia', nombre: 'Nicolas', apellido: 'Garcia', sexo: 'Masculino'},
-  {usuario: 'naliaga', nombre: 'Nicolle', apellido: 'Aliaga', sexo: 'Femenino'},
-  {usuario: 'jgonzalez', nombre: 'Janet', apellido: 'Gonzalez', sexo: 'Femenino'},
-  {usuario: 'tmarcuzzi', nombre: 'Tomas', apellido: 'Marcuzzi', sexo: 'Masculino'},
-];
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [LateralmenuComponent, MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
-    , MatButtonModule, MatIconModule
+  imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
+    , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -56,8 +47,8 @@ export class HomeComponent {
     ,private auxService: AuxService, private router: Router
   ){}
 
-  displayedColumns: string[] = ['nombreEmpresa', 'acciones'];
-  dataSource = new MatTableDataSource<UserData>(USERS_DATA);
+  displayedColumns: string[] = ['empresa'];
+  dataSource = new MatTableDataSource<UserData>([]);
 
   @ViewChild(MatSort) sort: MatSort | undefined;
 
@@ -105,15 +96,17 @@ export class HomeComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getLoginEmpresas(idEmpresa: number): void {
-    this.permisosService.getLoginEmpresas(idEmpresa).subscribe({
+ 
+  onGoAction(element: any) {
+  
+    this.permisosService.getLoginEmpresas(element.idEmpresa).subscribe({
       next:(data) =>{
 
         if(data.success){
 
           if(!data.warning){
             
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/import']);
         
           }
           else{
@@ -132,6 +125,8 @@ export class HomeComponent {
       },
     }); 
   }
+
+  
 }
 
 

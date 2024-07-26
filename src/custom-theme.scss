@@ -28,6 +28,8 @@ $Strategicview-theme: mat.define-theme((
   @include mat.all-component-themes($Strategicview-theme);
 }
 
+
+
 // Comment out the line below if you want to use the pre-defined typography utility classes.
 // For more information: https://material.angular.io/guide/typography#using-typography-styles-in-your-application.
 // @include mat.typography-hierarchy($Strategicview-theme);

@@ -7,12 +7,14 @@ import Swal from 'sweetalert2';
 })
 export class AuxService {
 
-  constructor() {}
+  private loadingModal: any; // Variable para almacenar la referencia del modal
 
+  constructor() {}
+ 
 
 
   ventanaCargando() {
-    Swal.fire({
+    this.loadingModal = Swal.fire({
       showConfirmButton: false,
       allowOutsideClick: false,
       allowEscapeKey: false,
@@ -21,6 +23,13 @@ export class AuxService {
         popup: "loading",
       },
     });
+  }
+
+  cerrarVentanaCargando() {
+    if (this.loadingModal) {
+      Swal.close();
+      this.loadingModal = null; // Resetear la referencia del modal
+    }
   }
 
   AlertWarning(title: string, mensaje: string){

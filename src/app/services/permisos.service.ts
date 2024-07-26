@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class PermisosService {
 
   constructor(private httpClient: HttpClient) { 
 
-    this.apiUrl = 'https://localhost:7278/api/auth'; 
+    this.apiUrl = environment.apiUrl + '/auth'; 
     this.token =  localStorage.getItem('token');
     console.log(this.token); 
   }

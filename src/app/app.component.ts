@@ -2,10 +2,9 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 /*Componentes*/
-import { HomeComponent } from './components/home/home.component';
 import { LateralmenuComponent } from './components/shared/lateralmenu/lateralmenu.component';
-import { LoginComponent } from './components/authorization/login/login.component';
 import { ToolbarComponent } from './components/shared/toolbar/toolbar.component';
+import { SharedModule } from './components/shared/shared.module';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { trigger, state, style, transition, animate } from '@angular/animations';
@@ -22,7 +21,7 @@ import { SharedStateService } from './services/shared-state.service';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, MatSidenavModule,
-    RouterLinkActive, RouterLink, MatSlideToggleModule, LateralmenuComponent, LoginComponent, HomeComponent, 
+    RouterLinkActive, RouterLink, MatSlideToggleModule, LateralmenuComponent, SharedModule, 
     CommonModule, ToolbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

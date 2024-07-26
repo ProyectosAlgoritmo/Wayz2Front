@@ -7,9 +7,11 @@
           <mat-icon>{{ permiso.icon }}</mat-icon><span>{{ permiso.nombrePermiso }}</span>
         </mat-expansion-panel-header>
         <mat-nav-list>
-          <ng-container *ngFor="let hijo of permiso.permisosHijos">
-            <a mat-list-item [routerLink]="hijo.url" class="nav-item"><span>{{ hijo.nombrePermiso }}</span></a>
+          <div class="submenu">
+          <ng-container *ngFor="let hijo of permiso.permisosHijos" >
+            <a mat-list-item [routerLink]="hijo.url" class="nav-item"><span >{{ hijo.nombrePermiso }}</span></a>
           </ng-container>
+        </div>
         </mat-nav-list>
       </mat-expansion-panel>
     </ng-container>
