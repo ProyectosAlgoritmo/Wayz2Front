@@ -7,6 +7,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .loading {
+    width: 200px !important; 
     background: transparent !important;
     box-shadow: none !important; /* Opcional: elimina la sombra del cuadro */
 }
@@ -40,7 +41,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   /* Diseños de las compartidos*/
 
   .mat-icon {
-    color: #5A67BA;
+    color: #030303;
   }
 
   .spacer {
@@ -86,6 +87,16 @@ input:-ms-autofill:hover,
 input:-ms-autofill:focus,
 input:-ms-autofill:active {
     box-shadow: 0 0 0 30px white inset !important;
+}
+
+.botonmargen{
+  margin-left: 10px;
+}
+
+.division-line {
+  border: none;
+  border-top: 1px solid #ccc; /* Color y estilo de la línea */
+  margin: 1px 0; /* Espacio alrededor de la línea */
 }
 
 

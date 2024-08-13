@@ -1,4 +1,3 @@
-
     <div class="content-container">
         <div class="table-container">
             <mat-toolbar class="background-white-title-botton">
@@ -21,11 +20,12 @@
                 [dataSource]="dataSource" 
                 [displayedColumns]="displayedColumns" 
                 [enableSearch]="true" 
-                [enablePaginator]="false" 
+                [enablePaginator]="true" 
                 [pageSize]="10"
                 [showActions]="true"
                 [ActionExport]="true"
-                [ActionImport]="true"> <!-- Aquí puedes establecer true o false según sea necesario -->
+                [ActionImport]="true"
+                (importAction)="onImportAction($event)" > <!-- Aquí puedes establecer true o false según sea necesario -->
               </app-table>
             
            </div>

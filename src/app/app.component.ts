@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SharedStateService } from './services/shared-state.service';
 
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -44,7 +45,7 @@ import { SharedStateService } from './services/shared-state.service';
       transition('in <=> out', [
         animate(300)
       ])
-    ])
+    ]),
   ]
 })
 export class AppComponent {
@@ -54,7 +55,7 @@ export class AppComponent {
   isVisibleMenu = true; 
 
 constructor(private authService: AuthService, private router: Router, private sharedStateService: SharedStateService,
-  private cdr: ChangeDetectorRef
+  private cdr: ChangeDetectorRef, private route: ActivatedRoute
 ) {
 
 } 

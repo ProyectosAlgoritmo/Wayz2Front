@@ -6,28 +6,34 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class PermisosService {
-
+export class ConfigService {
   readonly apiUrl: string;
 
-  constructor(private httpClient: HttpClient) { 
+  constructor(private httpClient: HttpClient) {
 
-    this.apiUrl = environment.apiUrl + '/auth'; 
-  }
+    this.apiUrl = environment.apiUrl + '/Config'; 
 
-  getHeaders(): HttpHeaders {
+    
+   }
+
+   getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': `Bearer ${sessionStorage.getItem('token')}`
     });
   }
 
-  ObtenerEmpresas(): Observable<any> {
+
+  ObtenerClients(): Observable<any> {
     const headers = this.getHeaders();
-    return this.httpClient.get(`${this.apiUrl}/Get-User-Empresas`, { headers });
+    return this.httpClient.get(`${this.apiUrl}/Get-Clients`, { headers });
   }
 
-  getLoginEmpresas(idEmpresa: number): Observable<any> {
+  
+
+  ObtenerDetailClient(id: number): Observable<any> {
     const headers = this.getHeaders();
-    return this.httpClient.get(`${this.apiUrl}/Get-token-Empresa/${idEmpresa}`, { headers });
+    return this.httpClient.get(`${this.apiUrl}/Get-Detail-Clients/${id}`, { headers });
   }
+
+
 }

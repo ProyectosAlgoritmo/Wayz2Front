@@ -1,0 +1,30 @@
+
+
+<h3 mat-dialog-title class="dialog-title">Selecciona un archivo para cargar tus datos</h3>
+  <hr class="division-line">
+<div class="importdata">
+  
+<mat-dialog-content>
+  
+
+  <nz-upload
+    nzListType="picture"
+    [(nzFileList)]="fileList1"
+    [nzLimit]="1"
+    [nzMultiple]="false"
+    (nzChange)="handleChange($event)"
+      >
+        <button nz-button>
+          <span nz-icon nzType="upload"></span>
+          {{additionalData}}
+        </button>
+  </nz-upload>
+
+
+</mat-dialog-content>
+<mat-dialog-actions>
+  <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen"></app-buttonstrategic>
+  <app-buttonstrategic mat-button [label]="'Subir'" [customClass]="'BotonVerde'" (click)="onUpload()" class="botonmargen"></app-buttonstrategic>
+</mat-dialog-actions>
+
+</div>

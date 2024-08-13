@@ -1,4 +1,21 @@
 button.BotonMorado {
     background-color: #EDE7F6 !important;
     color: #5A6ACF;
+    min-width: 100px;  /* Cambia el valor según tus necesidades */
+    min-height: 40px;  /* Cambia el valor según tus necesidades */
+}
+
+
+button.BotonGris {
+    background-color: #BDBDBD !important;
+    color: #ffffff;
+    min-width: 100px;  /* Cambia el valor según tus necesidades */
+    min-height: 40px;  /* Cambia el valor según tus necesidades */
+}
+
+button.BotonVerde {
+    background-color: #8BC34A !important;
+    color: #ffffff;
+    min-width: 100px;  /* Cambia el valor según tus necesidades */
+    min-height: 40px;  /* Cambia el valor según tus necesidades */
 }

@@ -5,10 +5,12 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AuxService } from './aux-service.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
 
   private apiUrl = environment.apiUrl; 
@@ -16,8 +18,8 @@ export class AuthService {
   private token = '';
 
 
-  constructor(private httpClient: HttpClient, private router: Router, private auxService: AuxService) {
-    this.token = <string>localStorage.getItem('token');
+  constructor(private httpClient: HttpClient, private router: Router, private auxService: AuxService, private jwtHelper: JwtHelperService) {
+    this.token = <string>sessionStorage.getItem('token');
   }
 
 
@@ -27,7 +29,7 @@ export class AuthService {
     return this.loggedIn.asObservable(); // {2}
   }
   private tokenAvailable(): boolean {
-    return !!localStorage.getItem('token');
+    return !!sessionStorage.getItem('token');
   }
 
   login(Email: string, Password: string): Observable<any> {
@@ -38,8 +40,8 @@ export class AuthService {
         this.auxService.cerrarVentanaCargando();
         if(user.data != null){
         
-        localStorage.setItem('token', user.data.payload);
-        localStorage.setItem('permisos', JSON.stringify(user.data.permisos));
+        sessionStorage.setItem('token', user.data.payload);
+        sessionStorage.setItem('permisos', JSON.stringify(user.data.permisos));
         this.loggedIn.next(true);     
        
         }
@@ -50,13 +52,13 @@ export class AuthService {
   }
 
   getPermisos(): any[] {
-    const permisos = localStorage.getItem('permisos');
+    const permisos = sessionStorage.getItem('permisos');
     return permisos ? JSON.parse(permisos) : [];
   }
 
   logout() {
     // Elimina al usuario del local storage y establece el currentUser a null
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.loggedIn.next(false); 
     this.router.navigate(['/login']);
   }
@@ -67,6 +69,14 @@ export class AuthService {
 
   isAuthenticated(): Observable<boolean> {
     return this.loggedIn.asObservable();
+  }
+
+  decodeToken(token: string): any {
+    return this.jwtHelper.decodeToken(<string>sessionStorage.getItem('token')); // Decodificar el token JWT
+  }
+
+  getToken(): string {
+    return <string>sessionStorage.getItem('token') // Obtener el token almacenado en localStorage
   }
 
  

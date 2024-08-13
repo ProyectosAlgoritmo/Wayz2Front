@@ -5,6 +5,7 @@
   margin-left: 30px;
 }
 
+
 .custom-menu {
   background-color: transparent;
   color: rgba(39, 50, 64, 0.8);
@@ -19,8 +20,8 @@
 
 .custom-menu mat-expansion-panel-header span {
   flex: 1 1 auto;
-  margin-left: 5px;
-  margin-right: 8px;
+  margin-left: 10px;
+  margin-right: 1px;
   word-break: break-word;
   white-space: normal; /* Ajuste para permitir el salto de línea */
   font-weight: normal;
@@ -30,7 +31,7 @@
 
 
 .custom-menu mat-expansion-panel-header mat-icon {
-  margin-right: 10px;
+  margin-left: 15px;
   align-self: center;
 }
 
@@ -88,6 +89,38 @@ mat-menu mat-icon {
   white-space: normal; /* Permite el salto de línea */
   font-style: italic; /* Aplica el estilo cursivo */
 }
+
+
+
+
+
+/* FLECHA MENU LATERAL Asegúrate de que el encabezado del panel tenga display flex */
+.mat-expansion-panel-header {
+  display: flex;
+  flex-direction: row-reverse; /* Esto invertirá el orden, moviendo la flecha al lado izquierdo */
+}
+
+/* Ajusta la posición de la flecha */
+.mat-expansion-panel-header .mat-expansion-indicator {
+  margin-left: 0; /* Remueve margen izquierdo */
+  margin-right: auto; /* Mueve la flecha completamente al lado izquierdo */
+  transform: rotate(180deg) !important; /* Opcional: Ajusta la dirección de la flecha */
+}
+
+/* Asegura que el contenido del encabezado (icono y texto) esté alineado correctamente */
+.mat-expansion-panel-header .mat-expansion-panel-header-title {
+  margin-left: 8px; /* Ajusta este valor según sea necesario */
+}
+
+/* Este estilo asegura que el icono del encabezado se alinee con el texto */
+.mat-expansion-panel-header mat-icon {
+  margin-left: 8px; /* Opcional: Ajusta el margen si es necesario */
+  color: #030303;
+}
+
+
+
+
 
 
 

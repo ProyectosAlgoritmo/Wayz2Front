@@ -1,8 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedStateService } from '../../services/shared-state.service';
-import { PermisosService } from '../../services/permisos.service';
+import { ConfigService } from '../../services/config.service';
 import { AuxService } from '../../services/aux-service.service';
-
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
@@ -19,38 +18,35 @@ import { SharedModule } from '../shared/shared.module';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-
-
-
+import { MatDialog } from '@angular/material/dialog';
+import { EditclientComponent } from './editclient/editclient.component';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-client',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
     , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  templateUrl: './client.component.html',
+  styleUrls: ['./client.component.css']
 })
-export class HomeComponent {
+export class ClientComponent implements OnInit {
 
-  
-
-  constructor(private sharedStateService: SharedStateService, private permisosService: PermisosService
-    ,private auxService: AuxService, private router: Router
-  ){}
-
-  displayedColumns: string[] = ['empresa'];
+  displayedColumns: string[] = ['nombreCliente', 'tipoIdentificacion', 'identificacion', 'pais', 'ciudad'];
+  columnNames = {
+    nombreCliente: 'Nombre del cliente',
+    tipoIdentificacion: 'tipo de identificación'
+  };
   dataSource = new MatTableDataSource<any>([]);
 
-  @ViewChild(MatSort) sort: MatSort | undefined;
+  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog ) { }
 
   ngOnInit(): void {
-    this.sharedStateService.toggleSidenavVisible(false);
 
+    this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
-    this.permisosService.ObtenerEmpresas().subscribe({
+    this.configService.ObtenerClients().subscribe({
       next:(data) =>{
 
         if(data.success){
@@ -65,7 +61,7 @@ export class HomeComponent {
           else{
 
             this.auxService.ventanaCargando();
-            this.auxService.AlertWarning("Tus empresas",data.message); 
+            this.auxService.AlertWarning("Clientes",data.message); 
 
           }
 
@@ -78,12 +74,10 @@ export class HomeComponent {
         }
       },
       error: (error) => {
-        console.log(error.message);
+        this.auxService.cerrarVentanaCargando();
+        this.auxService.AlertError('Error al cargar los clientes:', error);
       },
     }); 
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
   }
 
   applyFilter(event: Event) {
@@ -91,41 +85,11 @@ export class HomeComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
- 
-  onGoAction(element: any) {
-  
-    this.permisosService.getLoginEmpresas(element.idEmpresa).subscribe({
-      next:(data) =>{
-
-        if(data.success){
-
-          if(!data.warning){
-
-            sessionStorage.removeItem('token');
-            sessionStorage.setItem('token', data.data.payload);
-            
-            //localStorage.setItem('permisos', JSON.stringify(data.data.permisos));
-            this.router.navigate(['/import']);
-        
-          }
-          else{
-            this.auxService.ventanaCargando();
-            this.auxService.AlertWarning("Tus empresas",data.message); 
-          }
-
-        }
-        else{
-            this.auxService.ventanaCargando();
-            this.auxService.AlertWarning("Error",data.message); 
-        }
-      },
-      error: (error) => {
-        console.log(error.message);
-      },
-    }); 
-  }
-
-  
+  onImportAction(event: any) {
+    
+    const dialogRef = this.dialog.open(EditclientComponent, {
+        data: { idclient: event.idclient }
+    });
 }
 
-
+}

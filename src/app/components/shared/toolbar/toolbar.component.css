@@ -1,8 +1,23 @@
 .custom-header {
     background-color: white;
-    border-bottom: 1px solid #C8CBD9;
+    border-bottom: 1px solid #C8CBD9; /* Puedes mantener esto si deseas tanto la línea como la sombra */
     align-items: center;
+    }
+
+.custom-titleCompany {
+  
+  padding-left: 20px;
+  margin-right: 9px;
+  height: 100%; /* Asegura que ocupe toda la altura del toolbar */
+  display: flex;
+  align-items: center; /* Centra verticalmente el contenido */
 }
+
+.boton-menu {
+  margin-left: -4px;
+  margin-right: 6.6px; /* Espacio entre el borde y el texto */
+}
+
 
 .toolbar-item-spacer {
     flex: 1 1 auto;

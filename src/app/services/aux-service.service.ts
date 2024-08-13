@@ -45,4 +45,31 @@ export class AuxService {
     Swal.close();
     })
   }
+
+  AlertError(title: string, mensaje: string){
+    Swal.fire({
+    icon: "error",
+    title: title,
+    text: mensaje,
+    confirmButtonText: 'Aceptar',
+    customClass: {
+      popup: 'custom-swal'
+    }
+    }).then(() => {
+    Swal.close();
+    })
+  }
+
+  AlertSuccess(title: string, mensaje: string){
+  Swal.fire({
+    icon: "success",
+    title: title,
+    text: mensaje,
+    showConfirmButton: false,
+    timer: 3000,
+    customClass: {
+      popup: 'custom-swal'
+    }
+  });
+  }
 }

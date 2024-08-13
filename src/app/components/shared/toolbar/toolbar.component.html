@@ -5,6 +5,13 @@
     <span class="custom-titleCompany">STRATEGIC VIEW</span>
     <span class="spacer"></span>
     <span class="custom-titleHeader"> ANA ROJAS DUQUE</span>
+
+    <button mat-icon-button matTooltip="Estado de la notificación">
+      <mat-icon [ngClass]="{'rotating-icon': notificationIcon === 'autorenew'}">
+        {{ notificationIcon }}
+      </mat-icon>
+    </button>
+  
     <button mat-icon-button matTooltip="Notificaciones">
       <mat-icon>notifications</mat-icon>
     </button>

@@ -14,34 +14,22 @@ import { SharedModule } from '../shared/shared.module';
 import { SharedStateService } from '../../services/shared-state.service';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
-import { TableComponent } from '../shared/table/table.component';
+import { ImportService } from '../../services/import.service';
+import { FileUploadImportComponent } from './file-upload-import/file-upload-import.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface UserData {
   Formulario: string;
-  prueba: string;
-  apellido: string;
-  sexo: string;
+  Carpeta: string; 
+  modeldata: string; 
+  storedprocedure: string; 
 }
 
 
 const USERS_DATA: UserData[] = [
-  {Formulario: 'jperez', prueba: 'Juan', apellido: 'Perez', sexo: 'Masculino'},
-  {Formulario: 'mgomez', prueba: 'Martin', apellido: 'Gomez', sexo: 'Masculino'},
-  {Formulario: 'ngarcia', prueba: 'Nicolas', apellido: 'Garcia', sexo: 'Masculino'},
-  {Formulario: 'naliaga', prueba: 'Nicolle', apellido: 'Aliaga', sexo: 'Femenino'},
-  {Formulario: 'jgonzalez', prueba: 'Janet', apellido: 'Gonzalez', sexo: 'Femenino'},
-  {Formulario: 'tmarcuzzi', prueba: 'Tomas', apellido: 'Marcuzzi', sexo: 'Masculino'},
-
-  {Formulario: 'naliaga', prueba: 'Nicolle', apellido: 'Aliaga', sexo: 'Femenino'},
-  {Formulario: 'jgonzalez', prueba: 'Janet', apellido: 'Gonzalez', sexo: 'Femenino'},
-  {Formulario: 'tmarcuzzi', prueba: 'Tomas', apellido: 'Marcuzzi', sexo: 'Masculino'},
-
-  {Formulario: 'naliaga', prueba: 'Nicolle', apellido: 'Aliaga', sexo: 'Femenino'},
-  {Formulario: 'jgonzalez', prueba: 'Janet', apellido: 'Gonzalez', sexo: 'Femenino'},
-  {Formulario: 'tmarcuzzi', prueba: 'Tomas', apellido: 'Marcuzzi', sexo: 'Masculino'},
-
-];
-
+  {Formulario: 'Clientes', Carpeta: 'Administracion/', modeldata: '@ModeloEntradaClientes', storedprocedure: '[administracion].[ImportClientes]'},
+  {Formulario: 'Ingresos proyectados y reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaDesempenoFinanciero', storedprocedure: '[administracion].[ImportIngresosrealesyproyectados]'},
+ ];
 
 @Component({
   selector: 'app-import',
@@ -60,8 +48,10 @@ export class ImportComponent {
 
   @ViewChild(MatSort) sort: MatSort | undefined;
 
-  constructor(private sharedStateService: SharedStateService){}; 
+  constructor(private sharedStateService: SharedStateService, private importService: ImportService, public dialog: MatDialog){}; 
 
+  
+  
   ngOnInit(): void {
 
     
@@ -73,11 +63,44 @@ export class ImportComponent {
 
     this.dataSource.data = USERS_DATA;
 
+    
+
   }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  onImportAction(element: any) {
+
+    const additionalData = element.Formulario;
+    const carpeta = element.Carpeta;
+    const modeldata = element.modeldata;
+    const storedprocedure = element.storedprocedure;
+
+    const dialogRef = this.dialog.open(FileUploadImportComponent, {
+      data: { additionalData, carpeta, modeldata, storedprocedure }
+    });
+
+    //dialogRef.afterClosed().subscribe(result => {
+    //  if (result) {
+     //   console.log('File selected:', result);
+     //   this.uploadFile(result); // Llama a tu método para subir el archivo
+     // }
+    //});
+
+
+   // this.importService.ImportDesempenofinanciero(fileUrl, bucketName, objectName).subscribe(response => {
+   //   console.log(response);
+    //});
+
+  }
+
+  uploadFile(file: File): void {
+    // Lógica para subir el archivo
+    console.log('Uploading file:', file);
+  }
+  
 
 }
