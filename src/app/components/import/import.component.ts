@@ -28,6 +28,7 @@ export interface UserData {
 
 const USERS_DATA: UserData[] = [
   {Formulario: 'Clientes', Carpeta: 'Administracion/', modeldata: '@ModeloEntradaClientes', storedprocedure: '[administracion].[ImportClientes]'},
+  {Formulario: 'Productos y servicios', Carpeta: 'Administracion/', modeldata: '@ModeloProductosServicios', storedprocedure: '[administracion].[ImportProductServices]'},
   {Formulario: 'Ingresos proyectados y reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaDesempenoFinanciero', storedprocedure: '[administracion].[ImportIngresosrealesyproyectados]'},
  ];
 

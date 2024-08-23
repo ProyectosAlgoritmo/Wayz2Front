@@ -1,8 +1,8 @@
 button.BotonMorado {
-    background-color: #EDE7F6 !important;
-    color: #5A6ACF;
+    background-color: #5A6ACF !important;
+    color: #EDE7F6;
     min-width: 100px;  /* Cambia el valor según tus necesidades */
-    min-height: 40px;  /* Cambia el valor según tus necesidades */
+    height: 35px;  /* Cambia el valor según tus necesidades */
 }
 
 

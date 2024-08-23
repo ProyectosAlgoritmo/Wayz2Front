@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedStateService } from '../../services/shared-state.service';
-import { ConfigService } from '../../services/config.service';
-import { AuxService } from '../../services/aux-service.service';
+import { SharedStateService } from '../../../services/shared-state.service';
+import { ConfigService } from '../../../services/config.service';
+import { AuxService } from '../../../services/aux-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -75,21 +75,43 @@ export class ClientComponent implements OnInit {
       },
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
+        console.log(error.status); 
         this.auxService.AlertError('Error al cargar los clientes:', error);
       },
     }); 
   }
+
+  
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  onImportAction(event: any) {
+  onEditAction(event: any) {
+    console.log(event); 
     
     const dialogRef = this.dialog.open(EditclientComponent, {
-        data: { idclient: event.idclient }
+        data: { idclient: event.idCliente }
+
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            // Si el resultado es true, se vuelve a obtener la lista de clientes
+            this.configService.ObtenerClients().subscribe({
+              next: (data) => {
+
+                this.dataSource.data = data.data;
+                this.auxService.cerrarVentanaCargando();
+              },
+              error: (error) => {
+                this.auxService.AlertError('Error al cargar los clientes:', error);
+              }
+            });
+          }
     });
+
 }
 
 }
