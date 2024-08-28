@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedStateService } from '../../../services/shared-state.service';
-import { ConfigService } from '../../../services/config.service';
 import { AuxService } from '../../../services/aux-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -19,34 +18,41 @@ import { SharedModule } from '../../shared/shared.module';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { EditclientComponent } from './editclient/editclient.component';
+import { financialperformanceService } from '../../../services/financialperformance.service';
+import { EditincomeComponent } from './editincome/editincome.component';
 
 @Component({
-  selector: 'app-client',
+  selector: 'app-income',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
     , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
-  templateUrl: './client.component.html',
-  styleUrls: ['./client.component.css']
+  templateUrl: './income.component.html',
+  styleUrl: './income.component.css'
 })
-export class ClientComponent implements OnInit {
+export class IncomeComponent {
 
-  displayedColumns: string[] = ['nombreCliente', 'tipoIdentificacion', 'identificacion', 'pais', 'ciudad'];
+  displayedColumns: string[] = ['nombreCliente', 'nombreVendedor', 'codigoProducto', 'conceptoIngreso', 'cantidadReal', 'cantidadProyectada', 'valorIngresoReal', 'valorIngresoProyectado', 'mes'];
   columnNames = {
     nombreCliente: 'Nombre del cliente',
-    tipoIdentificacion: 'tipo de identificación'
+    nombreVendedor: 'Vendedor', 
+    codigoProducto: 'Codigo del producto', 
+    conceptoIngreso: 'Concepto de ingreso', 
+    cantidadReal: 'Cantidad rela', 
+    cantidadProyectada: 'Cantidad Proyectada',
+    valorIngresoReal: 'Ingreso real', 
+    valorIngresoProyectado: 'Ingreso Proyectado'
   };
   dataSource = new MatTableDataSource<any>([]);
 
-  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog ) { }
+  constructor(private sharedStateService: SharedStateService, private financialperformanceService: financialperformanceService, private auxService: AuxService, public dialog: MatDialog ) { }
 
   ngOnInit(): void {
 
     this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
-    this.configService.ObtenerClients().subscribe({
+    this.financialperformanceService.GetData("Get-income").subscribe({
       next:(data) =>{
 
         if(data.success){
@@ -89,27 +95,27 @@ export class ClientComponent implements OnInit {
   }
 
   onEditAction(event: any) {
-    const dialogRef = this.dialog.open(EditclientComponent, {
-        data: { idclient: event.idCliente }
+    const dialogRef = this.dialog.open(EditincomeComponent, {
+      data: { idingreso: event.idIngreso }
 
-      });
-
-    dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            // Si el resultado es true, se vuelve a obtener la lista de clientes
-            this.configService.ObtenerClients().subscribe({
-              next: (data) => {
-
-                this.dataSource.data = data.data;
-                this.auxService.cerrarVentanaCargando();
-              },
-              error: (error) => {
-                this.auxService.AlertError('Error al cargar los clientes:', error);
-              }
-            });
-          }
     });
 
-}
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          // Si el resultado es true, se vuelve a obtener la lista de clientes
+          this.financialperformanceService.GetData("Get-income").subscribe({
+            next: (data) => {
+
+              this.dataSource.data = data.data;
+              this.auxService.cerrarVentanaCargando();
+            },
+            error: (error) => {
+              this.auxService.AlertError('Error al cargar los clientes:', error);
+            }
+          });
+        }
+  });
+  }
 
 }
+

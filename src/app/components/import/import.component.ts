@@ -29,7 +29,11 @@ export interface UserData {
 const USERS_DATA: UserData[] = [
   {Formulario: 'Clientes', Carpeta: 'Administracion/', modeldata: '@ModeloEntradaClientes', storedprocedure: '[administracion].[ImportClientes]'},
   {Formulario: 'Productos y servicios', Carpeta: 'Administracion/', modeldata: '@ModeloProductosServicios', storedprocedure: '[administracion].[ImportProductServices]'},
-  {Formulario: 'Ingresos proyectados y reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaDesempenoFinanciero', storedprocedure: '[administracion].[ImportIngresosrealesyproyectados]'},
+  {Formulario: 'Vendedores', Carpeta: 'Administracion/', modeldata: '@ModeloVendedores', storedprocedure: '[administracion].[ImportVendedores]'},
+  {Formulario: 'Ingresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosReales', storedprocedure: '[desempenofinanciero].[ImportIngresosreales]'},
+  {Formulario: 'Ingresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosProyectados', storedprocedure: '[desempenofinanciero].[ImportIngresosproyectados]'},
+  {Formulario: 'Egresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosReales', storedprocedure: '[desempenofinanciero].[ImportEgresosreales]'},
+  {Formulario: 'Egresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosProyectados', storedprocedure: '[desempenofinanciero].[ImportEgresosproyectados]'},
  ];
 
 @Component({
