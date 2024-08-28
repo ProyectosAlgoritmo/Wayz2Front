@@ -1,0 +1,120 @@
+<h3 mat-dialog-title class="dialog-title">Editar cliente</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="clientForm">
+
+
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="mes" style="text-align: left;">Mes</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+              <input nz-input   formControlName="mes" name="required" required />
+            </nz-form-control>
+          </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="conceptoIngreso" style="text-align: left;">Concepto de ingreso</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input   formControlName="conceptoIngreso" name="required" required />
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idProductoServicio" style="text-align: left;">Producto</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un produto">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione una categoría"
+            formControlName="idProductoServicio"
+            required>
+            <nz-option *ngFor="let producto of productos" [nzLabel]="producto.nombre" [nzValue]="producto.idProductoServicio"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idZona" style="text-align: left;">Zona</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar una zona">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione una categoría"
+            formControlName="idZona"
+            required>
+            <nz-option *ngFor="let zona of zonas" [nzLabel]="zona.nombreZona" [nzValue]="zona.idZona"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idCliente" style="text-align: left;">Cliente</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un cliente">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione una categoría"
+            formControlName="idCliente"
+            required>
+            <nz-option *ngFor="let cliente of clientes" [nzLabel]="cliente.nombreCliente" [nzValue]="cliente.idCliente"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idVendedor" style="text-align: left;">Vendedor</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un vendedor">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione una categoría"
+            formControlName="idVendedor"
+            required>
+            <nz-option *ngFor="let vendedor of vendedores" [nzLabel]= "vendedor.nombreVendedor" [nzValue]="vendedor.idVendedor"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="cantidadReal" style="text-align: left;">Valor de venta</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="cantidadReal" (input)="onInputChange($event, 'cantidadReal')" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="cantidadProyectada" style="text-align: left;">Valor de venta</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="cantidadProyectada" (input)="onInputChange($event, 'cantidadProyectada')" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="valorIngresoReal" style="text-align: left;">Valor de venta</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="valorIngresoReal" (input)="onInputChange($event, 'valorIngresoReal')" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="valorIngresoProyectado" style="text-align: left;">Valor de venta</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="valorIngresoProyectado" (input)="onInputChange($event, 'valorIngresoProyectado')" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+
+
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  </mat-dialog-actions>
+</div>

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { of, map, Observable, BehaviorSubject, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
-
 
 @Injectable({
   providedIn: 'root',
@@ -111,5 +110,5 @@ export class AuxService {
     }
   }
 
-  
+
 }

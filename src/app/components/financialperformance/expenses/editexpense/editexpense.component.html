@@ -1,0 +1,85 @@
+<h3 mat-dialog-title class="dialog-title">Editar cliente</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="clientForm">
+
+
+
+        <nz-form-item>
+            <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="mes" style="text-align: left;">Mes</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+              <input nz-input   formControlName="mes" name="required" required />
+            </nz-form-control>
+          </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="conceptoEgreso" style="text-align: left;">Concepto de egresos</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input   formControlName="conceptoEgreso" name="required" required />
+        </nz-form-control>
+      </nz-form-item>
+
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="IdUnidad" style="text-align: left;">Unidad de negocio</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un produto">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione una categoría"
+            formControlName="idUnidad"
+            required>
+            <nz-option *ngFor="let unidad of unidades" [nzLabel]="unidad.nombre" [nzValue]="unidad.idUnidad"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idTipoEgreso" style="text-align: left;">Tipo de egresos</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar una zona">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione una categoría"
+            formControlName="idTipoEgreso"
+            required>
+            <nz-option *ngFor="let tipoegreso of tipoegresos" [nzLabel]="tipoegreso.tipoEgreso" [nzValue]="tipoegreso.idTipoEgreso"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+    
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="valorEgresoReal" style="text-align: left;">Valor real</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="valorEgresoReal" (input)="onInputChange($event, 'ValorEgresoReal')" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="valorEgresoProyectado" style="text-align: left;">Valor proyectado</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="valorEgresoProyectado" (input)="onInputChange($event, 'ValorEgresoProyectado')" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+
+     
+
+
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  </mat-dialog-actions>
+</div>
+

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedStateService } from '../../../services/shared-state.service';
-import { ConfigService } from '../../../services/config.service';
 import { AuxService } from '../../../services/aux-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -19,72 +18,74 @@ import { SharedModule } from '../../shared/shared.module';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { EditclientComponent } from './editclient/editclient.component';
+import { financialperformanceService } from '../../../services/financialperformance.service';
+import { EditexpenseComponent } from './editexpense/editexpense.component';
 
 @Component({
-  selector: 'app-client',
+  selector: 'app-expenses',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
     , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
-  templateUrl: './client.component.html',
-  styleUrls: ['./client.component.css']
+  templateUrl: './expenses.component.html',
+  styleUrl: './expenses.component.css'
 })
-export class ClientComponent implements OnInit {
 
-  displayedColumns: string[] = ['nombreCliente', 'tipoIdentificacion', 'identificacion', 'pais', 'ciudad'];
+export class ExpensesComponent {
+  displayedColumns: string[] = ['nombreUnidad', 'nombreTipoEgreso', 'conceptoEgreso', 'valorEgresoReal', 'valorEgresoProyectado', 'mes'];
   columnNames = {
-    nombreCliente: 'Nombre del cliente',
-    tipoIdentificacion: 'Tipo de identificación',
-    identificacion: 'Identificación',
-    pais: 'País',
-    ciudad: 'Ciudad'
+    nombreUnidad: 'Nombre de la unidad',
+    nombreTipoEgreso: 'Tipo de egreso', 
+    conceptoEgreso: 'Concepto de egreso', 
+    valorEgresoReal: 'Valor real', 
+    valorEgresoProyectado: 'Valor proyectado', 
+    mes: 'Mes'
   };
   dataSource = new MatTableDataSource<any>([]);
 
-  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog) { }
+  constructor(private sharedStateService: SharedStateService, private financialperformanceService: financialperformanceService, private auxService: AuxService, public dialog: MatDialog ) { }
 
   ngOnInit(): void {
 
     this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
-    this.configService.ObtenerClients().subscribe({
-      next: (data) => {
+    this.financialperformanceService.GetData("Get-expenses").subscribe({
+      next:(data) =>{
 
-        if (data.success) {
+        if(data.success){
 
           this.auxService.cerrarVentanaCargando();
 
-          if (!data.warning) {
+          if(!data.warning){
 
             this.dataSource.data = data.data;
 
           }
-          else {
+          else{
 
             this.auxService.ventanaCargando();
-            this.auxService.AlertWarning("Clientes", data.message);
+            this.auxService.AlertWarning("Egresos",data.message); 
 
           }
 
         }
-        else {
+        else{
 
-          this.auxService.ventanaCargando();
-          this.auxService.AlertWarning("Error", data.message);
+            this.auxService.ventanaCargando();
+            this.auxService.AlertWarning("Error",data.message); 
 
         }
       },
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
-        console.log(error.status);
-        this.auxService.AlertError('Error al cargar los clientes:', error);
+        console.log(error.status); 
+        this.auxService.AlertError('Error al cargar los egresos:', error);
       },
-    });
+    }); 
   }
 
-
+  
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -92,27 +93,25 @@ export class ClientComponent implements OnInit {
   }
 
   onEditAction(event: any) {
-    const dialogRef = this.dialog.open(EditclientComponent, {
-      data: { idclient: event.idCliente }
+    const dialogRef = this.dialog.open(EditexpenseComponent, {
+      data: { IdEgreso: event.idEgreso }
 
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // Si el resultado es true, se vuelve a obtener la lista de clientes
-        this.configService.ObtenerClients().subscribe({
-          next: (data) => {
+        if (result) {
+          // Si el resultado es true, se vuelve a obtener la lista de clientes
+          this.financialperformanceService.GetData("Get-expenses").subscribe({
+            next: (data) => {
 
-            this.dataSource.data = data.data;
-            this.auxService.cerrarVentanaCargando();
-          },
-          error: (error) => {
-            this.auxService.AlertError('Error al cargar los clientes:', error);
-          }
-        });
-      }
-    });
-
+              this.dataSource.data = data.data;
+              this.auxService.cerrarVentanaCargando();
+            },
+            error: (error) => {
+              this.auxService.AlertError('Error al cargar los egresos:', error);
+            }
+          });
+        }
+  });
   }
-
 }
