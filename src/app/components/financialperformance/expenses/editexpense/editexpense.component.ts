@@ -19,21 +19,19 @@ import { ConfigService } from '../../../../services/config.service';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { DateService } from '../../../../services/data-service.service';
 
-
 @Component({
-  selector: 'app-editincome',
+  selector: 'app-editexpense',
   standalone: true,
   imports: [NzInputModule, NzIconModule, CommonModule, ReactiveFormsModule, MatDialogModule, SharedModule, NzFormModule, NzSelectModule],
-  templateUrl: './editincome.component.html',
-  styleUrl: './editincome.component.css'
+  templateUrl: './editexpense.component.html',
+  styleUrl: './editexpense.component.css'
 })
-export class EditincomeComponent {
-  idingreso: number;
+export class EditexpenseComponent {
+
+  IdEgreso: number;
   clientForm: FormGroup;
-  productos: any; 
-  zonas: any; 
-  clientes: any; 
-  vendedores: any; 
+  unidades: any; 
+  tipoegresos: any; 
 
 
   constructor(
@@ -43,49 +41,39 @@ export class EditincomeComponent {
     private dateService: DateService,
     private auxService: AuxService,
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    private dialogRef: MatDialogRef<EditincomeComponent>
+    private dialogRef: MatDialogRef<EditexpenseComponent>
   ) {
-    
-    this.idingreso = data.idingreso;
+
+  
+    this.IdEgreso = data.IdEgreso;
     this.clientForm = this.fb.group({
-      idCliente: ['', Validators.required],
-      idProductoServicio: ['', Validators.required],
-      idZona: ['', Validators.required],
-      idVendedor: ['', Validators.required],
-      conceptoIngreso: ['', Validators.required],
-      cantidadReal: [''],
-      cantidadProyectada: [''],
-      valorIngresoReal: [''],
-      valorIngresoProyectado: [''],
-      fecha: [''],
+      idUnidad: ['', Validators.required],
+      idTipoEgreso: ['', Validators.required],
+      conceptoEgreso: ['', Validators.required],
+      valorEgresoReal: [''],
+      valorEgresoProyectado: [''],
+      fechaEgreso: [''],
       mes: [{ value: '', disabled: true }],
       fechaModificacion: [''] 
     });
 
     this.cargarDetalles();
     
-    this.dateService.cargarCliente().subscribe((clientes) => {
-      this.clientes = clientes; // Almacena los clientes en una variable
+   this.dateService.cargarUnidades().subscribe((unidades) => {
+      this.unidades = unidades; // Almacena los clientes en una variable
     });
 
-    this.dateService.cargarVendedor().subscribe((vendedores) => {
-      this.vendedores = vendedores; // Almacena los clientes en una variable
+    this.dateService.cargarTipoegresos().subscribe((tipoegresos) => {
+      this.tipoegresos = tipoegresos; // Almacena los clientes en una variable
     });
-
-    this.dateService.cargarProductos().subscribe((productos) => {
-      this.productos = productos; // Almacena los clientes en una variable
-    });
-
-    this.dateService.cargarZonas().subscribe((zonas) => {
-      this.zonas = zonas; // Almacena los clientes en una variable
-    });
+    
   }
 
   
 
   cargarDetalles() {
     this.auxService.ventanaCargando();
-    this.financialperformanceService.ObtenerDetail(this.idingreso, 'Get-Detail-Income').subscribe({
+    this.financialperformanceService.ObtenerDetail(this.IdEgreso, 'Get-Detail-expense').subscribe({
       next: (data) => {
         this.auxService.cerrarVentanaCargando();
 
@@ -119,27 +107,27 @@ export class EditincomeComponent {
       console.log(this.clientForm); 
 
 
-      this.financialperformanceService.UpdateData(this.idingreso, this.clientForm.value, 'Update-Income').subscribe({
+      this.financialperformanceService.UpdateData(this.IdEgreso, this.clientForm.value, 'Update-expense').subscribe({
         next: (data) => {
           if (data.success) {
 
             if(!data.warning){
-              this.auxService.AlertSuccess('Actualizar Ingreso', data.message);
+              this.auxService.AlertSuccess('Actualizar Egresos', data.message);
             }
             else
             {
               this.auxService.cerrarVentanaCargando();
-              this.auxService.AlertWarning('Error al actualizar Ingreso', data.message);
+              this.auxService.AlertWarning('Error al actualizar Egresos', data.message);
             }
             this.dialogRef.close(true); // Cierra el diálogo y devuelve un resultado positivo
           } else {
-            this.auxService.AlertWarning('Error al actualizar Ingreso', data.message);
+            this.auxService.AlertWarning('Error al actualizar Egresos', data.message);
           }
         },
         error: (error) => {
           this.auxService.cerrarVentanaCargando();
           console.log(error.status); 
-          this.auxService.AlertError('Error al actualizar el Ingreso:', error);
+          this.auxService.AlertError('Error al actualizar el Egresos:', error);
         }
       });
     } else {

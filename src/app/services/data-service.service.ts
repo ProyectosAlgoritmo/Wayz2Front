@@ -79,7 +79,7 @@ export class DateService {
         }
       }),
       catchError((error) => {
-        this.auxService.AlertError('Error al cargar categorías:', error);
+        this.auxService.AlertError('Error al cargar vendedores:', error);
         return of([]); // Retorna un arreglo vacío en caso de error
       })
     );
@@ -92,7 +92,7 @@ export class DateService {
           if (!data.warning) {
             return data.data; // Retorna el arreglo de clientes
           } else {
-            this.auxService.AlertWarning("Vendedor", data.message);
+            this.auxService.AlertWarning("Zonas", data.message);
             return [];
           }
         } else {
@@ -101,7 +101,7 @@ export class DateService {
         }
       }),
       catchError((error) => {
-        this.auxService.AlertError('Error al cargar categorías:', error);
+        this.auxService.AlertError('Error al cargar zonas:', error);
         return of([]); // Retorna un arreglo vacío en caso de error
       })
     );
@@ -114,7 +114,7 @@ export class DateService {
           if (!data.warning) {
             return data.data; // Retorna el arreglo de clientes
           } else {
-            this.auxService.AlertWarning("Vendedor", data.message);
+            this.auxService.AlertWarning("Productos", data.message);
             return [];
           }
         } else {
@@ -123,14 +123,57 @@ export class DateService {
         }
       }),
       catchError((error) => {
-        this.auxService.AlertError('Error al cargar categorías:', error);
+        this.auxService.AlertError('Error al cargar productos:', error);
         return of([]); // Retorna un arreglo vacío en caso de error
       })
     );
   }
 
 
+  cargarUnidades(): Observable<any[]> {
+    return this.GetData('Get-business-units').pipe(
+      map((data) => {
+        if (data.success) {
+          if (!data.warning) {
+            return data.data; // Retorna el arreglo de clientes
+          } else {
+            this.auxService.AlertWarning("Unidades de negocio", data.message);
+            return [];
+          }
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+          return [];
+        }
+      }),
+      catchError((error) => {
+        this.auxService.AlertError('Error al cargar unidades de negocio:', error);
+        return of([]); // Retorna un arreglo vacío en caso de error
+      })
+    );
+  }
+
+
+  cargarTipoegresos(): Observable<any[]> {
+    return this.GetData('Get-types-expense').pipe(
+      map((data) => {
+        if (data.success) {
+          if (!data.warning) {
+            return data.data; // Retorna el arreglo de clientes
+          } else {
+            this.auxService.AlertWarning("Unidades de negocio", data.message);
+            return [];
+          }
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+          return [];
+        }
+      }),
+      catchError((error) => {
+        this.auxService.AlertError('Error al cargar unidades de negocio:', error);
+        return of([]); // Retorna un arreglo vacío en caso de error
+      })
+    );
+  }
 
   
-    
 }
