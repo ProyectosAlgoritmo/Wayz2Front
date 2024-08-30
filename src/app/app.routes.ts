@@ -12,6 +12,7 @@ import { ZoneComponent } from './components/config/zone/zone.component';
 import { SupervisorComponent } from './components/config/supervisor/supervisor.component';
 import { IncomeComponent } from './components/financialperformance/income/income.component';
 import { ExpensesComponent } from './components/financialperformance/expenses/expenses.component';
+import { BalanceComponent } from './components/config/balance/balance.component';
 import { TableWithRowsChildComponent } from './components/shared/table-with-rows-child/table-with-rows-child.component';
 
 export const routes: Routes = [
@@ -30,5 +31,6 @@ export const routes: Routes = [
     // desempeño financiero
 
     { path: 'Income', component: IncomeComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'Expenses', component: ExpensesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: false }  },
+    { path: 'Expenses', component: ExpensesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'balance', component: BalanceComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
 ];

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedStateService } from '../../../services/shared-state.service';
 import { ConfigService } from '../../../services/config.service';
 import { AuxService } from '../../../services/aux-service.service';
@@ -19,30 +19,25 @@ import { SharedModule } from '../../shared/shared.module';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { EditclientComponent } from './editclient/editclient.component';
-import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/table-with-rows-child.component';
+import { EditbalancetypecategoryComponent } from './editbalancetypecategory/editbalancetypecategory.component';
+import { CreatebalancetypecategoryComponent } from './createbalancetypecategory/createbalancetypecategory.component';
+
 
 @Component({
-  selector: 'app-client',
+  selector: 'app-balance',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
-    , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule, TableWithRowsChildComponent
+    , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
-  templateUrl: './client.component.html',
-  styleUrls: ['./client.component.css']
+  templateUrl: './balance.component.html',
+  styleUrl: './balance.component.css'
 })
-export class ClientComponent implements OnInit {
-
-  displayedColumns: string[] = ['nombreCliente', 'tipoIdentificacion', 'identificacion', 'pais', 'ciudad'];
+export class BalanceComponent implements OnInit {
+  displayedColumns: string[] = ['nombreCategoria'];
   columnNames = {
-    nombreCliente: 'Nombre del cliente',
-    tipoIdentificacion: 'Tipo de identificación',
-    identificacion: 'Identificación',
-    pais: 'País',
-    ciudad: 'Ciudad'
+    nombreCategoria: 'Nombre categoría'
   };
   dataSource = new MatTableDataSource<any>([]);
-  dataForTable: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog) { }
 
@@ -50,11 +45,8 @@ export class ClientComponent implements OnInit {
 
     this.sharedStateService.toggleSidenavVisible(true);
 
-    this.sharedStateService.getDataStructure1().subscribe(data => { 
-      this.dataForTable = data;
-    });
     this.auxService.ventanaCargando();
-    this.configService.ObtenerClients().subscribe({
+    this.configService.ObtenerBalanceTipoCategoria().subscribe({
       next: (data) => {
 
         if (data.success) {
@@ -69,7 +61,7 @@ export class ClientComponent implements OnInit {
           else {
 
             this.auxService.ventanaCargando();
-            this.auxService.AlertWarning("Clientes", data.message);
+            this.auxService.AlertWarning("Balance tipo de categoría", data.message);
 
           }
 
@@ -84,7 +76,7 @@ export class ClientComponent implements OnInit {
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
-        this.auxService.AlertError('Error al cargar los clientes:', error);
+        this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
       },
     });
   }
@@ -97,22 +89,23 @@ export class ClientComponent implements OnInit {
   }
 
   onEditAction(event: any) {
-    const dialogRef = this.dialog.open(EditclientComponent, {
-      data: { idclient: event.idCliente }
+
+    const dialogRef = this.dialog.open(EditbalancetypecategoryComponent, {
+      data: { idcategory: event.idBalancecategoria }
 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Si el resultado es true, se vuelve a obtener la lista de clientes
-        this.configService.ObtenerClients().subscribe({
+        this.configService.ObtenerBalanceTipoCategoria().subscribe({
           next: (data) => {
 
             this.dataSource.data = data.data;
             this.auxService.cerrarVentanaCargando();
           },
           error: (error) => {
-            this.auxService.AlertError('Error al cargar los clientes:', error);
+            this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
           }
         });
       }
@@ -120,4 +113,26 @@ export class ClientComponent implements OnInit {
 
   }
 
+  CreateAction() {
+    console.log(event); 
+    
+    const dialogRef = this.dialog.open(CreatebalancetypecategoryComponent);
+  
+    dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            // Si el resultado es true, se vuelve a obtener la lista de clientes
+            this.configService.ObtenerBalanceTipoCategoria().subscribe({
+              next: (data) => {
+  
+                this.dataSource.data = data.data;
+                this.auxService.cerrarVentanaCargando();
+              },
+              error: (error) => {
+                this.auxService.AlertError('Error al cargar las zonas:', error);
+              }
+            });
+          }
+    });
+  
+  }
 }

@@ -1,0 +1,31 @@
+<div class="content-container">
+
+
+    <div class="table-container">
+        <mat-toolbar class="background-white-title-botton">
+            <app-buttonstrategic mat-button [label]="'Crear'" [customClass]="'BotonMorado'" (click)="CreateAction()"
+                class="botonmargen"></app-buttonstrategic>
+
+            <span class="spacer"></span>
+            <div class="filterSearch">
+                <nz-input-group [nzSuffix]="suffixIconSearch">
+                    <input type="text" nz-input placeholder="Buscar" (keyup)="applyFilter($event)" />
+                </nz-input-group>
+                <ng-template #suffixIconSearch>
+                    <span nz-icon nzType="search"></span>
+                </ng-template>
+            </div>
+
+        </mat-toolbar>
+
+        <div class="divtable">
+
+            <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [enableSearch]="true"
+                [enablePaginator]="true" [pageSize]="10" [showActions]="true" [ActionEdit]="true"
+                [columnNames]="columnNames" [ActionLeft]="true" (editAction)="onEditAction($event)">
+                <!-- Aquí puedes establecer true o false según sea necesario -->
+            </app-table>
+
+        </div>
+    </div>
+</div>

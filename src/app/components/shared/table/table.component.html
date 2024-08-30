@@ -25,7 +25,7 @@
             <button mat-icon-button color="accent" *ngIf="ActionView" (click)="onGo(element)">
               <mat-icon>visibility</mat-icon>
             </button>
-            <button mat-icon-button color="accent" *ngIf="ActionEdit" (click)="onEdit(element)">
+            <button mat-icon-button color="accent" *ngIf="element.idBalancecategoria ? element.isEditable : 1" (click)="onEdit(element)">
               <mat-icon>edit</mat-icon>
             </button>
           </ng-container>
