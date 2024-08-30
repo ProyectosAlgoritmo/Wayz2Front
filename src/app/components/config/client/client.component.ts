@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { SharedStateService } from '../../../services/shared-state.service';
 import { ConfigService } from '../../../services/config.service';
 import { AuxService } from '../../../services/aux-service.service';
@@ -20,12 +20,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { EditclientComponent } from './editclient/editclient.component';
+import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/table-with-rows-child.component';
 
 @Component({
   selector: 'app-client',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
-    , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
+    , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule, TableWithRowsChildComponent
   ],
   templateUrl: './client.component.html',
   styleUrls: ['./client.component.css']
@@ -38,6 +39,7 @@ export class ClientComponent implements OnInit {
     tipoIdentificacion: 'tipo de identificación'
   };
   dataSource = new MatTableDataSource<any>([]);
+  dataForTable: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog ) { }
 
@@ -45,6 +47,9 @@ export class ClientComponent implements OnInit {
 
     this.sharedStateService.toggleSidenavVisible(true);
 
+    this.sharedStateService.getDataStructure1().subscribe(data => { 
+      this.dataForTable = data;
+    });
     this.auxService.ventanaCargando();
     this.configService.ObtenerClients().subscribe({
       next:(data) =>{
@@ -80,8 +85,6 @@ export class ClientComponent implements OnInit {
       },
     }); 
   }
-
-  
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

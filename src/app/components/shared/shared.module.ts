@@ -14,12 +14,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { TableComponent } from './table/table.component';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 
 @NgModule({
   declarations: [
     ButtonstrategicComponent,
-    TableComponent
+    TableComponent,
+
     // Aquí puedes declarar otros componentes compartidos
   ],
   imports: [
@@ -33,7 +35,8 @@ import { TableComponent } from './table/table.component';
     MatInputModule,
     MatIconModule,
     NzInputModule,
-    NzIconModule
+    NzIconModule,
+    NzTableModule
     // Aquí puedes importar otros módulos de Angular Material o módulos comunes
   ],
   exports: [
