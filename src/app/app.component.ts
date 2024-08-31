@@ -52,7 +52,7 @@ import { ActivatedRoute } from '@angular/router';
 export class AppComponent {
   title = 'Strategicview';
   isLogged = false;
-  sidenavWidth = 230;
+  sidenavWidth = 350;
   isVisibleMenu = true; 
 
 constructor(private authService: AuthService, private router: Router, private sharedStateService: SharedStateService,
@@ -73,10 +73,10 @@ constructor(private authService: AuthService, private router: Router, private sh
 
       if(isExpanded)
         { 
-          this.sidenavWidth = 230;
+          this.sidenavWidth = 300;
         }
       else{
-        this.sidenavWidth = 60;
+        this.sidenavWidth = 100;
       }
     });
 

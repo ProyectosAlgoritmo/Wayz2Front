@@ -37,7 +37,7 @@ export class BalanceComponent implements OnInit {
   columnNames = {
     nombreCategoria: 'Nombre categoría'
   };
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog) { }
 
@@ -55,7 +55,7 @@ export class BalanceComponent implements OnInit {
 
           if (!data.warning) {
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else {
@@ -83,9 +83,11 @@ export class BalanceComponent implements OnInit {
 
 
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
 
   onEditAction(event: any) {
@@ -101,7 +103,7 @@ export class BalanceComponent implements OnInit {
         this.configService.ObtenerBalanceTipoCategoria().subscribe({
           next: (data) => {
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
             this.auxService.cerrarVentanaCargando();
           },
           error: (error) => {
@@ -124,7 +126,7 @@ export class BalanceComponent implements OnInit {
             this.configService.ObtenerBalanceTipoCategoria().subscribe({
               next: (data) => {
   
-                this.dataSource.data = data.data;
+                this.dataSource = data.data;
                 this.auxService.cerrarVentanaCargando();
               },
               error: (error) => {

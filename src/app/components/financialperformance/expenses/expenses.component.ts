@@ -41,7 +41,7 @@ export class ExpensesComponent {
     valorEgresoProyectado: 'Valor proyectado', 
     mes: 'Mes'
   };
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private financialperformanceService: financialperformanceService, private auxService: AuxService, public dialog: MatDialog ) { }
 
@@ -59,7 +59,7 @@ export class ExpensesComponent {
 
           if(!data.warning){
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else{
@@ -87,9 +87,11 @@ export class ExpensesComponent {
 
   
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
 
   onEditAction(event: any) {
@@ -104,7 +106,7 @@ export class ExpensesComponent {
           this.financialperformanceService.GetData("Get-expenses").subscribe({
             next: (data) => {
 
-              this.dataSource.data = data.data;
+              this.dataSource = data.data;
               this.auxService.cerrarVentanaCargando();
             },
             error: (error) => {

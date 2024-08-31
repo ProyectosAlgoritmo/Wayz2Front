@@ -21,7 +21,7 @@
         <div class="divtable">
 
             <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [enableSearch]="true"
-                [enablePaginator]="true" [pageSize]="10" [showActions]="true" [ActionEdit]="true"
+                 [pageSize]="10" [showActions]="true" [ActionEdit]="true"
                 [columnNames]="columnNames" [ActionLeft]="true" (editAction)="onEditAction($event)">
                 <!-- Aquí puedes establecer true o false según sea necesario -->
             </app-table>

@@ -1,3 +1,30 @@
+html, body, mat-sidenav-container, mat-sidenav-content {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+mat-sidenav-container {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-sidenav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+ul[nz-menu] {
+  flex-grow: 1; /* Permite que el menú crezca para llenar el espacio vertical */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto; /* Desplazamiento si es necesario */
+}
+
+
+
 .custom-title {
   display: block;
   margin-top: 20px;

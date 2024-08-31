@@ -15,12 +15,14 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { TableComponent } from './table/table.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 
 @NgModule({
   declarations: [
     ButtonstrategicComponent,
-    TableComponent,
+    TableComponent
 
     // Aquí puedes declarar otros componentes compartidos
   ],
@@ -36,7 +38,11 @@ import { NzTableModule } from 'ng-zorro-antd/table';
     MatIconModule,
     NzInputModule,
     NzIconModule,
-    NzTableModule
+    NzTableModule, 
+    NzPaginationModule,
+    NzDividerModule,
+    NzIconModule,
+    
     // Aquí puedes importar otros módulos de Angular Material o módulos comunes
   ],
   exports: [

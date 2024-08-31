@@ -17,13 +17,15 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import { SharedStateService } from '../../../services/shared-state.service';
 
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 
 @Component({
   selector: 'app-lateralmenu',
   standalone: true,
   imports: [MatSidenavModule, MatButtonModule, MatIconModule, MatToolbarModule,
     MatListModule, RouterOutlet, FormsModule, MatMenuModule, MatExpansionModule, MatTooltipModule, 
-    RouterModule, CommonModule, MatSidenav
+    RouterModule, CommonModule, MatSidenav, NzMenuModule
   ],
   templateUrl: './lateralmenu.component.html',
   styleUrl: './lateralmenu.component.css'

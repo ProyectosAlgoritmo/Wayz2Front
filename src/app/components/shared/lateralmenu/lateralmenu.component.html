@@ -1,24 +1,26 @@
-<mat-nav-list>
-  <span *ngIf="isExpanded" class="custom-title">MENU</span>
-  <mat-accordion multi="false" *ngIf="isExpanded">
-    <ng-container *ngFor="let permiso of permisos">
-      <mat-expansion-panel [class.mat-elevation-z0]="true" class="custom-menu" [expanded]="selectedMenuItem === permiso.nombrePermiso" (click)="increase(permiso.nombrePermiso, false)">
-        <mat-expansion-panel-header>
-          <mat-icon>{{ permiso.icon }}</mat-icon><span>{{ permiso.nombrePermiso }}</span>
-        </mat-expansion-panel-header>
-        <mat-nav-list>
-          <div class="submenu">
-          <ng-container *ngFor="let hijo of permiso.permisosHijos" >
-            <a mat-list-item [routerLink]="hijo.url" class="nav-item"><span >{{ hijo.nombrePermiso }}</span></a>
-          </ng-container>
-        </div>
-        </mat-nav-list>
-      </mat-expansion-panel>
-    </ng-container>
-  </mat-accordion>
-  <mat-nav-list *ngIf="!isExpanded">
-    <ng-container *ngFor="let permiso of permisos">
-      <a mat-list-item (click)="increase(permiso.nombrePermiso, true)" class="nav-itemNoExpend" [ngClass]="{'selected-item': selectedMenuItem === permiso.nombrePermiso}"><mat-icon>{{ permiso.icon }}</mat-icon></a>
-    </ng-container>
-  </mat-nav-list>
-</mat-nav-list>
+
+<ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="!isExpanded">
+  <ng-container *ngFor="let permiso of permisos">
+    <li
+      *ngIf="!permiso.permisosHijos?.length"
+      nz-menu-item
+      nz-tooltip
+      nzTooltipPlacement="right"
+      nzSelected
+      (click)="increase(permiso.nombrePermiso, true)"
+    >
+      <span nz-icon ></span>
+      <span>{{ permiso.nombrePermiso }}</span>
+    </li>
+
+    <li *ngIf="permiso.permisosHijos?.length" nz-submenu [nzTitle]="permiso.nombrePermiso" [nzIcon]="permiso.icon">
+      <ul>
+        <ng-container *ngFor="let hijo of permiso.permisosHijos">
+          <li nz-menu-item [routerLink]="hijo.url">
+            {{ hijo.nombrePermiso }}
+          </li>
+        </ng-container>
+      </ul>
+    </li>
+  </ng-container>
+</ul>

@@ -41,7 +41,7 @@ export class ProductsservicesComponent implements OnInit {
     codigoReferencia: 'Codido', 
     valorVenta: 'Valor venta',
   };
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog )  { }
  
@@ -60,7 +60,7 @@ export class ProductsservicesComponent implements OnInit {
 
           if(!data.warning){
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else{
@@ -86,11 +86,12 @@ export class ProductsservicesComponent implements OnInit {
     }); 
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
-
 
   onEditAction(event: any) {
     console.log(event); 
@@ -105,7 +106,7 @@ export class ProductsservicesComponent implements OnInit {
             this.configService.ObtenerProductsServices().subscribe({
               next: (data) => {
 
-                this.dataSource.data = data.data;
+                this.dataSource = data.data;
                 this.auxService.cerrarVentanaCargando();
               },
               error: (error) => {

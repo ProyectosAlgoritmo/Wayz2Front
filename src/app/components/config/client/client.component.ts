@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { SharedStateService } from '../../../services/shared-state.service';
 import { ConfigService } from '../../../services/config.service';
 import { AuxService } from '../../../services/aux-service.service';
@@ -26,7 +26,7 @@ import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/
   selector: 'app-client',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
-    , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule, TableWithRowsChildComponent
+    , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule, TableWithRowsChildComponent 
   ],
   templateUrl: './client.component.html',
   styleUrls: ['./client.component.css']
@@ -41,12 +41,16 @@ export class ClientComponent implements OnInit {
     pais: 'País',
     ciudad: 'Ciudad'
   };
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
   dataForTable: any[] = [];
+  originalDataSource: any[] = [];
 
-  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog) { }
+  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService,
+     public dialog: MatDialog,private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+
+    this.originalDataSource = [...this.dataSource];
 
     this.sharedStateService.toggleSidenavVisible(true);
 
@@ -63,7 +67,7 @@ export class ClientComponent implements OnInit {
 
           if (!data.warning) {
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else {
@@ -91,10 +95,21 @@ export class ClientComponent implements OnInit {
 
 
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+
+    if (!filterValue) {
+        // Si no hay filtro, restaura los datos originales
+        this.dataSource = [...this.originalDataSource];
+    } else {
+        this.dataSource = this.originalDataSource.filter(item => {
+            return this.displayedColumns.some(column => {
+                const columnValue = item[column];
+                return columnValue && columnValue.toString().toLowerCase().includes(filterValue);
+            });
+        });
+    }
+}
 
   onEditAction(event: any) {
     const dialogRef = this.dialog.open(EditclientComponent, {
@@ -108,7 +123,7 @@ export class ClientComponent implements OnInit {
         this.configService.ObtenerClients().subscribe({
           next: (data) => {
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
             this.auxService.cerrarVentanaCargando();
           },
           error: (error) => {
