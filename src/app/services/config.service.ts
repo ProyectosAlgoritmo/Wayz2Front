@@ -168,10 +168,34 @@ export class ConfigService {
     const url = `${this.apiUrl}/Create-Balance-categories-type`; // Endpoint para actualizar un cliente
     return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
-  // Balance totales categoia
-
 
   // Balance tipo
+
+  ObtenerBalanceTipo(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/Get-Balance-type`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ObtenerDetailBalanceTipo(idTipoCategoria: number): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Get-Detail-Balance-type/${idTipoCategoria}`;
+    return this.httpClient.get(url, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ActualizarBalanceTipo(idUnidad: number, UnitData: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Update-Balance-type/${idUnidad}`; // Endpoint para actualizar un cliente
+    return this.httpClient.put(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  CrearBalanceTipo(UnitData: any): Observable<any> {
+
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Create-Balance-type`; // Endpoint para actualizar un cliente
+    return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  // Balance totales categoia
 
 
   // Balance totales tipo
