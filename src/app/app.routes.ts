@@ -13,6 +13,7 @@ import { SupervisorComponent } from './components/config/supervisor/supervisor.c
 import { IncomeComponent } from './components/financialperformance/income/income.component';
 import { ExpensesComponent } from './components/financialperformance/expenses/expenses.component';
 import { BalanceComponent } from './components/config/balance/balance.component';
+import { TypebalanceComponent } from './components/config/balance/typebalance/typebalance.component';
 
 export const routes: Routes = [
 
@@ -25,10 +26,12 @@ export const routes: Routes = [
     { path: 'productsServices', component: ProductsservicesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'zones', component: ZoneComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'balance', component: BalanceComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'typebalance', component: TypebalanceComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+
 
     // desempeño financiero
 
     { path: 'Income', component: IncomeComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'Expenses', component: ExpensesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'balance', component: BalanceComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
 ];

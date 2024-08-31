@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedStateService } from '../../../services/shared-state.service';
-import { ConfigService } from '../../../services/config.service';
-import { AuxService } from '../../../services/aux-service.service';
+import { SharedStateService } from '../../../../services/shared-state.service';
+import { ConfigService } from '../../../../services/config.service';
+import { AuxService } from '../../../../services/aux-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
@@ -14,28 +14,29 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { EditbalancetypecategoryComponent } from './editbalancetypecategory/editbalancetypecategory.component';
-import { CreatebalancetypecategoryComponent } from './createbalancetypecategory/createbalancetypecategory.component';
+import { CreatetypebalanceComponent } from './createtypebalance/createtypebalance.component';
+import { EdittypebalanceComponent } from './edittypebalance/edittypebalance.component';
 
 
 @Component({
-  selector: 'app-balance',
+  selector: 'app-typebalance',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
     , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
-  templateUrl: './balance.component.html',
-  styleUrl: './balance.component.css'
+  templateUrl: './typebalance.component.html',
+  styleUrl: './typebalance.component.css'
 })
-export class BalanceComponent implements OnInit {
-  displayedColumns: string[] = ['nombreCategoria'];
+export class TypebalanceComponent implements OnInit{
+  displayedColumns: string[] = ['nombreTipo', 'nombreBalanceCategoria'];
   columnNames = {
-    nombreCategoria: 'Nombre categoría'
+    nombreTipo: 'Nombre',
+    nombreBalanceCategoria: 'Nombre categoría'
   };
   dataSource = new MatTableDataSource<any>([]);
 
@@ -46,7 +47,7 @@ export class BalanceComponent implements OnInit {
     this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
-    this.configService.ObtenerBalanceTipoCategoria().subscribe({
+    this.configService.ObtenerBalanceTipo().subscribe({
       next: (data) => {
 
         if (data.success) {
@@ -90,7 +91,7 @@ export class BalanceComponent implements OnInit {
 
   onEditAction(event: any) {
 
-    const dialogRef = this.dialog.open(EditbalancetypecategoryComponent, {
+    const dialogRef = this.dialog.open(EdittypebalanceComponent, {
       data: { idcategory: event.idBalancecategoria }
 
     });
@@ -98,7 +99,7 @@ export class BalanceComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Si el resultado es true, se vuelve a obtener la lista de clientes
-        this.configService.ObtenerBalanceTipoCategoria().subscribe({
+        this.configService.ObtenerBalanceTipo().subscribe({
           next: (data) => {
 
             this.dataSource.data = data.data;
@@ -116,7 +117,7 @@ export class BalanceComponent implements OnInit {
   CreateAction() {
     console.log(event); 
     
-    const dialogRef = this.dialog.open(CreatebalancetypecategoryComponent);
+    const dialogRef = this.dialog.open(CreatetypebalanceComponent);
   
     dialogRef.afterClosed().subscribe(result => {
           if (result) {
@@ -133,10 +134,11 @@ export class BalanceComponent implements OnInit {
             });
           }
     });
-  
+
   }
 
-  NavigateTypeBalance(){
-    this.router.navigateByUrl("/typebalance")
+  NavigateBalance(){
+    this.router.navigateByUrl("/balance")
   }
+
 }
