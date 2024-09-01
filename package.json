@@ -22,12 +22,15 @@
     "@angular/platform-browser-dynamic": "^18.1.0",
     "@angular/router": "^18.1.0",
     "@auth0/angular-jwt": "^5.2.0",
-    "@types/xlsx": "^0.0.36",
-    "ng-zorro-antd": "^18.0.1",
+    "@types/xlsx": "^0.0.35",
+    "ng-zorro-antd": "^18.1.0",
+    "powerbi-client": "^2.23.1",
+    "powerbi-client-angular": "^3.0.5",
     "rxjs": "~7.8.0",
-    "sweetalert2": "^11.12.3",
+    "sweetalert2": "^11.6.13",
     "tslib": "^2.3.0",
     "xls": "^0.5.1",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {

@@ -1,7 +1,6 @@
 <div class="full-screen">
   <app-toolbar *ngIf="isLogged" @fadeInOut></app-toolbar>
   <mat-sidenav-container class="app-container">
-    
     <mat-sidenav *ngIf="isVisibleMenu && isLogged"  
       #sidenav mode="side" [class.mat-elevation-z4]="true" 
       opened="true"
@@ -9,9 +8,14 @@
       class="app-sidenav">
       <app-lateralmenu></app-lateralmenu>
     </mat-sidenav>
+
     <mat-sidenav-content [ngStyle]="{ 'margin-left.px': sidenavWidth }" class="custom-content">
       <div class="app-sidenav-content">
-        <router-outlet></router-outlet> 
+        <ng-container *ngIf="showPowerBIReport">
+          <app-powerbi-report></app-powerbi-report>
+        </ng-container>
+
+        <router-outlet *ngIf="!showPowerBIReport"></router-outlet>
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
