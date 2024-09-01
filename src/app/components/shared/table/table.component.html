@@ -1,49 +1,92 @@
 <div class="full-page-container">
   <div class="table-container">
-    <div class="table-scroll-wrapper">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
-      <!-- Definición de columnas -->
-      <ng-container *ngFor="let column of columnsToDisplay" [matColumnDef]="column">
-        <th mat-header-cell *matHeaderCellDef [ngClass]="{'text-left': column === 'Acciones', 'text-center !important': column === 'Acciones'}">
-          <div>
-          
-          {{ getColumnDisplayName(column) }}
-        </div>
-        </th>
-        <td mat-cell *matCellDef="let element"  [ngClass]="{'text-left': column === 'Acciones', 'text-center': column === 'Acciones'}">
-          <ng-container *ngIf="column === 'Acciones'; else showElement">
-            <button mat-icon-button color="primary" *ngIf="ActionExport" (click)="onExport(element)">
-              <mat-icon>cloud_download</mat-icon>
-            </button>
-            <button mat-icon-button color="accent" *ngIf="ActionImport" (click)="onImport(element)">
-              <mat-icon>cloud_upload</mat-icon>
-            </button>
-            <button mat-icon-button color="accent" *ngIf="ActionGo" (click)="onGo(element)">
-              <mat-icon>play_arrow</mat-icon>
-            </button>
 
-            <button mat-icon-button color="accent" *ngIf="ActionView" (click)="onGo(element)">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button mat-icon-button color="accent" *ngIf="ActionEdit" (click)="onEdit(element)">
-              <mat-icon>edit</mat-icon>
-            </button>
+<mat-toolbar class="background-white-title-botton">
+  <span class="spacer"></span>
+  <div class="filterSearch">
+    <nz-input-group [nzSuffix]="suffixIconSearch">
+      <input
+        type="text"
+        nz-input
+        placeholder="Buscar"
+        (keyup)="applyFilter($event)"
+      />
+    </nz-input-group>
+    <ng-template #suffixIconSearch>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+  </div>
+</mat-toolbar>
+<nz-table 
+  #basicTable 
+  [nzData]="dataSource" 
+  [nzPageSize]="pageSize" 
+  [nzFrontPagination]="false" 
+  [nzScroll]="{  x: '1200px', y: '250px' }" 
+>
+  <thead>
+    <tr>
+      <ng-container *ngFor="let column of columnsToDisplay">
+        <th *ngIf="column !== 'Acciones'"  nz-th>{{ getColumnDisplayName(column) }}</th>
+        <th *ngIf="column === 'Acciones'" nz-th>Acciones</th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let element of paginatedData">
+      <ng-container *ngFor="let column of columnsToDisplay">
+        <td *ngIf="column !== 'Acciones'" nz-td>{{ element[column] }}</td>
+        <td *ngIf="column === 'Acciones'" nz-td>
+          <ng-container *ngIf="ActionExport">
+            <a (click)="onExport(element)">
+              <i nz-icon nzType="cloud-download" nzTheme="outline"></i>
+            </a>
+            <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
           </ng-container>
-
-          <ng-template #showElement class="text-right">
-            {{ element[column] }}
-          </ng-template>
+          <ng-container *ngIf="ActionImport">
+            <a (click)="onImport(element)">
+              <i nz-icon nzType="cloud-upload" nzTheme="outline"></i>
+            </a>
+            <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
+          </ng-container>
+          <ng-container *ngIf="ActionGo">
+            <a (click)="onGo(element)">
+              <i nz-icon nzType="play-circle" nzTheme="outline"></i>
+            </a>
+            <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
+          </ng-container>
+          <ng-container *ngIf="ActionView">
+            <a (click)="onGo(element)">
+              <i nz-icon nzType="eye" nzTheme="outline"></i>
+            </a>
+            <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
+          </ng-container>
+          <ng-container *ngIf="ActionEdit && (element.idBalancecategoria ? element.isEditable : true)">
+            <a (click)="onEdit(element)">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+          </ng-container>
         </td>
       </ng-container>
+    </tr>
+  </tbody>
+</nz-table>
+</div>
+</div>
 
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplay" class="first-row"></tr>
-      <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="other-rows"></tr>
-    </table>
-  </div>
-  </div>
+<div class="paginator-container">
+<nz-pagination 
+  [nzPageSize]="pageSize"
+  [nzTotal]="dataSource.length"
+  [(nzPageIndex)]="currentPage"
+  [nzShowTotal]="totalTemplate"
+  (nzPageIndexChange)="onPageChange($event)">
+</nz-pagination>
 
+<ng-template #totalTemplate let-total>
+  Registros mostrados {{ (currentPage - 1) * pageSize + 1 }} - 
+  {{ (currentPage * pageSize) < total ? (currentPage * pageSize) : total }} 
+  de {{ total }} registros
+</ng-template>
 
-  <div class="paginator-container">
-    <mat-paginator *ngIf="enablePaginator" [pageSize]="pageSize"></mat-paginator>
-  </div>
 </div>

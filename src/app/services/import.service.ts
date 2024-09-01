@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import * as XLSX from 'xlsx';
+import { AuxService } from './aux-service.service';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ import * as XLSX from 'xlsx';
 export class ImportService {
   readonly apiUrl: string;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private auxService: AuxService) {
 
     this.apiUrl = environment.apiUrl; 
    }
@@ -48,7 +50,7 @@ export class ImportService {
       console.log(carpeta); 
       const payload = { ObjectName: carpeta };
   
-      return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-token-Amazon/`, payload, { headers });
+      return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-token-Amazon/`, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
     }
   
     uploadFileToS3(url: string, file: File): Observable<any> {
@@ -59,7 +61,7 @@ export class ImportService {
   ImportDesempenofinanciero(payload: any) : Observable<any> {
     const headers = this.getHeaders();
     //const payload = { fileUrl, bucketName, objectName };
-    return this.httpClient.post(`${this.apiUrl}/imports/Import-desempeno-financiero/`, payload , { headers });
+    return this.httpClient.post(`${this.apiUrl}/imports/Import-desempeno-financiero/`, payload , { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
 
 

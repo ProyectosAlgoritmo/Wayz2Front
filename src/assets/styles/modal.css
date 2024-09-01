@@ -1,0 +1,25 @@
+
+.importdata
+{
+    margin: 20px;
+    width: 500px;
+}
+
+  /* Estilos para el contenido del diálogo */
+  
+  
+  .dialog-title {
+    font-size: 1.2em; /* Ajusta el tamaño de la fuente según sea necesario */
+    text-align: left; /* Centrar el texto */
+  }
+
+  .division-line {
+    border: none;
+    border-top: 1px solid #ccc; /* Color y estilo de la línea */
+    margin: 1px 0; /* Espacio alrededor de la línea */
+  }
+
+  .input-error {
+    border: 1px solid red;
+    background-color: #ffe6e6; /* Fondo ligeramente rojo */
+  }

@@ -1,0 +1,71 @@
+<h3 mat-dialog-title class="dialog-title">Editar vendedor</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="clientForm">
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombreVendedor" style="text-align: left;">Nombre del cliente</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input   formControlName="nombreVendedor" name="required" required />
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellidoVendedor" style="text-align: left;">Apellidos</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="apellidoVendedor" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+
+     
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="tipoIdentificacion" style="text-align: left;">Tipo de Identificación</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input   formControlName="tipoIdentificacion" name="required" required />
+        </nz-form-control>
+      </nz-form-item>
+
+     
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="numeroIdentificacion" style="text-align: left;">Identificación</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input   formControlName="numeroIdentificacion" name="required" required />
+        </nz-form-control>
+      </nz-form-item>
+
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefono" style="text-align: left;">Teléfono</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24">
+          <input nz-input formControlName="telefono" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correo" style="text-align: left;">Correo</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24">
+          <input nz-input formControlName="correo" style="width: 100%;" [ngClass]="{'input-error': clientForm.get('correoResponsable')?.invalid && clientForm.get('correoResponsable')?.touched}"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fechaDeCreacion" style="text-align: left;">Fecha de Creación</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24">
+          <input nz-input formControlName="fechaDeCreacion" style="width: 100%;"  />
+        </nz-form-control>
+      </nz-form-item>
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  </mat-dialog-actions>
+</div>
+

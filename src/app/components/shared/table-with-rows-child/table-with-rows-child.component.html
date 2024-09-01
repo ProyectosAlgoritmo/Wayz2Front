@@ -1,0 +1,52 @@
+<div>
+  <nz-table
+    class="custom-sub-table"
+    #nzTable
+    [nzData]="listOfData"
+    nzTableLayout="fixed"
+  >
+    <thead>
+      <tr>
+        <th nzWidth="60px"></th>
+        <th *ngFor="let column of columns">{{ column.title }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of listOfData">
+        <tr>
+          <td
+            [nzExpand]="expandSet.has(data.id)"
+            (nzExpandChange)="onExpandChange(data.id, $event)"
+          ></td>
+          <td *ngFor="let column of columns">
+            {{ data[column.field] }}
+          </td>
+        </tr>
+        <tr *ngIf="expandSet.has(data.id)">
+          <td [attr.colspan]="columns.length + 1">
+            <nz-table
+              [nzShowPagination]="false"
+              [nzBordered]="false"
+              [nzData]="data.subData"
+            >
+              <thead>
+                <tr>
+                  <th *ngFor="let subColumn of subColumns">
+                    {{ subColumn.title }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let subItem of data.subData">
+                  <td *ngFor="let subColumn of subColumns">
+                    {{ subItem[subColumn.field] }}
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</div>

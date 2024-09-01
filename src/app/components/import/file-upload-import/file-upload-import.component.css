@@ -1,21 +1,9 @@
+@import '../../../../assets/styles/modal.css';
 
-.importdata
-{
-    margin: 20px;
-    width: 400px;
-}
-
-  /* Estilos para el contenido del diálogo */
-  mat-dialog-content {
+mat-dialog-content {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-  }
-
-  
-  .dialog-title {
-    font-size: 1.2em; /* Ajusta el tamaño de la fuente según sea necesario */
-    text-align: left; /* Centrar el texto */
   }
   
  

@@ -20,7 +20,7 @@
 }
 
 .app-sidenav {
-  background-color: #CED2F2;
+  background-color: transparent;
   transition: width 0.3s;
   border-radius: 0 !important;
 }

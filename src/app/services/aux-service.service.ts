@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2';
-
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { of, map, Observable, BehaviorSubject, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -72,4 +75,40 @@ export class AuxService {
     }
   });
   }
+
+  validateInteger(value: string): string {
+    // Eliminar cualquier carácter que no sea un número entero
+    return value.replace(/[^0-9]/g, '');
+  }
+
+  validateDecimal(value: string): string {
+    // Eliminar cualquier carácter que no sea un número o un punto decimal
+    let sanitizedValue = value.replace(/[^0-9.]/g, '');
+  
+    // Si hay más de un punto decimal, solo se conserva el primero
+    const parts = sanitizedValue.split('.');
+    if (parts.length > 2) {
+      sanitizedValue = parts[0] + '.' + parts.slice(1).join('');
+    }
+  
+    // Si hay un punto decimal, no formatear hasta que haya al menos un dígito después del punto
+    if (parts.length === 2 && parts[1].length > 2) {
+      sanitizedValue = parseFloat(sanitizedValue).toFixed(2);
+    }
+  
+    return sanitizedValue;
+  }
+
+  handleError(error: HttpErrorResponse) {
+    if (error.status === 401) {
+      // Aquí puedes manejar el error 401
+      return throwError('No autorizado. Por favor, consulte con el administrador');
+    } else {
+      console.log('No autorizado. Por favor, inicie sesión.')
+      // Otros errores pueden manejarse aquí
+      return throwError('Hubo un problema con la solicitud. Intente nuevamente más tarde.');
+    }
+  }
+
+
 }

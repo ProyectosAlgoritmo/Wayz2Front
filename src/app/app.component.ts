@@ -4,11 +4,17 @@ import { LateralmenuComponent } from './components/shared/lateralmenu/lateralmen
 import { ToolbarComponent } from './components/shared/toolbar/toolbar.component';
 import { AuthService } from './services/auth.service';
 import { SharedStateService } from './services/shared-state.service';
+<<<<<<< HEAD
 import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { PowerBiReportComponent } from './components/powerbi-report/powerbi-report.component'; // Asegúrate de importar el componente
+=======
+
+
+import { ActivatedRoute } from '@angular/router';
+>>>>>>> a83cb02f1308727b0e637a1687326e825eca97de
 
 @Component({
   selector: 'app-root',
@@ -41,9 +47,14 @@ import { PowerBiReportComponent } from './components/powerbi-report/powerbi-repo
 export class AppComponent implements OnInit {
   title = 'Strategicview';
   isLogged = false;
+<<<<<<< HEAD
   sidenavWidth = 230;
   isVisibleMenu = true;
   showPowerBIReport = false;  // Define esta propiedad
+=======
+  sidenavWidth = 350;
+  isVisibleMenu = true; 
+>>>>>>> a83cb02f1308727b0e637a1687326e825eca97de
 
   constructor(
     private authService: AuthService,
@@ -60,7 +71,18 @@ export class AppComponent implements OnInit {
     });
 
     this.sharedStateService.isExpanded$.subscribe(isExpanded => {
+<<<<<<< HEAD
       this.sidenavWidth = isExpanded ? 230 : 60;
+=======
+
+      if(isExpanded)
+        { 
+          this.sidenavWidth = 300;
+        }
+      else{
+        this.sidenavWidth = 100;
+      }
+>>>>>>> a83cb02f1308727b0e637a1687326e825eca97de
     });
 
     this.sharedStateService.isVisibleMenu$.subscribe(isVisible => {

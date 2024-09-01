@@ -9,12 +9,12 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { AuxService } from '../../../services/aux-service.service';
 import { NotificationService } from '../../../services/notification.service';
-
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'app-file-upload-import',
   standalone: true,
-  imports: [MatDialogModule, SharedModule, NzUploadModule, NzButtonModule, NzIconModule],
+  imports: [MatDialogModule, SharedModule, NzUploadModule, NzButtonModule, NzIconModule, NzFormModule],
   templateUrl: './file-upload-import.component.html',
   styleUrls: ['./file-upload-import.component.css']
 })

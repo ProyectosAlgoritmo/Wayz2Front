@@ -28,7 +28,12 @@ export interface UserData {
 
 const USERS_DATA: UserData[] = [
   {Formulario: 'Clientes', Carpeta: 'Administracion/', modeldata: '@ModeloEntradaClientes', storedprocedure: '[administracion].[ImportClientes]'},
-  {Formulario: 'Ingresos proyectados y reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaDesempenoFinanciero', storedprocedure: '[administracion].[ImportIngresosrealesyproyectados]'},
+  {Formulario: 'Productos y servicios', Carpeta: 'Administracion/', modeldata: '@ModeloProductosServicios', storedprocedure: '[administracion].[ImportProductServices]'},
+  {Formulario: 'Vendedores', Carpeta: 'Administracion/', modeldata: '@ModeloVendedores', storedprocedure: '[administracion].[ImportVendedores]'},
+  {Formulario: 'Ingresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosReales', storedprocedure: '[desempenofinanciero].[ImportIngresosreales]'},
+  {Formulario: 'Ingresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosProyectados', storedprocedure: '[desempenofinanciero].[ImportIngresosproyectados]'},
+  {Formulario: 'Egresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosReales', storedprocedure: '[desempenofinanciero].[ImportEgresosreales]'},
+  {Formulario: 'Egresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosProyectados', storedprocedure: '[desempenofinanciero].[ImportEgresosproyectados]'},
  ];
 
 @Component({
@@ -44,7 +49,7 @@ const USERS_DATA: UserData[] = [
 export class ImportComponent {
 
   displayedColumns: string[] = ['Formulario'];
-  dataSource = new MatTableDataSource<UserData>([]);
+  dataSource: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort | undefined;
 
@@ -57,19 +62,18 @@ export class ImportComponent {
     
     this.sharedStateService.toggleSidenavVisible(true);
 
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
-
-    this.dataSource.data = USERS_DATA;
+  
+    this.dataSource = USERS_DATA;
 
     
 
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
 
   onImportAction(element: any) {

@@ -22,7 +22,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 
 
-
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -41,7 +40,7 @@ export class HomeComponent {
   ){}
 
   displayedColumns: string[] = ['empresa'];
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort | undefined;
 
@@ -59,7 +58,7 @@ export class HomeComponent {
 
           if(!data.warning){
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else{
@@ -81,16 +80,15 @@ export class HomeComponent {
         console.log(error.message);
       },
     }); 
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
+   
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
-
  
   onGoAction(element: any) {
   
