@@ -1,7 +1,9 @@
 .full-page-container {
   display: flex;
   flex-direction: column;
-  height: 60vh; /* Usar toda la altura disponible de la ventana */
+  height: 70vh; /* Usar toda la altura disponible de la ventana */
+
+  background-color: transparent !important;
 }
 
 .table-container {
@@ -9,6 +11,7 @@
   overflow: hidden; /* Asegurar que el scroll solo ocurra dentro de table-scroll-wrapper */
   display: flex;
   flex-direction: column;
+  background-color: transparent !important;
 }
 
 .paginator-container {
@@ -16,4 +19,17 @@
   justify-content: flex-end; /* Alinea el contenido a la derecha */
   align-items: center;
   gap: 10px; /* Espacio entre elementos */
+}
+
+.background-white-title-botton {
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 1px 0; /* Ajusta el padding según sea necesario */
+}
+
+.invisible-divider {
+  border-left-color: transparent; /* Hace invisible el borde izquierdo (vertical) */
 }

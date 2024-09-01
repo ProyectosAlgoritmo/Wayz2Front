@@ -1,1 +1,30 @@
-<button mat-raised-button [ngClass]="customClass">{{label}}</button>
+
+<button nz-button 
+  *ngIf="cancelar" 
+  nzType="default" 
+  [ngStyle]="{'min-width': '90px'}">
+  Cancelar
+</button>
+
+<button nz-button 
+  *ngIf="azul" 
+  nzType="primary"
+  [ngStyle]="{'min-width': '90px'}">
+  Azul
+</button>
+
+<button nz-button 
+  *ngIf="blanco" 
+  nzType="default" 
+  nzGhost
+  [ngStyle]="{'min-width': '90px'}">
+  Blanco
+</button>
+
+<!-- Botón por defecto si ninguno de los anteriores está activado -->
+<button nz-button 
+  *ngIf="!cancelar && !azul && !blanco" 
+  nzType="primary"
+  [ngStyle]="{'min-width': '90px'}">
+  {{label}}
+</button>

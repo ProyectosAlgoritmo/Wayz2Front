@@ -1,9 +1,23 @@
 <div class="full-page-container">
-  <div class="table-container">
+  
 
 <mat-toolbar class="background-white-title-botton">
+  <app-buttonstrategic 
+  *ngIf="ActionCreate" 
+  mat-button 
+  [label]="'Crear'" 
+  (click)="CreateAction()" 
+  >
+</app-buttonstrategic>
+
+<app-buttonstrategic 
+  *ngIf="ActionImportGo" 
+  mat-button 
+  [label]="'Importar'">
+</app-buttonstrategic>
+
   <span class="spacer"></span>
-  <div class="filterSearch">
+  <div>
     <nz-input-group [nzSuffix]="suffixIconSearch">
       <input
         type="text"
@@ -17,6 +31,8 @@
     </ng-template>
   </div>
 </mat-toolbar>
+
+<div class="table-container">
 <nz-table 
   #basicTable 
   [nzData]="dataSource" 

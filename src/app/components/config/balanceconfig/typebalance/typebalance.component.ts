@@ -38,7 +38,7 @@ export class TypebalanceComponent implements OnInit{
     nombreTipo: 'Nombre',
     nombreBalanceCategoria: 'Nombre categoría'
   };
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog, private router: Router) { }
 
@@ -56,7 +56,7 @@ export class TypebalanceComponent implements OnInit{
 
           if (!data.warning) {
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else {
@@ -85,8 +85,6 @@ export class TypebalanceComponent implements OnInit{
 
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   onEditAction(event: any) {
@@ -102,7 +100,7 @@ export class TypebalanceComponent implements OnInit{
         this.configService.ObtenerBalanceTipo().subscribe({
           next: (data) => {
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
             this.auxService.cerrarVentanaCargando();
           },
           error: (error) => {
@@ -125,7 +123,7 @@ export class TypebalanceComponent implements OnInit{
             this.configService.ObtenerBalanceTipoCategoria().subscribe({
               next: (data) => {
   
-                this.dataSource.data = data.data;
+                this.dataSource = data.data;
                 this.auxService.cerrarVentanaCargando();
               },
               error: (error) => {

@@ -8,6 +8,9 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ButtonstrategicComponent implements OnInit {
   @Input() customClass: string = 'BotonMorado';
   @Input() label: string = 'Click Me';
+  @Input() cancelar: boolean = false;
+  @Input() azul: boolean = false;
+  @Input() blanco: boolean = false;
 
   constructor() { }
 

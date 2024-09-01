@@ -34,10 +34,15 @@ export class TableComponent implements OnInit {
   @Input() ActionExport: boolean = false;  
   @Input() ActionGo: boolean = false;
 
+  @Input() ActionCreate: boolean = false;  
+  @Input() ActionImportGo: boolean = false;  
+
   @Output() exportAction = new EventEmitter<any>();
   @Output() importAction = new EventEmitter<any>();
   @Output() goAction = new EventEmitter<any>();
   @Output() editAction = new EventEmitter<any>();
+
+  @Output() Create = new EventEmitter<any>();
 
   columnsToDisplay: string[] = [];
   paginatedData: any[] = [];
@@ -90,6 +95,14 @@ export class TableComponent implements OnInit {
 
   onEdit(element: any) {
     this.editAction.emit(element);
+  }
+
+  CreateAction() {
+    this.Create.emit();
+  }
+
+  onActionImportGo(element: any) {
+    //this.editAction.emit(element);
   }
 
   applyFilter(event: Event): void {
