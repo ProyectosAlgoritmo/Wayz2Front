@@ -575,7 +575,7 @@ export class PowerBiReportComponent implements OnInit {
 
   loadPowerBiReport(workspaceId: string, reportId: string, datasetId: string, pageName: string): void {
     this.http
-      .get<{ embedToken: string }>(`http://localhost:5215/api/powerbi/embedToken?workspaceId=${workspaceId}&reportId=${reportId}&datasetId=${datasetId}`)
+      .get<{ embedToken: string }>(`https://localhost:7278/api/powerbi/embedToken?workspaceId=${workspaceId}&reportId=${reportId}&datasetId=${datasetId}`)
       .subscribe((response) => {
         const embedUrl = `https://app.powerbi.com/reportEmbed?reportId=${reportId}&groupId=${workspaceId}`;
 

@@ -18,30 +18,50 @@ import { SharedStateService } from '../../../services/shared-state.service';
 import { NotificationService } from '../../../services/notification.service';
 import { fromEvent, Subscription } from 'rxjs';
 import { Firestore } from '@angular/fire/firestore'; // Importa Firestore si es necesario
+import { ChatService } from '../../../services/chat-service.service';
+import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { ChatAIComponent } from '../../chat-ai/chat-ai.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-toolbar',
   standalone: true,
   imports: [MatIconModule, MatSidenav, MatListModule, MatToolbarModule, MatMenuModule,
-   MatSidenavModule, MatButtonModule, MatTooltipModule, CommonModule, RouterModule
+   MatSidenavModule, MatButtonModule, MatTooltipModule, CommonModule, RouterModule, FormsModule,
+   NzIconModule, NzButtonModule, NzInputModule, ChatAIComponent
    ],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.css'
 })
 export class ToolbarComponent {
   isVisibleMenu = true;
+  chatVisible: boolean = false;
   notificationState: string = '';
   notificationIcon: string = 'hourglass_empty'; // Default icon
   localStorageSubscription!: Subscription;
   notificationSubscription!: Subscription;
+
+  userInput: string = '';
+  chatResponse: string = '';
   
   
-  constructor(private authservice: AuthService, private sharedStateService: SharedStateService, private notificationService: NotificationService,
-    private firestore: Firestore
+  constructor(private chatService: ChatService, private authservice: AuthService, private sharedStateService: SharedStateService, private notificationService: NotificationService,
+    private firestore: Firestore, public dialog: MatDialog 
   ){
+
+
+    this.sharedStateService.toggleChatVisibility(false);
 
    this.sharedStateService.isVisibleMenu$.subscribe(isVisible => {
       this.isVisibleMenu = isVisible;
+    });
+
+    this.sharedStateService.isChatVisible$.subscribe(visible => {
+      this.chatVisible = visible;
     });
   }
 
@@ -124,6 +144,21 @@ logout()
       default:
         this.notificationIcon = '';
     }
+  }
+
+
+  sendMessage() {
+    this.chatService.getChatResponse(this.userInput).subscribe(response => {
+      this.chatResponse = response;
+    });
+
+    //const dialogRef = this.dialog.open(ChatAIComponent);
+
+  }
+
+
+  toggleChat(): void {
+    this.chatVisible = !this.chatVisible;
   }
 
 }
