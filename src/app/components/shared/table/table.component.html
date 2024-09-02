@@ -77,7 +77,7 @@
             </a>
             <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
           </ng-container>
-          <ng-container *ngIf="ActionEdit && (element.idBalancecategoria ? element.isEditable : true)">
+          <ng-container *ngIf="ActionEdit && (element.isEditable ? false : true)">
             <a (click)="onEdit(element)">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </a>
