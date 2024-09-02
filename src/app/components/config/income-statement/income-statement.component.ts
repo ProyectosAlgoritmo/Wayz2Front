@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedStateService } from '../../../../services/shared-state.service';
-import { ConfigService } from '../../../../services/config.service';
-import { AuxService } from '../../../../services/aux-service.service';
+import { SharedStateService } from '../../../services/shared-state.service';
+import { ConfigService } from '../../../services/config.service';
+import { AuxService } from '../../../services/aux-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
@@ -14,29 +14,28 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { SharedModule } from '../../../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { CreatetypebalanceComponent } from './createtypebalance/createtypebalance.component';
-import { EdittypebalanceComponent } from './edittypebalance/edittypebalance.component';
 
+import { CreateincomestatementtypecategoryComponent } from './createincomestatementtypecategory/createincomestatementtypecategory.component';
+import { EditincomestatementtypecategoryComponent } from './editincomestatementtypecategory/editincomestatementtypecategory.component';
 
 @Component({
-  selector: 'app-typebalance',
+  selector: 'app-income-statement',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
     , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
-  templateUrl: './typebalance.component.html',
-  styleUrl: './typebalance.component.css'
+  templateUrl: './income-statement.component.html',
+  styleUrl: './income-statement.component.css'
 })
-export class TypebalanceComponent implements OnInit {
-  displayedColumns: string[] = ['nombreTipo', 'nombreBalanceCategoria'];
+export class IncomeStatementComponent {
+  displayedColumns: string[] = ['nombreCategoria'];
   columnNames = {
-    nombreTipo: 'Nombre',
-    nombreBalanceCategoria: 'Nombre categoría'
+    nombreCategoria: 'Nombre categoría'
   };
   dataSource = new MatTableDataSource<any>([]);
 
@@ -47,7 +46,7 @@ export class TypebalanceComponent implements OnInit {
     this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
-    this.configService.ObtenerBalanceTipo().subscribe({
+    this.configService.ObtenerBalanceTipoCategoria().subscribe({
       next: (data) => {
 
         if (data.success) {
@@ -77,7 +76,7 @@ export class TypebalanceComponent implements OnInit {
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
-        this.auxService.AlertError('Error al cargar los tipos de balance:', error);
+        this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
       },
     });
   }
@@ -91,34 +90,10 @@ export class TypebalanceComponent implements OnInit {
 
   onEditAction(event: any) {
 
-    console.log(event)
-    const dialogRef = this.dialog.open(EdittypebalanceComponent, {
-      data: { idbalance: event.idBalancetipo }
+    const dialogRef = this.dialog.open(EditincomestatementtypecategoryComponent, {
+      data: { idcategory: event.idBalancecategoria }
 
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // Si el resultado es true, se vuelve a obtener la lista de clientes
-        this.configService.ObtenerBalanceTipo().subscribe({
-          next: (data) => {
-
-            this.dataSource.data = data.data;
-            this.auxService.cerrarVentanaCargando();
-          },
-          error: (error) => {
-            this.auxService.AlertError('Error al cargar los tipos de balance:', error);
-          }
-        });
-      }
-    });
-
-  }
-
-  CreateAction() {
-    console.log(event);
-
-    const dialogRef = this.dialog.open(CreatetypebalanceComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -138,8 +113,30 @@ export class TypebalanceComponent implements OnInit {
 
   }
 
-  NavigateBalance() {
-    this.router.navigateByUrl("/balance")
+  CreateAction() {
+    console.log(event); 
+    
+    const dialogRef = this.dialog.open(CreateincomestatementtypecategoryComponent);
+  
+    dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            // Si el resultado es true, se vuelve a obtener la lista de clientes
+            this.configService.ObtenerBalanceTipoCategoria().subscribe({
+              next: (data) => {
+  
+                this.dataSource.data = data.data;
+                this.auxService.cerrarVentanaCargando();
+              },
+              error: (error) => {
+                this.auxService.AlertError('Error al cargar las zonas:', error);
+              }
+            });
+          }
+    });
+  
   }
 
+  NavigateTypeBalance(){
+    this.router.navigateByUrl("/typebalance")
+  }
 }
