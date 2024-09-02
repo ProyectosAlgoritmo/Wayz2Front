@@ -38,7 +38,7 @@ export class ZoneComponent {
     nombreZona: 'Nombre de la zona',
     nombreTipoZona: 'Tipo de zona'
   };
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog )  { }
 
@@ -57,7 +57,7 @@ export class ZoneComponent {
 
           if(!data.warning){
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else{
@@ -83,11 +83,12 @@ export class ZoneComponent {
     }); 
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
-
   onEditAction(event: any) {
     const dialogRef = this.dialog.open(EditzoneComponent, {
         data: { idZona: event.idZona }
@@ -100,7 +101,7 @@ export class ZoneComponent {
             this.configService.ObtenerZones().subscribe({
               next: (data) => {
 
-                this.dataSource.data = data.data;
+                this.dataSource = data.data;
                 this.auxService.cerrarVentanaCargando();
               },
               error: (error) => {
@@ -123,7 +124,7 @@ CreateAction() {
           this.configService.ObtenerZones().subscribe({
             next: (data) => {
 
-              this.dataSource.data = data.data;
+              this.dataSource = data.data;
               this.auxService.cerrarVentanaCargando();
             },
             error: (error) => {

@@ -12,9 +12,10 @@ import { ZoneComponent } from './components/config/zone/zone.component';
 import { SupervisorComponent } from './components/config/supervisor/supervisor.component';
 import { IncomeComponent } from './components/financialperformance/income/income.component';
 import { ExpensesComponent } from './components/financialperformance/expenses/expenses.component';
-import { BalanceComponent } from './components/config/balance/balance.component';
+import { BalanceComponent } from './components/config/balanceconfig/balance/balance.component';
 import { TableWithRowsChildComponent } from './components/shared/table-with-rows-child/table-with-rows-child.component';
-import { TypebalanceComponent } from './components/config/balance/typebalance/typebalance.component';
+import { BalanceconfigComponent } from './components/config/balanceconfig/balanceconfig.component';
+import { PowerBiReportComponent } from './components/powerbi-report/powerbi-report.component'; // Importa el componente
 
 export const routes: Routes = [
 
@@ -27,13 +28,17 @@ export const routes: Routes = [
     { path: 'productsServices', component: ProductsservicesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'zones', component: ZoneComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'balance', component: BalanceComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'typebalance', component: TypebalanceComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-
+   
     { path: 'table', component: TableWithRowsChildComponent  },
+
+    { path: 'balanceconfigu', component: BalanceconfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+
 
     // desempeño financiero
 
     { path: 'Income', component: IncomeComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'Expenses', component: ExpensesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'reporte/:pageName', component: PowerBiReportComponent, canActivate: [AuthGuard] }  // Ruta dinámica para diferentes páginas del reporte
+
 ];
+ 

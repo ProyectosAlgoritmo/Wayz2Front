@@ -49,7 +49,7 @@ const USERS_DATA: UserData[] = [
 export class ImportComponent {
 
   displayedColumns: string[] = ['Formulario'];
-  dataSource = new MatTableDataSource<UserData>([]);
+  dataSource: any[] = [];
 
   @ViewChild(MatSort) sort: MatSort | undefined;
 
@@ -62,19 +62,18 @@ export class ImportComponent {
     
     this.sharedStateService.toggleSidenavVisible(true);
 
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
-
-    this.dataSource.data = USERS_DATA;
+  
+    this.dataSource = USERS_DATA;
 
     
 
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
 
   onImportAction(element: any) {

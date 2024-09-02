@@ -1,0 +1,18 @@
+<div class="content-container">
+
+
+    <div class="table-container">
+
+        <div class="divtable">
+
+            <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [enableSearch]="true"
+                [enablePaginator]="true" [pageSize]="10" [showActions]="true" [ActionEdit]="true"
+                [columnNames]="columnNames" [ActionLeft]="true" (editAction)="onEditAction($event)"
+                [ActionCreate] ="true"
+                (Create)="CreateAction()">
+                <!-- Aquí puedes establecer true o false según sea necesario -->
+            </app-table>
+
+        </div>
+    </div>
+</div>

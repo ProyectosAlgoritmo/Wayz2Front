@@ -1,0 +1,43 @@
+<nz-table #filterTable [nzData]="dataSource" nzTableLayout="fixed" [nzPageSize]="pageSize">
+    <thead>
+      <tr>
+        <ng-container *ngFor="let column of listOfColumns">
+          <th
+            [nzSortOrder]="column.sortOrder"
+            [nzSortFn]="column.sortFn"
+            [nzSortDirections]="column.sortDirections"
+            [nzFilterMultiple]="column.filterMultiple"
+            [nzFilters]="column.listOfFilter"
+            [nzFilterFn]="column.filterFn"
+          >
+            {{ column.displayName }}
+          </th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of filterTable.data">
+        <ng-container *ngFor="let column of listOfColumns">
+          <td *ngIf="!column.actions">{{ data[column.name] }}</td>
+          <td *ngIf="column.actions">
+            <button nz-button nzType="primary" *ngIf="ActionExport" (click)="onExport(data)">
+              <i nz-icon nzType="cloud-download"></i>
+            </button>
+            <button nz-button nzType="default" *ngIf="ActionImport" (click)="onImport(data)">
+              <i nz-icon nzType="cloud-upload"></i>
+            </button>
+            <button nz-button nzType="default" *ngIf="ActionGo" (click)="onGo(data)">
+              <i nz-icon nzType="play-circle"></i>
+            </button>
+            <button nz-button nzType="default" *ngIf="ActionView" (click)="onView(data)">
+              <i nz-icon nzType="eye"></i>
+            </button>
+            <button nz-button nzType="default" *ngIf="ActionEdit" (click)="onEdit(data)">
+              <i nz-icon nzType="edit"></i>
+            </button>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+  

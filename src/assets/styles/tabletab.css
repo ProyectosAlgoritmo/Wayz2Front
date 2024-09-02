@@ -1,0 +1,58 @@
+.content-container {
+    padding: 20px;
+  }
+  
+  .table-container {
+    margin-top: 0px;
+    background-color: #f1f5fa;
+    border-radius: 8px;
+    height: 77vh; /* Ajusta este valor según tus necesidades */
+  }
+  
+  .divtable{
+    padding: 20px;
+
+  }
+  
+  .background-white-title-botton {
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0; /* Ajusta el padding según sea necesario */
+  }
+  
+  .mat-form-field {
+    width: 100%;
+  }
+  
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: transparent; /* Cambia el color de fondo a transparente */
+  }
+  
+  .mat-form-field-appearance-fill .mat-form-field-flex .mat-form-field-infix {
+    padding: 0; /* Opcional: Ajusta el padding si es necesario */
+  }
+  
+  
+  
+  .text-left {
+    text-align: center;
+  }
+  
+  .filterSearch
+  {
+    padding: 20px;
+    background-color: transparent;
+    align-items: center;
+  
+    border-radius: 25px; /* Ajusta el valor para el redondeo deseado */
+  }
+  
+  .filterSearch .ant-input-affix-wrapper {
+    border-radius: 25px; /* Ajusta el valor para el redondeo deseado */
+    border: 1px solid #FFFF; /* Ajusta el color y estilo del borde según sea necesario */
+  }
+  
+  
+  

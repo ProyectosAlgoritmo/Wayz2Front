@@ -40,7 +40,7 @@ export class BusinessunitComponent implements OnInit {
     nombreCliente: 'Clase',
     tipoIdentificacion: 'Nombre tipo negocio'
   };
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog )  { }
 
@@ -58,7 +58,7 @@ export class BusinessunitComponent implements OnInit {
 
           if(!data.warning){
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else{
@@ -84,9 +84,11 @@ export class BusinessunitComponent implements OnInit {
     }); 
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
 
   onEditAction(event: any) {
@@ -101,7 +103,7 @@ export class BusinessunitComponent implements OnInit {
             this.configService.ObtenerBusinessUnits().subscribe({
               next: (data) => {
 
-                this.dataSource.data = data.data;
+                this.dataSource = data.data;
                 this.auxService.cerrarVentanaCargando();
               },
               error: (error) => {
@@ -117,15 +119,15 @@ export class BusinessunitComponent implements OnInit {
 CreateAction() {
   console.log(event); 
   
-  const dialogRef = this.dialog.open(CreatebusinessunitComponent);
-
+  const dialogRef = this.dialog.open(CreatebusinessunitComponent); 
+  
   dialogRef.afterClosed().subscribe(result => {
         if (result) {
           // Si el resultado es true, se vuelve a obtener la lista de clientes
           this.configService.ObtenerBusinessUnits().subscribe({
             next: (data) => {
 
-              this.dataSource.data = data.data;
+              this.dataSource = data.data;
               this.auxService.cerrarVentanaCargando();
             },
             error: (error) => {

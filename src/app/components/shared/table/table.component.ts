@@ -1,69 +1,75 @@
-import { Component, Input, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatPaginatorIntl } from '@angular/material/paginator';
-import { CustomMatPaginatorIntl } from '../../../utilities/custom-mat-paginator-intl';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { CloudDownloadOutline, CloudUploadOutline, PlayCircleOutline, EyeOutline, EditOutline } from '@ant-design/icons-angular/icons';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
   providers: [
-    { provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl }
-  ],
+    {
+      provide: NZ_ICONS, 
+      useValue: [
+        CloudDownloadOutline,
+        CloudUploadOutline,
+        PlayCircleOutline,
+        EyeOutline,
+        EditOutline
+      ]
+    }
+  ]
 })
 export class TableComponent implements OnInit {
-  @Input() dataSource = new MatTableDataSource<any>([]);
+  @Input() dataSource: any[] = []; 
   @Input() displayedColumns: string[] = [];
   @Input() columnNames: { [key: string]: string } = {};
-  @Input() enableSearch: boolean = false;
-  @Input() enablePaginator: boolean = false;
-  @Input() pageSize: number = 10;
+  @Input() pageSize: number = 2;
+  @Input() enablePaginator: boolean = true;
+  @Input() enableSearch: boolean = true;
   @Input() ActionLeft: boolean = false;
   @Input() showActions: boolean = false;
   @Input() ActionEdit: boolean = false;  
   @Input() ActionView: boolean = false;  
   @Input() ActionImport: boolean = false;  
   @Input() ActionExport: boolean = false;  
-  @Input() ActionGo: boolean = false;  
+  @Input() ActionGo: boolean = false;
+
+  @Input() ActionCreate: boolean = false;  
+  @Input() ActionImportGo: boolean = false;  
 
   @Output() exportAction = new EventEmitter<any>();
   @Output() importAction = new EventEmitter<any>();
   @Output() goAction = new EventEmitter<any>();
   @Output() editAction = new EventEmitter<any>();
 
+  @Output() Create = new EventEmitter<any>();
 
-  @ViewChild(MatSort) sort: MatSort | undefined;
-  //@ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  columnsToDisplay: string[] = [];
+  paginatedData: any[] = [];
+  currentPage: number = 1;
+  originalDataSource: any[] = [];
+  
 
-  columnsToDisplay: string[] = []; 
+  constructor() {
+  }
 
   ngOnInit(): void {
-    this.columnsToDisplay = [...this.displayedColumns];
-    console.log( this.columnsToDisplay); 
+
+    this.columnsToDisplay = [...this.displayedColumns]; 
     if (this.showActions) {
-      if(this.ActionLeft == false)
-      {
-      this.columnsToDisplay.push('Acciones');
-      }else{
+      if (this.ActionLeft) {
         this.columnsToDisplay.unshift('Acciones');
+      } else {
+        this.columnsToDisplay.push('Acciones');
       }
     }
-  
+    //this.updatePaginatedData();
   }
 
-  ngAfterViewInit(): void {
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
-    if (this.enablePaginator) {
-      this.dataSource.paginator = this.paginator;
-      this.paginator.pageSize = this.pageSize;
-    }
+  ngOnChanges(): void {
+    this.originalDataSource = [...this.dataSource];
+    this.updatePaginatedData();
   }
-
 
   getColumnDisplayName(column: string): string {
     return this.columnNames[column] || this.capitalizeFirstLetter(column);
@@ -73,10 +79,7 @@ export class TableComponent implements OnInit {
     return column.charAt(0).toUpperCase() + column.slice(1);
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
+  
 
   onExport(element: any) {
     this.exportAction.emit(element);
@@ -93,4 +96,49 @@ export class TableComponent implements OnInit {
   onEdit(element: any) {
     this.editAction.emit(element);
   }
+
+  CreateAction() {
+    this.Create.emit();
+  }
+
+  onActionImportGo(element: any) {
+    //this.editAction.emit(element);
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+  
+    // Restaura los datos originales si el filtro está vacío
+    if (!filterValue) {
+        this.dataSource = [...this.originalDataSource];
+    } else {
+        // Filtra los datos en base al valor ingresado
+        this.dataSource = this.originalDataSource.filter(item => {
+            return this.displayedColumns.some(column => {
+                const columnValue = item[column];
+                // Verifica si el valor de la columna existe y coincide con el filtro
+                return columnValue && columnValue.toString().toLowerCase().includes(filterValue);
+            });
+        });
+    }
+
+    this.updatePaginatedData();
+
+   
+}
+
+updatePaginatedData(): void {
+  const startIndex = (this.currentPage - 1) * this.pageSize;
+  const endIndex = startIndex + this.pageSize;
+  this.paginatedData = this.dataSource.slice(startIndex, endIndex);
+}
+
+onPageChange(pageIndex: number): void {
+  this.currentPage = pageIndex;
+  this.updatePaginatedData();
+}
+
+
+
+
 }

@@ -1,16 +1,18 @@
 .content-container {
-    padding: 30px;
+    padding: 20px;
   }
   
   .table-container {
-    margin-top: 20px;
-    background-color: #F6F6FB;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    background-color: #f1f5fa;
     border-radius: 8px;
-    min-height: 550px; /* Ajusta este valor según tus necesidades */
+    height: 85vh; /* Ajusta este valor según tus necesidades */
   }
   
   .divtable{
     padding: 20px;
+
   }
   
   .background-white-title-botton {
