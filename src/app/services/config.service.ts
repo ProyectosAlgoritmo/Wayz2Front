@@ -182,9 +182,9 @@ export class ConfigService {
     return this.httpClient.get(url, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
 
-  ActualizarBalanceTipo(idUnidad: number, UnitData: any): Observable<any> {
+  ActualizarBalanceTipo(idBalancetipo: number, UnitData: any): Observable<any> {
     const headers = this.getHeaders();
-    const url = `${this.apiUrl}/Update-Balance-type/${idUnidad}`; // Endpoint para actualizar un cliente
+    const url = `${this.apiUrl}/Update-Balance-type/${idBalancetipo}`; // Endpoint para actualizar un cliente
     return this.httpClient.put(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
 
@@ -195,9 +195,57 @@ export class ConfigService {
     return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
 
-  // Balance totales categoia
+  // Estado de resultados
+  // Estado de resultados categorias
 
+  ERTipoCategoria(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/Get-ER-categories-type`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
 
-  // Balance totales tipo
+  ObtenerDetailERTipoCategoria(idTipoCategoria: number): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Get-Detail-ER-categories-type/${idTipoCategoria}`;
+    return this.httpClient.get(url, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ActualizarERTipoCategoria(idUnidad: number, UnitData: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Update-ER-categories-type/${idUnidad}`; // Endpoint para actualizar un cliente
+    return this.httpClient.put(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  CrearERTipoCategoria(UnitData: any): Observable<any> {
+
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Create-ER-categories-type`; // Endpoint para actualizar un cliente
+    return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  // Estado de resultados tipo
+
+  ObtenerERTipo(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/Get-ER-type`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ObtenerDetailERTipo(idTipoCategoria: number): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Get-Detail-ER-type/${idTipoCategoria}`;
+    return this.httpClient.get(url, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ActualizarERTipo(idERtipo: number, UnitData: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Update-ER-type/${idERtipo}`; // Endpoint para actualizar un cliente
+    return this.httpClient.put(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  CrearERTipo(UnitData: any): Observable<any> {
+
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Create-ER-type`; // Endpoint para actualizar un cliente
+    return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
 
 }
