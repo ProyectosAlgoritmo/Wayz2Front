@@ -120,7 +120,7 @@ export class TypebalanceComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
           if (result) {
             // Si el resultado es true, se vuelve a obtener la lista de clientes
-            this.configService.ObtenerBalanceTipoCategoria().subscribe({
+            this.configService.ObtenerBalanceTipo().subscribe({
               next: (data) => {
   
                 this.dataSource = data.data;

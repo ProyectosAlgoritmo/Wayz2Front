@@ -38,7 +38,7 @@ export class EdittypebalanceComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<EdittypebalanceComponent>
   ) {
-    this.idbalance = data.idbalance;
+    this.idbalance = data.idcategory;
     this.clientForm = this.fb.group({
       nombreTipo: ['', Validators.required],
       idBalancecategoria: ['', Validators.required],
