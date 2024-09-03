@@ -18,13 +18,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
 @Component({
-  selector: 'app-createtypebalance',
+  selector: 'app-create-income-statement-types',
   standalone: true,
   imports: [NzInputModule, NzIconModule, NzSelectModule, CommonModule, ReactiveFormsModule, MatDialogModule, SharedModule, NzFormModule],
-  templateUrl: './createtypebalance.component.html',
-  styleUrl: './createtypebalance.component.css'
+  templateUrl: './create-income-statement-types.component.html',
+  styleUrl: './create-income-statement-types.component.css'
 })
-export class CreatetypebalanceComponent {
+export class CreateIncomeStatementTypesComponent {
   clientForm: FormGroup;
   categorias: any;
 
@@ -33,14 +33,15 @@ export class CreatetypebalanceComponent {
     private configService: ConfigService,
     private auxService: AuxService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CreatetypebalanceComponent>
+    private dialogRef: MatDialogRef<CreateIncomeStatementTypesComponent>
   ) {
     this.clientForm = this.fb.group({
       nombreTipo: ['', Validators.required],
-      idBalancecategoria: ['', Validators.required],
+      idErcategoria: ['', Validators.required],
+      nombreCategoria: [''],
     });
 
-    this.cargarCategoriasBalance();
+    this.cargarCategoriasER();
   }
 
   onCancel(): void {
@@ -48,8 +49,8 @@ export class CreatetypebalanceComponent {
   }
 
 
-  cargarCategoriasBalance() {
-    this.configService.ObtenerBalanceTipoCategoria().subscribe({
+  cargarCategoriasER() {
+    this.configService.ObtenerERTipoCategoria().subscribe({
       next: (data) => {
         if (data.success) {
 
@@ -57,14 +58,14 @@ export class CreatetypebalanceComponent {
             console.log(data.data)
             this.categorias = data.data;// Vincula los datos al formulario
           } else {
-            this.auxService.AlertWarning("Tipo de balance", data.message);
+            this.auxService.AlertWarning("Tipo de estado de resultados", data.message);
           }
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
-        this.auxService.AlertError('Error al cargar los tipos de balance:', error);
+        this.auxService.AlertError('Error al cargar los tipos de estado de resultados:', error);
       }
     });
   }
@@ -74,16 +75,16 @@ export class CreatetypebalanceComponent {
       this.auxService.ventanaCargando();
 
 
-      this.configService.CrearBalanceTipo(this.clientForm.value).subscribe({
+      this.configService.CrearERTipo(this.clientForm.value).subscribe({
         next: (data) => {
           if (data.success) {
 
             if (!data.warning) {
-              this.auxService.AlertSuccess('Actualizar tipo de balance', data.message);
+              this.auxService.AlertSuccess('Actualizar tipo de estado de resultados', data.message);
             }
             else {
               this.auxService.cerrarVentanaCargando();
-              this.auxService.AlertError('Error al cargar los tipos de balance:', data.message);
+              this.auxService.AlertError('Error al cargar los tipos de estado de resultados:', data.message);
             }
             this.dialogRef.close(true); // Cierra el diálogo y devuelve un resultado positivo
           } else {
@@ -92,12 +93,11 @@ export class CreatetypebalanceComponent {
         },
         error: (error) => {
           this.auxService.cerrarVentanaCargando();
-          this.auxService.AlertError('Error al cargar los tipos de balance:', error);
+          this.auxService.AlertError('Error al cargar los tipos de estado de resultados:', error);
         }
       });
     } else {
       this.auxService.AlertWarning('Formulario inválido', 'Por favor, revisa los campos y corrige los errores.');
     }
   }
-
 }

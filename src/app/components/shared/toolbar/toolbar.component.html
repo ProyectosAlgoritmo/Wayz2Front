@@ -3,6 +3,21 @@
       <mat-icon>menu</mat-icon>
     </button>
     <span class="custom-titleCompany">STRATEGIC VIEW</span>
+   
+    <!--
+    <br />
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" [ngStyle]="{'max-width': '500px'}">
+      <input type="text" nz-input placeholder="Preguntale a la AI" [(ngModel)]="userInput"/>
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+      <button nz-button nzType="primary" (click)="sendMessage()" nzSearch><span nz-icon nzType="search"></span></button>
+    </ng-template>
+    <br />
+
+    <button nz-button nzType="primary" (click)="toggleChat()">Toggle Chat</button>
+
+   -->
+
     <span class="spacer"></span>
     <span class="custom-titleHeader"> ANA ROJAS DUQUE</span>
 
@@ -14,6 +29,9 @@
   
     <button mat-icon-button matTooltip="Notificaciones">
       <mat-icon>notifications</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="Mi cuenta" (click)="toggleChat()">
+      <mat-icon>chat</mat-icon>
     </button>
     <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAccountMenu">
       <mat-icon>account_circle</mat-icon>
@@ -33,4 +51,9 @@
         <mat-icon>exit_to_app</mat-icon>Cerrar sesión
       </button>
     </mat-menu>
+
+
+   
   </mat-toolbar>
+
+  <app-chat-ai *ngIf="chatVisible"></app-chat-ai>

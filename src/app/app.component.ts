@@ -41,7 +41,7 @@ import { PowerBiReportComponent } from './components/powerbi-report/powerbi-repo
 export class AppComponent implements OnInit {
   title = 'Strategicview';
   isLogged = false;
-  sidenavWidth = 230;
+  sidenavWidth = 10;
   isVisibleMenu = true;
   showPowerBIReport = false;  // Define esta propiedad
 

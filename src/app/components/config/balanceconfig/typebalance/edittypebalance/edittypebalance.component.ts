@@ -38,7 +38,7 @@ export class EdittypebalanceComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<EdittypebalanceComponent>
   ) {
-    this.idbalance = data.idbalance;
+    this.idbalance = data.idcategory;
     this.clientForm = this.fb.group({
       nombreTipo: ['', Validators.required],
       idBalancecategoria: ['', Validators.required],
@@ -118,7 +118,7 @@ export class EdittypebalanceComponent {
             }
             this.dialogRef.close(true); // Cierra el diálogo y devuelve un resultado positivo
           } else {
-            this.auxService.AlertWarning('Error al actualizar zona', data.message);
+            this.auxService.AlertWarning('Error al actualizar el tipo de balance', data.message);
           }
         },
         error: (error) => {

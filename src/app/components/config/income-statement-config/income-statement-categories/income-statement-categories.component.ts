@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedStateService } from '../../../services/shared-state.service';
-import { ConfigService } from '../../../services/config.service';
-import { AuxService } from '../../../services/aux-service.service';
+import { SharedStateService } from '../../../../services/shared-state.service';
+import { ConfigService } from '../../../../services/config.service';
+import { AuxService } from '../../../../services/aux-service.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
@@ -14,30 +14,30 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
+import { EditIncomeStatementCategoriesComponent } from './edit-income-statement-categories/edit-income-statement-categories.component';
+import { CreateIncomeStatementCategoriesComponent } from './create-income-statement-categories/create-income-statement-categories.component';
 
-import { CreateincomestatementtypecategoryComponent } from './createincomestatementtypecategory/createincomestatementtypecategory.component';
-import { EditincomestatementtypecategoryComponent } from './editincomestatementtypecategory/editincomestatementtypecategory.component';
 
 @Component({
-  selector: 'app-income-statement',
+  selector: 'app-income-statement-categories',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
     , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
-  templateUrl: './income-statement.component.html',
-  styleUrl: './income-statement.component.css'
+  templateUrl: './income-statement-categories.component.html',
+  styleUrl: './income-statement-categories.component.css'
 })
-export class IncomeStatementComponent {
+export class IncomeStatementCategoriesComponent {
   displayedColumns: string[] = ['nombreCategoria'];
   columnNames = {
     nombreCategoria: 'Nombre categoría'
   };
-  dataSource = new MatTableDataSource<any>([]);
+  dataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog, private router: Router) { }
 
@@ -46,7 +46,7 @@ export class IncomeStatementComponent {
     this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
-    this.configService.ObtenerBalanceTipoCategoria().subscribe({
+    this.configService.ObtenerERTipoCategoria().subscribe({
       next: (data) => {
 
         if (data.success) {
@@ -55,13 +55,13 @@ export class IncomeStatementComponent {
 
           if (!data.warning) {
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
 
           }
           else {
 
             this.auxService.ventanaCargando();
-            this.auxService.AlertWarning("Balance tipo de categoría", data.message);
+            this.auxService.AlertWarning("Estado de resultados tipo de categoría", data.message);
 
           }
 
@@ -76,36 +76,38 @@ export class IncomeStatementComponent {
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
-        this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
+        this.auxService.AlertError('Error al cargar los tipos de categoría (Estado de resultados):', error);
       },
     });
   }
 
 
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
 
   onEditAction(event: any) {
 
-    const dialogRef = this.dialog.open(EditincomestatementtypecategoryComponent, {
-      data: { idcategory: event.idBalancecategoria }
+    const dialogRef = this.dialog.open(EditIncomeStatementCategoriesComponent, {
+      data: { idcategory: event.idErcategoria }
 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Si el resultado es true, se vuelve a obtener la lista de clientes
-        this.configService.ObtenerBalanceTipoCategoria().subscribe({
+        this.configService.ObtenerERTipoCategoria().subscribe({
           next: (data) => {
 
-            this.dataSource.data = data.data;
+            this.dataSource = data.data;
             this.auxService.cerrarVentanaCargando();
           },
           error: (error) => {
-            this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
+            this.auxService.AlertError('Error al cargar los tipos de categoría (Estado de resultados):', error);
           }
         });
       }
@@ -116,15 +118,15 @@ export class IncomeStatementComponent {
   CreateAction() {
     console.log(event); 
     
-    const dialogRef = this.dialog.open(CreateincomestatementtypecategoryComponent);
+    const dialogRef = this.dialog.open(CreateIncomeStatementCategoriesComponent);
   
     dialogRef.afterClosed().subscribe(result => {
           if (result) {
             // Si el resultado es true, se vuelve a obtener la lista de clientes
-            this.configService.ObtenerBalanceTipoCategoria().subscribe({
+            this.configService.ObtenerERTipoCategoria().subscribe({
               next: (data) => {
   
-                this.dataSource.data = data.data;
+                this.dataSource = data.data;
                 this.auxService.cerrarVentanaCargando();
               },
               error: (error) => {
@@ -134,9 +136,5 @@ export class IncomeStatementComponent {
           }
     });
   
-  }
-
-  NavigateTypeBalance(){
-    this.router.navigateByUrl("/typebalance")
   }
 }

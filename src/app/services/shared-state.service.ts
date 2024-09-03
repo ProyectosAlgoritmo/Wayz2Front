@@ -14,6 +14,16 @@ export class SharedStateService {
   private notificationStateSource = new BehaviorSubject<string | null>(sessionStorage.getItem('id_empresa'));
   notificationState$ = this.notificationStateSource.asObservable();
 
+
+  private isChatVisibleSubject = new BehaviorSubject<boolean>(true);
+  public isChatVisible$ = this.isChatVisibleSubject.asObservable();
+
+
+  toggleChatVisibility(state: boolean): void {
+    this.isChatVisibleSubject.next(state);
+  }
+
+
   toggleSidenav(): void {
     this.isExpandedSubject.next(!this.isExpandedSubject.value);
   }

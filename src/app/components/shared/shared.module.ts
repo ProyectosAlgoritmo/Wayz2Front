@@ -18,8 +18,7 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-
-
+import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
 
 @NgModule({
   declarations: [
@@ -44,7 +43,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
     NzPaginationModule,
     NzDividerModule,
     NzIconModule,
-    NzButtonModule
+    NzButtonModule,
+    FormsModule
     
     // Aquí puedes importar otros módulos de Angular Material o módulos comunes
   ],
