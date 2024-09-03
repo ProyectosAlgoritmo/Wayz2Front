@@ -551,6 +551,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import * as pbi from 'powerbi-client';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { powerbiService } from '../../services/powerbi.service';
 
 @Component({
   selector: 'app-powerbi-report',
@@ -560,22 +561,24 @@ import { CommonModule } from '@angular/common';
   imports: [HttpClientModule, CommonModule],
 })
 export class PowerBiReportComponent implements OnInit {
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private powerbiService: powerbiService) {}
 
   ngOnInit(): void {
-    const workspaceId = '98a959ef-cba7-420c-9c1b-4033999fc6fd';
-    const reportId = '41899b84-92d7-4c7b-adbf-fcf7d7c82196';
-    const datasetId = 'a59d26c9-dedb-43d8-b99-082e31804112';
+    const workspaceId = "98a959ef-cba7-420c-9c1b-4033999fc6fd";
+    const reportId = "41899b84-92d7-4c7b-adbf-fcf7d7c82196";
+    const datasetId = "a59d26c9-dedb-43d8-b99d-082e31804112";
 
     const pageName = '04625af12f4ee87bd5ab'; // Forzar la pestaña "Rentabilidad"
-    
 
+   
     this.loadPowerBiReport(workspaceId, reportId, datasetId, pageName);
   }
 
   loadPowerBiReport(workspaceId: string, reportId: string, datasetId: string, pageName: string): void {
-    this.http
-      .get<{ embedToken: string }>(`https://localhost:7278/api/powerbi/embedToken?workspaceId=${workspaceId}&reportId=${reportId}&datasetId=${datasetId}`)
+    var request = { workspaceId: workspaceId,  reportId: reportId, datasetId: datasetId
+    }
+
+    this.powerbiService.getToken(request)
       .subscribe((response) => {
         const embedUrl = `https://app.powerbi.com/reportEmbed?reportId=${reportId}&groupId=${workspaceId}`;
 
