@@ -134,9 +134,4 @@ export class TypebalanceComponent implements OnInit{
     });
 
   }
-
-  NavigateBalance(){
-    this.router.navigateByUrl("/balance")
-  }
-
 }

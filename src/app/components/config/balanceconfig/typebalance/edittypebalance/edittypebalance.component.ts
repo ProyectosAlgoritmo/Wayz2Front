@@ -118,7 +118,7 @@ export class EdittypebalanceComponent {
             }
             this.dialogRef.close(true); // Cierra el diálogo y devuelve un resultado positivo
           } else {
-            this.auxService.AlertWarning('Error al actualizar zona', data.message);
+            this.auxService.AlertWarning('Error al actualizar el tipo de balance', data.message);
           }
         },
         error: (error) => {
