@@ -198,7 +198,7 @@ export class ConfigService {
   // Estado de resultados
   // Estado de resultados categorias
 
-  ERTipoCategoria(): Observable<any> {
+  ObtenerERTipoCategoria(): Observable<any> {
     const headers = this.getHeaders();
     return this.httpClient.get(`${this.apiUrl}/Get-ER-categories-type`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }

@@ -16,6 +16,7 @@ import { BalanceComponent } from './components/config/balanceconfig/balance/bala
 import { TableWithRowsChildComponent } from './components/shared/table-with-rows-child/table-with-rows-child.component';
 import { BalanceconfigComponent } from './components/config/balanceconfig/balanceconfig.component';
 import { PowerBiReportComponent } from './components/powerbi-report/powerbi-report.component'; // Importa el componente
+import { IncomeStatementConfigComponent } from './components/config/income-statement-config/income-statement-config.component';
 
 export const routes: Routes = [
 
@@ -31,7 +32,9 @@ export const routes: Routes = [
    
     { path: 'table', component: TableWithRowsChildComponent  },
 
-    { path: 'balanceconfigu', component: BalanceconfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'balanceconfig', component: BalanceconfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+
+    { path: 'incomestatementconfig', component: IncomeStatementConfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
 
 
     // desempeño financiero
