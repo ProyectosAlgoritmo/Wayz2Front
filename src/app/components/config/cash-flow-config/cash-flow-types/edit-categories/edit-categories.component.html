@@ -1,4 +1,4 @@
-<h3 mat-dialog-title class="dialog-title">Editar categoría tipo de estado de resultados</h3>
+<h3 mat-dialog-title class="dialog-title">Editar tipo de flujo de caja</h3>
 <hr class="division-line">
 <div class="importdata">
 
@@ -14,15 +14,15 @@
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idErcategoria" style="text-align: left;">Categoría</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idFccategoria" style="text-align: left;">Categoría</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar una unidad de negocio">
           <nz-select
             nzShowSearch
             nzAllowClear
             nzPlaceHolder="Seleccione una categoría"
-            formControlName="idErcategoria"
+            formControlName="idFccategoria"
             required>
-            <nz-option *ngFor="let categoria of categorias" [nzLabel]="categoria.nombreCategoria" [nzValue]="categoria.idErcategoria"></nz-option>
+            <nz-option *ngFor="let categoria of categorias" [nzLabel]="categoria.nombreCategoria" [nzValue]="categoria.idFccategoria"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>

@@ -248,4 +248,56 @@ export class ConfigService {
     return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
 
+  // Flujo de caja
+  // Flujo de caja categorias
+
+  ObtenerFCTipoCategoria(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/Get-FC-categories-type`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ObtenerDetailFCTipoCategoria(idTipoCategoria: number): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Get-Detail-FC-categories-type/${idTipoCategoria}`;
+    return this.httpClient.get(url, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ActualizarFCTipoCategoria(idUnidad: number, UnitData: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Update-FC-categories-type/${idUnidad}`; // Endpoint para actualizar un cliente
+    return this.httpClient.put(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  CrearFCTipoCategoria(UnitData: any): Observable<any> {
+
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Create-FC-categories-type`; // Endpoint para actualizar un cliente
+    return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  // Flujo caja tipo
+
+  ObtenerFCTipo(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/Get-FC-type`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ObtenerDetailFCTipo(idTipoCategoria: number): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Get-Detail-FC-type/${idTipoCategoria}`;
+    return this.httpClient.get(url, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ActualizarFCTipo(idERtipo: number, UnitData: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Update-FC-type/${idERtipo}`; // Endpoint para actualizar un cliente
+    return this.httpClient.put(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  CrearFCTipo(UnitData: any): Observable<any> {
+
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/Create-FC-type`; // Endpoint para actualizar un cliente
+    return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
 }

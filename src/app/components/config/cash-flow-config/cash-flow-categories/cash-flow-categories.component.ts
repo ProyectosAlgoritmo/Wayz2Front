@@ -19,24 +19,22 @@ import { SharedModule } from '../../../shared/shared.module';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { CreatetypebalanceComponent } from './createtypebalance/createtypebalance.component';
-import { EdittypebalanceComponent } from './edittypebalance/edittypebalance.component';
-
+import { CreateCategoriesComponent } from './create-categories/create-categories.component';
+import { EditCategoriesComponent } from './edit-categories/edit-categories.component';
 
 @Component({
-  selector: 'app-typebalance',
+  selector: 'app-cash-flow-categories',
   standalone: true,
   imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
     , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
   ],
-  templateUrl: './typebalance.component.html',
-  styleUrl: './typebalance.component.css'
+  templateUrl: './cash-flow-categories.component.html',
+  styleUrl: './cash-flow-categories.component.css'
 })
-export class TypebalanceComponent implements OnInit{
-  displayedColumns: string[] = ['nombreTipo', 'nombreBalanceCategoria'];
+export class CashFlowCategoriesComponent {
+  displayedColumns: string[] = ['nombreCategoria'];
   columnNames = {
-    nombreTipo: 'Nombre',
-    nombreBalanceCategoria: 'Nombre categoría'
+    nombreCategoria: 'Nombre categoría'
   };
   dataSource: any[] = [];
 
@@ -47,7 +45,7 @@ export class TypebalanceComponent implements OnInit{
     this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
-    this.configService.ObtenerBalanceTipo().subscribe({
+    this.configService.ObtenerFCTipoCategoria().subscribe({
       next: (data) => {
 
         if (data.success) {
@@ -62,7 +60,7 @@ export class TypebalanceComponent implements OnInit{
           else {
 
             this.auxService.ventanaCargando();
-            this.auxService.AlertWarning("Balance tipo de categoría", data.message);
+            this.auxService.AlertWarning("Flujo de caja tipo de categoría", data.message);
 
           }
 
@@ -77,34 +75,38 @@ export class TypebalanceComponent implements OnInit{
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
-        this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
+        this.auxService.AlertError('Error al cargar los tipos de categoría (Flujo de Caja):', error);
       },
     });
   }
 
 
 
-  applyFilter(event: Event) {
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    this.dataSource = this.dataSource.filter(item => 
+      item.nombreCategoria.toLowerCase().includes(filterValue)
+    );
   }
 
   onEditAction(event: any) {
 
-    const dialogRef = this.dialog.open(EdittypebalanceComponent, {
-      data: { idcategory: event.idBalancetipo }
+    const dialogRef = this.dialog.open(EditCategoriesComponent, {
+      data: { idcategory: event.idFccategoria }
 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Si el resultado es true, se vuelve a obtener la lista de clientes
-        this.configService.ObtenerBalanceTipo().subscribe({
+        this.configService.ObtenerFCTipoCategoria().subscribe({
           next: (data) => {
 
             this.dataSource = data.data;
             this.auxService.cerrarVentanaCargando();
           },
           error: (error) => {
-            this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
+            this.auxService.AlertError('Error al cargar los tipos de categoría (Flujo de Caja):', error);
           }
         });
       }
@@ -115,23 +117,23 @@ export class TypebalanceComponent implements OnInit{
   CreateAction() {
     console.log(event); 
     
-    const dialogRef = this.dialog.open(CreatetypebalanceComponent);
+    const dialogRef = this.dialog.open(CreateCategoriesComponent);
   
     dialogRef.afterClosed().subscribe(result => {
           if (result) {
             // Si el resultado es true, se vuelve a obtener la lista de clientes
-            this.configService.ObtenerBalanceTipo().subscribe({
+            this.configService.ObtenerFCTipoCategoria().subscribe({
               next: (data) => {
   
                 this.dataSource = data.data;
                 this.auxService.cerrarVentanaCargando();
               },
               error: (error) => {
-                this.auxService.AlertError('Error al cargar las zonas:', error);
+                this.auxService.AlertError('Error al cargar las categorías (Flujo de Caja):', error);
               }
             });
           }
     });
-
+  
   }
 }
