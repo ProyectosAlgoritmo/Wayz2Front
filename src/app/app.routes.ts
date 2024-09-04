@@ -16,6 +16,7 @@ import { BalanceComponent } from './components/config/balanceconfig/balance/bala
 import { TableWithRowsChildComponent } from './components/shared/table-with-rows-child/table-with-rows-child.component';
 import { BalanceconfigComponent } from './components/config/balanceconfig/balanceconfig.component';
 import { PowerBiReportComponent } from './components/powerbi-report/powerbi-report.component'; // Importa el componente
+import { CashFlowComponent } from './components/financialperformance/cash-flow/cash-flow.component';
 import { IncomeStatementConfigComponent } from './components/config/income-statement-config/income-statement-config.component';
 import { CashFlowConfigComponent } from './components/config/cash-flow-config/cash-flow-config.component';
 
@@ -30,6 +31,8 @@ export const routes: Routes = [
     { path: 'productsServices', component: ProductsservicesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'zones', component: ZoneComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'cash-flow', component: CashFlowComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+   
     { path: 'table', component: TableWithRowsChildComponent  },
     { path: 'balanceconfig', component: BalanceconfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'incomestatementconfig', component: IncomeStatementConfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },

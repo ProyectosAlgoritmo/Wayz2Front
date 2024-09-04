@@ -1,28 +1,38 @@
-<div>
-  <nz-table
+<div class="divTable">
+  <nz-table 
+    #sortTable
     class="custom-sub-table"
     #nzTable
-    [nzData]="listOfData"
+    [nzData]="sortedData"
     nzTableLayout="fixed"
+    [nzPageSize]="pageSize" 
   >
     <thead>
-      <tr>
-        <th nzWidth="60px"></th>
-        <th *ngFor="let column of columns">{{ column.title }}</th>
+      <tr >
+        <th nzStyle="background-color: #f5f5f5; color: #333;" nzWidth="60px"></th>
+        <th *ngFor="let column of columns"
+            (click)="sortData(column.field)"
+            [nzSortOrder]="column.sortDirection">
+          {{ column.title }}
+          <i *ngIf="column.sortDirection === 'ascend'" class="fas fa-sort-up"></i>
+          <i *ngIf="column.sortDirection === 'descend'" class="fas fa-sort-down"></i>
+        </th>
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let data of listOfData">
+      <ng-container *ngFor="let data of sortedData">
         <tr>
-          <td
-            [nzExpand]="expandSet.has(data.id)"
-            (nzExpandChange)="onExpandChange(data.id, $event)"
+          <td *ngIf="data.subData && data.subData.length > 0"
+              [nzExpand]="expandSet.has(data.id)"
+              (nzExpandChange)="onExpandChange(data.id, $event)"
           ></td>
+          <!-- Si no hay subData, muestra un td vacío sin la funcionalidad de expansión -->
+          <td *ngIf="!data.subData || data.subData.length === 0"></td>
           <td *ngFor="let column of columns">
             {{ data[column.field] }}
           </td>
         </tr>
-        <tr *ngIf="expandSet.has(data.id)">
+        <tr *ngIf="expandSet.has(data.id) && data.subData && data.subData.length > 0">
           <td [attr.colspan]="columns.length + 1">
             <nz-table
               [nzShowPagination]="false"

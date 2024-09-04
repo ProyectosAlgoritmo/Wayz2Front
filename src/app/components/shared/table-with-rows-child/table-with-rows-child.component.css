@@ -1,4 +1,4 @@
-::ng-deep .custom-sub-table .ant-table-tbody > tr:hover > td {
+/* ::ng-deep .custom-sub-table .ant-table-tbody > tr:hover > td {
   background-color: transparent !important; 
   border-color: transparent !important; 
 }
@@ -11,4 +11,8 @@
 .custom-sub-table .ant-table-tbody > tr:hover > td {
   background-color: transparent !important;
   border-color: transparent !important;
+} */
+
+.divTable{
+  margin: 20px;
 }
