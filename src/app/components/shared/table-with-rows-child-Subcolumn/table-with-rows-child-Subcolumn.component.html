@@ -1,0 +1,106 @@
+<div class="divTable">
+  <nz-table 
+    #sortTable
+    class="custom-sub-table"
+    [nzData]="listOfData"
+    nzTableLayout="fixed"
+    nzBordered
+    nzSize="middle"
+  >
+    <thead>
+      <tr>
+        <!-- Columna para expandir filas (sin título) -->
+        <th rowspan="2" nzWidth="40px"></th>
+        
+        <!-- Columna de acciones condicional con más ancho -->
+        <th rowspan="2" *ngIf="showActionsColumn" style="text-align: center; width: 120px;" nzWidth="120px">Acciones</th>
+        
+        <th rowspan="2" nzWidth="150px">Street</th>
+        <th rowspan="2" nzWidth="80px">Age</th>
+        <th colspan="2" nzWidth="200px">Block</th>
+        <th colspan="2" nzWidth="250px">Direccion</th>
+        <th colspan="2" nzWidth="300px">Contact</th>
+      </tr>
+      <tr>
+        <th nzWidth="100px">Building</th>
+        <th nzWidth="100px">Door No.</th>
+        <th nzWidth="125px">Direccion1</th>
+        <th nzWidth="125px">Direccion2</th>
+        <th nzWidth="150px">Email</th>
+        <th nzWidth="150px">Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of listOfData">
+        <tr>
+          <!-- Columna de expansión sin título -->
+          <td
+            [nzExpand]="expandSet.has(data.id)"
+            (nzExpandChange)="onExpandChange(data.id, $event)"
+          ></td>
+          
+          <!-- Icono de editar en la columna de acciones -->
+          <td *ngIf="showActionsColumn">
+            <ng-container>
+              <a (click)="onEdit(data)">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+              </a>
+            </ng-container>
+          </td>
+          
+          <td>{{ data.street }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.building }}</td>
+          <td>{{ data.number }}</td>
+          <td>{{ data.direccion1 }}</td>
+          <td>{{ data.direccion2 }}</td>
+          <td>{{ data.email }}</td>
+          <td>{{ data.phone }}</td>
+        </tr>
+        
+        <!-- Subtabla para subData -->
+        <tr *ngIf="expandSet.has(data.id)">
+          <td [attr.colspan]="showActionsColumn ? 11 : 10">
+            <nz-table
+              [nzData]="data.subData"
+              nzBordered
+              nzSize="middle"
+              [nzScroll]="{ x: '1200px', y: '240px' }"
+              [nzShowPagination]="false"
+            >
+              <thead>
+                <tr>
+                  <th rowspan="2">Street</th>
+                  <th rowspan="2">Age</th>
+                  <th colspan="2">Block</th>
+                  <th colspan="2">Direccion</th>
+                  <th colspan="2">Contact</th>
+                </tr>
+                <tr>
+                  <th>Building</th>
+                  <th>Door No.</th>
+                  <th>Direccion1</th>
+                  <th>Direccion2</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let subItem of data.subData">
+                  <td>{{ subItem.street }}</td>
+                  <td>{{ subItem.age }}</td>
+                  <td>{{ subItem.building }}</td>
+                  <td>{{ subItem.number }}</td>
+                  <td>{{ subItem.direccion1 }}</td>
+                  <td>{{ subItem.direccion2 }}</td>
+                  <td>{{ subItem.email }}</td>
+                  <td>{{ subItem.phone }}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </nz-table>
+</div>

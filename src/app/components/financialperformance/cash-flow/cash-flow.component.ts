@@ -16,6 +16,7 @@ import {
   EditOutline,
 } from '@ant-design/icons-angular/icons';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { TableWithRowsChildSubcolumnComponent } from "../../shared/table-with-rows-child-Subcolumn/table-with-rows-child-Subcolumn.component";
 @Component({
   selector: 'app-cash-flow',
   templateUrl: './cash-flow.component.html',
@@ -42,7 +43,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     NzOptionComponent,
     NzSelectModule,
     NzIconModule,
-  ],
+    TableWithRowsChildSubcolumnComponent
+],
 })
 export class CashFlowComponent implements OnInit {
   [x: string]: any;
@@ -60,16 +62,21 @@ export class CashFlowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.financialperformanceService
-      .getCajaFlujo('get-caja-flujos', new Date().getFullYear())
-      .subscribe((data) => {
-        this.dataForTable = data;
-      });
+    // this.financialperformanceService
+    //   .getCajaFlujo('get-caja-flujos', new Date().getFullYear())
+    //   .subscribe((data) => {
+    //     this.dataForTable = data;
+    //   });
 
     this.financialperformanceService
       .ObtenerDateCashFlow('get-caja-flujos-year')
       .subscribe((data) => {
         this.dateYear = data.data;
+      });
+    this.financialperformanceService
+      .getDataStructure1()
+      .subscribe((data) => {
+        this.dataForTable = data;
       });
   }
 

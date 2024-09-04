@@ -1,38 +1,63 @@
 <div class="divTable">
-  <nz-table 
+  <nz-table
     #sortTable
     class="custom-sub-table"
     #nzTable
     [nzData]="sortedData"
     nzTableLayout="fixed"
-    [nzPageSize]="pageSize" 
+    [nzPageSize]="pageSize"
   >
     <thead>
-      <tr >
-        <th nzStyle="background-color: #f5f5f5; color: #333;" nzWidth="60px"></th>
-        <th *ngFor="let column of columns"
-            (click)="sortData(column.field)"
-            [nzSortOrder]="column.sortDirection">
+      <tr>
+        <th
+          nzStyle="background-color: #f5f5f5; color: #333;"
+          nzWidth="60px"
+        ></th>
+        <th
+          rowspan="2"
+          *ngIf="ActionEdit"
+          style="text-align: center; width: 120px"
+          nzWidth="120px"
+        >
+          Acciones
+        </th>
+        <th
+          *ngFor="let column of columns"
+          (click)="sortData(column.field)"
+          [nzSortOrder]="column.sortDirection"
+        >
           {{ column.title }}
-          <i *ngIf="column.sortDirection === 'ascend'" class="fas fa-sort-up"></i>
-          <i *ngIf="column.sortDirection === 'descend'" class="fas fa-sort-down"></i>
+          <i
+            *ngIf="column.sortDirection === 'ascend'"
+            class="fas fa-sort-up"
+          ></i>
+          <i
+            *ngIf="column.sortDirection === 'descend'"
+            class="fas fa-sort-down"
+          ></i>
         </th>
       </tr>
     </thead>
     <tbody>
       <ng-container *ngFor="let data of sortedData">
         <tr>
-          <td *ngIf="data.subData && data.subData.length > 0"
-              [nzExpand]="expandSet.has(data.id)"
-              (nzExpandChange)="onExpandChange(data.id, $event)"
+          <td
+            [nzExpand]="expandSet.has(data.id)"
+            (nzExpandChange)="onExpandChange(data.id, $event)"
           ></td>
-          <!-- Si no hay subData, muestra un td vacío sin la funcionalidad de expansión -->
+          <td *ngIf="ActionEdit">
+            <ng-container>
+              <a (click)="onEdit(data)">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+              </a>
+            </ng-container>
+          </td>
           <td *ngIf="!data.subData || data.subData.length === 0"></td>
           <td *ngFor="let column of columns">
             {{ data[column.field] }}
           </td>
         </tr>
-        <tr *ngIf="expandSet.has(data.id) && data.subData && data.subData.length > 0">
+        <tr *ngIf="expandSet.has(data.id)">
           <td [attr.colspan]="columns.length + 1">
             <nz-table
               [nzShowPagination]="false"
@@ -41,6 +66,14 @@
             >
               <thead>
                 <tr>
+                  <th
+                    rowspan="2"
+                    *ngIf="ActionEdit"
+                    style="text-align: center; width: 120px"
+                    nzWidth="120px"
+                  >
+                    Acciones
+                  </th>
                   <th *ngFor="let subColumn of subColumns">
                     {{ subColumn.title }}
                   </th>
@@ -48,6 +81,13 @@
               </thead>
               <tbody>
                 <tr *ngFor="let subItem of data.subData">
+                  <td *ngIf="ActionEdit">
+                    <ng-container>
+                      <a (click)="onEdit(data)">
+                        <i nz-icon nzType="edit" nzTheme="outline"></i>
+                      </a>
+                    </ng-container>
+                  </td>
                   <td *ngFor="let subColumn of subColumns">
                     {{ subItem[subColumn.field] }}
                   </td>

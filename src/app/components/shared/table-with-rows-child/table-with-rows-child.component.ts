@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AuxService } from '../../../services/aux-service.service';
 import { Subscription } from 'rxjs';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'app-table-with-rows-child',
   templateUrl: './table-with-rows-child.component.html',
   styleUrls: ['./table-with-rows-child.component.css'],
-  imports: [NzTableModule, NgFor, NgIf, FormsModule],
+  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzIconModule],
   standalone: true,
 })
 export class TableWithRowsChildComponent implements OnInit {
@@ -23,6 +24,7 @@ export class TableWithRowsChildComponent implements OnInit {
   private _listOfData: any[] = [];
   sortedData: any[] = [];
   searchValue = '';
+  @Input() ActionEdit: boolean = false;
   private searchSubscription: Subscription = new Subscription();
   constructor(private auxService: AuxService) {
     this._listOfData = [...this.sortedData];
@@ -97,13 +99,15 @@ export class TableWithRowsChildComponent implements OnInit {
     }
   }
 
-  onExpandChange(id: number, checked: boolean): void {
-    if (checked) {
-      this.expandSet.add(id);
-    } else {
-      this.expandSet.delete(id);
-    }
+  // Este Set se usa para guardar las filas que están expandidas
+
+onExpandChange(id: number, checked: boolean): void {
+  if (checked) {
+    this.expandSet.add(id); // Añade el id si la fila está expandida
+  } else {
+    this.expandSet.delete(id); // Elimina el id si la fila no está expandida
   }
+}
 
   // Método para manejar la ordenación
   sortData(field: string): void {
@@ -123,5 +127,9 @@ export class TableWithRowsChildComponent implements OnInit {
         return 0;
       });
     }
+  }
+  onEdit(data: any): void {
+    // Lógica para editar el registro
+    console.log('Editando registro:', data);
   }
 }
