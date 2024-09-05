@@ -11,7 +11,9 @@
                 [showActions]="true"
                 [ActionExport]="true"
                 [ActionImport]="true"
-                (importAction)="onImportAction($event)" > <!-- Aquí puedes establecer true o false según sea necesario -->
+                (importAction)="onImportAction($event)" 
+                (exportAction)="onExport($event)" 
+                > <!-- Aquí puedes establecer true o false según sea necesario -->
               </app-table>
             
            </div>

@@ -1,11 +1,12 @@
-<div class="divTable">
-  <nz-table
+<div class="table-container">
+  <nz-table 
     #sortTable
     class="custom-sub-table"
     #nzTable
     [nzData]="sortedData"
     nzTableLayout="fixed"
-    [nzPageSize]="pageSize"
+    [nzPageSize]="pageSize" 
+    [nzScroll]="{  x: '1200px', y: '340px' }" 
   >
     <thead>
       <tr>
@@ -87,3 +88,4 @@
     </tbody>
   </nz-table>
 </div>
+

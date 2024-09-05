@@ -17,6 +17,8 @@ import {
 } from '@ant-design/icons-angular/icons';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TableWithRowsChildSubcolumnComponent } from '../../shared/table-with-rows-child-Subcolumn/table-with-rows-child-Subcolumn.component';
+import { SharedModule } from '../../shared/shared.module';
+
 @Component({
   selector: 'app-cash-flow',
   templateUrl: './cash-flow.component.html',
@@ -44,6 +46,7 @@ import { TableWithRowsChildSubcolumnComponent } from '../../shared/table-with-ro
     NzSelectModule,
     NzIconModule,
     TableWithRowsChildSubcolumnComponent,
+    SharedModule
   ],
 })
 export class CashFlowComponent implements OnInit {

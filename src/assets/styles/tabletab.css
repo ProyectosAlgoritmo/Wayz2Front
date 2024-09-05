@@ -3,14 +3,14 @@
   }
   
   .table-container {
-    margin-top: 0px;
+    margin-top: -5px;
     background-color: #f1f5fa;
     border-radius: 8px;
     height: 77vh; /* Ajusta este valor según tus necesidades */
   }
   
   .divtable{
-    padding: 20px;
+    padding: 10px;
 
   }
   
@@ -55,4 +55,25 @@
   }
   
   
-  
+  /* Varis botones en la tabla*/
+.headerclass{
+
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.spacermoreinputs {
+  flex-grow: 1;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Añade un espacio entre los elementos */
+}
+
+.select-input, 
+.nz-input-group {
+  flex-shrink: 0;
+  width: 200px; /* Ajusta el ancho como desees */
+}

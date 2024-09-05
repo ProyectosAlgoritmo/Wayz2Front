@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 import { CloudDownloadOutline, CloudUploadOutline, PlayCircleOutline, EyeOutline, EditOutline } from '@ant-design/icons-angular/icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -50,7 +51,7 @@ export class TableComponent implements OnInit {
   originalDataSource: any[] = [];
   
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -101,8 +102,8 @@ export class TableComponent implements OnInit {
     this.Create.emit();
   }
 
-  onActionImportGo(element: any) {
-    //this.editAction.emit(element);
+  onActionImportGo() {
+    this.router.navigate(['/import']);
   }
 
   applyFilter(event: Event): void {
