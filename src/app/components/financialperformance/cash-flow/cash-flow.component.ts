@@ -65,20 +65,19 @@ export class CashFlowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.financialperformanceService
-      .getCashFlow('get-cash-flow', new Date().getFullYear())
-      .subscribe((data) => {
-        this.dataForTable = data;
-      });
-
-    this.financialperformanceService
-      .ObtenerDateCashFlow('get-caja-flujos-year')
-      .subscribe((data) => {
-        this.dateYear = data.data;
-      });
+    this.getCashFlow();
     // this.financialperformanceService.getDataStructure1().subscribe((data) => {
     //   this.dataForTable = data;
     // });
+  }
+
+  ObtenerDateCashFlow() {
+    this.financialperformanceService
+      .ObtenerDateCashFlow('get-caja-flujos-year')
+      .subscribe((data) => {
+        this.auxService.cerrarVentanaCargando();
+        this.dateYear = data.data;
+      });
   }
 
   get selectedYear(): string {
@@ -91,6 +90,7 @@ export class CashFlowComponent implements OnInit {
   }
 
   onOptionChange(event: any) {
+    this.auxService.ventanaCargando();
     let year = event;
     if (event == null) {
       year = new Date().getFullYear();
@@ -98,19 +98,33 @@ export class CashFlowComponent implements OnInit {
     this.financialperformanceService
       .getCashFlow('get-cash-flow', year)
       .subscribe((data) => {
+        this.auxService.cerrarVentanaCargando();
         this.dataForTable = data;
       });
   }
   onSubTableDataSaved(data: any): void {
     console.log('Datos guardados recibidos en CashFlowComponent:', data);
   }
+  
+  getCashFlow() {
+    this.auxService.ventanaCargando();
+    this.financialperformanceService
+    .getCashFlow('get-cash-flow', Number(this._selectedYear))
+    .subscribe((data) => {
+      this.ObtenerDateCashFlow();
+      this.dataForTable = data;
+    });
+  }
   onMainTableDataSaved(data: any): void {
+    this.auxService.ventanaCargando();
     data.year = this._selectedYear; 
     this.financialperformanceService
       .UpdateCashFlow('update-cash-flow', data)
       .subscribe((data) => {
-        this.dataForTable = data;
+        this.auxService.cerrarVentanaCargando();
+        if (data.success == true) {
+         this.getCashFlow();
+        }
       });
-
   }
 }
