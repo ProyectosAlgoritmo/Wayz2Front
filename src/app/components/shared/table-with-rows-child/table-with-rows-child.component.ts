@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AuxService } from '../../../services/aux-service.service';
@@ -25,10 +25,13 @@ export class TableWithRowsChildComponent implements OnInit {
   sortedData: any[] = [];
   searchValue = '';
   @Input() ActionEdit: boolean = false;
+  @Output() subTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
+  @Output() mainTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
   private searchSubscription: Subscription = new Subscription();
   constructor(private auxService: AuxService) {
     this._listOfData = [...this.sortedData];
   }
+
 
   ngOnInit() {
     this.searchSubscription = this.auxService
@@ -129,14 +132,12 @@ onExpandChange(id: number, checked: boolean): void {
     }
   }
   saveMainTableEdit(data: any): void {
-    console.log('Guardar cambios en la tabla principal:', data);
-    // Aquí agregarías la lógica para guardar los datos modificados de la tabla principal
+    this.mainTableDataSaved.emit(data);
     data.isEditing = false;  // Salir del modo de edición
   }
   
   saveSubTableEdit(data: any): void {
-    console.log('Guardar cambios en la subtabla:', data);
-    // Aquí agregarías la lógica para guardar los datos modificados de la subtabla
+    this.subTableDataSaved.emit(data);
     data.isEditing = false;  // Salir del modo de edición
   }
   

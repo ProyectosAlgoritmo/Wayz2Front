@@ -51,7 +51,9 @@
                     Acciones
                   </th>
                   <th *ngFor="let subColumn of subColumns">
-                    {{ subColumn.title }}
+                    <ng-container *ngIf="subColumn.field !== 'id'">
+                      {{ subColumn.title }}
+                    </ng-container>
                   </th>
                 </tr>
               </thead>
@@ -63,11 +65,13 @@
                     </a>
                   </td>
                   <td *ngFor="let subColumn of subColumns">
-                    <ng-container *ngIf="subItem.isEditing">
-                      <input nz-input [(ngModel)]="subItem[subColumn.field]" />
-                    </ng-container>
-                    <ng-container *ngIf="!subItem.isEditing">
-                      {{ subItem[subColumn.field] }}
+                    <ng-container *ngIf="subColumn.field !== 'id'">
+                      <ng-container *ngIf="subItem.isEditing">
+                        <input nz-input [(ngModel)]="subItem[subColumn.field]" />
+                      </ng-container>
+                      <ng-container *ngIf="!subItem.isEditing">
+                        {{ subItem[subColumn.field] }}
+                      </ng-container>
                     </ng-container>
                   </td>
                   <td *ngIf="subItem.isEditing">
