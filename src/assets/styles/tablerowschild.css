@@ -11,7 +11,8 @@
   }
   
   .divtable{
-    padding: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
 
   }
   
@@ -59,8 +60,6 @@
   /* Varis botones en la tabla*/
 .headerclass{
 
-  margin-right: 20px;
-  margin-left: 20px;
 }
 
 .spacermoreinputs {
@@ -89,12 +88,6 @@
   border-bottom: 0.5px solid #e0e0e0; /* Línea discreta debajo */
 }
 
-.title-headingFC {
-  font-size: 1.2em;
-  font-weight: 450;
-  color: #01142a; 
-  /*text-align: center;
-  border-bottom: 0.5px solid #e0e0e0; /* Línea discreta debajo */
-}
+
   
   
