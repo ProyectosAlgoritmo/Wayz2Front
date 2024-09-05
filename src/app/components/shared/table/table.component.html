@@ -1,4 +1,4 @@
-<div class="full-page-container">
+<div class="table-container">
   
 
 <mat-toolbar class="background-white-title-botton">
@@ -13,7 +13,8 @@
 <app-buttonstrategic 
   *ngIf="ActionImportGo" 
   mat-button 
-  [label]="'Importar'">
+  [label]="'Importar'"
+  (click)="onActionImportGo()" >
 </app-buttonstrategic>
 
   <span class="spacer"></span>
@@ -38,7 +39,7 @@
   [nzData]="dataSource" 
   [nzPageSize]="pageSize" 
   [nzFrontPagination]="false" 
-  [nzScroll]="{  x: '1200px', y: '250px' }" 
+  [nzScroll]="{  x: '1200px', y: '340px' }" 
 >
   <thead>
     <tr>

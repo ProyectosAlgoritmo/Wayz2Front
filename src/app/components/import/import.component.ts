@@ -23,17 +23,18 @@ export interface UserData {
   Carpeta: string; 
   modeldata: string; 
   storedprocedure: string; 
+  modelImport: string; 
 }
 
 
 const USERS_DATA: UserData[] = [
-  {Formulario: 'Clientes', Carpeta: 'Administracion/', modeldata: '@ModeloEntradaClientes', storedprocedure: '[administracion].[ImportClientes]'},
-  {Formulario: 'Productos y servicios', Carpeta: 'Administracion/', modeldata: '@ModeloProductosServicios', storedprocedure: '[administracion].[ImportProductServices]'},
-  {Formulario: 'Vendedores', Carpeta: 'Administracion/', modeldata: '@ModeloVendedores', storedprocedure: '[administracion].[ImportVendedores]'},
-  {Formulario: 'Ingresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosReales', storedprocedure: '[desempenofinanciero].[ImportIngresosreales]'},
-  {Formulario: 'Ingresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosProyectados', storedprocedure: '[desempenofinanciero].[ImportIngresosproyectados]'},
-  {Formulario: 'Egresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosReales', storedprocedure: '[desempenofinanciero].[ImportEgresosreales]'},
-  {Formulario: 'Egresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosProyectados', storedprocedure: '[desempenofinanciero].[ImportEgresosproyectados]'},
+  {Formulario: 'Clientes', Carpeta: 'Administracion/', modeldata: '@ModeloEntradaClientes', storedprocedure: '[administracion].[ImportClientes]', modelImport: 'ImportModels/Clientes.xlsx'},
+  {Formulario: 'Productos y servicios', Carpeta: 'Administracion/', modeldata: '@ModeloProductosServicios', storedprocedure: '[administracion].[ImportProductServices]', modelImport: 'ImportModels/Productosyservicios.xlsx'},
+  {Formulario: 'Vendedores', Carpeta: 'Administracion/', modeldata: '@ModeloVendedores', storedprocedure: '[administracion].[ImportVendedores]', modelImport: 'ImportModels/Vendedores.xlsx'},
+  {Formulario: 'Ingresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosReales', storedprocedure: '[desempenofinanciero].[ImportIngresosreales]', modelImport: 'ImportModels/Ingresosreal.xlsx'},
+  {Formulario: 'Ingresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosProyectados', storedprocedure: '[desempenofinanciero].[ImportIngresosproyectados]', modelImport: 'ImportModels/Ingresosproyectados.xlsx'},
+  {Formulario: 'Egresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosReales', storedprocedure: '[desempenofinanciero].[ImportEgresosreales]', modelImport: 'ImportModels/EgresosReal.xlsx'},
+  {Formulario: 'Egresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosProyectados', storedprocedure: '[desempenofinanciero].[ImportEgresosproyectados]', modelImport: 'ImportModels/EgresosProyectado.xlsx'},
  ];
 
 @Component({
@@ -99,6 +100,34 @@ export class ImportComponent {
    //   console.log(response);
     //});
 
+  }
+
+
+  onExport(element: any) {
+
+    const additionalData = element.Formulario;
+    const carpeta = element.Carpeta;
+    const modeldata = element.modeldata;
+    const storedprocedure = element.storedprocedure;
+
+    console.log(element); 
+
+    this.importService.getPreSignedDownloadUrl(element.modelImport).subscribe(response => {
+      const downloadUrl = response.url;
+      console.log(response.url); 
+      
+      this.importService.downloadFileFromS3(downloadUrl).subscribe(blob => {
+        // Crear un enlace para descargar el archivo
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        a.href = objectUrl;
+        a.download = element.modelImport; // Nombre del archivo descargado
+        a.click();
+        URL.revokeObjectURL(objectUrl); // Limpiar la URL del objeto después de descargar
+      });
+    });
+   
+   
   }
 
   uploadFile(file: File): void {

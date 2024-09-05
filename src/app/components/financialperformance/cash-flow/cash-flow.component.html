@@ -1,42 +1,58 @@
+
+
 <div class="content-container">
+  
+    
   <div class="table-container">
-    <div class="divHeaderGrid">
-      <div>
-        <h1>Flujo de Caja</h1>
-      </div>
-      <div class="divHeaderTable">
-        <nz-select
-          class="select-input"
-          [(ngModel)]="selectedYear"
-          nzPlaceHolder="Seleccione una fecha"
-        >
-          <nz-option nzLabel="Seleccione una fecha" disabled selected></nz-option>
-          <nz-option
-            *ngFor="let year of dateYear"
-            [nzLabel]="year"
-            [nzValue]="year"
-          ></nz-option>
-        </nz-select>
-        <div>
+
+
+    <div class="headerclass">
+      <mat-toolbar class="background-white-title-botton">
+        <app-buttonstrategic 
+          mat-button 
+          [label]="'Crear'">
+        </app-buttonstrategic>
+    
+        <span class="spacermoreinputs"></span>
+        
+        <div class="input-container">
+          <nz-select
+            class="select-input"
+            [(ngModel)]="selectedYear"
+            nzPlaceHolder="Seleccione una fecha">
+            <nz-option nzLabel="Seleccione una fecha" disabled selected></nz-option>
+            <nz-option
+              *ngFor="let year of dateYear"
+              [nzLabel]="year"
+              [nzValue]="year">
+            </nz-option>
+          </nz-select>
+    
           <nz-input-group [nzSuffix]="suffixIconSearch">
             <input
               type="text"
               nz-input
               [(ngModel)]="searchValue"
               (input)="onSearchChange()"
-              placeholder="Buscar..."
-            />
+              placeholder="Buscar...">
           </nz-input-group>
+          
           <ng-template #suffixIconSearch>
             <span nz-icon nzType="search" nzTheme="outline"></span>
           </ng-template>
         </div>
-      </div>
+      </mat-toolbar>
     </div>
-    <div>
-      <app-table-with-rows-child
-        [listOfData]="dataForTable"
-      ></app-table-with-rows-child>
-    </div>
-  </div>
+    
+
+  
+ 
+  <div class="divtable">
+
+    <app-table-with-rows-child
+    [listOfData]="dataForTable"
+    ></app-table-with-rows-child>
+  
+ </div>
+</div>
 </div>

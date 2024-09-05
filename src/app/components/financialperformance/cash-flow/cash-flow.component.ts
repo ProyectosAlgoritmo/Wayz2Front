@@ -16,6 +16,7 @@ import {
   EditOutline,
 } from '@ant-design/icons-angular/icons';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { SharedModule } from '../../shared/shared.module';
 @Component({
   selector: 'app-cash-flow',
   templateUrl: './cash-flow.component.html',
@@ -42,6 +43,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     NzOptionComponent,
     NzSelectModule,
     NzIconModule,
+    SharedModule
   ],
 })
 export class CashFlowComponent implements OnInit {
