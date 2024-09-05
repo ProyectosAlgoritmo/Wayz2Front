@@ -6,11 +6,14 @@ import { AuxService } from '../../../services/aux-service.service';
 import { Subscription } from 'rxjs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+
+
 @Component({
   selector: 'app-table-with-rows-child',
   templateUrl: './table-with-rows-child.component.html',
   styleUrls: ['./table-with-rows-child.component.css'],
-  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzIconModule,NzInputModule,],
+  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzIconModule,NzInputModule,NzPaginationModule],
   standalone: true,
 })
 export class TableWithRowsChildComponent implements OnInit {
@@ -27,6 +30,10 @@ export class TableWithRowsChildComponent implements OnInit {
   @Input() ActionEdit: boolean = false;
   @Output() subTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
   @Output() mainTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
+
+  paginatedData: any[] = [];
+  currentPage: number = 1;
+
   private searchSubscription: Subscription = new Subscription();
   constructor(private auxService: AuxService) {
     this._listOfData = [...this.sortedData];
@@ -39,13 +46,18 @@ export class TableWithRowsChildComponent implements OnInit {
       .subscribe((searchTerm) => {
         this.onSearch(searchTerm);
       });
+
+    
   }
+
+
 
   @Input()
   set listOfData(value: any[]) {
     this._listOfData = value;
     this.initializeColumns();
     this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
+    this.updatePaginatedData();
   }
   @Input() pageSize: number = 10;
 
@@ -130,6 +142,8 @@ onExpandChange(id: number, checked: boolean): void {
         return 0;
       });
     }
+
+    this.updatePaginatedData();
   }
   saveMainTableEdit(data: any): void {
     this.mainTableDataSaved.emit(data);
@@ -144,4 +158,17 @@ onExpandChange(id: number, checked: boolean): void {
   toggleEdit(data: any, isEditing: boolean): void {
     data.isEditing = isEditing;
   }
+
+
+  updatePaginatedData(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedData = this.sortedData.slice(startIndex, endIndex);
+  }
+  
+  onPageChange(pageIndex: number): void {
+    this.currentPage = pageIndex;
+    this.updatePaginatedData();
+  }
+  
 }

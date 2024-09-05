@@ -1,28 +1,28 @@
-<div class="table-container">
+
+<div class="full-page-container">
+  <div class="table-container">
   <nz-table 
     #sortTable
-    class="custom-sub-table"
     #nzTable
-    [nzData]="sortedData"
-    nzTableLayout="fixed"
+    [nzData]="paginatedData"
     [nzPageSize]="pageSize" 
-    [nzScroll]="{  x: '1200px', y: '340px' }" 
+    [nzScroll]="{  x: '1600px', y: '340px' }" 
+    [nzShowPagination]="false"
   >
     <thead>
-      <tr>
-        <th nzStyle="background-color: #f5f5f5; color: #333;" nzWidth="60px"></th>
-        <th rowspan="2" *ngIf="ActionEdit" style="text-align: center; width: 120px" nzWidth="120px">
-          Acciones
-        </th>
-        <th *ngFor="let column of columns" (click)="sortData(column.field)" [nzSortOrder]="column.sortDirection">
-          {{ column.title }}
+      <tr >
+        <th nzStyle="background-color: #f5f5f5; color: #333;"></th>
+        <th *ngFor="let column of columns"
+            (click)="sortData(column.field)"
+            [nzSortOrder]="column.sortDirection">
+             {{ column.title }}
           <i *ngIf="column.sortDirection === 'ascend'" class="fas fa-sort-up"></i>
           <i *ngIf="column.sortDirection === 'descend'" class="fas fa-sort-down"></i>
         </th>
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let data of sortedData">
+      <ng-container *ngFor="let data of paginatedData">
         <tr>
           <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
           <td *ngIf="ActionEdit">
@@ -87,5 +87,24 @@
       </ng-container>
     </tbody>
   </nz-table>
+</div>
+
+
+<div class="paginator-container">
+  <nz-pagination 
+    [nzPageSize]="pageSize"
+    [nzTotal]="sortedData.length"
+    [(nzPageIndex)]="currentPage"
+    [nzShowTotal]="totalTemplate"
+    (nzPageIndexChange)="onPageChange($event)">
+  </nz-pagination>
+  
+  <ng-template #totalTemplate let-total>
+    Registros mostrados {{ (currentPage - 1) * pageSize + 1 }} - 
+    {{ (currentPage * pageSize) < total ? (currentPage * pageSize) : total }} 
+    de {{ total }} registros
+  </ng-template>
+  
+  </div>
 </div>
 
