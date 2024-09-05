@@ -52,12 +52,26 @@ export class TableWithRowsChildComponent implements OnInit {
 
 
 
+  // @Input()
+  // set listOfData(value: any[]) {
+  //   this._listOfData = value;
+  //   this.initializeColumns();
+  //   this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
+  //   this.updatePaginatedData();
+  // }
   @Input()
   set listOfData(value: any[]) {
-    this._listOfData = value;
-    this.initializeColumns();
-    this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
-    this.updatePaginatedData();
+    // Asegurarse de que el valor es un array, o bien lo inicializamos con un array vacío
+    this._listOfData = Array.isArray(value) ? value : [];
+
+    // Solo inicializar columnas si hay datos disponibles
+    if (this._listOfData.length > 0) {
+      this.initializeColumns();
+      this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
+      this.updatePaginatedData();
+    } else {
+      console.warn('listOfData está vacío o no es un array.');
+    }
   }
   @Input() pageSize: number = 10;
 
@@ -67,7 +81,7 @@ export class TableWithRowsChildComponent implements OnInit {
 
   onSearch(searchValue: string): void {
     if (!searchValue) {
-      this.sortedData = [...this._listOfData]; // Mostrar todos los datos si no hay valor de búsqueda
+      this.sortedData = [...this._listOfData]; 
     } else {
       const searchLower = searchValue.toLowerCase();
       this.sortedData = this._listOfData.filter((item) => {
@@ -90,27 +104,38 @@ export class TableWithRowsChildComponent implements OnInit {
   }
 
   initializeColumns(): void {
-    if (this._listOfData.length > 0) {
+    // Verificar si _listOfData está definido y tiene al menos un elemento
+    if (this._listOfData && this._listOfData.length > 0) {
       // Configurar las columnas para la tabla principal
       const firstRow = this._listOfData[0];
-      this.columns = Object.keys(firstRow)
-        .filter(
-          (key) => key !== 'subData' && key !== 'id' && key !== 'description'
-        )
-        .map((key) => ({
-          title: key,
-          field: key,
-          sortDirection: null, // Ninguna columna ordenada inicialmente
-        }));
-
-      // Configurar las columnas para la subtabla, si existe
+  
+      // Verificar que la primera fila no sea nula o indefinida
+      if (firstRow) {
+        this.columns = Object.keys(firstRow)
+          .filter(
+            (key) => key !== 'subData' && key !== 'id' && key !== 'description'
+          )
+          .map((key) => ({
+            title: key,
+            field: key,
+            sortDirection: null, // Ninguna columna ordenada inicialmente
+          }));
+      } else {
+        console.warn('La primera fila de _listOfData está vacía o es nula.');
+      }
+  
+      // Configurar las columnas para la subtabla, si existe subData
       const firstSubRow = this._listOfData[0].subData?.[0];
       if (firstSubRow) {
         this.subColumns = Object.keys(firstSubRow).map((key) => ({
           title: key,
           field: key,
         }));
+      } else {
+        console.warn('La subData o la primera fila de subData está vacía o no existe.');
       }
+    } else {
+      console.warn('_listOfData está vacío o no ha sido inicializado.');
     }
   }
 
@@ -147,12 +172,12 @@ onExpandChange(id: number, checked: boolean): void {
   }
   saveMainTableEdit(data: any): void {
     this.mainTableDataSaved.emit(data);
-    data.isEditing = false;  // Salir del modo de edición
+    data.isEditing = false;  
   }
   
   saveSubTableEdit(data: any): void {
     this.subTableDataSaved.emit(data);
-    data.isEditing = false;  // Salir del modo de edición
+    data.isEditing = false;
   }
   
   toggleEdit(data: any, isEditing: boolean): void {

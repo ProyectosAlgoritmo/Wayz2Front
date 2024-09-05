@@ -54,7 +54,7 @@ export class CashFlowComponent implements OnInit {
   dataForTable: any[] = [];
   dateYear: any[] = [];
   searchValue: string = '';
-  private _selectedYear: string = '';
+  private _selectedYear: string = new Date().getFullYear().toString();
   constructor(
     private financialperformanceService: financialperformanceService,
     private auxService: AuxService
@@ -66,7 +66,7 @@ export class CashFlowComponent implements OnInit {
 
   ngOnInit() {
     this.financialperformanceService
-      .getCajaFlujo('get-caja-flujos', new Date().getFullYear())
+      .getCashFlow('get-cash-flow', new Date().getFullYear())
       .subscribe((data) => {
         this.dataForTable = data;
       });
@@ -96,7 +96,7 @@ export class CashFlowComponent implements OnInit {
       year = new Date().getFullYear();
     }
     this.financialperformanceService
-      .getCajaFlujo('get-caja-flujos', year)
+      .getCashFlow('get-cash-flow', year)
       .subscribe((data) => {
         this.dataForTable = data;
       });
@@ -105,6 +105,12 @@ export class CashFlowComponent implements OnInit {
     console.log('Datos guardados recibidos en CashFlowComponent:', data);
   }
   onMainTableDataSaved(data: any): void {
-    console.log('Datos guardados recibidos en CashFlowComponent desde main:', data);
+    data.year = this._selectedYear; 
+    this.financialperformanceService
+      .UpdateCashFlow('update-cash-flow', data)
+      .subscribe((data) => {
+        this.dataForTable = data;
+      });
+
   }
 }
