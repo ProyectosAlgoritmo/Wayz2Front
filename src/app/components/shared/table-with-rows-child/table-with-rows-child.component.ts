@@ -4,12 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AuxService } from '../../../services/aux-service.service';
 import { Subscription } from 'rxjs';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 @Component({
   selector: 'app-table-with-rows-child',
   templateUrl: './table-with-rows-child.component.html',
   styleUrls: ['./table-with-rows-child.component.css'],
-  imports: [NzTableModule, NgFor, NgIf, FormsModule],
+  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzPaginationModule],
   standalone: true,
 })
 export class TableWithRowsChildComponent implements OnInit {
@@ -23,6 +24,10 @@ export class TableWithRowsChildComponent implements OnInit {
   private _listOfData: any[] = [];
   sortedData: any[] = [];
   searchValue = '';
+
+  paginatedData: any[] = [];
+  currentPage: number = 1;
+
   private searchSubscription: Subscription = new Subscription();
   constructor(private auxService: AuxService) {
     this._listOfData = [...this.sortedData];
@@ -34,13 +39,18 @@ export class TableWithRowsChildComponent implements OnInit {
       .subscribe((searchTerm) => {
         this.onSearch(searchTerm);
       });
+
+    
   }
+
+
 
   @Input()
   set listOfData(value: any[]) {
     this._listOfData = value;
     this.initializeColumns();
     this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
+    this.updatePaginatedData();
   }
   @Input() pageSize: number = 10;
 
@@ -123,5 +133,20 @@ export class TableWithRowsChildComponent implements OnInit {
         return 0;
       });
     }
+
+    this.updatePaginatedData();
   }
+
+
+  updatePaginatedData(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedData = this.sortedData.slice(startIndex, endIndex);
+  }
+  
+  onPageChange(pageIndex: number): void {
+    this.currentPage = pageIndex;
+    this.updatePaginatedData();
+  }
+  
 }
