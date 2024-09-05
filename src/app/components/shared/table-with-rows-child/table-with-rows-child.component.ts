@@ -5,12 +5,12 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { AuxService } from '../../../services/aux-service.service';
 import { Subscription } from 'rxjs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-
+import { NzInputModule } from 'ng-zorro-antd/input';
 @Component({
   selector: 'app-table-with-rows-child',
   templateUrl: './table-with-rows-child.component.html',
   styleUrls: ['./table-with-rows-child.component.css'],
-  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzIconModule],
+  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzIconModule,NzInputModule,],
   standalone: true,
 })
 export class TableWithRowsChildComponent implements OnInit {
@@ -128,8 +128,19 @@ onExpandChange(id: number, checked: boolean): void {
       });
     }
   }
-  onEdit(data: any): void {
-    // Lógica para editar el registro
-    console.log('Editando registro:', data);
+  saveMainTableEdit(data: any): void {
+    console.log('Guardar cambios en la tabla principal:', data);
+    // Aquí agregarías la lógica para guardar los datos modificados de la tabla principal
+    data.isEditing = false;  // Salir del modo de edición
+  }
+  
+  saveSubTableEdit(data: any): void {
+    console.log('Guardar cambios en la subtabla:', data);
+    // Aquí agregarías la lógica para guardar los datos modificados de la subtabla
+    data.isEditing = false;  // Salir del modo de edición
+  }
+  
+  toggleEdit(data: any, isEditing: boolean): void {
+    data.isEditing = isEditing;
   }
 }

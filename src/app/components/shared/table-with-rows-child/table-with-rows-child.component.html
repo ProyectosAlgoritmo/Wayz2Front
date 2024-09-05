@@ -9,69 +9,45 @@
   >
     <thead>
       <tr>
-        <th
-          nzStyle="background-color: #f5f5f5; color: #333;"
-          nzWidth="60px"
-        ></th>
-        <th
-          rowspan="2"
-          *ngIf="ActionEdit"
-          style="text-align: center; width: 120px"
-          nzWidth="120px"
-        >
+        <th nzStyle="background-color: #f5f5f5; color: #333;" nzWidth="60px"></th>
+        <th rowspan="2" *ngIf="ActionEdit" style="text-align: center; width: 120px" nzWidth="120px">
           Acciones
         </th>
-        <th
-          *ngFor="let column of columns"
-          (click)="sortData(column.field)"
-          [nzSortOrder]="column.sortDirection"
-        >
+        <th *ngFor="let column of columns" (click)="sortData(column.field)" [nzSortOrder]="column.sortDirection">
           {{ column.title }}
-          <i
-            *ngIf="column.sortDirection === 'ascend'"
-            class="fas fa-sort-up"
-          ></i>
-          <i
-            *ngIf="column.sortDirection === 'descend'"
-            class="fas fa-sort-down"
-          ></i>
+          <i *ngIf="column.sortDirection === 'ascend'" class="fas fa-sort-up"></i>
+          <i *ngIf="column.sortDirection === 'descend'" class="fas fa-sort-down"></i>
         </th>
       </tr>
     </thead>
     <tbody>
       <ng-container *ngFor="let data of sortedData">
         <tr>
-          <td
-            [nzExpand]="expandSet.has(data.id)"
-            (nzExpandChange)="onExpandChange(data.id, $event)"
-          ></td>
+          <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
           <td *ngIf="ActionEdit">
-            <ng-container>
-              <a (click)="onEdit(data)">
-                <i nz-icon nzType="edit" nzTheme="outline"></i>
-              </a>
+            <a *ngIf="!data.isEditing" (click)="toggleEdit(data, true)">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+          </td>
+          <td *ngFor="let column of columns">
+            <ng-container *ngIf="data.isEditing">
+              <input nz-input [(ngModel)]="data[column.field]" />
+            </ng-container>
+            <ng-container *ngIf="!data.isEditing">
+              {{ data[column.field] }}
             </ng-container>
           </td>
-          <td *ngIf="!data.subData || data.subData.length === 0"></td>
-          <td *ngFor="let column of columns">
-            {{ data[column.field] }}
+          <td *ngIf="data.isEditing">
+            <a (click)="saveMainTableEdit(data)"><span nz-icon nzType="save" nzTheme="outline" style="font-size: 20px; margin-left:10px"></span></a>
+            <a (click)="toggleEdit(data, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
           </td>
         </tr>
         <tr *ngIf="expandSet.has(data.id)">
-          <td [attr.colspan]="columns.length + 1">
-            <nz-table
-              [nzShowPagination]="false"
-              [nzBordered]="false"
-              [nzData]="data.subData"
-            >
+          <td [attr.colspan]="columns.length + 2">
+            <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData">
               <thead>
                 <tr>
-                  <th
-                    rowspan="2"
-                    *ngIf="ActionEdit"
-                    style="text-align: center; width: 120px"
-                    nzWidth="120px"
-                  >
+                  <th rowspan="2" *ngIf="ActionEdit" style="text-align: center; width: 120px" nzWidth="120px">
                     Acciones
                   </th>
                   <th *ngFor="let subColumn of subColumns">
@@ -82,14 +58,21 @@
               <tbody>
                 <tr *ngFor="let subItem of data.subData">
                   <td *ngIf="ActionEdit">
-                    <ng-container>
-                      <a (click)="onEdit(data)">
-                        <i nz-icon nzType="edit" nzTheme="outline"></i>
-                      </a>
-                    </ng-container>
+                    <a *ngIf="!subItem.isEditing" (click)="toggleEdit(subItem, true)">
+                      <i nz-icon nzType="edit" nzTheme="outline"></i>
+                    </a>
                   </td>
                   <td *ngFor="let subColumn of subColumns">
-                    {{ subItem[subColumn.field] }}
+                    <ng-container *ngIf="subItem.isEditing">
+                      <input nz-input [(ngModel)]="subItem[subColumn.field]" />
+                    </ng-container>
+                    <ng-container *ngIf="!subItem.isEditing">
+                      {{ subItem[subColumn.field] }}
+                    </ng-container>
+                  </td>
+                  <td *ngIf="subItem.isEditing">
+                    <a (click)="saveSubTableEdit(subItem)"><span nz-icon nzType="save" nzTheme="outline"></span></a>
+                    <a (click)="toggleEdit(subItem, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
                   </td>
                 </tr>
               </tbody>
