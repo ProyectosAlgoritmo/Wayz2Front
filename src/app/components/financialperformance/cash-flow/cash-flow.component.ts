@@ -16,7 +16,9 @@ import {
   EditOutline,
 } from '@ant-design/icons-angular/icons';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { TableWithRowsChildSubcolumnComponent } from '../../shared/table-with-rows-child-Subcolumn/table-with-rows-child-Subcolumn.component';
 import { SharedModule } from '../../shared/shared.module';
+
 @Component({
   selector: 'app-cash-flow',
   templateUrl: './cash-flow.component.html',
@@ -43,6 +45,7 @@ import { SharedModule } from '../../shared/shared.module';
     NzOptionComponent,
     NzSelectModule,
     NzIconModule,
+    TableWithRowsChildSubcolumnComponent,
     SharedModule
   ],
 })
@@ -51,7 +54,7 @@ export class CashFlowComponent implements OnInit {
   dataForTable: any[] = [];
   dateYear: any[] = [];
   searchValue: string = '';
-  private _selectedYear: string = '';
+  private _selectedYear: string = new Date().getFullYear().toString();
   constructor(
     private financialperformanceService: financialperformanceService,
     private auxService: AuxService
@@ -62,15 +65,17 @@ export class CashFlowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.financialperformanceService
-      .getCajaFlujo('get-caja-flujos', new Date().getFullYear())
-      .subscribe((data) => {
-        this.dataForTable = data;
-      });
+    this.getCashFlow();
+    // this.financialperformanceService.getDataStructure1().subscribe((data) => {
+    //   this.dataForTable = data;
+    // });
+  }
 
+  ObtenerDateCashFlow() {
     this.financialperformanceService
       .ObtenerDateCashFlow('get-caja-flujos-year')
       .subscribe((data) => {
+        this.auxService.cerrarVentanaCargando();
         this.dateYear = data.data;
       });
   }
@@ -85,14 +90,41 @@ export class CashFlowComponent implements OnInit {
   }
 
   onOptionChange(event: any) {
+    this.auxService.ventanaCargando();
     let year = event;
     if (event == null) {
       year = new Date().getFullYear();
     }
     this.financialperformanceService
-      .getCajaFlujo('get-caja-flujos', year)
+      .getCashFlow('get-cash-flow', year)
       .subscribe((data) => {
+        this.auxService.cerrarVentanaCargando();
         this.dataForTable = data;
+      });
+  }
+  onSubTableDataSaved(data: any): void {
+    console.log('Datos guardados recibidos en CashFlowComponent:', data);
+  }
+  
+  getCashFlow() {
+    this.auxService.ventanaCargando();
+    this.financialperformanceService
+    .getCashFlow('get-cash-flow', Number(this._selectedYear))
+    .subscribe((data) => {
+      this.ObtenerDateCashFlow();
+      this.dataForTable = data;
+    });
+  }
+  onMainTableDataSaved(data: any): void {
+    this.auxService.ventanaCargando();
+    data.year = this._selectedYear; 
+    this.financialperformanceService
+      .UpdateCashFlow('update-cash-flow', data)
+      .subscribe((data) => {
+        this.auxService.cerrarVentanaCargando();
+        if (data.success == true) {
+         this.getCashFlow();
+        }
       });
   }
 }

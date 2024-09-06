@@ -1,0 +1,12 @@
+.custom-sub-table th, .custom-sub-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.custom-sub-table th {
+  background-color: #f5f5f5;
+}
+
+.custom-sub-table td {
+  padding: 8px;
+}

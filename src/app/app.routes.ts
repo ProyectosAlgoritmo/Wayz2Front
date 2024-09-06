@@ -40,7 +40,7 @@ export const routes: Routes = [
 
     // desempeño financiero
 
-    { path: 'Income', component: IncomeComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'income', component: IncomeComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'Expenses', component: ExpensesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'reporte/:pageName', component: PowerBiReportComponent, canActivate: [AuthGuard] }  // Ruta dinámica para diferentes páginas del reporte
 

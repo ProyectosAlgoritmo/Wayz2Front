@@ -47,8 +47,11 @@
         </mat-toolbar>
       </div>
 
-    <app-table-with-rows-child
-    [listOfData]="dataForTable"
+      <app-table-with-rows-child
+      [listOfData]="dataForTable"
+      [ActionEdit]="true"
+      (subTableDataSaved)="onSubTableDataSaved($event)"
+      (mainTableDataSaved)="onMainTableDataSaved($event)"
     ></app-table-with-rows-child>
   
  </div>

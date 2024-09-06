@@ -24,34 +24,60 @@
     <tbody>
       <ng-container *ngFor="let data of paginatedData">
         <tr>
-          <td *ngIf="data.subData && data.subData.length > 0"
-              [nzExpand]="expandSet.has(data.id)"
-              (nzExpandChange)="onExpandChange(data.id, $event)"
-          ></td>
-          <!-- Si no hay subData, muestra un td vacío sin la funcionalidad de expansión -->
-          <td *ngIf="!data.subData || data.subData.length === 0"></td>
+          <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
+          <td *ngIf="ActionEdit">
+            <a *ngIf="!data.isEditing" (click)="toggleEdit(data, true)">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+          </td>
           <td *ngFor="let column of columns">
-            {{ data[column.field] }}
+            <ng-container *ngIf="data.isEditing">
+              <input nz-input [(ngModel)]="data[column.field]" />
+            </ng-container>
+            <ng-container *ngIf="!data.isEditing">
+              {{ data[column.field] }}
+            </ng-container>
+          </td>
+          <td *ngIf="data.isEditing">
+            <a (click)="saveMainTableEdit(data)"><span nz-icon nzType="save" nzTheme="outline" style="font-size: 20px; margin-left:10px"></span></a>
+            <a (click)="toggleEdit(data, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
           </td>
         </tr>
-        <tr *ngIf="expandSet.has(data.id) && data.subData && data.subData.length > 0">
-          <td [attr.colspan]="columns.length + 1">
-            <nz-table
-              [nzShowPagination]="false"
-              [nzBordered]="false"
-              [nzData]="data.subData"
-            >
+        <tr *ngIf="expandSet.has(data.id)">
+          <td [attr.colspan]="columns.length + 2">
+            <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData">
               <thead>
                 <tr>
+                  <th rowspan="2" *ngIf="ActionEdit" style="text-align: center; width: 120px" nzWidth="120px">
+                    Acciones
+                  </th>
                   <th *ngFor="let subColumn of subColumns">
-                    {{ subColumn.title }}
+                    <ng-container *ngIf="subColumn.field !== 'id'">
+                      {{ subColumn.title }}
+                    </ng-container>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let subItem of data.subData">
+                  <td *ngIf="ActionEdit">
+                    <a *ngIf="!subItem.isEditing" (click)="toggleEdit(subItem, true)">
+                      <i nz-icon nzType="edit" nzTheme="outline"></i>
+                    </a>
+                  </td>
                   <td *ngFor="let subColumn of subColumns">
-                    {{ subItem[subColumn.field] }}
+                    <ng-container *ngIf="subColumn.field !== 'id'">
+                      <ng-container *ngIf="subItem.isEditing">
+                        <input nz-input [(ngModel)]="subItem[subColumn.field]" />
+                      </ng-container>
+                      <ng-container *ngIf="!subItem.isEditing">
+                        {{ subItem[subColumn.field] }}
+                      </ng-container>
+                    </ng-container>
+                  </td>
+                  <td *ngIf="subItem.isEditing">
+                    <a (click)="saveSubTableEdit(subItem)"><span nz-icon nzType="save" nzTheme="outline"></span></a>
+                    <a (click)="toggleEdit(subItem, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
                   </td>
                 </tr>
               </tbody>
