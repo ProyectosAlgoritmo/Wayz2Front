@@ -15,7 +15,7 @@
 
 .boton-menu {
   margin-left: -4px;
-  margin-right: 6.6px; /* Espacio entre el borde y el texto */
+  margin-right: 15px; /* Espacio entre el borde y el texto */
 }
 
 
@@ -35,5 +35,10 @@
     font-size: 16px;
     color: #5A67BA;
     font-weight: bold;
+  }
+
+  .custom-logo {
+    height: 70px; /* Ajusta esta altura según lo que necesites */
+    width: auto;  /* Deja que el ancho se ajuste automáticamente para mantener la proporción */
   }
   
