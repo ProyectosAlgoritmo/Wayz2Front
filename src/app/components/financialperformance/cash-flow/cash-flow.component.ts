@@ -103,7 +103,16 @@ export class CashFlowComponent implements OnInit {
       });
   }
   onSubTableDataSaved(data: any): void {
-    console.log('Datos guardados recibidos en CashFlowComponent:', data);
+    this.auxService.ventanaCargando();
+    data.year = this._selectedYear; 
+    this.financialperformanceService
+      .UpdateeCashFlowSubTable('update-cash-flow-subTable', data)
+      .subscribe((data) => {
+        this.auxService.cerrarVentanaCargando();
+        this.getCashFlow();
+        if (data.success == true) {
+        }
+      });
   }
   
   getCashFlow() {
@@ -115,6 +124,7 @@ export class CashFlowComponent implements OnInit {
       this.dataForTable = data;
     });
   }
+  
   onMainTableDataSaved(data: any): void {
     this.auxService.ventanaCargando();
     data.year = this._selectedYear; 

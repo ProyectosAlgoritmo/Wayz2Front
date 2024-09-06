@@ -54,6 +54,13 @@ export class financialperformanceService {
     return this.httpClient.put(url, Data, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
 
+  UpdateeCashFlowSubTable(link: string, Data: any): Observable<any> {
+
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
+    return this.httpClient.put(url, Data, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
   ObtenerDateCashFlow(link: string): Observable<any> {
     const headers = this.getHeaders();
     return this.httpClient.get(`${this.apiUrl}/${link}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
