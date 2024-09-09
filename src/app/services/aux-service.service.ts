@@ -111,6 +111,13 @@ export class AuxService {
   }
 
   handleError(error: HttpErrorResponse) {
+    this.cerrarVentanaCargando();
+    if (error.status === 404) {
+      // Aquí puedes manejar el error 401
+      return throwError(
+        'Hubo un problema con la solicitud. Intente nuevamente más tarde.'
+      );
+    }
     if (error.status === 401) {
       // Aquí puedes manejar el error 401
       return throwError(
