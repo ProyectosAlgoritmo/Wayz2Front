@@ -19,6 +19,8 @@ import { PowerBiReportComponent } from './components/powerbi-report/powerbi-repo
 import { CashFlowComponent } from './components/financialperformance/cash-flow/cash-flow.component';
 import { IncomeStatementConfigComponent } from './components/config/income-statement-config/income-statement-config.component';
 import { CashFlowConfigComponent } from './components/config/cash-flow-config/cash-flow-config.component';
+import { ActivitylogComponent } from './components/activitylog/activitylog.component';
+
 
 export const routes: Routes = [
 
@@ -42,7 +44,10 @@ export const routes: Routes = [
 
     { path: 'income', component: IncomeComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'Expenses', component: ExpensesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'reporte/:pageName', component: PowerBiReportComponent, canActivate: [AuthGuard] }  // Ruta dinámica para diferentes páginas del reporte
+    { path: 'reporte/:pageName', component: PowerBiReportComponent, canActivate: [AuthGuard] },  // Ruta dinámica para diferentes páginas del reporte
+
+
+    { path: 'activitylog', component: ActivitylogComponent, canActivate: [AuthGuard] }  // Ruta dinámica para diferentes páginas del reporte
 
 ];
  

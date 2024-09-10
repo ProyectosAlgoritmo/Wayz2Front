@@ -175,5 +175,12 @@ export class DateService {
     );
   }
 
+
+
+  LogActividades(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/Get-LogActivities`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
   
 }

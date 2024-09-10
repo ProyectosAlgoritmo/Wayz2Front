@@ -3,6 +3,7 @@
       <mat-icon>menu</mat-icon>
     </button>
     <img src="../../../assets/images/logo.png" class="custom-logo" />
+
    
     <!--
     <br />
@@ -18,24 +19,32 @@
 
    -->
 
+   
     <span class="spacer"></span>
-    <span class="custom-titleHeader"> ANA ROJAS DUQUE</span>
+    <!--<span class="custom-titleHeader"> ANA ROJAS DUQUE</span>-->
 
-    <button mat-icon-button matTooltip="Estado de la notificación">
+    <button *ngIf="Companyestate"  mat-icon-button matTooltip="Estado de la notificación">
       <mat-icon [ngClass]="{'rotating-icon': notificationIcon === 'autorenew'}">
         {{ notificationIcon }}
       </mat-icon>
     </button>
+
+
+    <button mat-icon-button matTooltip="Log de actividades">
+      <mat-icon>home</mat-icon>
+     </button> 
+
+      <button mat-icon-button matTooltip="Log de actividades">
+      <mat-icon [matBadge]="notificationNumber">history</mat-icon>
+     </button> 
   
-    <button mat-icon-button matTooltip="Notificaciones">
-      <mat-icon>notifications</mat-icon>
-    </button>
     <button mat-icon-button matTooltip="Mi cuenta" (click)="toggleChat()">
       <mat-icon>chat</mat-icon>
     </button>
     <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAccountMenu">
       <mat-icon>account_circle</mat-icon>
     </button>
+
     <mat-menu #userAccountMenu [overlapTrigger]="false" yPosition="below">
       <button mat-menu-item routerLink="#">
         <mat-icon>person</mat-icon><span>Cuenta</span>
