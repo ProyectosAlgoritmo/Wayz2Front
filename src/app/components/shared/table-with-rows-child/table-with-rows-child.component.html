@@ -24,25 +24,28 @@
     <tbody>
       <ng-container *ngFor="let data of paginatedData">
         <tr>
+
           <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
-          <td *ngIf="ActionEdit">
-            <a *ngIf="!data.isEditing" (click)="toggleEdit(data, true)">
-              <i nz-icon nzType="edit" nzTheme="outline"></i>
-            </a>
-          </td>
-          <td *ngFor="let column of columns">
-            <ng-container *ngIf="data.isEditing">
-              <input nz-input [(ngModel)]="data[column.field]" />
-            </ng-container>
-            <ng-container *ngIf="!data.isEditing">
-              {{ data[column.field] }}
-            </ng-container>
-          </td>
-          <td *ngIf="data.isEditing">
-            <a (click)="saveMainTableEdit(data)"><span nz-icon nzType="save" nzTheme="outline" style="font-size: 20px; margin-left:10px"></span></a>
-            <a (click)="toggleEdit(data, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
-          </td>
+          
+
+
+          <ng-container *ngFor="let column of columns">
+            <td *ngIf="column.title === 'Acciones' && ActionEdit">
+              <a *ngIf="!data.isEditing" (click)="toggleEdit(data, true)">
+                <i nz-icon nzType="edit" nzTheme="outline"></i>
+              </a>
+              <a *ngIf="data.isEditing" (click)="saveMainTableEdit(data)"><span nz-icon nzType="save" nzTheme="outline" style="font-size: 20px; margin-left:10px"></span></a>
+              <a *ngIf="data.isEditing" (click)="toggleEdit(data, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
+            </td>
+          
+            <td *ngIf="column.title !== 'Acciones' && !data.isEditing" nz-td>{{ data[column.field] }}</td>
+            <td *ngIf="column.title !== 'Acciones' && data.isEditing" nz-td><input nz-input [(ngModel)]="data[column.field]" /></td>
+          </ng-container>
+          
+        
         </tr>
+
+
         <tr *ngIf="expandSet.has(data.id)">
           <td [attr.colspan]="columns.length + 2">
             <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData">
@@ -84,6 +87,8 @@
             </nz-table>
           </td>
         </tr>
+
+
       </ng-container>
     </tbody>
   </nz-table>

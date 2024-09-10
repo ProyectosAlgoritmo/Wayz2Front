@@ -37,6 +37,7 @@ export class TableWithRowsChildComponent implements OnInit {
   private searchSubscription: Subscription = new Subscription();
   constructor(private auxService: AuxService) {
     this._listOfData = [...this.sortedData];
+    console.log(this.columns); 
   }
 
 
@@ -46,6 +47,12 @@ export class TableWithRowsChildComponent implements OnInit {
       .subscribe((searchTerm) => {
         this.onSearch(searchTerm);
       });
+
+      console.log(this.columns); 
+
+      //this.columns.push('Acciones');
+
+    
 
     
   }
@@ -146,6 +153,12 @@ export class TableWithRowsChildComponent implements OnInit {
     } else {
       console.warn('_listOfData está vacío o no ha sido inicializado.');
     }
+
+    this.columns.unshift({title: 'Acciones',
+      field: 'Acciones',
+      sortDirection: null})
+
+    console.log(this.columns); 
   }
 
   // Este Set se usa para guardar las filas que están expandidas

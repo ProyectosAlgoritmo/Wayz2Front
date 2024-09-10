@@ -53,6 +53,7 @@
     <tr *ngFor="let element of paginatedData">
       <ng-container *ngFor="let column of columnsToDisplay">
         <td *ngIf="column !== 'Acciones'" nz-td>{{ element[column] }}</td>
+        
         <td *ngIf="column === 'Acciones'" nz-td>
           <ng-container *ngIf="ActionExport">
             <a (click)="onExport(element)">
