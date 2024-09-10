@@ -1,6 +1,5 @@
 import { Component, OnInit, Provider } from '@angular/core';
 import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/table-with-rows-child.component';
-import { financialperformanceService } from '../../../services/financialperformance.service';
 import { FormsModule } from '@angular/forms';
 import { AuxService } from '../../../services/aux-service.service';
 import { NgFor } from '@angular/common';
@@ -18,11 +17,11 @@ import {
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TableWithRowsChildSubcolumnComponent } from '../../shared/table-with-rows-child-Subcolumn/table-with-rows-child-Subcolumn.component';
 import { SharedModule } from '../../shared/shared.module';
-
+import { BalanceService } from '../../../services/balance.service';
 @Component({
-  selector: 'app-cash-flow',
-  templateUrl: './cash-flow.component.html',
-  styleUrls: ['./cash-flow.component.css'],
+  selector: 'app-balance',
+  templateUrl: './balance.component.html',
+  styleUrls: ['./balance.component.css'],
   standalone: true,
   providers: [
     {
@@ -49,14 +48,15 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule
   ],
 })
-export class CashFlowComponent implements OnInit {
+export class BalanceComponent implements OnInit {
+
   [x: string]: any;
   dataForTable: any[] = [];
   dateYear: any[] = [];
   searchValue: string = '';
   private _selectedYear: string = new Date().getFullYear().toString();
   constructor(
-    private financialperformanceService: financialperformanceService,
+    private balanceService: BalanceService,
     private auxService: AuxService
   ) {}
 
@@ -65,15 +65,15 @@ export class CashFlowComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getCashFlow();
-    // this.financialperformanceService.getDataStructure1().subscribe((data) => {
+    this.getBalance();
+    // this.balanceService.getDataStructure1().subscribe((data) => {
     //   this.dataForTable = data;
     // });
   }
 
-  ObtenerDateCashFlow() {
-    this.financialperformanceService
-      .ObtenerDateCashFlow('get-caja-flujos-year')
+  ObtenerDateBalance() {
+    this.balanceService
+      .ObtenerDateBalance('get-balance-year')
       .subscribe((data) => {
         this.auxService.cerrarVentanaCargando();
         this.dateYear = data.data;
@@ -95,8 +95,8 @@ export class CashFlowComponent implements OnInit {
     if (event == null) {
       year = new Date().getFullYear();
     }
-    this.financialperformanceService
-      .getCashFlow('get-cash-flow', year)
+    this.balanceService
+      .getBalance('get-balance', year)
       .subscribe((data) => {
         this.auxService.cerrarVentanaCargando();
         this.dataForTable = data;
@@ -105,22 +105,22 @@ export class CashFlowComponent implements OnInit {
   onSubTableDataSaved(data: any): void {
     this.auxService.ventanaCargando();
     data.year = this._selectedYear; 
-    this.financialperformanceService
-      .UpdateeCashFlowSubTable('update-cash-flow-subTable', data)
+    this.balanceService
+      .UpdateeBalanceSubTable('update-balance-subTable', data)
       .subscribe((data) => {
         this.auxService.cerrarVentanaCargando();
-        this.getCashFlow();
+        this.getBalance();
         if (data.success == true) {
         }
       });
   }
   
-  getCashFlow() {
+  getBalance() {
     this.auxService.ventanaCargando();
-    this.financialperformanceService
-    .getCashFlow('get-cash-flow', Number(this._selectedYear))
+    this.balanceService
+    .getBalance('get-balance', Number(this._selectedYear))
     .subscribe((data) => {
-      this.ObtenerDateCashFlow();
+      this.ObtenerDateBalance();
       this.dataForTable = data;
     });
   }
@@ -128,13 +128,14 @@ export class CashFlowComponent implements OnInit {
   onMainTableDataSaved(data: any): void {
     this.auxService.ventanaCargando();
     data.year = this._selectedYear; 
-    this.financialperformanceService
-      .UpdateCashFlow('update-cash-flow', data)
+    this.balanceService
+      .UpdateBalance('update-balance', data)
       .subscribe((data) => {
         this.auxService.cerrarVentanaCargando();
         if (data.success == true) {
-         this.getCashFlow();
+         this.getBalance();
         }
       });
   }
+
 }

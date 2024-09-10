@@ -63,7 +63,7 @@ export class TableWithRowsChildComponent implements OnInit {
   set listOfData(value: any[]) {
     // Asegurarse de que el valor es un array, o bien lo inicializamos con un array vacío
     this._listOfData = Array.isArray(value) ? value : [];
-
+    console.log('hola ', this._listOfData);
     // Solo inicializar columnas si hay datos disponibles
     if (this._listOfData.length > 0) {
       this.initializeColumns();
@@ -81,7 +81,7 @@ export class TableWithRowsChildComponent implements OnInit {
 
   onSearch(searchValue: string): void {
     if (!searchValue) {
-      this.sortedData = [...this._listOfData]; 
+      this.sortedData = [...this._listOfData];
     } else {
       const searchLower = searchValue.toLowerCase();
       this.sortedData = this._listOfData.filter((item) => {
@@ -90,6 +90,7 @@ export class TableWithRowsChildComponent implements OnInit {
         );
       });
     }
+    this.updatePaginatedData(); // Asegúrate de actualizar los datos paginados después de la búsqueda
   }
 
   prepareSearchString(value: any): string {
@@ -124,16 +125,24 @@ export class TableWithRowsChildComponent implements OnInit {
         console.warn('La primera fila de _listOfData está vacía o es nula.');
       }
   
-      // Configurar las columnas para la subtabla, si existe subData
-      const firstSubRow = this._listOfData[0].subData?.[0];
-      if (firstSubRow) {
-        this.subColumns = Object.keys(firstSubRow).map((key) => ({
-          title: key,
-          field: key,
-        }));
-      } else {
-        console.warn('La subData o la primera fila de subData está vacía o no existe.');
+      if (this._listOfData && this._listOfData.length > 0) {
+        const index = this._listOfData.findIndex(item => item && item.subData !== null);
+        if (index !== -1) {
+          // Configurar las columnas para la subtabla, si existe subData
+          const index = this._listOfData.findIndex(item => item.subData !== null);
+          const firstSubRow = this._listOfData[index].subData?.[0];
+          if (firstSubRow) {
+            this.subColumns = Object.keys(firstSubRow).map((key) => ({
+              title: key,
+              field: key,
+            }));
+          } else {
+            console.warn('La subData o la primera fila de subData está vacía o no existe.');
+          }
+        } 
       }
+
+      
     } else {
       console.warn('_listOfData está vacío o no ha sido inicializado.');
     }
