@@ -22,6 +22,7 @@ import { IncomeStatementConfigComponent } from './components/config/income-state
 import { CashFlowConfigComponent } from './components/config/cash-flow-config/cash-flow-config.component';
 import { BalanceComponent as Balance } from './components/financialperformance/balance/balance.component';
 import { ActivitylogComponent } from './components/activitylog/activitylog.component';
+import { ResultStatusComponent } from './components/financialperformance/result-status/result-status.component';
 
 
 export const routes: Routes = [
@@ -37,6 +38,7 @@ export const routes: Routes = [
     { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'cash-flow', component: CashFlowComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'balance', component: Balance, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'result-status', component: ResultStatusComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
    
     { path: 'table', component: TableWithRowsChildComponent  },
     { path: 'balanceconfig', component: BalanceconfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
