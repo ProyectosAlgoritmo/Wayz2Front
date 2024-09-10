@@ -22,6 +22,12 @@ export class TableWithRowsChildComponent implements OnInit {
     field: string;
     sortDirection: 'ascend' | 'descend' | null;
   }> = [];
+
+  columnsMeses: Array<{
+    title: string;
+    field: string;
+    sortDirection: 'ascend' | 'descend' | null;
+  }> = []
   subColumns: Array<{ title: string; field: string }> = [];
   expandSet = new Set<number>();
   private _listOfData: any[] = [];
@@ -154,9 +160,25 @@ export class TableWithRowsChildComponent implements OnInit {
       console.warn('_listOfData está vacío o no ha sido inicializado.');
     }
 
-    this.columns.unshift({title: 'Acciones',
+   
+
+    this.columnsMeses = [...this.columns];  // Crea una copia del arreglo
+    
+    const indexc = this.columnsMeses.findIndex(column => column.field === 'Descripcion');
+    if (indexc !== -1) {
+     this.columnsMeses.splice(indexc, 1);  // Remueve 'Descripcion' solo de columnsMeses
+     }
+     
+     console.log(this.columns);  // Aquí columns permanecerá intacto
+     
+     this.columns.unshift({
+      title: 'Acciones',
       field: 'Acciones',
-      sortDirection: null})
+      sortDirection: null
+    });  // Agrega 'Acciones' solo a columns
+    
+
+
 
     this.subColumns.unshift({title: 'Acciones',
       field: 'Acciones'})
@@ -166,7 +188,6 @@ export class TableWithRowsChildComponent implements OnInit {
         this.subColumns.splice(index, 1);
       }
 
-    console.log(this.subColumns); 
   }
 
   // Este Set se usa para guardar las filas que están expandidas
