@@ -158,7 +158,15 @@ export class TableWithRowsChildComponent implements OnInit {
       field: 'Acciones',
       sortDirection: null})
 
-    console.log(this.columns); 
+    this.subColumns.unshift({title: 'Acciones',
+      field: 'Acciones'})
+
+      const index = this.subColumns.findIndex(column => column.field === 'id');
+      if (index !== -1) {
+        this.subColumns.splice(index, 1);
+      }
+
+    console.log(this.subColumns); 
   }
 
   // Este Set se usa para guardar las filas que están expandidas
