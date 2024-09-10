@@ -6,19 +6,19 @@
       #nzTable
       [nzData]="paginatedData"
       [nzPageSize]="pageSize" 
-      [nzScroll]="{  x: '2000px', y: '340px' }" 
+      [nzScroll]="{  x: '3000px', y: '340px' }" 
       [nzShowPagination]="false"
     >
       <thead>
         <tr>
-          <th nzStyle="background-color: #f5f5f5; color: #333;"></th>
+          <th style="background-color: #dcdcdc;"></th>
           <!-- Encabezado del primer nivel -->
-          <th nzStyle="background-color: #f5f5f5; color: #333;">Acciones</th>
-          <th nzStyle="background-color: #f5f5f5; color: #333;">Descripción</th>
+          <th style="background-color: #dcdcdc;">Acciones</th>
+          <th style="background-color: #dcdcdc;">Descripción</th>
           
           <!-- Encabezados para los meses, con colspan=2 para "Real" y "Proyectado" -->
           <ng-container *ngFor="let column of columnsMeses">
-            <th colspan="2" nzStyle="background-color: #e0e0e0;">{{ column.title }}</th>
+            <th colspan="2" style="background-color: #dcdcdc;">{{ column.title }}</th>
           </ng-container>
         </tr>
 
@@ -28,8 +28,8 @@
           <th></th>
           <!-- Segundo nivel de encabezados: las subcolumnas "Real" y "Proyectado" -->
           <ng-container *ngFor="let column of columnsMeses"  >
-            <th nzStyle="background-color: #dcdcdc;">Real</th>
-            <th nzStyle="background-color: #dcdcdc;">Proyectado</th>
+            <th >Real</th>
+            <th style="background-color: #dcdcdc;">Proyectado</th>
           </ng-container>
         </tr>
       </thead>
@@ -59,8 +59,8 @@
             <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && !data.isEditing" nz-td>{{ data[column.field] }}</td>
             <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && data.isEditing" nz-td><input nz-input [(ngModel)]="data[column.field]" /></td>
 
-            <td *ngIf="column.title !== 'Acciones'&& column.title !== 'Descripcion' && !data.isEditing" nz-td>{{ data[column.field] }}</td>
-            <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && data.isEditing" nz-td><input nz-input [(ngModel)]="data[column.field]" /></td>
+            <td *ngIf="column.title !== 'Acciones'&& column.title !== 'Descripcion' && !data.isEditing" style="background-color: #dcdcdc;" nz-td>{{ data[column.field] }}</td>
+            <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && data.isEditing" style="background-color: #dcdcdc;" nz-td><input nz-input [(ngModel)]="data[column.field]" /></td>
 
 
           
@@ -70,19 +70,19 @@
 
           <tr *ngIf="expandSet.has(data.id)">
             <td>
-              <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData" 
+              <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData"  class="same-width-table"
                   >
                
 
                 <thead>
                   <tr>
                     <!-- Encabezado del primer nivel -->
-                    <th nzStyle="background-color: #f5f5f5; color: #333;">Acciones</th>
-                    <th nzStyle="background-color: #f5f5f5; color: #333;">Descripción</th>
+                    <th style="background-color: #eaeaea;">Acciones</th>
+                    <th style="background-color: #eaeaea;">Descripción</th>
                     
                     <!-- Encabezados para los meses, con colspan=2 para "Real" y "Proyectado" -->
                     <ng-container *ngFor="let column of columnsMeses">
-                      <th colspan="2" nzStyle="background-color: #e0e0e0;">{{ column.title }}</th>
+                      <th colspan="2" style="background-color: #eaeaea;">{{ column.title }}</th>
                     </ng-container>
                   </tr>
           
@@ -91,8 +91,8 @@
                     <th></th>
                     <!-- Segundo nivel de encabezados: las subcolumnas "Real" y "Proyectado" -->
                     <ng-container *ngFor="let column of columnsMeses"  >
-                      <th nzStyle="background-color: #dcdcdc;">Real</th>
-                      <th nzStyle="background-color: #dcdcdc;">Proyectado</th>
+                      <th >Real</th>
+                      <th style="background-color: #eaeaea;">Proyectado</th>
                     </ng-container>
                   </tr>
                 </thead>
@@ -122,8 +122,8 @@
                       <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'Descripcion' && !subItem.isEditing" nz-td>{{ subItem[subColumn.field] }}</td>
                       <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'Descripcion' && subItem.isEditing" nz-td><input nz-input [(ngModel)]="subItem[subColumn.field]" /></td>
           
-                      <td *ngIf="subColumn.title !== 'Acciones'&& subColumn.title !== 'Descripcion' && !subItem.isEditing" nz-td>{{ subItem[subColumn.field] }}</td>
-                      <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'Descripcion' && subItem.isEditing" nz-td><input nz-input [(ngModel)]="subItem[subColumn.field]" /></td>
+                      <td *ngIf="subColumn.title !== 'Acciones'&& subColumn.title !== 'Descripcion' && !subItem.isEditing" style="background-color: #eaeaea;" nz-td>{{ subItem[subColumn.field] }}</td>
+                      <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'Descripcion' && subItem.isEditing" style="background-color: #eaeaea;" nz-td><input nz-input [(ngModel)]="subItem[subColumn.field]" /></td>
           
   
   
