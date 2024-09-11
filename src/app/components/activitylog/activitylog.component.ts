@@ -6,6 +6,7 @@ import { AuxService } from '../../services/aux-service.service';
 import { DateService } from '../../services/data-service.service';
 
 import { SharedModule } from '../shared/shared.module';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-activitylog',
@@ -26,8 +27,11 @@ export class ActivitylogComponent implements OnInit {
   dataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService
-    ,private auxService: AuxService, private DateService: DateService
-  ) { }
+    ,private auxService: AuxService, private DateService: DateService, private notificationService: NotificationService
+  ) { 
+    const idEmpresa = sessionStorage.getItem('id_empresa')?.toString() || '';
+    this.notificationService.updateNotificationStateNoti(idEmpresa)
+  }
 
   ngOnInit(): void {
     this.sharedStateService.toggleSidenavVisible(false);

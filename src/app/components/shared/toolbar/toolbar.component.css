@@ -41,4 +41,25 @@
     height: 60px; /* Ajusta esta altura según lo que necesites */
     width: 180px;  /* Deja que el ancho se ajuste automáticamente para mantener la proporción */
   }
-  
+
+
+/* Estilo para el icono giratorio */
+.rotating-icon {
+  display: inline-block; /* Asegura que el icono puede ser rotado */
+  animation: spin 1.5s linear infinite; /* 1.5s es la duración de la rotación, puedes ajustarlo */
+}
+
+/* Animación de rotación */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+/* Ajusta el posicionamiento del badge */
+.numbericon {
+  margin-left: 5px;
+  z-index: 1; /* Asegura que el badge esté por encima del ícono */
+}
+

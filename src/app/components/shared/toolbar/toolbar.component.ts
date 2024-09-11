@@ -29,6 +29,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { MatBadgeModule } from '@angular/material/badge';
+import { Router } from '@angular/router';
 
 
 
@@ -56,7 +57,8 @@ export class ToolbarComponent {
   chatResponse: string = '';
   
   
-  constructor(private chatService: ChatService, private authservice: AuthService, private sharedStateService: SharedStateService, private notificationService: NotificationService,
+  constructor(private chatService: ChatService, private authservice: AuthService, private sharedStateService: SharedStateService, 
+    private notificationService: NotificationService, private router: Router,
     private firestore: Firestore, public dialog: MatDialog 
   ){
 
@@ -124,6 +126,16 @@ export class ToolbarComponent {
     }
   }
 
+gologactivities(){
+  this.router.navigate(['/activitylog']);
+
+}
+
+goHome()
+{
+  this.router.navigate(['/']);
+}
+
 
 logout()
 {
@@ -139,16 +151,16 @@ logout()
   updateNotificationIcon(state: string) {
     switch (state) {
       case 'OK':
-        this.notificationIcon = 'check-circle';
+        this.notificationIcon = 'check_circle';
         break;
       case 'Importando':
-        this.notificationIcon = 'loading';
+        this.notificationIcon = 'autorenew';
         break;
       case 'completed':
-        this.notificationIcon = 'check-circle';
+        this.notificationIcon = 'check_circle';
         break;
       case 'ERROR':
-          this.notificationIcon = 'close';
+          this.notificationIcon = 'error';
           break;
       default:
         this.notificationIcon = '';
