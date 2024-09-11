@@ -164,7 +164,7 @@ export class TableWithRowsChildComponent implements OnInit {
 
     this.columnsMeses = [...this.columns];  // Crea una copia del arreglo
     
-    const indexc = this.columnsMeses.findIndex(column => column.field === 'Descripcion');
+    const indexc = this.columnsMeses.findIndex(column => column.field === 'descripcion');
     if (indexc !== -1) {
      this.columnsMeses.splice(indexc, 1);  // Remueve 'Descripcion' solo de columnsMeses
      }
