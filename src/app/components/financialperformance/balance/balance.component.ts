@@ -105,6 +105,7 @@ export class BalanceComponent implements OnInit {
   onSubTableDataSaved(data: any): void {
     this.auxService.ventanaCargando();
     data.year = this._selectedYear; 
+    console.log(this._selectedYear); 
     this.balanceService
       .UpdateeBalanceSubTable('update-balance-subTable', data)
       .subscribe((data) => {

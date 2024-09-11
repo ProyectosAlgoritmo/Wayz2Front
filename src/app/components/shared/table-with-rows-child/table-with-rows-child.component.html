@@ -54,7 +54,7 @@
               <a *ngIf="data.isEditing" (click)="toggleEdit(data, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
             </td>
 
-            <td *ngIf="column.title === 'Descripcion'" nz-td>{{ data[column.field] }}</td>
+            <td *ngIf="column.title === 'descripcion'" nz-td>{{ data[column.field] }}</td>
           
             <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && !data.isEditing" nz-td>{{ data[column.field].real }}</td>
             <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && data.isEditing" nz-td><input nz-input [(ngModel)]="data[column.field]" /></td>
@@ -117,7 +117,7 @@
                         <a *ngIf="subItem.isEditing" (click)="toggleEdit(subItem, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
                       </td>
           
-                      <td *ngIf="subColumn.title === 'Descripcion'" nz-td>{{ subItem[subColumn.field] }}</td>
+                      <td *ngIf="subColumn.title === 'descripcion'" nz-td>{{ subItem[subColumn.field] }}</td>
                     
                       <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'Descripcion' && !subItem.isEditing" nz-td>{{ subItem[subColumn.field] }}</td>
                       <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'Descripcion' && subItem.isEditing" nz-td><input nz-input [(ngModel)]="subItem[subColumn.field]" /></td>
