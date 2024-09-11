@@ -70,27 +70,40 @@ export class financialperformanceService {
     
     const data = [
       {
-        id: 1,
-        dato1: 'John Brown',
-        dato2: 32,
-        dato3: 'New York No. 1 Lake Park',
-        description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-        subData: [
-          { nombre: 'John Brown', apellido: 32, edad: 'New York No. 1 Lake Park', familia: 'YES. ' },
-          { nombre: 'Jim Green', apellido: 42, edad: 'London No. 1 Lake Park', familia: 'YES. ' }
-        ]
-      },
-      {
-        id: 2,
-        dato1: 'Jim Green',
-        dato2: 42,
-        dato3: 'London No. 1 Lake Park',
-        description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-        subData: [
-          { nombre: 'Joe Black', apellido: 32, edad: 'Sidney No. 1 Lake Park', familia: 'YES. ' }
-        ]
+          "id": 1,
+          "Descripcion": "SALDO FINAL",
+          "Enero": {'proyectado': 'proyectado','real': 'real'},
+          "Febrero": {'proyectado': null,'real': null},
+          "Marzo": {'proyectado': null,'real': null},
+          "Abril": {'proyectado': null,'real': null},
+          "Mayo": {'proyectado': null,'real': null},
+          "Junio": {'proyectado': '5282','real': 'real'},
+          "Julio": {'proyectado': '22362','real': 'real'},
+          "Agosto": {'proyectado': '2252','real': 'real'},
+          "Septiembre": {'proyectado': '25468','real': 'real'},
+          "Octubre": {'proyectado': null,'real': null},
+          "Noviembre": {'proyectado': null,'real': null},
+          "Diciembre": {'proyectado': null,'real': null},
+          "subData": [
+              {
+                  "id": 1,
+                  "Descripcion": "SALDO FINAL",
+                  "Enero": {'proyectado': 'proyectado','real': 'real'},
+                  "Febrero": {'proyectado': null,'real': null},
+                  "Marzo": {'proyectado': null,'real': null},
+                  "Abril": {'proyectado': null,'real': null},
+                  "Mayo": {'proyectado': null,'real': null},
+                  "Junio": {'proyectado': '5282','real': 'real'},
+                  "Julio": {'proyectado': '22362','real': 'real'},
+                  "Agosto": {'proyectado': '2252','real': 'real'},
+                  "Septiembre": {'proyectado': '25468','real': 'real'},
+                  "Octubre": {'proyectado': null,'real': null},
+                  "Noviembre": {'proyectado': null,'real': null},
+                  "Diciembre": {'proyectado': null,'real': null},
+              }
+          ]
       }
-    ];
+  ];
     return of(data);
   }
 

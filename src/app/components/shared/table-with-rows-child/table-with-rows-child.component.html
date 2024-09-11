@@ -56,10 +56,10 @@
 
             <td *ngIf="column.title === 'Descripcion'" nz-td>{{ data[column.field] }}</td>
           
-            <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && !data.isEditing" nz-td>{{ data[column.field] }}</td>
+            <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && !data.isEditing" nz-td>{{ data[column.field].real }}</td>
             <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && data.isEditing" nz-td><input nz-input [(ngModel)]="data[column.field]" /></td>
 
-            <td *ngIf="column.title !== 'Acciones'&& column.title !== 'Descripcion' && !data.isEditing" style="background-color: #dcdcdc;" nz-td>{{ data[column.field] }}</td>
+            <td *ngIf="column.title !== 'Acciones'&& column.title !== 'Descripcion' && !data.isEditing" style="background-color: #dcdcdc;" nz-td>{{ data[column.field].proyectado }}</td>
             <td *ngIf="column.title !== 'Acciones' && column.title !== 'Descripcion' && data.isEditing" style="background-color: #dcdcdc;" nz-td><input nz-input [(ngModel)]="data[column.field]" /></td>
 
 

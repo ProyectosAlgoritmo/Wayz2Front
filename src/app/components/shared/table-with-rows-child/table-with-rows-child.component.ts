@@ -76,7 +76,7 @@ export class TableWithRowsChildComponent implements OnInit {
   set listOfData(value: any[]) {
     // Asegurarse de que el valor es un array, o bien lo inicializamos con un array vacío
     this._listOfData = Array.isArray(value) ? value : [];
-    console.log('hola ', this._listOfData);
+    console.log('data table con su table', this._listOfData);
     // Solo inicializar columnas si hay datos disponibles
     if (this._listOfData.length > 0) {
       this.initializeColumns();
