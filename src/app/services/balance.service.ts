@@ -26,9 +26,7 @@ export class BalanceService {
     .get(`${this.apiUrl}/${link}/${year}`, { headers })
     .pipe(
       catchError((error) => {
-        // this.auxService.cerrarVentanaCargando();
-        // this.auxService.AlertError('Error', 'No se pudo obtener la información');
-        // this.auxService.handleError(error);
+        console.log(link); 
         return this.auxService.handleError(error);
       })
     );
