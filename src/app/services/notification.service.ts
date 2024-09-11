@@ -18,4 +18,9 @@ export class NotificationService {
     const docRef = doc(this.firestore, `Strategicview/StateEmpresas/${idEmpresa}/notificationState`); // Referencia al documento
     return updateDoc(docRef, { State: newState }); // Actualiza el campo 'state' con el nuevo valor
   }
+
+  updateNotificationStateNoti(idEmpresa: string): Promise<void> {
+    const docRef = doc(this.firestore, `Strategicview/StateEmpresas/${idEmpresa}/notificationState`); // Referencia al documento
+    return updateDoc(docRef, { notifications: 0 }); // Actualiza el campo 'state' con el nuevo valor
+  }
 }

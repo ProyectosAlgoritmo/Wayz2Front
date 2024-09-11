@@ -33,7 +33,6 @@ export class SharedStateService {
   }
 
   updateNotificationState(idEmpresa: string) {
-    console.log("empresa actualizada")
     sessionStorage.setItem('id_empresa', idEmpresa);
     this.notificationStateSource.next(idEmpresa);
   }

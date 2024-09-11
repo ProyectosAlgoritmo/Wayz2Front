@@ -23,22 +23,19 @@
     <span class="spacer"></span>
     <!--<span class="custom-titleHeader"> ANA ROJAS DUQUE</span>-->
 
-    <button *ngIf="Companyestate"  mat-icon-button matTooltip="Estado de la notificación">
-      <mat-icon [ngClass]="{'rotating-icon': notificationIcon === 'autorenew'}">
-        {{ notificationIcon }}
-      </mat-icon>
+   
+
+    <button mat-icon-button matTooltip="Estado de la empresa" (click)="gologactivities()">
+      <div class="icon-container">
+        <mat-icon [ngClass]="{'rotating-icon': notificationIcon === 'autorenew'}">
+          {{ notificationIcon }}
+        </mat-icon>
+        <span matBadge="{{ notificationNumber }}"  matBadgeColor="primary" class="numbericon"></span>
+      </div>
     </button>
-
-
-    <button mat-icon-button matTooltip="Log de actividades">
-      <mat-icon>home</mat-icon>
-     </button> 
-
-      <button mat-icon-button matTooltip="Log de actividades">
-      <mat-icon [matBadge]="notificationNumber">history</mat-icon>
-     </button> 
+    
   
-    <button mat-icon-button matTooltip="Mi cuenta" (click)="toggleChat()">
+    <button mat-icon-button matTooltip="Chat con AI" (click)="toggleChat()">
       <mat-icon>chat</mat-icon>
     </button>
     <button mat-icon-button matTooltip="Mi cuenta" [matMenuTriggerFor]="userAccountMenu">
@@ -49,8 +46,8 @@
       <button mat-menu-item routerLink="#">
         <mat-icon>person</mat-icon><span>Cuenta</span>
       </button>
-      <button mat-menu-item routerLink="#">
-        <mat-icon>settings</mat-icon><span>Configuración</span>
+      <button mat-menu-item routerLink="/">
+        <mat-icon>business</mat-icon><span>Mis empresas</span>
       </button>
       <button mat-menu-item routerLink="/dashboard">
         <mat-icon>help</mat-icon><span>Ayuda</span>
