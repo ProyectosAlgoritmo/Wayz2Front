@@ -74,16 +74,32 @@ export class AuxService {
     });
   }
 
-  AlertSuccess(title: string, mensaje: string) {
-    Swal.fire({
+  // AlertSuccess(title: string, mensaje: string) {
+  //   Swal.fire({
+  //     icon: 'success',
+  //     title: title,
+  //     text: mensaje,
+  //     showConfirmButton: false,
+  //     timer: 3000,
+  //     customClass: {
+  //       popup: 'custom-swal',
+  //     },
+  //   });
+  // }
+
+  AlertSuccess(title: string, mensaje: string): Promise<void> {
+    return Swal.fire({
       icon: 'success',
       title: title,
       text: mensaje,
-      showConfirmButton: false,
-      timer: 3000,
+      showConfirmButton: true,  // Mostrar botón de confirmación (OK)
       customClass: {
         popup: 'custom-swal',
       },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        return;
+      }
     });
   }
 

@@ -1,12 +1,48 @@
-.custom-sub-table th, .custom-sub-table td {
-  text-align: center;
-  vertical-align: middle;
+.full-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 70vh; /* Usar toda la altura disponible de la ventana */
+
+  background-color: transparent !important;
 }
 
-.custom-sub-table th {
-  background-color: #f5f5f5;
+.table-container {
+  flex-grow: 1;
+  overflow: hidden; /* Asegurar que el scroll solo ocurra dentro de table-scroll-wrapper */
+  display: flex;
+  flex-direction: column;
+  background-color: transparent !important;
 }
 
-.custom-sub-table td {
-  padding: 8px;
+.paginator-container {
+  display: flex;
+  justify-content: flex-end; /* Alinea el contenido a la derecha */
+  align-items: center;
+  gap: 10px; /* Espacio entre elementos */
 }
+
+.background-white-title-botton {
+  background-color: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 1px 0; /* Ajusta el padding según sea necesario */
+}
+
+.invisible-divider {
+  border-left-color: transparent; /* Hace invisible el borde izquierdo (vertical) */
+}
+
+
+.same-width-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+th, td {
+  width: auto; /* O usa porcentajes */
+  min-width: 120px; /* Mínimo para mantener alineado el contenido */
+}
+
+

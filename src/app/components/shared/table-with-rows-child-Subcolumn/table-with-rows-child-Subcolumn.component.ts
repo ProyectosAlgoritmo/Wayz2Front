@@ -1,159 +1,250 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { AuxService } from '../../../services/aux-service.service';
 import { Subscription } from 'rxjs';
-import { NZ_ICONS } from 'ng-zorro-antd/icon';
-import { CloudDownloadOutline, CloudUploadOutline, PlayCircleOutline, EyeOutline, EditOutline } from '@ant-design/icons-angular/icons';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 
 
 @Component({
   selector: 'app-table-with-rows-child-Subcolumn',
   templateUrl: './table-with-rows-child-Subcolumn.component.html',
   styleUrls: ['./table-with-rows-child-Subcolumn.component.css'],
-  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzIconModule],
+  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzIconModule,NzInputModule,NzPaginationModule],
   standalone: true,
-  providers: [
-    {
-      provide: NZ_ICONS, 
-      useValue: [
-        CloudDownloadOutline,
-        CloudUploadOutline,
-        PlayCircleOutline,
-        EyeOutline,
-        EditOutline
-      ]
-    }
-  ]
 })
 export class TableWithRowsChildSubcolumnComponent implements OnInit {
-  showActionsColumn: boolean = true;
+  columns: Array<{
+    title: string;
+    field: string;
+    sortDirection: 'ascend' | 'descend' | null;
+  }> = [];
 
-  listOfData: any[] = [];
+  columnsMeses: Array<{
+    title: string;
+    field: string;
+    sortDirection: 'ascend' | 'descend' | null;
+  }> = []
+  subColumns: Array<{ title: string; field: string }> = [];
   expandSet = new Set<number>();
+  private _listOfData: any[] = [];
+  sortedData: any[] = [];
+  searchValue = '';
+  @Input() ActionEdit: boolean = false;
+  @Output() subTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
+  @Output() mainTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
 
-  ngOnInit(): void {
-    this.listOfData = [
-      {
-        id: 1,
-        street: 'Lake Park',
-        age: 25,
-        building: 'C',
-        number: 2035,
-        direccion1: 'Main St 123',
-        direccion2: 'Apt 45',
-        email: 'john@example.com',
-        phone: '555-1234',
-        subData: [
-          {
-            street: 'Sub St',
-            age: 30,
-            building: 'B',
-            number: 404,
-            direccion1: 'Sub St 456',
-            direccion2: 'Suite 34',
-            email: 'sub@example.com',
-            phone: '555-4321'
-          },
-          {
-            street: 'Green Ave',
-            age: 35,
-            building: 'A',
-            number: 101,
-            direccion1: 'Green Ave 789',
-            direccion2: 'Floor 3',
-            email: 'green@example.com',
-            phone: '555-5678'
-          }
-        ]
-      },
-      {
-        id: 2,
-        street: 'Ocean Drive',
-        age: 28,
-        building: 'D',
-        number: 1234,
-        direccion1: 'Ocean St 567',
-        direccion2: 'Suite 100',
-        email: 'mary@example.com',
-        phone: '555-9876',
-        subData: [
-          {
-            street: 'Blue St',
-            age: 40,
-            building: 'E',
-            number: 505,
-            direccion1: 'Blue St 891',
-            direccion2: 'Apt 12',
-            email: 'blue@example.com',
-            phone: '555-6543'
-          },
-          {
-            street: 'Sunset Blvd',
-            age: 32,
-            building: 'F',
-            number: 707,
-            direccion1: 'Sunset Blvd 222',
-            direccion2: 'Suite 200',
-            email: 'sunset@example.com',
-            phone: '555-2233'
-          }
-        ]
-      },
-      {
-        id: 3,
-        street: 'Hilltop Rd',
-        age: 22,
-        building: 'G',
-        number: 6789,
-        direccion1: 'Hilltop Rd 303',
-        direccion2: 'Room 404',
-        email: 'jake@example.com',
-        phone: '555-7890',
-        subData: [
-          {
-            street: 'Forest Rd',
-            age: 27,
-            building: 'H',
-            number: 909,
-            direccion1: 'Forest Rd 555',
-            direccion2: 'Apt 5',
-            email: 'forest@example.com',
-            phone: '555-3322'
-          },
-          {
-            street: 'Maple St',
-            age: 45,
-            building: 'I',
-            number: 1212,
-            direccion1: 'Maple St 123',
-            direccion2: 'Floor 2',
-            email: 'maple@example.com',
-            phone: '555-4421'
-          }
-        ]
-      }
-    ];
+  paginatedData: any[] = [];
+  currentPage: number = 1;
+
+  private searchSubscription: Subscription = new Subscription();
+  constructor(private auxService: AuxService) {
+    this._listOfData = [...this.sortedData];
+    console.log(this.columns); 
   }
 
-  onExpandChange(id: number, checked: boolean): void {
-    if (checked) {
-      this.expandSet.add(id);
+
+  ngOnInit() {
+    this.searchSubscription = this.auxService
+      .getSearchObservable()
+      .subscribe((searchTerm) => {
+        this.onSearch(searchTerm);
+      });
+
+      console.log(this.columns); 
+
+      //this.columns.push('Acciones');
+
+    
+
+    
+  }
+
+
+
+  // @Input()
+  // set listOfData(value: any[]) {
+  //   this._listOfData = value;
+  //   this.initializeColumns();
+  //   this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
+  //   this.updatePaginatedData();
+  // }
+  @Input()
+  set listOfData(value: any[]) {
+    // Asegurarse de que el valor es un array, o bien lo inicializamos con un array vacío
+    this._listOfData = Array.isArray(value) ? value : [];
+    console.log('data table con su table', this._listOfData);
+    // Solo inicializar columnas si hay datos disponibles
+    if (this._listOfData.length > 0) {
+      this.initializeColumns();
+      this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
+      this.updatePaginatedData();
     } else {
-      this.expandSet.delete(id);
+      console.warn('listOfData está vacío o no es un array.');
+    }
+  }
+  @Input() pageSize: number = 10;
+
+  get listOfData(): any[] {
+    return this._listOfData;
+  }
+
+  onSearch(searchValue: string): void {
+    if (!searchValue) {
+      this.sortedData = [...this._listOfData];
+    } else {
+      const searchLower = searchValue.toLowerCase();
+      this.sortedData = this._listOfData.filter((item) => {
+        return Object.keys(item).some((key) =>
+          this.prepareSearchString(item[key]).includes(searchLower)
+        );
+      });
+    }
+    this.updatePaginatedData(); // Asegúrate de actualizar los datos paginados después de la búsqueda
+  }
+
+  prepareSearchString(value: any): string {
+    if (value == null) return ''; // Manejar valores nulos o indefinidos
+    return value.toString().toLowerCase(); // Convertir cualquier tipo de valor a string en minúsculas
+  }
+
+  ngOnDestroy() {
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
     }
   }
 
-  onEdit(data: any): void {
-    // Lógica para editar el registro
-    console.log('Editando registro:', data);
+  initializeColumns(): void {
+    // Verificar si _listOfData está definido y tiene al menos un elemento
+    if (this._listOfData && this._listOfData.length > 0) {
+      // Configurar las columnas para la tabla principal
+      const firstRow = this._listOfData[0];
+  
+      // Verificar que la primera fila no sea nula o indefinida
+      if (firstRow) {
+        this.columns = Object.keys(firstRow)
+          .filter(
+            (key) => key !== 'subData' && key !== 'id' && key !== 'description'
+          )
+          .map((key) => ({
+            title: key,
+            field: key,
+            sortDirection: null, // Ninguna columna ordenada inicialmente
+          }));
+      } else {
+        console.warn('La primera fila de _listOfData está vacía o es nula.');
+      }
+  
+      if (this._listOfData && this._listOfData.length > 0) {
+        const index = this._listOfData.findIndex(item => item && item.subData !== null);
+        if (index !== -1) {
+          // Configurar las columnas para la subtabla, si existe subData
+          const index = this._listOfData.findIndex(item => item.subData !== null);
+          const firstSubRow = this._listOfData[index].subData?.[0];
+          if (firstSubRow) {
+            this.subColumns = Object.keys(firstSubRow).map((key) => ({
+              title: key,
+              field: key,
+            }));
+          } else {
+            console.warn('La subData o la primera fila de subData está vacía o no existe.');
+          }
+        } 
+      }
+
+      
+    } else {
+      console.warn('_listOfData está vacío o no ha sido inicializado.');
+    }
+
+   
+
+    this.columnsMeses = [...this.columns];  // Crea una copia del arreglo
+    
+    const indexc = this.columnsMeses.findIndex(column => column.field === 'descripcion');
+    if (indexc !== -1) {
+     this.columnsMeses.splice(indexc, 1);  // Remueve 'Descripcion' solo de columnsMeses
+     }
+     
+     console.log(this.columns);  // Aquí columns permanecerá intacto
+     
+     this.columns.unshift({
+      title: 'Acciones',
+      field: 'Acciones',
+      sortDirection: null
+    });  // Agrega 'Acciones' solo a columns
+    
+
+
+
+    this.subColumns.unshift({title: 'Acciones',
+      field: 'Acciones'})
+
+      const index = this.subColumns.findIndex(column => column.field === 'id');
+      if (index !== -1) {
+        this.subColumns.splice(index, 1);
+      }
+
   }
 
-  toggleActionsColumn(): void {
-    // Método para alternar la visibilidad de la columna de acciones
-    this.showActionsColumn = !this.showActionsColumn;
+  // Este Set se usa para guardar las filas que están expandidas
+
+onExpandChange(id: number, checked: boolean): void {
+  if (checked) {
+    this.expandSet.add(id); // Añade el id si la fila está expandida
+  } else {
+    this.expandSet.delete(id); // Elimina el id si la fila no está expandida
+  }
+}
+
+  // Método para manejar la ordenación
+  sortData(field: string): void {
+    const column = this.columns.find((col) => col.field === field);
+    if (column) {
+      column.sortDirection =
+        column.sortDirection === 'ascend' ? 'descend' : 'ascend'; // Cambia la dirección de ordenación
+      this.sortedData.sort((a, b) => {
+        const valueA = a[field];
+        const valueB = b[field];
+        if (valueA < valueB) {
+          return column.sortDirection === 'ascend' ? -1 : 1;
+        }
+        if (valueA > valueB) {
+          return column.sortDirection === 'ascend' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+
+    this.updatePaginatedData();
+  }
+  saveMainTableEdit(data: any): void {
+    this.mainTableDataSaved.emit(data);
+    data.isEditing = false;  
+  }
+  
+  saveSubTableEdit(data: any): void {
+    this.subTableDataSaved.emit(data);
+    data.isEditing = false;
+  }
+  
+  toggleEdit(data: any, isEditing: boolean): void {
+    data.isEditing = isEditing;
+  }
+
+
+  updatePaginatedData(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedData = this.sortedData.slice(startIndex, endIndex);
+  }
+  
+  onPageChange(pageIndex: number): void {
+    this.currentPage = pageIndex;
+    this.updatePaginatedData();
   }
 
 }

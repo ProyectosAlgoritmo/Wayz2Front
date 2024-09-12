@@ -106,10 +106,14 @@ export class ResultStatusComponent implements OnInit {
     data.year = this._selectedYear; 
     this.resultStatusService
       .UpdateeResultStatusSubTable('update-result-status-subTable', data)
-      .subscribe((data) => {
+      .subscribe(async (data) => {
         this.auxService.cerrarVentanaCargando();
-        this.getResultStatus();
         if (data.success == true) {
+          await this.auxService.AlertSuccess('Ok', data.message);
+          this.getResultStatus();
+        } else {
+          await this.auxService.AlertError('Error', data.message);
+          //this.getResultStatus();
         }
       });
   }
@@ -129,10 +133,14 @@ export class ResultStatusComponent implements OnInit {
     data.year = this._selectedYear; 
     this.resultStatusService
       .UpdateResultStatus('update-result-status', data)
-      .subscribe((data) => {
+      .subscribe(async (data) => {
         this.auxService.cerrarVentanaCargando();
         if (data.success == true) {
-         this.getResultStatus();
+          await this.auxService.AlertSuccess('Ok', data.message);
+          this.getResultStatus();
+        } else {
+          await this.auxService.AlertError('Error', data.message);
+          //this.getResultStatus();
         }
       });
   }

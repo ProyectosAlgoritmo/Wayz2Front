@@ -45,11 +45,10 @@ import { BalanceService } from '../../../services/balance.service';
     NzSelectModule,
     NzIconModule,
     TableWithRowsChildSubcolumnComponent,
-    SharedModule
+    SharedModule,
   ],
 })
 export class BalanceComponent implements OnInit {
-
   [x: string]: any;
   dataForTable: any[] = [];
   dateYear: any[] = [];
@@ -95,48 +94,54 @@ export class BalanceComponent implements OnInit {
     if (event == null) {
       year = new Date().getFullYear();
     }
-    this.balanceService
-      .getBalance('get-balance', year)
-      .subscribe((data) => {
-        this.auxService.cerrarVentanaCargando();
-        this.dataForTable = data;
-      });
-  }
-  onSubTableDataSaved(data: any): void {
-    this.auxService.ventanaCargando();
-    data.year = this._selectedYear; 
-    console.log(this._selectedYear); 
-    this.balanceService
-      .UpdateeBalanceSubTable('update-balance-subTable', data)
-      .subscribe((data) => {
-        this.auxService.cerrarVentanaCargando();
-        this.getBalance();
-        if (data.success == true) {
-        }
-      });
-  }
-  
-  getBalance() {
-    this.auxService.ventanaCargando();
-    this.balanceService
-    .getBalance('get-balance', Number(this._selectedYear))
-    .subscribe((data) => {
-      this.ObtenerDateBalance();
+    this.balanceService.getBalance('get-balance', year).subscribe((data) => {
+      this.auxService.cerrarVentanaCargando();
       this.dataForTable = data;
     });
   }
-  
-  onMainTableDataSaved(data: any): void {
+
+  onSubTableDataSaved(data: any): void {
     this.auxService.ventanaCargando();
-    data.year = this._selectedYear; 
+    data.year = this._selectedYear;
+    console.log(this._selectedYear);
     this.balanceService
-      .UpdateBalance('update-balance', data)
-      .subscribe((data) => {
+      .UpdateeBalanceSubTable('update-balance-subTable', data)
+      .subscribe(async (data) => {
         this.auxService.cerrarVentanaCargando();
         if (data.success == true) {
-         this.getBalance();
+          await this.auxService.AlertSuccess('Ok', data.message);
+          this.getBalance();
+        } else {
+          await this.auxService.AlertError('Error', data.message);
+          //this.getBalance();
         }
       });
   }
 
+  getBalance() {
+    this.auxService.ventanaCargando();
+    this.balanceService
+      .getBalance('get-balance', Number(this._selectedYear))
+      .subscribe(async (data) => {
+        this.ObtenerDateBalance();
+        this.dataForTable = data;
+      });
+  }
+
+  onMainTableDataSaved(data: any): void {
+    this.auxService.ventanaCargando();
+    data.year = this._selectedYear;
+    this.balanceService
+      .UpdateBalance('update-balance', data)
+      .subscribe(async (data) => {
+        this.auxService.cerrarVentanaCargando();
+        if (data.success == true) {
+          await this.auxService.AlertSuccess('Ok', data.message);
+          this.getBalance();
+        } else {
+          await this.auxService.AlertError('Error', data.message);
+          //this.getBalance();
+        }
+      });
+  }
 }

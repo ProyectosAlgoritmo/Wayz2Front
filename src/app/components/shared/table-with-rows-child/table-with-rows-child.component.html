@@ -1,171 +1,122 @@
 
 <div class="full-page-container">
   <div class="table-container">
-    <nz-table 
-      #sortTable
-      #nzTable
-      [nzData]="paginatedData"
-      [nzPageSize]="pageSize" 
-      [nzScroll]="{  x: '3000px', y: '340px' }" 
-      [nzShowPagination]="false"
-    >
-      <thead>
+  <nz-table 
+    #sortTable
+    #nzTable
+    [nzData]="paginatedData"
+    [nzPageSize]="pageSize" 
+    [nzScroll]="{  x: '1600px', y: '340px' }" 
+    [nzShowPagination]="false"
+  >
+    <thead>
+      <tr >
+        <th nzStyle="background-color: #f5f5f5; color: #333;"></th>
+        <th *ngFor="let column of columns"
+            (click)="sortData(column.field)"
+            [nzSortOrder]="column.sortDirection">
+             {{ column.title }}
+          <i *ngIf="column.sortDirection === 'ascend'" class="fas fa-sort-up"></i>
+          <i *ngIf="column.sortDirection === 'descend'" class="fas fa-sort-down"></i>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of paginatedData">
         <tr>
-          <th style="background-color: #dcdcdc;"></th>
-          <!-- Encabezado del primer nivel -->
-          <th style="background-color: #dcdcdc;">Acciones</th>
-          <th style="background-color: #dcdcdc;">Descripción</th>
+
+          <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
           
-          <!-- Encabezados para los meses, con colspan=2 para "Real" y "Proyectado" -->
-          <ng-container *ngFor="let column of columnsMeses">
-            <th colspan="2" style="background-color: #dcdcdc;">{{ column.title }}</th>
-          </ng-container>
-        </tr>
 
-        <tr>
-          <th></th>
-          <th></th>
-          <th></th>
-          <!-- Segundo nivel de encabezados: las subcolumnas "Real" y "Proyectado" -->
-          <ng-container *ngFor="let column of columnsMeses"  >
-            <th >Real</th>
-            <th style="background-color: #dcdcdc;">Proyectado</th>
-          </ng-container>
-        </tr>
-      </thead>
-
-      <tbody>
-        <ng-container *ngFor="let data of paginatedData">
-          <tr>
-            <!-- Acciones y Descripción -->
-
-
-            <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
-
-            
-        
 
           <ng-container *ngFor="let column of columns">
-            <td *ngIf="column.title === 'Acciones'  && ActionEdit">
+            <td *ngIf="column.title === 'Acciones' && ActionEdit">
               <a *ngIf="!data.isEditing" (click)="toggleEdit(data, true)">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </a>
               <a *ngIf="data.isEditing" (click)="saveMainTableEdit(data)"><span nz-icon nzType="save" nzTheme="outline" style="font-size: 20px; margin-left:10px"></span></a>
               <a *ngIf="data.isEditing" (click)="toggleEdit(data, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
             </td>
-
-            <td *ngIf="column.title === 'descripcion'" nz-td>{{ data[column.field] }}</td>
           
-            <td *ngIf="column.title !== 'Acciones' && column.title !== 'descripcion' && !data.isEditing" nz-td>{{ data[column.field].real }}</td>
-            <td *ngIf="column.title !== 'Acciones' && column.title !== 'descripcion' && data.isEditing" nz-td><input nz-input [(ngModel)]="data[column.field].real" /></td>
-
-            <td *ngIf="column.title !== 'Acciones'&& column.title !== 'descripcion' && !data.isEditing" style="background-color: #dcdcdc;" nz-td>{{ data[column.field].proyectado }}</td>
-            <td *ngIf="column.title !== 'Acciones' && column.title !== 'descripcion' && data.isEditing" style="background-color: #dcdcdc;" nz-td><input nz-input [(ngModel)]="data[column.field].proyectado" /></td>
-
-
-          
+            <td *ngIf="column.title !== 'Acciones' && !data.isEditing" nz-td>{{ data[column.field] }}</td>
+            <td *ngIf="column.title !== 'Acciones' && data.isEditing" nz-td><input nz-input [(ngModel)]="data[column.field]" /></td>
           </ng-container>
           
-          </tr>
+        
+        </tr>
 
-          <tr *ngIf="expandSet.has(data.id)">
-            <td>
-              <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData"  class="same-width-table"
-                  >
-               
 
-                <thead>
-                  <tr>
-                    <!-- Encabezado del primer nivel -->
-                    <th style="background-color: #eaeaea;">Acciones</th>
-                    <th style="background-color: #eaeaea;">Descripción</th>
-                    
-                    <!-- Encabezados para los meses, con colspan=2 para "Real" y "Proyectado" -->
-                    <ng-container *ngFor="let column of columnsMeses">
-                      <th colspan="2" style="background-color: #eaeaea;">{{ column.title }}</th>
+        <tr *ngIf="expandSet.has(data.id)">
+          <td>
+            <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData" 
+                >
+              <thead>
+                <tr>
+                  <th *ngFor="let subColumn of subColumns">
+                    <ng-container >
+                      {{ subColumn.title }}
                     </ng-container>
-                  </tr>
-          
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <!-- Segundo nivel de encabezados: las subcolumnas "Real" y "Proyectado" -->
-                    <ng-container *ngFor="let column of columnsMeses"  >
-                      <th >Real</th>
-                      <th style="background-color: #eaeaea;">Proyectado</th>
-                    </ng-container>
-                  </tr>
-                </thead>
-  
-                <tbody>
-  
-                  
-  
-  
-                  <tr *ngFor="let subItem of data.subData">
-  
-  
-                    <ng-container *ngFor="let subColumn of subColumns">
-  
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+
+                <tr *ngFor="let subItem of data.subData">
+
+
+                  <ng-container *ngFor="let subColumn of subColumns">
+
+                    <td *ngIf="subColumn.title === 'Acciones' && ActionEdit">
+                      <a *ngIf="!subItem.isEditing" (click)="toggleEdit(subItem, true)">
+                        <i nz-icon nzType="edit" nzTheme="outline"></i>
+                      </a>
+
+                      <a *ngIf="subItem.isEditing" (click)="saveSubTableEdit(subItem)"><span nz-icon nzType="save" nzTheme="outline"></span></a>
+                      <a *ngIf="subItem.isEditing" (click)="toggleEdit(subItem, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
+                    </td>
+
+
+                    <td *ngIf="subColumn.title !== 'Acciones' && !subItem.isEditing" nz-td>{{ subItem[subColumn.field] }}</td>
+                    <td *ngIf="subColumn.title !== 'Acciones' && subItem.isEditing" nz-td><input nz-input [(ngModel)]="subItem[subColumn.field]" /></td>
+
+
                  
+                  </ng-container>
 
-                      <td *ngIf="subColumn.title === 'Acciones'  && ActionEdit">
-                        <a *ngIf="!subItem.isEditing" (click)="toggleEdit(subItem, true)">
-                          <i nz-icon nzType="edit" nzTheme="outline"></i>
-                        </a>
-                        <a *ngIf="subItem.isEditing" (click)="saveSubTableEdit(subItem)"><span nz-icon nzType="save" nzTheme="outline" style="font-size: 20px; margin-left:10px"></span></a>
-                        <a *ngIf="subItem.isEditing" (click)="toggleEdit(subItem, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
-                      </td>
-          
-                      <td *ngIf="subColumn.title === 'descripcion'" nz-td>{{ subItem[subColumn.field] }}</td>
-                    
-                      <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'descripcion' && !subItem.isEditing" nz-td>{{ subItem[subColumn.field].real }}</td>
-                      <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'descripcion' && subItem.isEditing" nz-td><input nz-input [(ngModel)]="subItem[subColumn.field].real" /></td>
-          
-                      <td *ngIf="subColumn.title !== 'Acciones'&& subColumn.title !== 'descripcion' && !subItem.isEditing" style="background-color: #eaeaea;" nz-td>{{ subItem[subColumn.field].proyectado  }}</td>
-                      <td *ngIf="subColumn.title !== 'Acciones' && subColumn.title !== 'descripcion' && subItem.isEditing" style="background-color: #eaeaea;" nz-td><input nz-input [(ngModel)]="subItem[subColumn.field].proyectado " /></td>
-          
-  
-  
-                   
-                    </ng-container>
-  
-                    
-  
-                </tbody>
-  
-  
-  
-              </nz-table>
-            </td>
-          </tr>
-  
+                  
+
+              </tbody>
 
 
 
+            </nz-table>
+          </td>
+        </tr>
 
-        </ng-container>
-      </tbody>
-    </nz-table>
+
+      </ng-container>
+    </tbody>
+  </nz-table>
+</div>
+
+
+<div class="paginator-container">
+  <nz-pagination 
+    [nzPageSize]="pageSize"
+    [nzTotal]="sortedData.length"
+    [(nzPageIndex)]="currentPage"
+    [nzShowTotal]="totalTemplate"
+    (nzPageIndexChange)="onPageChange($event)">
+  </nz-pagination>
+  
+  <ng-template #totalTemplate let-total>
+    Registros mostrados {{ (currentPage - 1) * pageSize + 1 }} - 
+    {{ (currentPage * pageSize) < total ? (currentPage * pageSize) : total }} 
+    de {{ total }} registros
+  </ng-template>
+  
   </div>
-
-
-
-  <div class="paginator-container">
-    <nz-pagination 
-      [nzPageSize]="pageSize"
-      [nzTotal]="sortedData.length"
-      [(nzPageIndex)]="currentPage"
-      [nzShowTotal]="totalTemplate"
-      (nzPageIndexChange)="onPageChange($event)">
-    </nz-pagination>
-    
-    <ng-template #totalTemplate let-total>
-      Registros mostrados {{ (currentPage - 1) * pageSize + 1 }} - 
-      {{ (currentPage * pageSize) < total ? (currentPage * pageSize) : total }} 
-      de {{ total }} registros
-    </ng-template>
-    
-    </div>
 </div>
 

@@ -107,10 +107,14 @@ export class CashFlowComponent implements OnInit {
     data.year = this._selectedYear; 
     this.financialperformanceService
       .UpdateeCashFlowSubTable('update-cash-flow-subTable', data)
-      .subscribe((data) => {
+      .subscribe(async (data) => {
         this.auxService.cerrarVentanaCargando();
-        this.getCashFlow();
         if (data.success == true) {
+          await this.auxService.AlertSuccess('Ok', data.message);
+          this.getCashFlow();
+        } else {
+          await this.auxService.AlertError('Error', data.message);
+          //this.getCashFlow();
         }
       });
   }
@@ -130,10 +134,14 @@ export class CashFlowComponent implements OnInit {
     data.year = this._selectedYear; 
     this.financialperformanceService
       .UpdateCashFlow('update-cash-flow', data)
-      .subscribe((data) => {
+      .subscribe(async (data) => {
         this.auxService.cerrarVentanaCargando();
         if (data.success == true) {
-         this.getCashFlow();
+          await this.auxService.AlertSuccess('Ok', data.message);
+          this.getCashFlow();
+        } else {
+          await this.auxService.AlertError('Error', data.message);
+          //this.getCashFlow();
         }
       });
   }
