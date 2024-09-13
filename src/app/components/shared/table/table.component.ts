@@ -30,6 +30,7 @@ export class TableComponent implements OnInit {
   @Input() ActionLeft: boolean = false;
   @Input() showActions: boolean = false;
   @Input() ActionEdit: boolean = false;  
+  @Input() ActionDelete: boolean = false;  
   @Input() ActionView: boolean = false;  
   @Input() ActionImport: boolean = false;  
   @Input() ActionExport: boolean = false;  
@@ -42,6 +43,7 @@ export class TableComponent implements OnInit {
   @Output() importAction = new EventEmitter<any>();
   @Output() goAction = new EventEmitter<any>();
   @Output() editAction = new EventEmitter<any>();
+  @Output() deleteAction = new EventEmitter<any>();
 
   @Output() Create = new EventEmitter<any>();
 
@@ -96,6 +98,10 @@ export class TableComponent implements OnInit {
 
   onEdit(element: any) {
     this.editAction.emit(element);
+  }
+
+  onDelete(element: any) {
+    this.deleteAction.emit(element);
   }
 
   CreateAction() {

@@ -84,6 +84,11 @@
               <i nz-icon nzType="edit" nzTheme="outline"></i>
             </a>
           </ng-container>
+          <ng-container *ngIf="ActionDelete && (element.isEditable ? false : true)">
+            <a (click)="onDelete(element)">
+              <span nz-icon nzType="delete" nzTheme="outline"></span>
+            </a>
+          </ng-container>
         </td>
       </ng-container>
     </tr>

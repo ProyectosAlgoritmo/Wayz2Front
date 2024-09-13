@@ -57,6 +57,16 @@ export class ResultStatusService {
       .pipe(catchError(this.auxService.handleError.bind(this)));
   }
 
+  DeleteResultStatus(link: string, id: number,): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.delete(`${this.apiUrl}/${link}/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+  DeleteResultStatusTipo(link: string, id: number,): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.delete(`${this.apiUrl}/${link}/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+
   getDataStructure1(): Observable<any[]> {
     
     const data = [

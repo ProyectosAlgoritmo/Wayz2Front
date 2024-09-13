@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { SharedModule } from '../../../shared/shared.module';
-
+import { financialperformanceService } from '../../../../services/financialperformance.service';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -39,7 +39,10 @@ export class CashFlowTypesComponent {
   };
   dataSource: any[] = [];
 
-  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog, private router: Router) { }
+  constructor(private sharedStateService: SharedStateService, 
+    private configService: ConfigService, 
+    private auxService: AuxService, public dialog: MatDialog, 
+    private router: Router, private financialperformanceService:financialperformanceService) { }
 
   ngOnInit(): void {
 
@@ -109,6 +112,28 @@ export class CashFlowTypesComponent {
       }
     });
 
+  }
+
+  async onDeleteAction(event: any) {
+    console.log('event ', event);
+    const result = await this.auxService.AlertConfirmation(
+      'Seguro que desea eliminar este registro?', undefined
+    );
+    if (result.isConfirmed) {
+      this.auxService.ventanaCargando();
+      this.financialperformanceService
+        .DeleteDateCashFlowTipo('delete-cash-flow-tipe', event.idFlujocajatipo)
+        .subscribe(async (data:any) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success == true) {
+            await this.auxService.AlertSuccess('Ok', data.message);
+            this.ngOnInit();
+          } else {
+            await this.auxService.AlertError('Error', data.message);
+            //this.getBalance();
+          }
+        });
+    }
   }
 
   CreateAction() {

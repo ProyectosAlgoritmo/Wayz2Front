@@ -103,6 +103,21 @@ export class AuxService {
     });
   }
 
+  async AlertConfirmation(title: string, 
+    text: string = "¡No podrás revertir esta acción una vez que confirmes!", 
+    confirmButtonText: string = 'Confirmar') {
+    return await Swal.fire({
+      title: title,
+      text: text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: confirmButtonText,
+      cancelButtonText: 'Cnacelar'
+    });
+  }
+
   validateInteger(value: string): string {
     // Eliminar cualquier carácter que no sea un número entero
     return value.replace(/[^0-9]/g, '');
