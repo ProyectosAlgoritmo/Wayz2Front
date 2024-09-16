@@ -21,6 +21,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { EditIncomeStatementCategoriesComponent } from './edit-income-statement-categories/edit-income-statement-categories.component';
 import { CreateIncomeStatementCategoriesComponent } from './create-income-statement-categories/create-income-statement-categories.component';
+import { ResultStatusService } from '../../../../services/result-status.service';
 
 
 @Component({
@@ -39,7 +40,11 @@ export class IncomeStatementCategoriesComponent {
   };
   dataSource: any[] = [];
 
-  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog, private router: Router) { }
+  constructor(private sharedStateService: SharedStateService,
+     private configService: ConfigService, 
+     private auxService: AuxService, 
+     public dialog: MatDialog, private router: Router,
+    private resultStatusService: ResultStatusService) { }
 
   ngOnInit(): void {
 
@@ -113,6 +118,28 @@ export class IncomeStatementCategoriesComponent {
       }
     });
 
+  }
+
+  async onDeleteAction(event: any) {
+    console.log('event ', event);
+    const result = await this.auxService.AlertConfirmation(
+      'Seguro que desea eliminar este registro?', undefined
+    );
+    if (result.isConfirmed) {
+      this.auxService.ventanaCargando();
+      this.resultStatusService
+        .DeleteResultStatus('delete-result-status', event.idErcategoria)
+        .subscribe(async (data:any) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success == true) {
+            await this.auxService.AlertSuccess('Ok', data.message);
+            this.ngOnInit();
+          } else {
+            await this.auxService.AlertError('Error', data.message);
+            //this.getBalance();
+          }
+        });
+    }
   }
 
   CreateAction() {

@@ -66,6 +66,16 @@ export class financialperformanceService {
     return this.httpClient.get(`${this.apiUrl}/${link}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
 
+  DeleteDateCashFlow(link: string, id: number,): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.delete(`${this.apiUrl}/${link}/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+  DeleteDateCashFlowTipo(link: string, id: number,): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.delete(`${this.apiUrl}/${link}/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+
   getDataStructure1(): Observable<any[]> {
     
     const data = [
