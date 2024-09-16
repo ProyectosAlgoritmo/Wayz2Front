@@ -55,5 +55,46 @@
     border: 1px solid #FFFF; /* Ajusta el color y estilo del borde según sea necesario */
   }
   
+
+  /* Varis botones en la tabla*/
+.headerclass{
+
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.spacermoreinputs {
+  flex-grow: 1;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Añade un espacio entre los elementos */
+}
+
+.select-input, 
+.nz-input-group {
+  flex-shrink: 0;
+  width: 200px; /* Ajusta el ancho como desees */
+}
+
+.title-heading {
+  font-size: 1.2em;
+  font-weight: 450;
+  color: #01142a; 
+  margin-bottom: 2px;
+  padding: 2px;
+  /*text-align: center;
+  border-bottom: 0.5px solid #e0e0e0; /* Línea discreta debajo */
+}
+
+.title-headingFC {
+  font-size: 1.2em;
+  font-weight: 450;
+  color: #01142a; 
+  /*text-align: center;
+  border-bottom: 0.5px solid #e0e0e0; /* Línea discreta debajo */
+}
   
   

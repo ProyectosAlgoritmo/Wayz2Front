@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 import { CloudDownloadOutline, CloudUploadOutline, PlayCircleOutline, EyeOutline, EditOutline } from '@ant-design/icons-angular/icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-table',
@@ -29,6 +30,7 @@ export class TableComponent implements OnInit {
   @Input() ActionLeft: boolean = false;
   @Input() showActions: boolean = false;
   @Input() ActionEdit: boolean = false;  
+  @Input() ActionDelete: boolean = false;  
   @Input() ActionView: boolean = false;  
   @Input() ActionImport: boolean = false;  
   @Input() ActionExport: boolean = false;  
@@ -41,6 +43,7 @@ export class TableComponent implements OnInit {
   @Output() importAction = new EventEmitter<any>();
   @Output() goAction = new EventEmitter<any>();
   @Output() editAction = new EventEmitter<any>();
+  @Output() deleteAction = new EventEmitter<any>();
 
   @Output() Create = new EventEmitter<any>();
 
@@ -50,7 +53,7 @@ export class TableComponent implements OnInit {
   originalDataSource: any[] = [];
   
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -97,12 +100,16 @@ export class TableComponent implements OnInit {
     this.editAction.emit(element);
   }
 
+  onDelete(element: any) {
+    this.deleteAction.emit(element);
+  }
+
   CreateAction() {
     this.Create.emit();
   }
 
-  onActionImportGo(element: any) {
-    //this.editAction.emit(element);
+  onActionImportGo() {
+    this.router.navigate(['/import']);
   }
 
   applyFilter(event: Event): void {

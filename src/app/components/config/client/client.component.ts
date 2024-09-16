@@ -54,9 +54,6 @@ export class ClientComponent implements OnInit {
 
     this.sharedStateService.toggleSidenavVisible(true);
 
-    this.sharedStateService.getDataStructure1().subscribe(data => { 
-      this.dataForTable = data;
-    });
     this.auxService.ventanaCargando();
     this.configService.ObtenerClients().subscribe({
       next: (data) => {

@@ -33,3 +33,13 @@
 .invisible-divider {
   border-left-color: transparent; /* Hace invisible el borde izquierdo (vertical) */
 }
+
+a{
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-left: 20px;
+}
+
+
+

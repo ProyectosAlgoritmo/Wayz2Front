@@ -13,7 +13,8 @@
 <app-buttonstrategic 
   *ngIf="ActionImportGo" 
   mat-button 
-  [label]="'Importar'">
+  [label]="'Importar'"
+  (click)="onActionImportGo()" >
 </app-buttonstrategic>
 
   <span class="spacer"></span>
@@ -38,7 +39,7 @@
   [nzData]="dataSource" 
   [nzPageSize]="pageSize" 
   [nzFrontPagination]="false" 
-  [nzScroll]="{  x: '1200px', y: '250px' }" 
+  [nzScroll]="{  x: '1200px', y: '340px' }" 
 >
   <thead>
     <tr>
@@ -52,6 +53,7 @@
     <tr *ngFor="let element of paginatedData">
       <ng-container *ngFor="let column of columnsToDisplay">
         <td *ngIf="column !== 'Acciones'" nz-td>{{ element[column] }}</td>
+        
         <td *ngIf="column === 'Acciones'" nz-td>
           <ng-container *ngIf="ActionExport">
             <a (click)="onExport(element)">
@@ -80,6 +82,11 @@
           <ng-container *ngIf="ActionEdit && (element.isEditable ? false : true)">
             <a (click)="onEdit(element)">
               <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="ActionDelete && (element.isEditable ? false : true)">
+            <a (click)="onDelete(element)">
+              <span nz-icon nzType="delete" nzTheme="outline"></span>
             </a>
           </ng-container>
         </td>

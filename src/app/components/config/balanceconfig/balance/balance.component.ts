@@ -21,6 +21,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { EditbalancetypecategoryComponent } from './editbalancetypecategory/editbalancetypecategory.component';
 import { CreatebalancetypecategoryComponent } from './createbalancetypecategory/createbalancetypecategory.component';
+import { BalanceService } from '../../../../services/balance.service';
 
 
 @Component({
@@ -39,7 +40,10 @@ export class BalanceComponent implements OnInit {
   };
   dataSource: any[] = [];
 
-  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog, private router: Router) { }
+  constructor(private sharedStateService: SharedStateService, private configService: 
+    ConfigService, private auxService:
+     AuxService, public dialog: MatDialog, private router: Router,
+     private balanceService:BalanceService) { }
 
   ngOnInit(): void {
 
@@ -113,6 +117,28 @@ export class BalanceComponent implements OnInit {
       }
     });
 
+  }
+
+  async onDeleteAction(event: any) {
+    console.log('event ', event);
+    const result = await this.auxService.AlertConfirmation(
+      'Seguro que desea eliminar este registro?', undefined
+    );
+    if (result.isConfirmed) {
+      this.auxService.ventanaCargando();
+      this.balanceService
+        .DeleteBalance('delete-balance', event.idBalancecategoria)
+        .subscribe(async (data:any) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success == true) {
+            await this.auxService.AlertSuccess('Ok', data.message);
+            this.ngOnInit();
+          } else {
+            await this.auxService.AlertError('Error', data.message);
+            //this.getBalance();
+          }
+        });
+    }
   }
 
   CreateAction() {

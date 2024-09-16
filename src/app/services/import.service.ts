@@ -47,7 +47,6 @@ export class ImportService {
     getUrlBucket(file: File, carpeta: string): Observable<{ url: string }> {
       const headers = this.getHeaders();
       //const fileName = carpeta + file.name; 
-      console.log(carpeta); 
       const payload = { ObjectName: carpeta };
   
       return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-token-Amazon/`, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
@@ -57,6 +56,23 @@ export class ImportService {
       const headers = { 'Content-Type': file.type !== '' ? file.type : 'application/octet-stream' };
       return this.httpClient.put(url, file, { headers, responseType: 'text' });
     }
+
+
+
+  // Método para obtener la URL prefirmada desde el backend
+  getPreSignedDownloadUrl(file: File): Observable<{ url: string }> {
+    const headers = this.getHeaders();
+      //const fileName = carpeta + file.name; 
+    const payload = { ObjectName: file };
+    return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-urlDownload-Amazon/`, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  // Método para descargar el archivo desde S3 usando la URL prefirmada
+  downloadFileFromS3(url: string): Observable<Blob> {
+    return this.httpClient.get(url, { responseType: 'blob' });
+  }
+
+
 
   ImportDesempenofinanciero(payload: any) : Observable<any> {
     const headers = this.getHeaders();

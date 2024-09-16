@@ -1,0 +1,56 @@
+
+
+<div class="content-container">
+  
+    
+  <div class="table-container">
+
+  <div class="divtable">
+    <div class="headerclass">
+       
+      <h2 class="title-heading">Flujo de caja</h2>
+  
+        <mat-toolbar class="background-white-title-botton">
+        
+      
+          <span class="spacermoreinputs"></span>
+          
+          <div class="input-container">
+            <nz-select
+              class="select-input"
+              [(ngModel)]="selectedYear"
+              nzPlaceHolder="Seleccione una fecha">
+              <nz-option nzLabel="Seleccione una fecha" disabled selected></nz-option>
+              <nz-option
+                *ngFor="let year of dateYear"
+                [nzLabel]="year"
+                [nzValue]="year">
+              </nz-option>
+            </nz-select>
+      
+            <nz-input-group [nzSuffix]="suffixIconSearch">
+              <input
+                type="text"
+                nz-input
+                [(ngModel)]="searchValue"
+                (input)="onSearchChange()"
+                placeholder="Buscar...">
+            </nz-input-group>
+            
+            <ng-template #suffixIconSearch>
+              <span nz-icon nzType="search" nzTheme="outline"></span>
+            </ng-template>
+          </div>
+        </mat-toolbar>
+      </div>
+
+      <app-table-with-rows-child-Subcolumn
+      [listOfData]="dataForTable"
+      [ActionEdit]="true"
+      (subTableDataSaved)="onSubTableDataSaved($event)"
+      (mainTableDataSaved)="onMainTableDataSaved($event)"
+    ></app-table-with-rows-child-Subcolumn>
+  
+ </div>
+</div>
+</div>
