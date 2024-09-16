@@ -37,3 +37,7 @@
     font-weight: bold;
   }
   
+  .custom-logo {
+    height: 60px; /* Ajusta esta altura según lo que necesites */
+    width: 180px;  /* Deja que el ancho se ajuste automáticamente para mantener la proporción */
+  }
