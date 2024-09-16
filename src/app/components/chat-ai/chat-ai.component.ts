@@ -31,6 +31,13 @@ export class ChatAIComponent implements AfterViewChecked {
   messages: { role: string; content: string }[] = [];
   chatVisible: boolean = true;
 
+  suggestedQuestions: string[] = [
+    '¿Cómo mejorar mi productividad?',
+    '¿Cuál es la mejor estrategia de marketing digital?',
+    '¿Qué opinas sobre la inteligencia artificial?',
+    'Dame una idea para un proyecto innovador'
+  ];
+
   constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, private sharedStateService: SharedStateService
   ){
 
@@ -60,6 +67,10 @@ export class ChatAIComponent implements AfterViewChecked {
 
       
     }
+  }
+
+  selectSuggestedQuestion(question: string): void {
+    this.userInput = question;  // Inserta la pregunta seleccionada en el campo de entrada
   }
 
   closeChat(): void {
