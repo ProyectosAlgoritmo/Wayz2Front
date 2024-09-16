@@ -124,7 +124,7 @@ export class IncomeStatementTypesComponent {
     if (result.isConfirmed) {
       this.auxService.ventanaCargando();
       this.resultStatusService
-        .DeleteResultStatus('delete-result-status-tipe', event.idErcategoria)
+        .DeleteResultStatus('delete-result-status-tipe', event.idEstadoresultadotipo)
         .subscribe(async (data:any) => {
           this.auxService.cerrarVentanaCargando();
           if (data.success == true) {
