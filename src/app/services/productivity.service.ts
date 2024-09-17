@@ -11,7 +11,7 @@ export class ProductivityService {
   readonly apiUrl: string;
 
   constructor(private httpClient: HttpClient, private auxService: AuxService) {
-    this.apiUrl = environment.apiUrl + '/balance';
+    this.apiUrl = environment.apiUrl + '/Productivity';
   }
 
   getHeaders(): HttpHeaders {
@@ -20,10 +20,10 @@ export class ProductivityService {
     });
   }
 
-  getBalance(link: string, year: number): Observable<any> {
+  getStrategy(link: string,): Observable<any> {
     const headers = this.getHeaders();
     return this.httpClient
-    .get(`${this.apiUrl}/${link}/${year}`, { headers })
+    .get(`${this.apiUrl}/${link}`, { headers })
     .pipe(
       catchError((error) => {
         console.log(link); 
@@ -32,7 +32,7 @@ export class ProductivityService {
     );
   }
 
-  UpdateBalance(link: string, Data: any): Observable<any> {
+  UpdateStrategy(link: string, Data: any): Observable<any> {
     const headers = this.getHeaders();
     const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
     return this.httpClient
@@ -40,7 +40,7 @@ export class ProductivityService {
       .pipe(catchError(this.auxService.handleError.bind(this)));
   }
 
-  UpdateeBalanceSubTable(link: string, Data: any): Observable<any> {
+  UpdateeStrategySubTable(link: string, Data: any): Observable<any> {
     const headers = this.getHeaders();
     const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
     return this.httpClient
@@ -48,21 +48,56 @@ export class ProductivityService {
       .pipe(catchError(this.auxService.handleError.bind(this)));
   }
 
-  ObtenerDateBalance(link: string): Observable<any> {
+  ObtenerDateStrategy(link: string): Observable<any> {
     const headers = this.getHeaders();
     return this.httpClient
       .get(`${this.apiUrl}/${link}`, { headers })
       .pipe(catchError(this.auxService.handleError.bind(this)));
   }
 
-  DeleteBalance(link: string, id: number,): Observable<any> {
+  DeleteStrategy(link: string, id: number,): Observable<any> {
     const headers = this.getHeaders();
     return this.httpClient.delete(`${this.apiUrl}/${link}/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
-  DeleteBalanceTipo(link: string, id: number,): Observable<any> {
+  DeleteStrategyTipo(link: string, id: number,): Observable<any> {
     const headers = this.getHeaders();
     return this.httpClient.delete(`${this.apiUrl}/${link}/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
+
+
+  getStrategicPillar(link: string,): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient
+    .get(`${this.apiUrl}/${link}`, { headers })
+    .pipe(
+      catchError((error) => {
+        console.log(link); 
+        return this.auxService.handleError(error);
+      })
+    );
+  }
+
+  CreateStrategicPillar(link: string, Data: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
+    return this.httpClient
+      .post(url, Data, { headers })
+      .pipe(catchError(this.auxService.handleError.bind(this)));
+  }
+
+  UpdateeStrategicPillar(link: string, Data: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
+    return this.httpClient
+      .put(url, Data, { headers })
+      .pipe(catchError(this.auxService.handleError.bind(this)));
+  }
+
+  DeleteStrategicPillar(link: string, id: number,): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.delete(`${this.apiUrl}/${link}/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
 
   getDataStructure1(): Observable<any[]> {
     

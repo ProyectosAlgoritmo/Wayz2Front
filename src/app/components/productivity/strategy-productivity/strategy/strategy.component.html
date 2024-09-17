@@ -11,24 +11,6 @@
           <span class="spacermoreinputs"></span>
 
           <div class="input-container">
-            <nz-select
-              class="select-input"
-              [(ngModel)]="selectedYear"
-              nzPlaceHolder="Seleccione una fecha"
-            >
-              <nz-option
-                nzLabel="Seleccione una fecha"
-                disabled
-                selected
-              ></nz-option>
-              <nz-option
-                *ngFor="let year of dateYear"
-                [nzLabel]="year"
-                [nzValue]="year"
-              >
-              </nz-option>
-            </nz-select>
-
             <nz-input-group [nzSuffix]="suffixIconSearch">
               <input
                 type="text"

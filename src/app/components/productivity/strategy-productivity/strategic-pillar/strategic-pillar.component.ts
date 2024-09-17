@@ -25,18 +25,27 @@ import { CreatetypebalanceComponent } from '../../../config/balanceconfig/typeba
 import { CreateStrategicPillarComponent } from './create-strategic-pillar/create-strategic-pillar.component';
 import { ProductivityService } from '../../../../services/productivity.service';
 
-
 @Component({
   selector: 'app-strategic-pillar',
   templateUrl: './strategic-pillar.component.html',
   styleUrls: ['./strategic-pillar.component.css'],
   standalone: true,
-  imports: [MatToolbarModule, MatTableModule, MatSortModule, MatFormFieldModule, MatInputModule
-    , MatButtonModule, MatIconModule, MatCardModule, SharedModule, NzInputModule, NzIconModule
+  imports: [
+    MatToolbarModule,
+    MatTableModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    SharedModule,
+    NzInputModule,
+    NzIconModule,
   ],
 })
 export class StrategicPillarComponent implements OnInit {
-  displayedColumns: string[] = ['nombre','estrategia', 'descripcion'];
+  displayedColumns: string[] = ['nombre', 'estrategia', 'descripcion'];
   columnNames = {
     nombre: 'Nombre',
     estrategia: 'Estrategia',
@@ -44,64 +53,74 @@ export class StrategicPillarComponent implements OnInit {
   };
   dataSource: any[] = [];
 
-  constructor(private sharedStateService: SharedStateService,
-     private configService: ConfigService, 
-     private auxService: AuxService, 
-     public dialog: MatDialog, private router: Router,
-     private balanceService:BalanceService,
-     private productivityService: ProductivityService) { }
+  constructor(
+    private sharedStateService: SharedStateService,
+    private configService: ConfigService,
+    private auxService: AuxService,
+    public dialog: MatDialog,
+    private router: Router,
+    private productivityService: ProductivityService
+  ) {}
 
   ngOnInit(): void {
-    this.productivityService.getDataStructure1().subscribe({
-      next: (data) => {
-        this.dataSource = data;
-        this.auxService.cerrarVentanaCargando();
-      },
-      error: (error) => {
-        this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
-      }
-    });
+    this.getStrategy();
   }
 
-
-
-  applyFilter(event: Event) {
-  }
+  applyFilter(event: Event) {}
 
   onEditAction(event: any) {
-
+    console.log('event ', event);
     const dialogRef = this.dialog.open(CreateStrategicPillarComponent, {
-      data: { idcategory: event.idEstrategia }
-
+      data: {
+        idPilarestrategico: event.id,
+        nombre: event.nombre,
+        descripcion: event.descripcion,
+        idEstrategia: event.idEstrategia,
+        estrategia: event.estrategia,
+        actionEdit: true,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // Si el resultado es true, se vuelve a obtener la lista de clientes
         this.configService.ObtenerBalanceTipo().subscribe({
           next: (data) => {
-
-            this.dataSource = data.data;
-            this.auxService.cerrarVentanaCargando();
+            this.getStrategy();
           },
           error: (error) => {
-            this.auxService.AlertError('Error al cargar los tipos de categoría (balance):', error);
-          }
+            this.auxService.AlertError(
+              'Error al cargar los tipos de categoría (balance):',
+              error
+            );
+          },
         });
       }
     });
+  }
 
+  getStrategy() {
+    this.auxService.ventanaCargando();
+    this.productivityService
+      .getStrategicPillar('get-strategic-pillar')
+      .subscribe(async (data) => {
+        this.auxService.cerrarVentanaCargando();
+        if (data.success == true) {
+          this.dataSource = data.data;
+        }
+      });
   }
 
   async onDeleteAction(event: any) {
-    console.log('event ', event);
+    console.log('event ', event.id);
     const result = await this.auxService.AlertConfirmation(
-      'Seguro que desea eliminar este registro?', undefined
+      'Seguro que desea eliminar este registro?',
+      undefined
     );
     if (result.isConfirmed) {
       this.auxService.ventanaCargando();
-      this.balanceService
-        .DeleteBalance('delete-balance-tipe', event.idBalancetipo)
+      this.productivityService
+        .DeleteStrategicPillar('delete-strategic-pillar', event.id)
         .subscribe(async (data) => {
           this.auxService.cerrarVentanaCargando();
           if (data.success == true) {
@@ -116,25 +135,22 @@ export class StrategicPillarComponent implements OnInit {
   }
 
   CreateAction() {
-    console.log(event); 
-    
-    const dialogRef = this.dialog.open(CreateStrategicPillarComponent);
-  
-    dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            // Si el resultado es true, se vuelve a obtener la lista de clientes
-            this.configService.ObtenerBalanceTipo().subscribe({
-              next: (data) => {
-  
-                this.dataSource = data.data;
-                this.auxService.cerrarVentanaCargando();
-              },
-              error: (error) => {
-                this.auxService.AlertError('Error al cargar las zonas:', error);
-              }
-            });
-          }
-    });
+    console.log(event);
 
+    const dialogRef = this.dialog.open(CreateStrategicPillarComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Si el resultado es true, se vuelve a obtener la lista de clientes
+        this.configService.ObtenerBalanceTipo().subscribe({
+          next: (data) => {
+            this.getStrategy();
+          },
+          error: (error) => {
+            this.auxService.AlertError('Error al cargar las zonas:', error);
+          },
+        });
+      }
+    });
   }
 }

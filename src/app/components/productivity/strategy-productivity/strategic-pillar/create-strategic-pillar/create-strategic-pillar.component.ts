@@ -17,94 +17,163 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { CreatetypebalanceComponent } from '../../../../config/balanceconfig/typebalance/createtypebalance/createtypebalance.component';
-
+import { ProductivityService } from '../../../../../services/productivity.service';
 
 @Component({
   selector: 'app-create-strategic-pillar',
   templateUrl: './create-strategic-pillar.component.html',
   styleUrls: ['./create-strategic-pillar.component.css'],
   standalone: true,
-  imports: [NzInputModule, NzIconModule, NzSelectModule, CommonModule, 
-    ReactiveFormsModule, MatDialogModule, SharedModule, NzFormModule],
+  imports: [
+    NzInputModule,
+    NzIconModule,
+    NzSelectModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    SharedModule,
+    NzFormModule,
+  ],
 })
 export class CreateStrategicPillarComponent implements OnInit {
   strategicForm: FormGroup;
-  categorias: any;
+  estrategys: any;
 
   constructor(
     private fb: FormBuilder,
-    private configService: ConfigService,
+    private productivityService: ProductivityService,
     private auxService: AuxService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CreatetypebalanceComponent>
   ) {
-    console.log('hola ', data);
     this.strategicForm = this.fb.group({
+      idPilarestrategico: [0, ],
       nombre: ['', Validators.required],
       idEstrategia: ['', Validators.required],
-      descripcion: ['', Validators.required]
+      descripcion: ['',],
     });
-    this.cargarCategoriasBalance();
+    if (this.data) {
+      this.strategicForm.patchValue({
+        idPilarestrategico: this.data.idPilarestrategico || 0, // Si 'idPilarestrategico' viene lleno, se carga
+        nombre: this.data.nombre || '',          // Si 'nombre' viene lleno, se carga
+        idEstrategia: this.data.idEstrategia || '', // Cargar 'idEstrategia' si viene
+        descripcion: this.data.descripcion || ''   // Cargar 'descripcion' si viene
+      });
+    }
+
+    this.getStrategy();
+    this.getStrategy();
   }
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
   onCancel(): void {
     this.dialogRef.close();
   }
 
-
-  cargarCategoriasBalance() {
-    this.configService.ObtenerBalanceTipoCategoria().subscribe({
+  getStrategy() {
+    this.productivityService.getStrategy('get-strategy').subscribe({
       next: (data) => {
         if (data.success) {
-
-          if (!data.warning) {
-            console.log(data.data)
-            this.categorias = data.data;// Vincula los datos al formulario
-          } else {
-            this.auxService.AlertWarning("Tipo de balance", data.message);
-          }
+          this.estrategys = data.data; // Vincula los datos al formulario
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
-        this.auxService.AlertError('Error al cargar los tipos de balance:', error);
-      }
+        this.auxService.AlertError(
+          'Error al cargar los tipos de balance:',
+          error
+        );
+      },
     });
   }
 
   guardarCambios() {
-    if (this.strategicForm.valid) {
-      this.auxService.ventanaCargando();
-
-
-      this.configService.CrearBalanceTipo(this.strategicForm.value).subscribe({
-        next: (data) => {
-          if (data.success) {
-
-            if (!data.warning) {
-              this.auxService.AlertSuccess('Actualizar tipo de balance', data.message);
-            }
-            else {
-              this.auxService.cerrarVentanaCargando();
-              this.auxService.AlertError('Error al cargar los tipos de balance:', data.message);
-            }
-            this.dialogRef.close(true); // Cierra el diálogo y devuelve un resultado positivo
-          } else {
-            this.auxService.AlertWarning('Error al actualizar zona', data.message);
-          }
-        },
-        error: (error) => {
-          this.auxService.cerrarVentanaCargando();
-          this.auxService.AlertError('Error al cargar los tipos de balance:', error);
-        }
-      });
+    if (this.data && this.data.actionEdit) {
+      this.updateCambios();
     } else {
-      this.auxService.AlertWarning('Formulario inválido', 'Por favor, revisa los campos y corrige los errores.');
+      this.createCambios();
     }
   }
 
+  updateCambios() {
+    if (this.strategicForm.valid) {
+      this.auxService.ventanaCargando();
+
+      this.productivityService
+        .UpdateeStrategicPillar(
+          'update-strategic-pillar',
+          this.strategicForm.value
+        )
+        .subscribe({
+          next: async (data) => {
+            this.auxService.cerrarVentanaCargando();
+            if (data.success) {
+              await this.auxService.AlertSuccess(
+                'Datos actualizados correctamente',
+                data.message
+              );
+              this.dialogRef.close(true);
+            } else {
+              this.auxService.AlertWarning(
+                'Error al crear el registro',
+                data.message
+              );
+            }
+          },
+          error: (error) => {
+            this.auxService.cerrarVentanaCargando();
+            this.auxService.AlertError(
+              'Error al cargar los tipos de balance:',
+              error
+            );
+          },
+        });
+    } else {
+      this.auxService.AlertWarning(
+        'Formulario inválido',
+        'Por favor, revisa los campos y corrige los errores.'
+      );
+    }
+  }
+  createCambios() {
+    if (this.strategicForm.valid) {
+      this.auxService.ventanaCargando();
+
+      this.productivityService
+        .CreateStrategicPillar(
+          'create-strategic-pillar',
+          this.strategicForm.value
+        )
+        .subscribe({
+          next: async (data) => {
+            this.auxService.cerrarVentanaCargando();
+            if (data.success) {
+              await this.auxService.AlertSuccess(
+                'Datos actualizados correctamente',
+                data.message
+              );
+              this.dialogRef.close(true);
+            } else {
+              this.auxService.AlertWarning(
+                'Error al crear el registro',
+                data.message
+              );
+            }
+          },
+          error: (error) => {
+            this.auxService.cerrarVentanaCargando();
+            this.auxService.AlertError(
+              'Error al cargar los tipos de balance:',
+              error
+            );
+          },
+        });
+    } else {
+      this.auxService.AlertWarning(
+        'Formulario inválido',
+        'Por favor, revisa los campos y corrige los errores.'
+      );
+    }
+  }
 }
