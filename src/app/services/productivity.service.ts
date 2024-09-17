@@ -1,13 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuxService } from './aux-service.service';
-import { environment } from '../../environments/environment';
 import { catchError, Observable, of } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { AuxService } from './aux-service.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class BalanceService {
+export class ProductivityService {
   readonly apiUrl: string;
 
   constructor(private httpClient: HttpClient, private auxService: AuxService) {
@@ -68,49 +68,36 @@ export class BalanceService {
     
     const data = [
       {
-        "id": 1,
-        "empresa": "Empresa ABC",
-        "Nombre": "Estrategia A",
-        "Descripcion": "Descripción de la estrategia A",
-        "subData": [
-          {
-            "id": 1,
-            "estrategia": 1,
-            "Nombre": "Objetivo A1",
-            "Etapa": "Inicial",
-            "Porcentajeavance_real": 50,
-            "Porcentajeavance_proyectado": 80,
-            "Estado": true
-          },
-          {
-            "id": 2,
-            "estrategia": 1,
-            "Nombre": "Objetivo A2",
-            "Etapa": "Intermedia",
-            "Porcentajeavance_real": 30,
-            "Porcentajeavance_proyectado": 70,
-            "Estado": true
-          }
-        ]
+        "idEstrategia": 1,
+        "nombre": "Proyecto Alpha",
+        "estrategia": "Crecimiento de Mercado",
+        "descripcion": "Expansión a nuevos mercados internacionales"
       },
       {
-        "id": 2,
-        "empresa": "Empresa XYZ",
-        "Nombre": "Estrategia B",
-        "Descripcion": "Descripción de la estrategia B",
-        "subData": [
-          {
-            "id": 3,
-            "estrategia": 2,
-            "Nombre": "Objetivo B1",
-            "Etapa": "Inicial",
-            "Porcentajeavance_real": 60,
-            "Porcentajeavance_proyectado": 90,
-            "Estado": false
-          }
-        ]
+        "idEstrategia": 2,
+        "nombre": "Proyecto Beta",
+        "estrategia": "Diferenciación de Producto",
+        "descripcion": "Desarrollo de características únicas para nuevos productos"
+      },
+      {
+        "idEstrategia": 3,
+        "nombre": "Proyecto Gamma",
+        "estrategia": "Liderazgo en Costos",
+        "descripcion": "Reducción de costos operativos para aumentar la competitividad"
+      },
+      {
+        "idEstrategia": 4,
+        "nombre": "Proyecto Delta",
+        "estrategia": "Innovación Disruptiva",
+        "descripcion": "Implementación de tecnologías emergentes en el modelo de negocio"
+      },
+      {
+        "idEstrategia": 5,
+        "nombre": "Proyecto Epsilon",
+        "estrategia": "Alianzas Estratégicas",
+        "descripcion": "Colaboración con empresas clave en la industria para compartir recursos"
       }
-    ]    
+    ];
     return of(data);
   }
 }
