@@ -28,9 +28,10 @@ export class TableWithRowsChildComponent implements OnInit {
   @Input() columns: Array<{ title: string; field: string; sortDirection: 'ascend' | 'descend' | null }> = [];
   @Input() subColumns: Array<{ title: string; field: string }> = [];
   @Input() listOfData: any[] = []; // Datos principales
+  @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
   @Input() ActionEdit: boolean = false;
   @Input() pageSize: number = 10;
-  
+  @Input() emitEditEvent: boolean = false; 
   @Output() subTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
   @Output() mainTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
 
@@ -137,11 +138,18 @@ export class TableWithRowsChildComponent implements OnInit {
     data.isEditing = false;
   }
 
-  // Alterna el estado de edición en una fila
-  toggleEdit(data: any, isEditing: boolean): void {
-    data.isEditing = isEditing;
-  }
 
+  toggleEdit(data: any, isEditing: boolean): void {
+    if (this.emitEditEvent) {
+      if (isEditing) {
+        this.editClicked.emit(data);  // Si emitEditEvent es true, se emite el evento al padre
+      }
+    } else {
+      data.isEditing = isEditing;  // Si emitEditEvent es false, se activa la edición local
+    }
+  }
+  
+  
   // Actualiza los datos paginados
   updatePaginatedData(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;

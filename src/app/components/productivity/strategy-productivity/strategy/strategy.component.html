@@ -33,6 +33,8 @@
         [columns]="mainTableColumns"
         [subColumns]="subTableColumns"
         [ActionEdit]="true"
+        [emitEditEvent]="true"
+        (editClicked)="onEditClicked($event)"
         (subTableDataSaved)="onSubTableDataSaved($event)"
         (mainTableDataSaved)="onMainTableDataSaved($event)"
       ></app-table-with-rows-child>

@@ -19,6 +19,9 @@ import { SharedModule } from '../../../shared/shared.module';
 
 import { AuxService } from '../../../../services/aux-service.service';
 import { ProductivityService } from '../../../../services/productivity.service';
+import { CreateStrategicPillarComponent } from '../strategic-pillar/create-strategic-pillar/create-strategic-pillar.component';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateStrategyComponent } from './create-strategy/create-strategy.component';
 @Component({
   selector: 'app-strategy',
   templateUrl: './strategy.component.html',
@@ -53,7 +56,9 @@ export class StrategyComponent implements OnInit {
   dataForTable: any[] = [];
   dateYear: any[] = [];
   searchValue: string = '';
+  emitEditToParent = false; 
   constructor(
+    public dialog: MatDialog,
     private auxService: AuxService,
     private productivityService: ProductivityService,
   ) {}
@@ -119,6 +124,24 @@ export class StrategyComponent implements OnInit {
         console.log(data);
         this.dataForTable = data.data;
       });
+  }
+
+
+  onEditClicked(data: any) {
+   this.onEditAction(data);
+  }
+
+  onEditAction(event: any) {
+    console.log('event ', event);
+    const dialogRef = this.dialog.open(CreateStrategyComponent, 
+      event
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        
+      }
+    });
   }
 
   onMainTableDataSaved(data: any): void {
