@@ -42,7 +42,10 @@ export class BusinessunitComponent implements OnInit {
   };
   dataSource: any[] = [];
 
-  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog )  { }
+  constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService, public dialog: MatDialog )  {
+    this.sharedStateService.updateSuggestedQuestions([]);
+  
+   }
 
   ngOnInit(): void {
 

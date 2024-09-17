@@ -54,7 +54,9 @@ export class ImportComponent {
 
   @ViewChild(MatSort) sort: MatSort | undefined;
 
-  constructor(private sharedStateService: SharedStateService, private importService: ImportService, public dialog: MatDialog){}; 
+  constructor(private sharedStateService: SharedStateService, private importService: ImportService, public dialog: MatDialog){
+    this.sharedStateService.updateSuggestedQuestions([]);
+  }; 
 
   
   

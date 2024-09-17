@@ -46,8 +46,11 @@ export class ClientComponent implements OnInit {
   originalDataSource: any[] = [];
 
   constructor(private sharedStateService: SharedStateService, private configService: ConfigService, private auxService: AuxService,
-     public dialog: MatDialog,private cdr: ChangeDetectorRef) { }
+     public dialog: MatDialog,private cdr: ChangeDetectorRef) {
+      this.sharedStateService.updateSuggestedQuestions([]);
+    }
 
+   
   ngOnInit(): void {
 
     this.originalDataSource = [...this.dataSource];

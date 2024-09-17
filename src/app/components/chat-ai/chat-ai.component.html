@@ -22,4 +22,11 @@
       <button nz-button nzType="primary" (click)="sendMessage()"><span nz-icon nzType="arrow-right"></span></button>
     </ng-template>
   </div>
+
+  <!-- Preguntas sugeridas -->
+<div class="suggested-questions">
+  <button nz-button nzType="default" *ngFor="let question of suggestedQuestions" (click)="selectSuggestedQuestion(question)">
+    {{ question }}
+  </button>
+</div>
 </div>

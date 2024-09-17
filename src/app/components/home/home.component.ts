@@ -37,7 +37,9 @@ export class HomeComponent {
 
   constructor(private sharedStateService: SharedStateService, private permisosService: PermisosService
     ,private auxService: AuxService, private router: Router
-  ){}
+  ){
+    this.sharedStateService.updateSuggestedQuestions([]);
+  }
 
   displayedColumns: string[] = ['empresa'];
   dataSource: any[] = [];

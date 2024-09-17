@@ -2,8 +2,8 @@
     position: fixed;
     bottom: 0;
     right: 20px;
-    width: 300px;
-    height: 500px;
+    width: 400px;
+    height: 600px;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -50,8 +50,37 @@
   */
 
 
- 
-
-
+  .suggested-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background-color: #f9f9f9;
+    height: 200px;
+    overflow-y: auto;
+    box-sizing: border-box; /* Asegura que el padding no sobresalga */
+  }
+  
+  .suggested-questions button {
+    flex-grow: 1;
+    text-align: center;
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 100%;
+    box-sizing: border-box; /* Asegura que el padding no sobresalga */
+  }
+  
+  /* Sobrescribir el estilo de nz-button para asegurar que el texto se ajuste */
+  .suggested-questions button {
+    display: block;
+    width: 100%; /* Asegura que el botón ocupe todo el espacio disponible */
+    height: auto; /* Permite que el botón crezca en altura para ajustarse al contenido */
+    white-space: normal; /* Permite el ajuste de líneas dentro del botón */
+    word-wrap: break-word; /* Rompe las palabras largas si es necesario */
+    overflow-wrap: break-word; /* Asegura que las palabras no se desborden */
+    line-height: normal; /* Ajusta la altura de línea para que no se mantenga en una sola línea */
+  }
+  
   
   
