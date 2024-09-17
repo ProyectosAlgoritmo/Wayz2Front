@@ -9,7 +9,7 @@ import { Component, ChangeDetectorRef, ViewChild, AfterViewChecked, ElementRef }
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../services/chat-service.service';
 import { SharedStateService } from '../../services/shared-state.service';
-
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-ai',
@@ -31,17 +31,17 @@ export class ChatAIComponent implements AfterViewChecked {
   messages: { role: string; content: string }[] = [];
   chatVisible: boolean = true;
 
-  suggestedQuestions: string[] = [
-    '¿Cómo mejorar mi productividad?',
-    '¿Cuál es la mejor estrategia de marketing digital?',
-    '¿Qué opinas sobre la inteligencia artificial?',
-    'Dame una idea para un proyecto innovador'
-  ];
+  suggestedQuestions: string[] = [];
 
-  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, private sharedStateService: SharedStateService
+  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, private sharedStateService: SharedStateService,
+    private router: Router, private activatedRoute: ActivatedRoute
   ){
-
+    this.sharedStateService.suggestedQuestions$.subscribe(questions => {
+      this.suggestedQuestions = questions;
+    });
   }
+
+  
 
   sendMessage(): void {
     if (this.userInput.trim()) {
