@@ -40,6 +40,14 @@ export class ProductivityService {
       .pipe(catchError(this.auxService.handleError.bind(this)));
   }
 
+  CreateStrategy(link: string, Data: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
+    return this.httpClient
+      .post(url, Data, { headers })
+      .pipe(catchError(this.auxService.handleError.bind(this)));
+  }
+
   UpdateeStrategySubTable(link: string, Data: any): Observable<any> {
     const headers = this.getHeaders();
     const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente

@@ -14,6 +14,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { CreatetypebalanceComponent } from '../../../../config/balanceconfig/typebalance/createtypebalance/createtypebalance.component';
 import { ProductivityService } from '../../../../../services/productivity.service';
+import { PermisosService } from '../../../../../services/permisos.service';
 
 @Component({
   selector: 'app-create-strategy',
@@ -33,30 +34,32 @@ import { ProductivityService } from '../../../../../services/productivity.servic
 })
 export class CreateStrategyComponent implements OnInit {
   strategicForm: FormGroup;
-  estrategys: any;
+  empresas: any;
 
   constructor(
     private fb: FormBuilder,
     private productivityService: ProductivityService,
+    private permisosService: PermisosService,
     private auxService: AuxService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<CreatetypebalanceComponent>
   ) {
     this.strategicForm = this.fb.group({
-      idPilarestrategico: [0, ],
+      id: [0, ],
       nombre: ['', Validators.required],
-      idEstrategia: ['', Validators.required],
+      idEmpresa: ['', Validators.required],
+      empresa: [''],
       descripcion: ['',],
     });
     if (this.data) {
       this.strategicForm.patchValue({
-        idPilarestrategico: this.data.idPilarestrategico || 0, // Si 'idPilarestrategico' viene lleno, se carga
-        nombre: this.data.nombre || '',          // Si 'nombre' viene lleno, se carga
-        idEstrategia: this.data.idEstrategia || '', // Cargar 'idEstrategia' si viene
-        descripcion: this.data.descripcion || ''   // Cargar 'descripcion' si viene
+        id: this.data.id || 0, 
+        nombre: this.data.nombre || '', 
+        empresa: this.data.empresa || '', 
+        descripcion: this.data.descripcion || '',
+        idEmpresa: this.data.idEmpresa || '',   
       });
     }
-
     this.getStrategy();
     this.getStrategy();
   }
@@ -67,10 +70,10 @@ export class CreateStrategyComponent implements OnInit {
   }
 
   getStrategy() {
-    this.productivityService.getStrategy('get-strategy').subscribe({
+    this.permisosService.ObtenerEmpresas().subscribe({
       next: (data) => {
         if (data.success) {
-          this.estrategys = data.data; // Vincula los datos al formulario
+          this.empresas = data.data; // Vincula los datos al formulario
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
@@ -85,7 +88,7 @@ export class CreateStrategyComponent implements OnInit {
   }
 
   guardarCambios() {
-    if (this.data && this.data.actionEdit) {
+    if (this.data) {
       this.updateCambios();
     } else {
       this.createCambios();
@@ -97,8 +100,8 @@ export class CreateStrategyComponent implements OnInit {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .UpdateeStrategicPillar(
-          'update-strategic-pillar',
+        .UpdateStrategy(
+          'update-strategy',
           this.strategicForm.value
         )
         .subscribe({
@@ -137,8 +140,8 @@ export class CreateStrategyComponent implements OnInit {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .CreateStrategicPillar(
-          'create-strategic-pillar',
+        .CreateStrategy(
+          'create-strategy',
           this.strategicForm.value
         )
         .subscribe({

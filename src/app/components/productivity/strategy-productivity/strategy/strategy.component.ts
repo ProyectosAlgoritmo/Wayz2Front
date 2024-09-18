@@ -121,7 +121,7 @@ export class StrategyComponent implements OnInit {
     this.productivityService
       .getStrategy('get-strategy')
       .subscribe(async (data) => {
-        console.log(data);
+        this.auxService.cerrarVentanaCargando();
         this.dataForTable = data.data;
       });
   }
@@ -132,14 +132,24 @@ export class StrategyComponent implements OnInit {
   }
 
   onEditAction(event: any) {
-    console.log('event ', event);
     const dialogRef = this.dialog.open(CreateStrategyComponent, 
-      event
+      {
+        data: event,
+      }
     );
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        
+        this.getStrategy();
+      }
+    });
+  }
+
+  CreateAction() {
+    const dialogRef = this.dialog.open(CreateStrategyComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getStrategy();
       }
     });
   }

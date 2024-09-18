@@ -141,15 +141,7 @@ export class StrategicPillarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        // Si el resultado es true, se vuelve a obtener la lista de clientes
-        this.configService.ObtenerBalanceTipo().subscribe({
-          next: (data) => {
-            this.getStrategy();
-          },
-          error: (error) => {
-            this.auxService.AlertError('Error al cargar las zonas:', error);
-          },
-        });
+        this.getStrategy();
       }
     });
   }
