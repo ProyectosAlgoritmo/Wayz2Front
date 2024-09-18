@@ -5,8 +5,13 @@
         <h2 class="title-heading"></h2>
 
         <mat-toolbar class="background-white-title-botton">
-          <app-buttonstrategic (click)="CreateAction()" mat-button [label]="'Crear'">
-          </app-buttonstrategic>
+          <div >
+            <app-buttonstrategic (click)="CreateAction()" mat-button [label]="'Crear'" style="margin: 10px;">
+            </app-buttonstrategic>
+            
+            <app-buttonstrategic (click)="CreateActionObjetivo()" mat-button [label]="'Crear objetovo'">
+            </app-buttonstrategic>
+          </div>
 
           <span class="spacermoreinputs"></span>
 
@@ -35,8 +40,7 @@
         [ActionEdit]="true"
         [emitEditEvent]="true"
         (editClicked)="onEditClicked($event)"
-        (subTableDataSaved)="onSubTableDataSaved($event)"
-        (mainTableDataSaved)="onMainTableDataSaved($event)"
+        (deleteAction)="onDeleteAction($event)"
       ></app-table-with-rows-child>
     </div>
   </div>

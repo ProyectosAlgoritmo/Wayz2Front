@@ -22,6 +22,7 @@ import { ProductivityService } from '../../../../services/productivity.service';
 import { CreateStrategicPillarComponent } from '../strategic-pillar/create-strategic-pillar/create-strategic-pillar.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateStrategyComponent } from './create-strategy/create-strategy.component';
+import { CreateObjectiveComponent } from './create-objective/create-objective.component';
 @Component({
   selector: 'app-strategy',
   templateUrl: './strategy.component.html',
@@ -56,27 +57,30 @@ export class StrategyComponent implements OnInit {
   dataForTable: any[] = [];
   dateYear: any[] = [];
   searchValue: string = '';
-  emitEditToParent = false; 
+  emitEditToParent = false;
   constructor(
     public dialog: MatDialog,
     private auxService: AuxService,
-    private productivityService: ProductivityService,
+    private productivityService: ProductivityService
   ) {}
 
   mainTableColumns = [
     { title: 'Acciones', field: 'Acciones', sortDirection: null },
     { title: 'Nombre', field: 'nombre', sortDirection: null },
     { title: 'Empresa', field: 'empresa', sortDirection: null },
-    { title: 'Descripción', field: 'descripcion', sortDirection: null }
+    { title: 'Descripción', field: 'descripcion', sortDirection: null },
   ];
-  
+
   subTableColumns = [
     { title: 'Acciones', field: 'Acciones', sortDirection: null },
     { title: 'Nombre', field: 'nombre' },
     { title: 'Etapa', field: 'etapa' },
     { title: 'Porcentaje Avance Real', field: 'porcentajeavance_real' },
-    { title: 'Porcentaje Avance Proyectado', field: 'porcentajeavance_proyectado' },
-    { title: 'Estado', field: 'estado' }
+    {
+      title: 'Porcentaje Avance Proyectado',
+      field: 'porcentajeavance_proyectado',
+    },
+    { title: 'Estado', field: 'estado' },
   ];
 
   onSearchChange(): void {
@@ -90,59 +94,45 @@ export class StrategyComponent implements OnInit {
     // });
   }
 
-
-
-  onOptionChange(event: any) {
-    this.auxService.ventanaCargando();
-    this.productivityService.getStrategy('get-strategy').subscribe((data) => {
-      this.auxService.cerrarVentanaCargando();
-      this.dataForTable = data;
-    });
-  }
-
-  onSubTableDataSaved(data: any): void {
-    this.auxService.ventanaCargando();
-    this.productivityService
-      .UpdateeStrategySubTable('update-strategy-subTable', data)
-      .subscribe(async (data) => {
-        this.auxService.cerrarVentanaCargando();
-        if (data.success == true) {
-          await this.auxService.AlertSuccess('Ok', data.message);
-          this.getStrategy();
-        } else {
-          await this.auxService.AlertError('Error', data.message);
-          //this.getStrategy();
-        }
-      });
-  }
-
   getStrategy() {
     this.auxService.ventanaCargando();
     this.productivityService
-      .getStrategy('get-strategy')
+      .get('get-strategy')
       .subscribe(async (data) => {
         this.auxService.cerrarVentanaCargando();
         this.dataForTable = data.data;
       });
   }
 
-
   onEditClicked(data: any) {
-   this.onEditAction(data);
+    this.onEditAction(data);
   }
 
   onEditAction(event: any) {
-    const dialogRef = this.dialog.open(CreateStrategyComponent, 
-      {
+    console.log('event', event);
+    if (event.table == 'principal') {
+      const dialogRef = this.dialog.open(CreateStrategyComponent, {
         data: event,
-      }
-    );
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.getStrategy();
-      }
-    });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.getStrategy();
+        }
+      });
+    }
+
+    if (event.table == 'subTable') {
+      const dialogRef = this.dialog.open(CreateObjectiveComponent, {
+        data: event,
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.getStrategy();
+        }
+      });
+    }
   }
 
   CreateAction() {
@@ -154,19 +144,69 @@ export class StrategyComponent implements OnInit {
     });
   }
 
-  onMainTableDataSaved(data: any): void {
-    this.auxService.ventanaCargando();
-    this.productivityService
-      .UpdateStrategy('update-strategy', data)
-      .subscribe(async (data) => {
-        this.auxService.cerrarVentanaCargando();
-        if (data.success == true) {
-          await this.auxService.AlertSuccess('Ok', data.message);
-          this.getStrategy();
-        } else {
-          await this.auxService.AlertError('Error', data.message);
-          //this.getStrategy();
-        }
-      });
+  CreateActionObjetivo() {
+    const dialogRef = this.dialog.open(CreateObjectiveComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getStrategy();
+      }
+    });
   }
+
+  onDeleteAction(event: any) {
+    console.log('event ', event);
+    if (event.table == 'principal') {
+      this.deleteStrategy(event);
+    }
+    if (event.table == 'subTable') {
+      this.deleteObjective(event);
+    }
+  }
+
+  async deleteStrategy(event: any) {
+    console.log('event ', event.id);
+    const result = await this.auxService.AlertConfirmation(
+      'Seguro que desea eliminar este registro?',
+      undefined
+    );
+    if (result.isConfirmed) {
+      this.auxService.ventanaCargando();
+      this.productivityService
+        .Delete('delete-strategy', event.id)
+        .subscribe(async (data) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success == true) {
+            await this.auxService.AlertSuccess('Ok', data.message);
+            this.ngOnInit();
+          } else {
+            await this.auxService.AlertError('Error', data.message);
+            //this.getBalance();
+          }
+        });
+    }
+  }
+
+  async deleteObjective(event: any) {
+    console.log('event ', event.id);
+    const result = await this.auxService.AlertConfirmation(
+      'Seguro que desea eliminar este registro?',
+      undefined
+    );
+    if (result.isConfirmed) {
+      this.auxService.ventanaCargando();
+      this.productivityService
+        .Delete('delete-objective', event.id)
+        .subscribe(async (data) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success == true) {
+            await this.auxService.AlertSuccess('Ok', data.message);
+            this.ngOnInit();
+          } else {
+            await this.auxService.AlertError('Error', data.message);
+            //this.getBalance();
+          }
+        });
+    }
+  }
+
 }

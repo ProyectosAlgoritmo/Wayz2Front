@@ -31,11 +31,14 @@
 
           <ng-container *ngFor="let column of columns">
             <td *ngIf="column.title === 'Acciones' && ActionEdit">
-              <a *ngIf="!data.isEditing" (click)="toggleEdit(data, true)">
+              <a *ngIf="!data.isEditing" (click)="toggleEdit(data, true, 'principal')">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </a>
+              <a (click)="onDelete(data,'principal')">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+              </a>
               <a *ngIf="data.isEditing" (click)="saveMainTableEdit(data)"><span nz-icon nzType="save" nzTheme="outline" style="font-size: 20px; margin-left:10px"></span></a>
-              <a *ngIf="data.isEditing" (click)="toggleEdit(data, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
+              <a *ngIf="data.isEditing" (click)="toggleEdit(data, false,'principal')"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
             </td>
           
             <td *ngIf="column.title !== 'Acciones' && !data.isEditing" nz-td>{{ data[column.field] }}</td>
@@ -69,12 +72,14 @@
                   <ng-container *ngFor="let subColumn of subColumns">
 
                     <td *ngIf="subColumn.title === 'Acciones' && ActionEdit">
-                      <a *ngIf="!subItem.isEditing" (click)="toggleEdit(subItem, true)">
+                      <a *ngIf="!subItem.isEditing" (click)="toggleEdit(subItem, true,'subTable')">
                         <i nz-icon nzType="edit" nzTheme="outline"></i>
                       </a>
-
+                      <a (click)="onDelete(subItem,'subTable')">
+                        <span nz-icon nzType="delete" nzTheme="outline"></span>
+                      </a>
                       <a *ngIf="subItem.isEditing" (click)="saveSubTableEdit(subItem)"><span nz-icon nzType="save" nzTheme="outline"></span></a>
-                      <a *ngIf="subItem.isEditing" (click)="toggleEdit(subItem, false)"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
+                      <a *ngIf="subItem.isEditing" (click)="toggleEdit(subItem, false,'subTable')"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
                     </td>
 
 

@@ -71,7 +71,7 @@ export class CreateStrategicPillarComponent implements OnInit {
   }
 
   getStrategy() {
-    this.productivityService.getStrategy('get-strategy').subscribe({
+    this.productivityService.get('get-strategy').subscribe({
       next: (data) => {
         if (data.success) {
           this.estrategys = data.data; // Vincula los datos al formulario
@@ -90,18 +90,18 @@ export class CreateStrategicPillarComponent implements OnInit {
 
   guardarCambios() {
     if (this.data && this.data.actionEdit) {
-      this.updateCambios();
+      this.updateStrategicPilar();
     } else {
-      this.createCambios();
+      this.createStrategicPilar();
     }
   }
 
-  updateCambios() {
+  updateStrategicPilar() {
     if (this.strategicForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .UpdateeStrategicPillar(
+        .Update(
           'update-strategic-pillar',
           this.strategicForm.value
         )
@@ -136,12 +136,12 @@ export class CreateStrategicPillarComponent implements OnInit {
       );
     }
   }
-  createCambios() {
+  createStrategicPilar() {
     if (this.strategicForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .CreateStrategicPillar(
+        .Create(
           'create-strategic-pillar',
           this.strategicForm.value
         )

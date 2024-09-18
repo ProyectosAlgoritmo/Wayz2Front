@@ -100,7 +100,7 @@ export class CreateStrategyComponent implements OnInit {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .UpdateStrategy(
+        .Update(
           'update-strategy',
           this.strategicForm.value
         )
@@ -140,7 +140,7 @@ export class CreateStrategyComponent implements OnInit {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .CreateStrategy(
+        .Create(
           'create-strategy',
           this.strategicForm.value
         )

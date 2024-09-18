@@ -30,6 +30,7 @@ export class TableWithRowsChildComponent implements OnInit {
   @Input() listOfData: any[] = []; // Datos principales
   @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
   @Input() ActionEdit: boolean = false;
+  @Output() deleteAction = new EventEmitter<any>();
   @Input() pageSize: number = 10;
   @Input() emitEditEvent: boolean = false; 
   @Output() subTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
@@ -139,7 +140,8 @@ export class TableWithRowsChildComponent implements OnInit {
   }
 
 
-  toggleEdit(data: any, isEditing: boolean): void {
+  toggleEdit(data: any, isEditing: boolean, table:string): void {
+    data.table = table;
     if (this.emitEditEvent) {
       if (isEditing) {
         this.editClicked.emit(data);  // Si emitEditEvent es true, se emite el evento al padre
@@ -148,8 +150,12 @@ export class TableWithRowsChildComponent implements OnInit {
       data.isEditing = isEditing;  // Si emitEditEvent es false, se activa la edición local
     }
   }
-  
-  
+
+  onDelete(element: any, table: string) {
+    element.table = table;
+    this.deleteAction.emit(element);
+  }
+
   // Actualiza los datos paginados
   updatePaginatedData(): void {
     const startIndex = (this.currentPage - 1) * this.pageSize;

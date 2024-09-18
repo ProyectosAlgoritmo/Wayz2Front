@@ -63,7 +63,7 @@ export class StrategicPillarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getStrategy();
+    this.getStrategyPilar();
   }
 
   applyFilter(event: Event) {}
@@ -86,7 +86,7 @@ export class StrategicPillarComponent implements OnInit {
         // Si el resultado es true, se vuelve a obtener la lista de clientes
         this.configService.ObtenerBalanceTipo().subscribe({
           next: (data) => {
-            this.getStrategy();
+            this.getStrategyPilar();
           },
           error: (error) => {
             this.auxService.AlertError(
@@ -99,10 +99,10 @@ export class StrategicPillarComponent implements OnInit {
     });
   }
 
-  getStrategy() {
+  getStrategyPilar() {
     this.auxService.ventanaCargando();
     this.productivityService
-      .getStrategicPillar('get-strategic-pillar')
+      .get('get-strategic-pillar')
       .subscribe(async (data) => {
         this.auxService.cerrarVentanaCargando();
         if (data.success == true) {
@@ -120,7 +120,7 @@ export class StrategicPillarComponent implements OnInit {
     if (result.isConfirmed) {
       this.auxService.ventanaCargando();
       this.productivityService
-        .DeleteStrategicPillar('delete-strategic-pillar', event.id)
+        .Delete('delete-strategic-pillar', event.id)
         .subscribe(async (data) => {
           this.auxService.cerrarVentanaCargando();
           if (data.success == true) {
@@ -141,7 +141,7 @@ export class StrategicPillarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getStrategy();
+        this.getStrategyPilar();
       }
     });
   }
