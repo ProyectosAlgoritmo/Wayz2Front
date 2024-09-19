@@ -46,7 +46,7 @@ export class LateralmenuComponent {
 
     this.permisos = this.authservice.getPermisos();
 
-    console.log(this.permisos); 
+    this.sharedStateService.statecompanyVisible(true);
   }
 
 

@@ -1,5 +1,5 @@
 <div class="full-page-container">
-  
+
 
 <mat-toolbar class="background-white-title-botton">
   <app-buttonstrategic 
@@ -16,8 +16,15 @@
   [label]="'Importar'"
   (click)="onActionImportGo()" >
 </app-buttonstrategic>
+           
 
   <span class="spacer"></span>
+
+  <div class="divfechas"> 
+  <nz-range-picker *ngIf="showInputdate" nzMode="month" [(ngModel)]="date" (ngModelChange)="onChangedate($event)"></nz-range-picker>
+  </div>
+ 
+
   <div>
     <nz-input-group [nzSuffix]="suffixIconSearch">
       <input

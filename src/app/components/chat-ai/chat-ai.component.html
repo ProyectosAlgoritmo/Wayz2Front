@@ -2,17 +2,27 @@
   <div class="chat-header">
     <button nz-button nzType="link" (click)="closeChat()" style="float: right;">&times;</button>
   </div>
-  <div class="chat-body" #chatList>
+  <div class="chat-body"  [ngClass]="{
+    'has-questions': suggestedQuestions.length > 0, 
+    'no-questions': suggestedQuestions.length === 0
+    }"
+  #chatList>
     <nz-list>
-      <nz-list-item *ngFor="let message of messages; trackBy: trackByFn"
+      <nz-list-item *ngFor="let message of messagesfront; trackBy: trackByFn"
                     [ngClass]="{'message-left': message.role === 'AI', 'message-right': message.role === 'User'}">
-        <nz-list-item-meta
-          [nzAvatar]="message.role === 'AI' ? 'https://ui-avatars.com/api/?name=ARTIFICIAL+INTELLIGENCE' : 'https://ui-avatars.com/api/?name=USER'"
-          [nzTitle]="message.role"
-          [nzDescription]="message.content">
+           <nz-list-item-meta
+                    [nzAvatar]="message.role === 'AI' ? 'https://ui-avatars.com/api/?name=ARTIFICIAL+INTELLIGENCE&background=007bff&color=ffffff' : 'https://ui-avatars.com/api/?name=USER&background=ff5733&color=ffffff'"
+                  >
         </nz-list-item-meta>
+        <div [innerHTML]="formatMessageContent(message.content)"></div>
       </nz-list-item>
     </nz-list>
+  </div>
+  <!-- Preguntas sugeridas -->
+  <div class="suggested-questions" *ngIf="suggestedQuestions.length > 0">
+    <button nz-button nzType="default" *ngFor="let question of suggestedQuestions" (click)="selectSuggestedQuestion(question)">
+      {{ question.question }}
+    </button>
   </div>
   <div class="chat-footer">
     <nz-input-group nzSearch [nzAddOnAfter]="sendButton">
@@ -22,11 +32,5 @@
       <button nz-button nzType="primary" (click)="sendMessage()"><span nz-icon nzType="arrow-right"></span></button>
     </ng-template>
   </div>
-
-  <!-- Preguntas sugeridas -->
-<div class="suggested-questions">
-  <button nz-button nzType="default" *ngFor="let question of suggestedQuestions" (click)="selectSuggestedQuestion(question)">
-    {{ question }}
-  </button>
-</div>
-</div>
+  
+  

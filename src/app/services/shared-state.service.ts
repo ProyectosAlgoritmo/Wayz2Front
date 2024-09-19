@@ -19,8 +19,13 @@ export class SharedStateService {
   public isChatVisible$ = this.isChatVisibleSubject.asObservable();
 
 
+  private isVisiblestatecompany = new BehaviorSubject<boolean>(true);
+  public isVisiblestatecompany$ = this.isVisiblestatecompany.asObservable();
 
-  private suggestedQuestionsSubject = new BehaviorSubject<string[]>([]);
+
+
+  private suggestedQuestionsSubject = new BehaviorSubject<{ question: string, api: string }[]>([]);
+
 
   suggestedQuestions$ = this.suggestedQuestionsSubject.asObservable();
 
@@ -44,8 +49,12 @@ export class SharedStateService {
   }
 
 
-
-  updateSuggestedQuestions(questions: string[]): void {
+  updateSuggestedQuestions(questions: { question: string, api: string }[]): void {
     this.suggestedQuestionsSubject.next(questions);
   }
+
+  statecompanyVisible(state: boolean): void {
+    this.isVisiblestatecompany.next(state);
+  }
+  
 }

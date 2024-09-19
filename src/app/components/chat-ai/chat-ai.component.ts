@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { ChatService } from '../../services/chat-service.service';
 import { SharedStateService } from '../../services/shared-state.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AIService } from '../../services/AI.service';
+import { AuxService } from '../../services/aux-service.service';
 
 @Component({
   selector: 'app-chat-ai',
@@ -28,17 +30,38 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ChatAIComponent implements AfterViewChecked {
   @ViewChild('chatList') private chatList!: ElementRef;
   userInput: string = '';
+  userrequest: string = '';
   messages: { role: string; content: string }[] = [];
+  messagesfront: { role: string; content: string }[] = [];
   chatVisible: boolean = true;
 
-  suggestedQuestions: string[] = [];
+  suggestedQuestions: { question: string, api: string }[] = [];
+  dates: any = {};
+  
+
 
   constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, private sharedStateService: SharedStateService,
-    private router: Router, private activatedRoute: ActivatedRoute
+    private router: Router, private activatedRoute: ActivatedRoute, private aIService: AIService, 
+    private auxService: AuxService
   ){
     this.sharedStateService.suggestedQuestions$.subscribe(questions => {
       this.suggestedQuestions = questions;
     });
+
+    const currentYear = new Date().getFullYear(); // Obtiene el año actual
+
+    this.dates = {
+      FechaInicio: `${currentYear}-01-01`, // Establece la fecha de inicio al 1 de enero del año actual
+      FechaFin: `${currentYear}-12-31`     // Establece la fecha de fin al 31 de diciembre del año actual
+    };
+  }
+
+  formatMessageContent(content: string): string {
+    // Reemplazar saltos de línea y otros formateos que quieres conservar
+    return content
+      .replace(/\n/g, '<br>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Negritas
+      .replace(/__(.*?)__/g, '<em>$1</em>')  // Cursivas
   }
 
   
@@ -46,9 +69,10 @@ export class ChatAIComponent implements AfterViewChecked {
   sendMessage(): void {
     if (this.userInput.trim()) {
 
-      console.log(this.userInput);
-      this.messages.push({ role: 'User', content: this.userInput });
-      console.log(this.messages); 
+      this.messagesfront.push({ role: 'User', content: this.userInput });
+      
+      let mensajereal = (!this.userrequest || this.userrequest.trim() === '') ? this.userInput : this.userrequest;
+      this.messages.push({ role: 'User', content: mensajereal });
 
       const chatHistoryRequest = {
         Mensajes: this.messages.map(msg => ({
@@ -59,9 +83,11 @@ export class ChatAIComponent implements AfterViewChecked {
 
       this.chatService.getChatResponse(chatHistoryRequest).subscribe(response => {
         this.messages.push({ role: 'AI', content: response.choices[0].message.content });
+        this.messagesfront.push({ role: 'AI', content: response.choices[0].message.content });
         //console.log(response.choices[0].message.content);
       });
       this.userInput = '';
+      this.userrequest = '';
       this.cdr.detectChanges();
       // Aquí podrías agregar la lógica para enviar el mensaje a través de un servicio
 
@@ -69,8 +95,49 @@ export class ChatAIComponent implements AfterViewChecked {
     }
   }
 
-  selectSuggestedQuestion(question: string): void {
-    this.userInput = question;  // Inserta la pregunta seleccionada en el campo de entrada
+  selectSuggestedQuestion(question: any): void {
+    
+
+    this.auxService.ventanaCargando();
+    this.aIService.GetDatapost(question.api, this.dates).subscribe({
+      next:(data) =>{
+
+        if(data.success){
+
+          this.auxService.cerrarVentanaCargando();
+
+          if(!data.warning){
+
+            console.log(data.data); 
+            //this.userInput = question.question + 'La data es la siguiente' + ;  // Inserta la pregunta seleccionada en el campo de entrada
+            const formattedData = JSON.stringify(data.data, null, 2);  // Formatea los datos como JSON con indentación
+            this.userInput = question.question;  // Inserta la pregunta y la data en el campo de entrada
+            this.userrequest = question.question + '\nLa data es la siguiente:\n' + formattedData+ ". Responde de forma concisa y en no más de 500 palabras.";
+            //this.dataSource = data.data;
+
+          }
+          else{
+
+            this.auxService.ventanaCargando();
+            this.auxService.AlertWarning("AI",data.message); 
+
+          }
+
+        }
+        else{
+
+            this.auxService.ventanaCargando();
+            this.auxService.AlertWarning("AI",data.message); 
+
+        }
+      },
+      error: (error) => {
+        this.auxService.cerrarVentanaCargando();
+        this.auxService.AlertError('Error al la data AI:', error);
+      },
+    }); 
+
+
   }
 
   closeChat(): void {
