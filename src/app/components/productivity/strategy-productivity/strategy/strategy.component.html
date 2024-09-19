@@ -1,0 +1,47 @@
+<div class="content-container">
+  <div class="table-container">
+    <div class="divtable">
+      <div class="headerclass">
+        <h2 class="title-heading"></h2>
+
+        <mat-toolbar class="background-white-title-botton">
+          <div >
+            <app-buttonstrategic (click)="CreateAction()" mat-button [label]="'Crear'" style="margin: 10px;">
+            </app-buttonstrategic>
+            
+            <app-buttonstrategic (click)="CreateActionObjetivo()" mat-button [label]="'Crear objetovo'">
+            </app-buttonstrategic>
+          </div>
+
+          <span class="spacermoreinputs"></span>
+
+          <div class="input-container">
+            <nz-input-group [nzSuffix]="suffixIconSearch">
+              <input
+                type="text"
+                nz-input
+                [(ngModel)]="searchValue"
+                (input)="onSearchChange()"
+                placeholder="Buscar..."
+              />
+            </nz-input-group>
+
+            <ng-template #suffixIconSearch>
+              <span nz-icon nzType="search" nzTheme="outline"></span>
+            </ng-template>
+          </div>
+        </mat-toolbar>
+      </div>
+
+      <app-table-with-rows-child
+        [listOfData]="dataForTable"
+        [columns]="mainTableColumns"
+        [subColumns]="subTableColumns"
+        [ActionEdit]="true"
+        [emitEditEvent]="true"
+        (editClicked)="onEditClicked($event)"
+        (deleteAction)="onDeleteAction($event)"
+      ></app-table-with-rows-child>
+    </div>
+  </div>
+</div>
