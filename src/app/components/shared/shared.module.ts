@@ -20,6 +20,8 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
 
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+
 @NgModule({
   declarations: [
     ButtonstrategicComponent,
@@ -44,7 +46,8 @@ import { FormsModule } from '@angular/forms'; // Importa FormsModule aquí
     NzDividerModule,
     NzIconModule,
     NzButtonModule,
-    FormsModule
+    FormsModule, 
+    NzDatePickerModule
     
     // Aquí puedes importar otros módulos de Angular Material o módulos comunes
   ],

@@ -60,7 +60,7 @@ export class IncomeStatementTypesComponent {
 
           if (!data.warning) {
 
-            this.dataSource = data.data;
+            this.dataSource = Array.isArray(data.data) ? data.data : [];
 
           }
           else {

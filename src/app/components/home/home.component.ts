@@ -48,6 +48,7 @@ export class HomeComponent {
 
   ngOnInit(): void {
     this.sharedStateService.toggleSidenavVisible(false);
+    this.sharedStateService.statecompanyVisible(false);
 
 
     this.auxService.ventanaCargando();
@@ -60,7 +61,7 @@ export class HomeComponent {
 
           if(!data.warning){
 
-            this.dataSource = data.data;
+            this.dataSource = Array.isArray(data.data) ? data.data : [];
 
           }
           else{

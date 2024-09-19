@@ -58,6 +58,7 @@ export class ExpensesComponent {
     mes: 'Mes',
   };
   dataSource: any[] = [];
+  dates: any = {};
 
   constructor(
     private sharedStateService: SharedStateService,
@@ -68,30 +69,36 @@ export class ExpensesComponent {
 
   ngOnInit(): void {
     this.sharedStateService.toggleSidenavVisible(true);
+    const currentYear = new Date().getFullYear(); // Obtiene el año actual
+    this.dates = {
+      FechaInicio: `${currentYear}-01-01`, // Establece la fecha de inicio al 1 de enero del año actual
+      FechaFin: `${currentYear}-12-31`     // Establece la fecha de fin al 31 de diciembre del año actual
+    };
 
     this.auxService.ventanaCargando();
-    this.financialperformanceService.GetData('Get-expenses').subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.auxService.cerrarVentanaCargando();
+    this.cargarEgresos(this.dates);
+  }
 
-          if (!data.warning) {
-            this.dataSource = data.data;
-          } else {
-            this.auxService.ventanaCargando();
-            this.auxService.AlertWarning('Egresos', data.message);
-          }
-        } else {
-          this.auxService.ventanaCargando();
-          this.auxService.AlertWarning('Error', data.message);
-        }
+  handleDateSelected(datesselect: string[]): void {
+    this.dates = datesselect;
+    this.auxService.ventanaCargando();
+    this.cargarEgresos(this.dates); 
+    // Aquí puedes manejar las fechas seleccionadas
+  }
+
+  cargarEgresos(dates: string[]){
+
+    this.financialperformanceService.GetDatapost("Get-expenses", dates ).subscribe({
+      next: (data) => {
+
+        this.dataSource = Array.isArray(data.data) ? data.data : [];
+        this.auxService.cerrarVentanaCargando();
       },
       error: (error) => {
-        this.auxService.cerrarVentanaCargando();
-        console.log(error.status);
         this.auxService.AlertError('Error al cargar los egresos:', error);
-      },
+      }
     });
+
   }
 
   applyFilter(event: Event): void {
@@ -109,15 +116,8 @@ export class ExpensesComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // Si el resultado es true, se vuelve a obtener la lista de clientes
-        this.financialperformanceService.GetData('Get-expenses').subscribe({
-          next: (data) => {
-            this.dataSource = data.data;
-            this.auxService.cerrarVentanaCargando();
-          },
-          error: (error) => {
-            this.auxService.AlertError('Error al cargar los egresos:', error);
-          },
-        });
+        this.cargarEgresos(this.dates);
+     
       }
     });
   }

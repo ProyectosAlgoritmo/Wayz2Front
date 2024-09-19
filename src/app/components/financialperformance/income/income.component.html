@@ -6,7 +6,9 @@
   
     <div class="divtable">
 
-     <h2 class="title-heading">Egresos</h2>
+        
+
+     <h2 class="title-heading">Ingresos</h2>
   
         <app-table 
         [dataSource]="dataSource" 
@@ -14,11 +16,14 @@
         [enableSearch]="true" 
         [pageSize]="10"
         [showActions]="true"
+        [showInputdate]="true"
         [ActionEdit] = "true"
         [columnNames]="columnNames"
         [ActionLeft]="true"
         (editAction)="onEditAction($event)"
         [ActionImportGo] ="true"
+        (dateSelected)="handleDateSelected($event)"
+        
         > <!-- Aquí puedes establecer true o false según sea necesario (editAction)="onEditAction($event)" -->
         </app-table>
     
