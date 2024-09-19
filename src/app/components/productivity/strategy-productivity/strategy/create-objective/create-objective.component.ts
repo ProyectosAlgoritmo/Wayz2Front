@@ -37,6 +37,7 @@ export class CreateObjectiveComponent implements OnInit {
   strategicForm: FormGroup;
   estrategia: any;
   switchValue = false;
+  titulo: string = 'Crear objetivo';
   constructor(
     private fb: FormBuilder,
     private productivityService: ProductivityService,
@@ -55,6 +56,7 @@ export class CreateObjectiveComponent implements OnInit {
       estado: [true,Validators.required],
     });
     if (this.data) {
+      this.titulo = 'Editar objetivo';
       this.strategicForm.patchValue({
         idObjetivos: this.data.id || 0, 
         nombre: this.data.nombre || '', 
@@ -85,7 +87,7 @@ export class CreateObjectiveComponent implements OnInit {
       },
       error: (error) => {
         this.auxService.AlertError(
-          'Error al cargar los tipos de balance:',
+          'Error al cargar los registros',
           error
         );
       },
@@ -120,7 +122,7 @@ export class CreateObjectiveComponent implements OnInit {
               this.dialogRef.close(true);
             } else {
               this.auxService.AlertWarning(
-                'Error al crear el registro',
+                'Error al actualizar el registro',
                 data.message
               );
             }
@@ -128,7 +130,7 @@ export class CreateObjectiveComponent implements OnInit {
           error: (error) => {
             this.auxService.cerrarVentanaCargando();
             this.auxService.AlertError(
-              'Error al cargar los tipos de balance:',
+              'Error al actualizar el registro',
               error
             );
           },
@@ -154,7 +156,7 @@ export class CreateObjectiveComponent implements OnInit {
             this.auxService.cerrarVentanaCargando();
             if (data.success) {
               await this.auxService.AlertSuccess(
-                'Datos actualizados correctamente',
+                'registro creado correctamente',
                 data.message
               );
               this.dialogRef.close(true);
@@ -168,7 +170,7 @@ export class CreateObjectiveComponent implements OnInit {
           error: (error) => {
             this.auxService.cerrarVentanaCargando();
             this.auxService.AlertError(
-              'Error al cargar los tipos de balance:',
+              'Error al crear el registro',
               error
             );
           },

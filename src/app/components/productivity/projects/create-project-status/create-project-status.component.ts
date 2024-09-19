@@ -1,25 +1,26 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuxService } from '../../../../../services/aux-service.service';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { MatDialogModule } from '@angular/material/dialog';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { SharedModule } from '../../../../shared/shared.module';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { CommonModule } from '@angular/common';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { CreatetypebalanceComponent } from '../../../../config/balanceconfig/typebalance/createtypebalance/createtypebalance.component';
-import { ProductivityService } from '../../../../../services/productivity.service';
-import { PermisosService } from '../../../../../services/permisos.service';
+import { SharedModule } from '../../../shared/shared.module';
+import { ProductivityService } from '../../../../services/productivity.service';
+import { PermisosService } from '../../../../services/permisos.service';
+import { AuxService } from '../../../../services/aux-service.service';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { DateService } from '../../../../services/data-service.service';
 
 @Component({
-  selector: 'app-create-strategy',
-  templateUrl: './create-strategy.component.html',
-  styleUrls: ['./create-strategy.component.css'],
+  selector: 'app-create-project-status',
+  templateUrl: './create-project-status.component.html',
+  styleUrls: ['./create-project-status.component.css'],
   standalone: true,
   imports: [
     NzInputModule,
@@ -30,59 +31,94 @@ import { PermisosService } from '../../../../../services/permisos.service';
     MatDialogModule,
     SharedModule,
     NzFormModule,
+    NzDatePickerModule,
+    NzSwitchModule,
   ],
 })
-export class CreateStrategyComponent implements OnInit {
-  strategicForm: FormGroup;
-  empresas: any;
-  titulo: string = 'Crear estrategia';
+export class CreateProjectStatusComponent implements OnInit {
+  formularioForm: FormGroup;
+  proyectos: any;
+  responsables: any;
+  titulo: string = 'Crear estado de proyecto';
 
   constructor(
     private fb: FormBuilder,
     private productivityService: ProductivityService,
-    private permisosService: PermisosService,
+    private dateService: DateService,
     private auxService: AuxService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CreatetypebalanceComponent>
+    private dialogRef: MatDialogRef<CreateProjectStatusComponent>
   ) {
-    this.strategicForm = this.fb.group({
-      id: [0, ],
+    this.formularioForm = this.fb.group({
+      idProyectoEstado: [0,Validators.required],
+      idProyecto: [0,Validators.required],
       nombre: ['', Validators.required],
-      idEmpresa: ['', Validators.required],
-      empresa: [''],
-      descripcion: ['',],
+      descripcion: [''],
+      comentario: [''],
+      estado: [false, Validators.required],
+      etapa: [null,Validators.required],
+      porcentajeavanceProyectado: [0,Validators.required],
+      porcentajeavanceReal: [0,Validators.required],
+      responsable: [null,Validators.required],
+      fechaRevision: [null,Validators.required],
     });
     if (this.data) {
-      this.titulo = 'Editar estrategia';
-      this.strategicForm.patchValue({
-        id: this.data.id || 0, 
-        nombre: this.data.nombre || '', 
-        empresa: this.data.empresa || '', 
+      this.titulo = 'Editar estado de proyecto';
+      this.formularioForm.patchValue({
+        idProyectoEstado: this.data.id || null,
+        idProyecto: this.data.idProyecto || null,
+        nombre: this.data.nombre || '',
         descripcion: this.data.descripcion || '',
-        idEmpresa: this.data.idEmpresa || '',   
+        comentario: this.data.comentario || '',
+        estado: this.data.estado || false,
+        etapa: this.data.etapa || '',
+        porcentajeavanceProyectado: this.data.porcentajeProyectado || 0,
+        porcentajeavanceReal: this.data.porcentajeReal || 0,
+        responsable: this.data.idResponsable || null,
+        fechaRevision: this.data.fechaRevision || null,
       });
     }
-    this.getStrategy();
-    this.getStrategy();
+    this.getProjects();
+    this.getResponsable();
   }
   ngOnInit() {}
+
+  onChange(result: any): void {
+    console.log('onChange: ', result);
+  }
 
   onCancel(): void {
     this.dialogRef.close();
   }
 
-  getStrategy() {
-    this.permisosService.ObtenerEmpresas().subscribe({
+  getProjects() {
+    this.productivityService.get('get-projects').subscribe({
       next: (data) => {
         if (data.success) {
-          this.empresas = data.data; // Vincula los datos al formulario
+          this.proyectos = data.data; // Vincula los datos al formulario
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
         this.auxService.AlertError(
-          'Error al cargar los registros',
+          'Error al cargar los proyectos:',
+          error
+        );
+      },
+    });
+  }
+  
+  getResponsable() {
+    this.dateService.cargarVendedor().subscribe({
+      next: (data) => {
+        if (data) {
+          this.responsables = data; // Vincula los datos al formulario
+        }
+      },
+      error: (error) => {
+        this.auxService.AlertError(
+          'Error al cargar los responsables:',
           error
         );
       },
@@ -98,14 +134,11 @@ export class CreateStrategyComponent implements OnInit {
   }
 
   updateCambios() {
-    if (this.strategicForm.valid) {
+    if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .Update(
-          'update-strategy',
-          this.strategicForm.value
-        )
+        .Update('update-project-state', this.formularioForm.value)
         .subscribe({
           next: async (data) => {
             this.auxService.cerrarVentanaCargando();
@@ -138,20 +171,17 @@ export class CreateStrategyComponent implements OnInit {
     }
   }
   createCambios() {
-    if (this.strategicForm.valid) {
+    if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .Create(
-          'create-strategy',
-          this.strategicForm.value
-        )
+        .Create('create-project-state', this.formularioForm.value)
         .subscribe({
           next: async (data) => {
             this.auxService.cerrarVentanaCargando();
             if (data.success) {
               await this.auxService.AlertSuccess(
-                'registro creado correctamente',
+                'Datos creados correctamente',
                 data.message
               );
               this.dialogRef.close(true);

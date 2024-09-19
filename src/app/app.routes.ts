@@ -24,6 +24,7 @@ import { BalanceComponent as Balance } from './components/financialperformance/b
 import { ActivitylogComponent } from './components/activitylog/activitylog.component';
 import { ResultStatusComponent } from './components/financialperformance/result-status/result-status.component';
 import { StrategyProductivityComponent } from './components/productivity/strategy-productivity/strategy-productivity.component';
+import { ProjectsComponent } from './components/productivity/projects/projects.component';
 
 
 export const routes: Routes = [
@@ -46,6 +47,7 @@ export const routes: Routes = [
     { path: 'incomestatementconfig', component: IncomeStatementConfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'cashflowconfig', component: CashFlowConfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'strategy-productivity', component: StrategyProductivityComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
 
     // desempeño financiero
 

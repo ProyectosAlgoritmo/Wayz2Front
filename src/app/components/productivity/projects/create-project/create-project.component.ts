@@ -1,25 +1,29 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuxService } from '../../../../../services/aux-service.service';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { MatDialogModule } from '@angular/material/dialog';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { SharedModule } from '../../../../shared/shared.module';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { CommonModule } from '@angular/common';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { CreatetypebalanceComponent } from '../../../../config/balanceconfig/typebalance/createtypebalance/createtypebalance.component';
-import { ProductivityService } from '../../../../../services/productivity.service';
-import { PermisosService } from '../../../../../services/permisos.service';
+import { SharedModule } from '../../../shared/shared.module';
+import { ProductivityService } from '../../../../services/productivity.service';
+import { PermisosService } from '../../../../services/permisos.service';
+import { AuxService } from '../../../../services/aux-service.service';
+import { getISOWeek } from 'date-fns';
+
+import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { DateService } from '../../../../services/data-service.service';
 
 @Component({
-  selector: 'app-create-strategy',
-  templateUrl: './create-strategy.component.html',
-  styleUrls: ['./create-strategy.component.css'],
+  selector: 'app-create-project',
+  templateUrl: './create-project.component.html',
+  styleUrls: ['./create-project.component.css'],
   standalone: true,
   imports: [
     NzInputModule,
@@ -30,48 +34,71 @@ import { PermisosService } from '../../../../../services/permisos.service';
     MatDialogModule,
     SharedModule,
     NzFormModule,
+    NzDatePickerModule,
+    NzSwitchModule,
   ],
 })
-export class CreateStrategyComponent implements OnInit {
-  strategicForm: FormGroup;
+export class CreateProjectComponent implements OnInit {
+  formularioForm: FormGroup;
   empresas: any;
-  titulo: string = 'Crear estrategia';
+  lideres: any;
+  zona: any;
+  unidades: any;
+  date = null;
+  titulo = 'Crear proyecto';
 
   constructor(
     private fb: FormBuilder,
     private productivityService: ProductivityService,
     private permisosService: PermisosService,
     private auxService: AuxService,
+    private dateService: DateService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CreatetypebalanceComponent>
+    private dialogRef: MatDialogRef<CreateProjectComponent>
   ) {
-    this.strategicForm = this.fb.group({
-      id: [0, ],
+    this.formularioForm = this.fb.group({
+      idProyecto: [0, Validators.required],
       nombre: ['', Validators.required],
       idEmpresa: ['', Validators.required],
-      empresa: [''],
-      descripcion: ['',],
+      tipoProyecto: [''],
+      liderProyecto: ['', Validators.required],
+      estado: [false,Validators.required],
+      idZona: ['', Validators.required],
+      idUnidad: ['', Validators.required],
+      fechaInicio: ['', Validators.required],
+      fechaFinal: ['', Validators.required],
     });
     if (this.data) {
-      this.titulo = 'Editar estrategia';
-      this.strategicForm.patchValue({
-        id: this.data.id || 0, 
-        nombre: this.data.nombre || '', 
-        empresa: this.data.empresa || '', 
-        descripcion: this.data.descripcion || '',
-        idEmpresa: this.data.idEmpresa || '',   
+      this.titulo = 'Editar proyecto';
+      this.formularioForm.patchValue({
+        idProyecto: this.data.id || 0,
+        idEmpresa: this.data.idEmpresa || '',
+        nombre: this.data.nombre || '',
+        tipoProyecto: this.data.tipoProyecto || '',
+        liderProyecto: this.data.idLiderProyecto || 0,
+        estado: this.data.estado || false,
+        idZona: this.data.idZona || 0,
+        idUnidad: this.data.idUnidad || 0,
+        fechaInicio: this.data.fechaInicio || '',
+        fechaFinal: this.data.fechaFinal || ''
       });
-    }
-    this.getStrategy();
-    this.getStrategy();
+    }    
+    this.getEmpresas();
+    this.getLideres();
+    this.getZona();
+    this.getUnidades();
   }
   ngOnInit() {}
+
+  onChange(result: any): void {
+    console.log('onChange: ', result);
+  }
 
   onCancel(): void {
     this.dialogRef.close();
   }
 
-  getStrategy() {
+  getEmpresas() {
     this.permisosService.ObtenerEmpresas().subscribe({
       next: (data) => {
         if (data.success) {
@@ -82,7 +109,60 @@ export class CreateStrategyComponent implements OnInit {
       },
       error: (error) => {
         this.auxService.AlertError(
-          'Error al cargar los registros',
+          'Error al cargar las empresas:',
+          error
+        );
+      },
+    });
+  }
+
+  getLideres() {
+    this.dateService.cargarVendedor().subscribe({
+      next: (data:any) => {
+        if (data) {
+          this.lideres = data; 
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+        }
+      },
+      error: (error) => {
+        this.auxService.AlertError(
+          'Error al cargar los lideres:',
+          error
+        );
+      },
+    });
+  }
+  getZona() {
+    this.dateService.cargarZonas().subscribe({
+      next: (data:any) => {
+        if (data) {
+          this.zona = data; 
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+        }
+      },
+      error: (error) => {
+        this.auxService.AlertError(
+          'Error al cargar las zonas:',
+          error
+        );
+      },
+    });
+  }
+
+  getUnidades() {
+    this.dateService.cargarUnidades().subscribe({
+      next: (data:any) => {
+        if (data) {
+          this.unidades = data; 
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+        }
+      },
+      error: (error) => {
+        this.auxService.AlertError(
+          'Error al cargar llas unidades:',
           error
         );
       },
@@ -98,14 +178,11 @@ export class CreateStrategyComponent implements OnInit {
   }
 
   updateCambios() {
-    if (this.strategicForm.valid) {
+    if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .Update(
-          'update-strategy',
-          this.strategicForm.value
-        )
+        .Update('update-project', this.formularioForm.value)
         .subscribe({
           next: async (data) => {
             this.auxService.cerrarVentanaCargando();
@@ -126,7 +203,7 @@ export class CreateStrategyComponent implements OnInit {
             this.auxService.cerrarVentanaCargando();
             this.auxService.AlertError(
               'Error al actualizar el registro',
-              error
+              error.message
             );
           },
         });
@@ -138,20 +215,17 @@ export class CreateStrategyComponent implements OnInit {
     }
   }
   createCambios() {
-    if (this.strategicForm.valid) {
+    if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
-        .Create(
-          'create-strategy',
-          this.strategicForm.value
-        )
+        .Create('create-project', this.formularioForm.value)
         .subscribe({
           next: async (data) => {
             this.auxService.cerrarVentanaCargando();
             if (data.success) {
               await this.auxService.AlertSuccess(
-                'registro creado correctamente',
+                'Datos actualizados correctamente',
                 data.message
               );
               this.dialogRef.close(true);
@@ -166,7 +240,7 @@ export class CreateStrategyComponent implements OnInit {
             this.auxService.cerrarVentanaCargando();
             this.auxService.AlertError(
               'Error al crear el registro',
-              error
+              error.message
             );
           },
         });

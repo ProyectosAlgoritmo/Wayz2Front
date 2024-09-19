@@ -1,0 +1,5 @@
+@import "../../../../../assets/styles/modal.css";
+
+nz-date-picker {
+  margin: 0 8px 12px 0;
+}

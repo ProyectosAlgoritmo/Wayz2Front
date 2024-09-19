@@ -1,4 +1,4 @@
-<h3 mat-dialog-title class="dialog-title">Crear tipo de balance</h3>
+<h3 mat-dialog-title class="dialog-title">{{ titulo }}</h3>
 <hr class="division-line">
 <div class="importdata">
 
@@ -39,7 +39,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
     <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
   </mat-dialog-actions>
 </div>
