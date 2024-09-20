@@ -27,6 +27,7 @@ import { ProductivityService } from '../../../../services/productivity.service';
 import { TableWithRowsChildComponent } from '../../../shared/table-with-rows-child/table-with-rows-child.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { CreateProjectsPilarComponent } from './create-projects-pilar/create-projects-pilar.component';
 
 @Component({
   selector: 'app-strategic-pillar',
@@ -158,6 +159,17 @@ export class StrategicPillarComponent implements OnInit {
     console.log(event);
 
     const dialogRef = this.dialog.open(CreateStrategicPillarComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getStrategyPilar();
+      }
+    });
+  }
+  CreateActionPilarProyec() {
+    console.log(event);
+
+    const dialogRef = this.dialog.open(CreateProjectsPilarComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {

@@ -20,9 +20,9 @@ import { CreatetypebalanceComponent } from '../../../../config/balanceconfig/typ
 import { ProductivityService } from '../../../../../services/productivity.service';
 
 @Component({
-  selector: 'app-create-strategic-pillar',
-  templateUrl: './create-strategic-pillar.component.html',
-  styleUrls: ['./create-strategic-pillar.component.css'],
+  selector: 'app-create-projects-pilar',
+  templateUrl: './create-projects-pilar.component.html',
+  styleUrls: ['./create-projects-pilar.component.css'],
   standalone: true,
   imports: [
     NzInputModule,
@@ -35,36 +35,26 @@ import { ProductivityService } from '../../../../../services/productivity.servic
     NzFormModule,
   ],
 })
-export class CreateStrategicPillarComponent implements OnInit {
+export class CreateProjectsPilarComponent implements OnInit {
   strategicForm: FormGroup;
-  estrategys: any;
-  titulo: string = 'Crear pilar estratégico';
+  estrategysPilar: any;
+  projects: any = null;
+  titulo: string = 'Crear pilar de proyectos';
 
   constructor(
     private fb: FormBuilder,
     private productivityService: ProductivityService,
     private auxService: AuxService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CreatetypebalanceComponent>
+    private dialogRef: MatDialogRef<CreateProjectsPilarComponent>
   ) {
     this.strategicForm = this.fb.group({
-      idPilarestrategico: [0, ],
-      nombre: ['', Validators.required],
-      idEstrategia: ['', Validators.required],
-      descripcion: ['',],
+      idPilarProyectos: [0, ],
+      idPilarestrategico: ['', Validators.required],
+      idProyecto: ['', Validators.required],
     });
-    if (this.data) {
-      this.titulo = 'Editar pilar estratégico';
-      this.strategicForm.patchValue({
-        idPilarestrategico: this.data.id || 0, // Si 'idPilarestrategico' viene lleno, se carga
-        nombre: this.data.nombre || '',          // Si 'nombre' viene lleno, se carga
-        idEstrategia: this.data.idEstrategia || '', // Cargar 'idEstrategia' si viene
-        descripcion: this.data.descripcion || ''   // Cargar 'descripcion' si viene
-      });
-    }
-
-    this.getStrategy();
-    this.getStrategy();
+    this.getStrategyPilar();
+    this.getProjcts();
   }
   ngOnInit() {}
 
@@ -72,18 +62,35 @@ export class CreateStrategicPillarComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  getStrategy() {
-    this.productivityService.get('get-strategy').subscribe({
+  getStrategyPilar() {
+    this.productivityService.get('get-strategic-pillar').subscribe({
       next: (data) => {
         if (data.success) {
-          this.estrategys = data.data; // Vincula los datos al formulario
+          this.estrategysPilar = data.data; // Vincula los datos al formulario
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
         this.auxService.AlertError(
-          'Error al cargar las estrategias:',
+          'Error al cargar los pilares estrategicos:',
+          error
+        );
+      },
+    });
+  }
+  getProjcts() {
+    this.productivityService.get('get-projects').subscribe({
+      next: (data) => {
+        if (data.success) {
+          this.projects = data.data; // Vincula los datos al formulario
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+        }
+      },
+      error: (error) => {
+        this.auxService.AlertError(
+          'Error al cargar los proyectos:',
           error
         );
       },
@@ -92,59 +99,19 @@ export class CreateStrategicPillarComponent implements OnInit {
 
   guardarCambios() {
     if (this.data) {
-      this.updateStrategicPilar();
+      //this.updateStrategicPilar();
     } else {
-      this.createStrategicPilar();
+      this.createProjectsPilar();
     }
   }
 
-  updateStrategicPilar() {
-    if (this.strategicForm.valid) {
-      this.auxService.ventanaCargando();
-
-      this.productivityService
-        .Update(
-          'update-strategic-pillar',
-          this.strategicForm.value
-        )
-        .subscribe({
-          next: async (data) => {
-            this.auxService.cerrarVentanaCargando();
-            if (data.success) {
-              await this.auxService.AlertSuccess(
-                'Datos actualizados correctamente',
-                data.message
-              );
-              this.dialogRef.close(true);
-            } else {
-              this.auxService.AlertWarning(
-                'Error al crear el registro',
-                data.message
-              );
-            }
-          },
-          error: (error) => {
-            this.auxService.cerrarVentanaCargando();
-            this.auxService.AlertError(
-              'Error al actualizar el registro:',
-              error
-            );
-          },
-        });
-    } else {
-      this.auxService.AlertWarning(
-        'Formulario inválido',
-        'Por favor, revisa los campos y corrige los errores.'
-      );
-    }
-  }
-  createStrategicPilar() {
+  createProjectsPilar() {
     if (this.strategicForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
         .Create(
-          'create-strategic-pillar',
+          'create-project-pillar',
           this.strategicForm.value
         )
         .subscribe({
@@ -152,7 +119,7 @@ export class CreateStrategicPillarComponent implements OnInit {
             this.auxService.cerrarVentanaCargando();
             if (data.success) {
               await this.auxService.AlertSuccess(
-                'Datos actualizados correctamente',
+                'Datos guardados correctamente',
                 data.message
               );
               this.dialogRef.close(true);
