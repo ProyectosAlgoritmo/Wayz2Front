@@ -177,7 +177,8 @@ export class StrategyComponent implements OnInit {
           this.auxService.cerrarVentanaCargando();
           if (data.success == true) {
             await this.auxService.AlertSuccess('Ok', data.message);
-            this.ngOnInit();
+            //this.ngOnInit();
+            window.location.reload();
           } else {
             await this.auxService.AlertError('Error', data.message);
             //this.getBalance();

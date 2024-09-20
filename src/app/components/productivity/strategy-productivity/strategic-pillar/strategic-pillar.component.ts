@@ -24,6 +24,9 @@ import { EdittypebalanceComponent } from '../../../config/balanceconfig/typebala
 import { CreatetypebalanceComponent } from '../../../config/balanceconfig/typebalance/createtypebalance/createtypebalance.component';
 import { CreateStrategicPillarComponent } from './create-strategic-pillar/create-strategic-pillar.component';
 import { ProductivityService } from '../../../../services/productivity.service';
+import { TableWithRowsChildComponent } from '../../../shared/table-with-rows-child/table-with-rows-child.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-strategic-pillar',
@@ -42,16 +45,32 @@ import { ProductivityService } from '../../../../services/productivity.service';
     SharedModule,
     NzInputModule,
     NzIconModule,
+    TableWithRowsChildComponent,
+    FormsModule
   ],
 })
 export class StrategicPillarComponent implements OnInit {
-  displayedColumns: string[] = ['nombre', 'estrategia', 'descripcion'];
-  columnNames = {
-    nombre: 'Nombre',
-    estrategia: 'Estrategia',
-    descripcion: 'Descripción',
-  };
+  searchValue: string = '';
   dataSource: any[] = [];
+  mainTableColumns = [
+    { title: 'Acciones', field: 'Acciones', sortDirection: null },
+    { title: 'Nombre', field: 'nombre', sortDirection: null },
+    { title: 'Estrategia', field: 'estrategia', sortDirection: null },
+    { title: 'Descripción', field: 'descripcion', sortDirection: null },
+  ];
+
+  subTableColumns = [
+    { title: 'Acciones', field: 'Acciones', sortDirection: null },
+    { title: 'Empresa', field: 'empresa', sortDirection: null },
+    { title: 'Proyecto', field: 'nombre', sortDirection: null },
+    { title: 'Lider de proyecto', field: 'liderProyecto', sortDirection: null },
+    { title: 'Estado', field: 'estado', sortDirection: null },
+    { title: 'Zona', field: 'zona', sortDirection: null },
+    { title: 'Unidad', field: 'unidad', sortDirection: null },
+    { title: 'Fecha de inicio', field: 'fechaInicio', sortDirection: null },
+    { title: 'Fecha final', field: 'fechaFinal', sortDirection: null },
+  ];
+
 
   constructor(
     private sharedStateService: SharedStateService,
@@ -66,19 +85,20 @@ export class StrategicPillarComponent implements OnInit {
     this.getStrategyPilar();
   }
 
+  onEditClicked(data: any) {
+    this.onEditAction(data);
+  }
+
+  onSearchChange(): void {
+    this.auxService.updateSearch(this.searchValue);
+  }
+
   applyFilter(event: Event) {}
 
   onEditAction(event: any) {
     console.log('event ', event);
     const dialogRef = this.dialog.open(CreateStrategicPillarComponent, {
-      data: {
-        idPilarestrategico: event.id,
-        nombre: event.nombre,
-        descripcion: event.descripcion,
-        idEstrategia: event.idEstrategia,
-        estrategia: event.estrategia,
-        actionEdit: true,
-      },
+      data: event,
     });
 
     dialogRef.afterClosed().subscribe((result) => {

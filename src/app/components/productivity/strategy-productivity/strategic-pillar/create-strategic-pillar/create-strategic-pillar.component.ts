@@ -53,8 +53,9 @@ export class CreateStrategicPillarComponent implements OnInit {
       descripcion: ['',],
     });
     if (this.data) {
+      console.log(this.data);
       this.strategicForm.patchValue({
-        idPilarestrategico: this.data.idPilarestrategico || 0, // Si 'idPilarestrategico' viene lleno, se carga
+        idPilarestrategico: this.data.id || 0, // Si 'idPilarestrategico' viene lleno, se carga
         nombre: this.data.nombre || '',          // Si 'nombre' viene lleno, se carga
         idEstrategia: this.data.idEstrategia || '', // Cargar 'idEstrategia' si viene
         descripcion: this.data.descripcion || ''   // Cargar 'descripcion' si viene
@@ -89,7 +90,7 @@ export class CreateStrategicPillarComponent implements OnInit {
   }
 
   guardarCambios() {
-    if (this.data && this.data.actionEdit) {
+    if (this.data) {
       this.updateStrategicPilar();
     } else {
       this.createStrategicPilar();
