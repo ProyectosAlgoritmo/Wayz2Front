@@ -40,12 +40,12 @@ import { DateService } from '../../../../services/data-service.service';
 })
 export class CreateProjectComponent implements OnInit {
   formularioForm: FormGroup;
-  empresas: any;
   lideres: any;
   zona: any;
   unidades: any;
   date = null;
   titulo = 'Crear proyecto';
+
 
   constructor(
     private fb: FormBuilder,
@@ -59,7 +59,6 @@ export class CreateProjectComponent implements OnInit {
     this.formularioForm = this.fb.group({
       idProyecto: [0, Validators.required],
       nombre: ['', Validators.required],
-      idEmpresa: ['', Validators.required],
       tipoProyecto: [''],
       liderProyecto: ['', Validators.required],
       estado: [false,Validators.required],
@@ -72,7 +71,6 @@ export class CreateProjectComponent implements OnInit {
       this.titulo = 'Editar proyecto';
       this.formularioForm.patchValue({
         idProyecto: this.data.id || 0,
-        idEmpresa: this.data.idEmpresa || '',
         nombre: this.data.nombre || '',
         tipoProyecto: this.data.tipoProyecto || '',
         liderProyecto: this.data.idLiderProyecto || 0,
@@ -83,7 +81,6 @@ export class CreateProjectComponent implements OnInit {
         fechaFinal: this.data.fechaFinal || ''
       });
     }    
-    this.getEmpresas();
     this.getLideres();
     this.getZona();
     this.getUnidades();
@@ -96,24 +93,6 @@ export class CreateProjectComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
-  }
-
-  getEmpresas() {
-    this.permisosService.ObtenerEmpresas().subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.empresas = data.data; // Vincula los datos al formulario
-        } else {
-          this.auxService.AlertWarning('Error', data.message);
-        }
-      },
-      error: (error) => {
-        this.auxService.AlertError(
-          'Error al cargar las empresas:',
-          error
-        );
-      },
-    });
   }
 
   getLideres() {

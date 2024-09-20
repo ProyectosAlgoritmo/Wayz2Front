@@ -34,7 +34,6 @@ import { PermisosService } from '../../../../../services/permisos.service';
 })
 export class CreateStrategyComponent implements OnInit {
   strategicForm: FormGroup;
-  empresas: any;
   titulo: string = 'Crear estrategia';
 
   constructor(
@@ -48,8 +47,6 @@ export class CreateStrategyComponent implements OnInit {
     this.strategicForm = this.fb.group({
       id: [0, ],
       nombre: ['', Validators.required],
-      idEmpresa: ['', Validators.required],
-      empresa: [''],
       descripcion: ['',],
     });
     if (this.data) {
@@ -57,13 +54,9 @@ export class CreateStrategyComponent implements OnInit {
       this.strategicForm.patchValue({
         id: this.data.id || 0, 
         nombre: this.data.nombre || '', 
-        empresa: this.data.empresa || '', 
-        descripcion: this.data.descripcion || '',
-        idEmpresa: this.data.idEmpresa || '',   
+        descripcion: this.data.descripcion || '', 
       });
     }
-    this.getStrategy();
-    this.getStrategy();
   }
   ngOnInit() {}
 
@@ -71,24 +64,7 @@ export class CreateStrategyComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  getStrategy() {
-    this.permisosService.ObtenerEmpresas().subscribe({
-      next: (data) => {
-        if (data.success) {
-          this.empresas = data.data; // Vincula los datos al formulario
-        } else {
-          this.auxService.AlertWarning('Error', data.message);
-        }
-      },
-      error: (error) => {
-        this.auxService.AlertError(
-          'Error al cargar los registros',
-          error
-        );
-      },
-    });
-  }
-
+  
   guardarCambios() {
     if (this.data) {
       this.updateCambios();

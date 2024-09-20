@@ -60,8 +60,6 @@ export class StrategicPillarComponent implements OnInit {
   ];
 
   subTableColumns = [
-    { title: 'Acciones', field: 'Acciones', sortDirection: null },
-    { title: 'Empresa', field: 'empresa', sortDirection: null },
     { title: 'Proyecto', field: 'nombre', sortDirection: null },
     { title: 'Lider de proyecto', field: 'liderProyecto', sortDirection: null },
     { title: 'Estado', field: 'estado', sortDirection: null },
@@ -79,10 +77,12 @@ export class StrategicPillarComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private productivityService: ProductivityService
-  ) {}
+  ) {
+    this.getStrategyPilar();
+  }
 
   ngOnInit(): void {
-    this.getStrategyPilar();
+    
   }
 
   onEditClicked(data: any) {

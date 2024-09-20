@@ -67,7 +67,6 @@ export class StrategyComponent implements OnInit {
   mainTableColumns = [
     { title: 'Acciones', field: 'Acciones', sortDirection: null },
     { title: 'Nombre', field: 'nombre', sortDirection: null },
-    { title: 'Empresa', field: 'empresa', sortDirection: null },
     { title: 'Descripción', field: 'descripcion', sortDirection: null },
   ];
 

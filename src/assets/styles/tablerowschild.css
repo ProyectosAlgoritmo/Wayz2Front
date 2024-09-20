@@ -9,6 +9,14 @@
     border-radius: 8px;
     height: 85vh; /* Ajusta este valor según tus necesidades */
   }
+
+  .table-container-in-tap {
+    margin-top: 0px;
+    margin-bottom: 10px;
+    background-color: #f1f5fa;
+    border-radius: 8px;
+    height: 80vh; /* Ajusta este valor según tus necesidades */
+  }
   
   .divtable{
     margin-right: 20px;

@@ -64,7 +64,6 @@ export class ProjectsComponent implements OnInit {
 
   mainTableColumns = [
     { title: 'Acciones', field: 'Acciones', sortDirection: null },
-    { title: 'Empresa', field: 'empresa', sortDirection: null },
     { title: 'Proyecto', field: 'nombre', sortDirection: null },
     { title: 'Lider de proyecto', field: 'liderProyecto', sortDirection: null },
     { title: 'Estado', field: 'estado', sortDirection: null },

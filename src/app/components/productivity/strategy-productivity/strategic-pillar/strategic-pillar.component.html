@@ -1,5 +1,5 @@
 <div class="content-container">
-  <div class="table-container">
+  <div class="table-container-in-tap">
     <div class="divtable">
         <div class="headerclass">
             <h2 class="title-heading"></h2>
@@ -29,22 +29,6 @@
               </div>
             </mat-toolbar>
           </div>
-      <!-- <app-table 
-          [dataSource]="dataSource" 
-          [displayedColumns]="displayedColumns" 
-          [enableSearch]="true"
-              [enablePaginator]="true" 
-              [pageSize]="10" 
-              [showActions]="true" 
-              [ActionEdit]="true"
-              [columnNames]="columnNames"
-               [ActionLeft]="true" 
-               (editAction)="onEditAction($event)"
-              [ActionCreate] ="true"
-              [ActionDelete]="true"
-              (deleteAction)="onDeleteAction($event)"
-              (Create)="CreateAction()">
-          </app-table> -->
       <app-table-with-rows-child
         [listOfData]="dataSource"
         [columns]="mainTableColumns"
