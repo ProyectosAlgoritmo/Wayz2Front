@@ -6,15 +6,16 @@
     #nzTable
     [nzData]="paginatedData"
     [nzPageSize]="pageSize" 
-    [nzScroll]="{  x: '1600px', y: '340px' }" 
+    [nzScroll]="{  y: '340px' }" 
     [nzShowPagination]="false"
   >
     <thead>
       <tr >
-        <th nzStyle="background-color: #f5f5f5; color: #333;"></th>
+        <th [nzWidth]="'80px'" nzStyle="background-color: #f5f5f5; color: #333;"></th>
         <th *ngFor="let column of columns"
             (click)="sortData(column.field)"
-            [nzSortOrder]="column.sortDirection">
+            [nzSortOrder]="column.sortDirection"
+            [nzWidth]="'150px'">
              {{ column.title }}
           <i *ngIf="column.sortDirection === 'ascend'" class="fas fa-sort-up"></i>
           <i *ngIf="column.sortDirection === 'descend'" class="fas fa-sort-down"></i>
@@ -49,13 +50,13 @@
         </tr>
 
 
-        <tr *ngIf="expandSet.has(data.id)">
-          <td>
-            <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData" 
+        <tr *ngIf="expandSet.has(data.id)" >
+            <th [nzWidth]="'80px'"></th>
+            <nz-table [nzShowPagination]="false" [nzBordered]="false" [nzData]="data.subData" nzSize="middle" 
                 >
               <thead>
                 <tr>
-                  <th *ngFor="let subColumn of subColumns">
+                  <th style="background-color: white;" *ngFor="let subColumn of subColumns">
                     <ng-container >
                       {{ subColumn.title }}
                     </ng-container>
@@ -97,7 +98,7 @@
 
 
             </nz-table>
-          </td>
+        
         </tr>
 
 

@@ -59,7 +59,7 @@ export class PowerBiReportComponent implements OnInit {
     const datasetId = '6e70e1d6-ffed-4066-9bf0-f6dc9950587f';
 
    
-    const idEmpresa = 3; 
+    const idEmpresa = 2; 
 
     this.loadPowerBiReport(workspaceId, reportId, datasetId, idEmpresa);
   }
