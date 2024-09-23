@@ -35,14 +35,11 @@
 }
 
 
-.same-width-table {
-  table-layout: fixed;
-  width: 100%;
-}
+
 
 th, td {
   width: auto; /* O usa porcentajes */
-  min-width: 120px; /* Mínimo para mantener alineado el contenido */
+  min-width: 111.1px; /* Mínimo para mantener alineado el contenido */
 }
 
 
