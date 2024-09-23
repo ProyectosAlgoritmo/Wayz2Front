@@ -35,6 +35,9 @@ export class TableWithRowsChildComponent implements OnInit {
   @Input() emitEditEvent: boolean = false; 
   @Output() subTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
   @Output() mainTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
+  @Input() allowEditAction: boolean = true;  
+  @Input() allowDeleteAction: boolean = true; 
+   
 
   expandSet = new Set<number>();
   sortedData: any[] = [];
@@ -43,7 +46,10 @@ export class TableWithRowsChildComponent implements OnInit {
   searchValue = '';
   private searchSubscription: Subscription = new Subscription();
 
-  constructor(private auxService: AuxService) {}
+  constructor(private auxService: AuxService) {
+    // this.allowEditAction = true;  
+    // this.allowDeleteAction = true; 
+  }
 
   ngOnInit() {
     // Suscripción a los términos de búsqueda

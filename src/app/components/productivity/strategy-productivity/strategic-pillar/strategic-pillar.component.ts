@@ -61,6 +61,7 @@ export class StrategicPillarComponent implements OnInit {
   ];
 
   subTableColumns = [
+    { title: 'Acciones', field: 'Acciones', sortDirection: null },
     { title: 'Proyecto', field: 'nombre', sortDirection: null },
     { title: 'Lider de proyecto', field: 'liderProyecto', sortDirection: null },
     { title: 'Estado', field: 'estado', sortDirection: null },
@@ -132,7 +133,17 @@ export class StrategicPillarComponent implements OnInit {
       });
   }
 
-  async onDeleteAction(event: any) {
+  onDeleteAction(event: any) {
+    console.log('event ', event);
+    if (event.table == 'principal') {
+      this.DeleteStrategicPillar(event);
+    }
+    if (event.table == 'subTable') {
+      this.DeleteProjectPillar(event);
+    }
+  }
+
+  async DeleteStrategicPillar(event: any) {
     console.log('event ', event.id);
     const result = await this.auxService.AlertConfirmation(
       'Seguro que desea eliminar este registro?',
@@ -146,7 +157,30 @@ export class StrategicPillarComponent implements OnInit {
           this.auxService.cerrarVentanaCargando();
           if (data.success == true) {
             await this.auxService.AlertSuccess('Ok', data.message);
-            this.ngOnInit();
+            this.getStrategyPilar();
+          } else {
+            await this.auxService.AlertError('Error', data.message);
+            //this.getBalance();
+          }
+        });
+    }
+  }
+
+  async DeleteProjectPillar(event: any) {
+    console.log('event ', event.id);
+    const result = await this.auxService.AlertConfirmation(
+      'Seguro que desea eliminar este registro?',
+      undefined
+    );
+    if (result.isConfirmed) {
+      this.auxService.ventanaCargando();
+      this.productivityService
+        .Delete('delete-project-pillar', event.id)
+        .subscribe(async (data) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success == true) {
+            await this.auxService.AlertSuccess('Ok', data.message);
+            this.getStrategyPilar();
           } else {
             await this.auxService.AlertError('Error', data.message);
             //this.getBalance();

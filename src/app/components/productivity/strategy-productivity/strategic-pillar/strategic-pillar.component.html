@@ -37,6 +37,8 @@
         [columns]="mainTableColumns"
         [subColumns]="subTableColumns"
         [ActionEdit]="true"
+        [allowEditAction]="false"
+        [allowDeleteAction]="true"
         [emitEditEvent]="true"
         (editClicked)="onEditClicked($event)"
         (deleteAction)="onDeleteAction($event)"
