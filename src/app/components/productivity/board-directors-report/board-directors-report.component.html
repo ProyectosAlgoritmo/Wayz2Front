@@ -1,0 +1,19 @@
+<div class="content-container">
+
+
+  <div class="table-container">
+
+      <div class="divtable">
+        <h2 class="title-heading">Crear informe de junta directiva</h2>
+          <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [enableSearch]="true"
+              [enablePaginator]="true" [pageSize]="10" [showActions]="true" [ActionEdit]="true"
+              [columnNames]="columnNames" [ActionLeft]="true" (editAction)="onEditAction($event)"
+              [ActionCreate] ="true"
+              [ActionDelete]="true"
+              (deleteAction)="onDeleteAction($event)"
+              (Create)="CreateAction()">
+          </app-table>
+
+      </div>
+  </div>
+</div>

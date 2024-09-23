@@ -1,0 +1,70 @@
+<h3 mat-dialog-title class="dialog-title">{{ titulo }}</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="formularioForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombre" style="text-align: left;">Nombre</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="nombre" name="nombre" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="descripcionComite" style="text-align: left;">Descripción Comité</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar una descripción">
+          <input nz-input formControlName="descripcionComite" name="descripcionComite" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="responsable" style="text-align: left;">Responsable</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un responsable">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione un responsable"
+            formControlName="responsable"
+            required>
+            <nz-option *ngFor="let responsable of responsables" [nzLabel]="responsable.nombreVendedor" [nzValue]="responsable.idVendedor"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="porcentajeavanceProyectado" style="text-align: left;">Porcentaje Proyectado</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar el porcentaje proyectado">
+          <input nz-input type="number" formControlName="porcentajeavanceProyectado" name="porcentajeavanceProyectado" style="width: 100%;" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="porcentajeavanceReal" style="text-align: left;">Porcentaje Real</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar el porcentaje real">
+          <input nz-input type="number" formControlName="porcentajeavanceReal" name="porcentajeavanceReal" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fecha" style="text-align: left;">Fecha</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar una fecha">
+          <nz-date-picker formControlName="fecha" [nzFormat]="'yyyy-MM-dd'"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="estado" style="text-align: left;">Estado</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24">
+          <nz-switch formControlName="estado"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+      
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  </mat-dialog-actions>
+</div>
