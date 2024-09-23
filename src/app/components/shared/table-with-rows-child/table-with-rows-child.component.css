@@ -52,3 +52,11 @@ a{
 }
 
 
+.min-column-width {
+  width: 150px !important;
+}
+
+.nz-table th {
+  min-width: 150px !important; /* Aplica el ancho mínimo a las columnas */
+}
+
