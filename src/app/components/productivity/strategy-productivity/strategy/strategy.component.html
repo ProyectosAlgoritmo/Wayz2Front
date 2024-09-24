@@ -1,15 +1,26 @@
 <div class="content-container">
   <div class="table-container-in-tap">
+    
+   
     <div class="divtable">
+      <div style="width: 200px; height: 200px;">
+        <canvas baseChart
+                [data]="doughnutChartData"
+                [type]="doughnutChartType"
+                [options]="doughnutChartOptions">
+        </canvas>
+      </div>
       <div class="headerclass">
         <h2 class="title-heading"></h2>
+
+       
 
         <mat-toolbar class="background-white-title-botton">
           <div >
             <app-buttonstrategic (click)="CreateAction()" mat-button [label]="'Crear estrategia'" style="margin: 10px;">
             </app-buttonstrategic>
             
-            <app-buttonstrategic (click)="CreateActionObjetivo()" mat-button [label]="'Crear objetovo'">
+            <app-buttonstrategic (click)="CreateActionObjetivo()" mat-button [label]="'Crear objetivos'">
             </app-buttonstrategic>
           </div>
 

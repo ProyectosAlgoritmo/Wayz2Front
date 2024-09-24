@@ -1,7 +1,7 @@
 .full-page-container {
   display: flex;
   flex-direction: column;
-  height: 70vh; /* Usar toda la altura disponible de la ventana */
+  height: 65vh; /* Usar toda la altura disponible de la ventana */
 
   background-color: transparent !important;
 }
