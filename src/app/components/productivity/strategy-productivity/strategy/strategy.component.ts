@@ -23,6 +23,9 @@ import { CreateStrategicPillarComponent } from '../strategic-pillar/create-strat
 import { MatDialog } from '@angular/material/dialog';
 import { CreateStrategyComponent } from './create-strategy/create-strategy.component';
 import { CreateObjectiveComponent } from './create-objective/create-objective.component';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartType, registerables, Chart, ChartOptions, ChartConfiguration } from 'chart.js'; 
+
 @Component({
   selector: 'app-strategy',
   templateUrl: './strategy.component.html',
@@ -50,9 +53,48 @@ import { CreateObjectiveComponent } from './create-objective/create-objective.co
     NzSelectModule,
     NzIconModule,
     SharedModule,
+    BaseChartDirective
   ],
 })
 export class StrategyComponent implements OnInit {
+
+  public doughnutChartLabels: string[] = ['Ventas', 'Marketing', 'Desarrollo', 'Soporte'];
+  public doughnutChartData = {
+    labels: this.doughnutChartLabels,
+    datasets: [
+      {
+        data: [350, 450, 100, 150],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+      }
+    ]
+  };
+
+ 
+
+
+  // Usar el tipo ChartType en lugar de una cadena
+  public doughnutChartType: ChartType = 'doughnut';
+
+  public doughnutChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',  // Posición de la leyenda a la derecha
+      },
+    },
+    layout: {
+      padding: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: -60  // Quitar el padding
+      }
+    }
+  };
+
+
+
   [x: string]: any;
   dataForTable: any[] = [];
   dateYear: any[] = [];
@@ -62,7 +104,9 @@ export class StrategyComponent implements OnInit {
     public dialog: MatDialog,
     private auxService: AuxService,
     private productivityService: ProductivityService
-  ) {}
+  ) {
+    Chart.register(...registerables);
+  }
 
   mainTableColumns = [
     { title: 'Acciones', field: 'Acciones', sortDirection: null },
@@ -72,7 +116,7 @@ export class StrategyComponent implements OnInit {
 
   subTableColumns = [
     { title: 'Acciones', field: 'Acciones', sortDirection: null },
-    { title: 'Nombre', field: 'nombre' },
+    { title: 'Nombre Objetivo', field: 'nombre' },
     { title: 'Etapa', field: 'etapa' },
     { title: 'Porcentaje Avance Real', field: 'porcentajeavance_real' },
     {
@@ -81,6 +125,8 @@ export class StrategyComponent implements OnInit {
     },
     { title: 'Estado', field: 'estado' },
   ];
+
+  
 
   onSearchChange(): void {
     this.auxService.updateSearch(this.searchValue);
