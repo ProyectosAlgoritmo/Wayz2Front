@@ -63,6 +63,8 @@ export class CreateProjectComponent implements OnInit {
       estado: [false, Validators.required],
       idZona: ['', Validators.required],
       idUnidad: ['', Validators.required],
+      porcentajeavanceProyectado: [null, Validators.required],
+      porcentajeavanceReal: [null, Validators.required],
       fechaInicio: ['', Validators.required],
       fechaFinal: ['', Validators.required],
     });
@@ -76,6 +78,8 @@ export class CreateProjectComponent implements OnInit {
         estado: this.data.estado || false,
         idZona: this.data.idZona || 0,
         idUnidad: this.data.idUnidad || 0,
+        porcentajeavanceProyectado: this.data.porcentajeavanceProyectado || 0,
+        porcentajeavanceReal: this.data.porcentajeavanceReal || 0,
         fechaInicio: parseISO(this.data.fechaInicio) || '',
         fechaFinal: parseISO(this.data.fechaFinal) || '',
       });
