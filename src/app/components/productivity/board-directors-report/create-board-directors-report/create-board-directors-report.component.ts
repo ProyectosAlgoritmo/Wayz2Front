@@ -39,6 +39,7 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
   formularioForm: FormGroup;
   proyectos: any;
   responsables: any;
+  estados: any;
   titulo: string = 'Crear informe de junta directiva';
 
   constructor(
@@ -57,7 +58,7 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
       porcentajeavanceProyectado: [0, Validators.required],
       porcentajeavanceReal: [0, Validators.required],
       fecha: [null, Validators.required],
-      estado: [false, Validators.required],
+      idEstado: [null, Validators.required],
     });
     if (this.data) {
       this.titulo = 'Editar informe de junta directiva';
@@ -70,10 +71,11 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
         porcentajeavanceProyectado: this.data.porcentajeavanceProyectado || 0,
         porcentajeavanceReal: this.data.porcentajeavanceReal || 0,
         fecha: this.data.fecha ? parseISO(this.data.fecha) : null,
-        estado: this.data.estado || false
+        idEstado: this.data.idEstado || false
       });
     }
     this.getResponsable();
+    this.GetStatus();
   }
   ngOnInit() {}
 
@@ -97,6 +99,21 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
           'Error al cargar los responsables:',
           error
         );
+      },
+    });
+  }
+
+  GetStatus() {
+    this.productivityService.get('get-status').subscribe({
+      next: (data: any) => {
+        if (data) {
+          this.estados = data.data;
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+        }
+      },
+      error: (error) => {
+        this.auxService.AlertError('Error al cargar llas unidades:', error);
       },
     });
   }

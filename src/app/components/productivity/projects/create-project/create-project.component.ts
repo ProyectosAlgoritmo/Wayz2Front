@@ -43,6 +43,7 @@ export class CreateProjectComponent implements OnInit {
   lideres: any;
   zona: any;
   unidades: any;
+  estados: any;
   date = null;
   titulo = 'Crear proyecto';
 
@@ -60,7 +61,7 @@ export class CreateProjectComponent implements OnInit {
       nombre: ['', Validators.required],
       tipoProyecto: [''],
       liderProyecto: ['', Validators.required],
-      estado: [false, Validators.required],
+      idEstado: [null, Validators.required],
       idZona: ['', Validators.required],
       idUnidad: ['', Validators.required],
       porcentajeavanceProyectado: [null, Validators.required],
@@ -75,7 +76,7 @@ export class CreateProjectComponent implements OnInit {
         nombre: this.data.nombre || '',
         tipoProyecto: this.data.tipoProyecto || '',
         liderProyecto: this.data.idLiderProyecto || 0,
-        estado: this.data.estado || false,
+        idEstado: this.data.idEstado || null,
         idZona: this.data.idZona || 0,
         idUnidad: this.data.idUnidad || 0,
         porcentajeavanceProyectado: this.data.porcentajeavanceProyectado || 0,
@@ -87,6 +88,7 @@ export class CreateProjectComponent implements OnInit {
     this.getLideres();
     this.getZona();
     this.getUnidades();
+    this.GetStatus();
   }
   ngOnInit() {}
 
@@ -132,6 +134,21 @@ export class CreateProjectComponent implements OnInit {
       next: (data: any) => {
         if (data) {
           this.unidades = data;
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+        }
+      },
+      error: (error) => {
+        this.auxService.AlertError('Error al cargar llas unidades:', error);
+      },
+    });
+  }
+
+  GetStatus() {
+    this.productivityService.get('get-status').subscribe({
+      next: (data: any) => {
+        if (data) {
+          this.estados = data.data;
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }

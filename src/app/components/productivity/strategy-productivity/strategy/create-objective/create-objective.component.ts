@@ -16,6 +16,7 @@ import { CreatetypebalanceComponent } from '../../../../config/balanceconfig/typ
 import { ProductivityService } from '../../../../../services/productivity.service';
 import { PermisosService } from '../../../../../services/permisos.service';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { th } from 'date-fns/locale';
 @Component({
   selector: 'app-create-objective',
   templateUrl: './create-objective.component.html',
@@ -37,6 +38,7 @@ export class CreateObjectiveComponent implements OnInit {
   strategicForm: FormGroup;
   estrategia: any;
   switchValue = false;
+  estados: any;
   titulo: string = 'Crear objetivo';
   constructor(
     private fb: FormBuilder,
@@ -53,7 +55,7 @@ export class CreateObjectiveComponent implements OnInit {
       porcentajeavanceReal: [0,Validators.required],
       porcentajeavanceProyectado: [0,Validators.required],
       etapa: ['',Validators.required],
-      estado: [true,Validators.required],
+      idEstado: [null,Validators.required],
     });
     if (this.data) {
       this.titulo = 'Editar objetivo';
@@ -64,11 +66,12 @@ export class CreateObjectiveComponent implements OnInit {
         porcentajeavanceReal: this.data.porcentajeavance_real || 0,
         porcentajeavanceProyectado: this.data.porcentajeavance_proyectado || 0,
         etapa: this.data.etapa || '',
-        estado: this.data.estado || true,   
+        idEstado: this.data.idEstado || true,   
       });
     }
     this.getStrategy();
     this.getStrategy();
+    this.GetStatus();
   }
   ngOnInit() {}
 
@@ -90,6 +93,21 @@ export class CreateObjectiveComponent implements OnInit {
           'Error al cargar los registros',
           error
         );
+      },
+    });
+  }
+
+  GetStatus() {
+    this.productivityService.get('get-status').subscribe({
+      next: (data: any) => {
+        if (data) {
+          this.estados = data.data;
+        } else {
+          this.auxService.AlertWarning('Error', data.message);
+        }
+      },
+      error: (error) => {
+        this.auxService.AlertError('Error al cargar llas unidades:', error);
       },
     });
   }
