@@ -13,7 +13,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { ProductivityService } from '../../../../services/productivity.service';
 import { PermisosService } from '../../../../services/permisos.service';
 import { AuxService } from '../../../../services/aux-service.service';
-import { getISOWeek } from 'date-fns';
+import { getISOWeek, parseISO } from 'date-fns';
 
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
@@ -46,7 +46,6 @@ export class CreateProjectComponent implements OnInit {
   date = null;
   titulo = 'Crear proyecto';
 
-
   constructor(
     private fb: FormBuilder,
     private productivityService: ProductivityService,
@@ -61,7 +60,7 @@ export class CreateProjectComponent implements OnInit {
       nombre: ['', Validators.required],
       tipoProyecto: [''],
       liderProyecto: ['', Validators.required],
-      estado: [false,Validators.required],
+      estado: [false, Validators.required],
       idZona: ['', Validators.required],
       idUnidad: ['', Validators.required],
       fechaInicio: ['', Validators.required],
@@ -77,10 +76,10 @@ export class CreateProjectComponent implements OnInit {
         estado: this.data.estado || false,
         idZona: this.data.idZona || 0,
         idUnidad: this.data.idUnidad || 0,
-        fechaInicio: this.data.fechaInicio || '',
-        fechaFinal: this.data.fechaFinal || ''
+        fechaInicio: parseISO(this.data.fechaInicio) || '',
+        fechaFinal: parseISO(this.data.fechaFinal) || '',
       });
-    }    
+    }
     this.getLideres();
     this.getZona();
     this.getUnidades();
@@ -97,53 +96,44 @@ export class CreateProjectComponent implements OnInit {
 
   getLideres() {
     this.dateService.cargarVendedor().subscribe({
-      next: (data:any) => {
+      next: (data: any) => {
         if (data) {
-          this.lideres = data; 
+          this.lideres = data;
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
-        this.auxService.AlertError(
-          'Error al cargar los lideres:',
-          error
-        );
+        this.auxService.AlertError('Error al cargar los lideres:', error);
       },
     });
   }
   getZona() {
     this.dateService.cargarZonas().subscribe({
-      next: (data:any) => {
+      next: (data: any) => {
         if (data) {
-          this.zona = data; 
+          this.zona = data;
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
-        this.auxService.AlertError(
-          'Error al cargar las zonas:',
-          error
-        );
+        this.auxService.AlertError('Error al cargar las zonas:', error);
       },
     });
   }
 
   getUnidades() {
     this.dateService.cargarUnidades().subscribe({
-      next: (data:any) => {
+      next: (data: any) => {
         if (data) {
-          this.unidades = data; 
+          this.unidades = data;
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
-        this.auxService.AlertError(
-          'Error al cargar llas unidades:',
-          error
-        );
+        this.auxService.AlertError('Error al cargar llas unidades:', error);
       },
     });
   }
@@ -159,7 +149,14 @@ export class CreateProjectComponent implements OnInit {
   updateCambios() {
     if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
-
+      this.formularioForm.patchValue({
+        fechaInicio: new Date(this.formularioForm.value.fechaInicio)
+          .toISOString()
+          .split('T')[0],
+        fechaFinal: new Date(this.formularioForm.value.fechaFinal)
+          .toISOString()
+          .split('T')[0],
+      });
       this.productivityService
         .Update('update-project', this.formularioForm.value)
         .subscribe({
@@ -196,7 +193,14 @@ export class CreateProjectComponent implements OnInit {
   createCambios() {
     if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
-
+      this.formularioForm.patchValue({
+        fechaInicio: new Date(this.formularioForm.value.fechaInicio)
+          .toISOString()
+          .split('T')[0],
+        fechaFinal: new Date(this.formularioForm.value.fechaFinal)
+          .toISOString()
+          .split('T')[0],
+      });
       this.productivityService
         .Create('create-project', this.formularioForm.value)
         .subscribe({

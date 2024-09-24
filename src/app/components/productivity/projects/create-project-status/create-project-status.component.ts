@@ -16,6 +16,8 @@ import { AuxService } from '../../../../services/aux-service.service';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { DateService } from '../../../../services/data-service.service';
+import { parseISO } from 'date-fns';
+import { th } from 'date-fns/locale';
 
 @Component({
   selector: 'app-create-project-status',
@@ -75,7 +77,7 @@ export class CreateProjectStatusComponent implements OnInit {
         porcentajeavanceProyectado: this.data.porcentajeProyectado || 0,
         porcentajeavanceReal: this.data.porcentajeReal || 0,
         responsable: this.data.idResponsable || null,
-        fechaRevision: this.data.fechaRevision || null,
+        fechaRevision: parseISO(this.data.fechaRevision) || null,
       });
     }
     this.getProjects();
@@ -136,7 +138,11 @@ export class CreateProjectStatusComponent implements OnInit {
   updateCambios() {
     if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
-
+      this.formularioForm.patchValue({
+        fechaRevision: new Date(this.formularioForm.value.fechaRevision)
+          .toISOString()
+          .split('T')[0],
+      });
       this.productivityService
         .Update('update-project-state', this.formularioForm.value)
         .subscribe({
@@ -173,7 +179,11 @@ export class CreateProjectStatusComponent implements OnInit {
   createCambios() {
     if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
-
+      this.formularioForm.patchValue({
+        fechaRevision: new Date(this.formularioForm.value.fechaRevision)
+          .toISOString()
+          .split('T')[0],
+      });
       this.productivityService
         .Create('create-project-state', this.formularioForm.value)
         .subscribe({

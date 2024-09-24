@@ -15,6 +15,7 @@ import { AuxService } from '../../../../services/aux-service.service';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { DateService } from '../../../../services/data-service.service';
+import { format, parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-create-board-directors-report',
@@ -60,6 +61,7 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
     });
     if (this.data) {
       this.titulo = 'Editar informe de junta directiva';
+      console.log('data', this.data);
       this.formularioForm.patchValue({
         idInforme: this.data.idInforme || null,
         nombre: this.data.nombre || '',
@@ -67,7 +69,7 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
         responsable: this.data.idResponsable || null,
         porcentajeavanceProyectado: this.data.porcentajeavanceProyectado || 0,
         porcentajeavanceReal: this.data.porcentajeavanceReal || 0,
-        fecha: new Date(this.data.fecha).toISOString().split('T')[0] || null,
+        fecha: this.data.fecha ? parseISO(this.data.fecha) : null,
         estado: this.data.estado || false
       });
     }
@@ -110,6 +112,11 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
   updateCambios() {
     if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
+      this.formularioForm.patchValue({
+        fecha: new Date(this.formularioForm.value.fecha)
+          .toISOString()
+          .split('T')[0],
+      });
 
       this.productivityService
         .Update('update-board-directors-report', this.formularioForm.value)
@@ -147,7 +154,11 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
   createCambios() {
     if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
-
+      this.formularioForm.patchValue({
+        fecha: new Date(this.formularioForm.value.fecha)
+          .toISOString()
+          .split('T')[0],
+      });
       this.productivityService
         .Create('create-board-directors-report', this.formularioForm.value)
         .subscribe({

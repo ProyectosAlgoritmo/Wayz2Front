@@ -23,6 +23,7 @@
     "@angular/router": "^18.1.0",
     "@auth0/angular-jwt": "^5.2.0",
     "@types/xlsx": "^0.0.35",
+    "date-fns": "^4.1.0",
     "ng-zorro-antd": "^18.1.0",
     "powerbi-client": "^2.23.1",
     "powerbi-client-angular": "^3.0.5",
