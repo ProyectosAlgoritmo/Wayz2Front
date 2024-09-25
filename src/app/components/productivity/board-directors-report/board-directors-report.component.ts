@@ -60,6 +60,7 @@ export class BoardDirectorsReportComponent implements OnInit {
     'porcentajeavanceProyectado',
     'porcentajeavanceReal',
     'fecha',
+    'etapa',
     'estado',
   ];
   columnNames = {
@@ -69,6 +70,7 @@ export class BoardDirectorsReportComponent implements OnInit {
     porcentajeavanceProyectado: 'Porcentaje Avance Proyectado',
     porcentajeavanceReal: 'Porcentaje Avance Real',
     fecha: 'Fecha',
+    etapa: 'Etapa',
     estado: 'Estado',
   };
 
@@ -134,6 +136,8 @@ export class BoardDirectorsReportComponent implements OnInit {
         if (this.chart) {
           this.chart.update();
         }
+        this.objativesCard = data.data.card.total;
+        this.growthCard = parseFloat(data.data.card.porcentaje).toFixed(2);
         this.auxService.cerrarVentanaCargando();
       },
       error: (error) => {

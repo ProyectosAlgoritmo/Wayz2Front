@@ -1,5 +1,5 @@
 .custom-card {
-  width: 290px;
+  width: 300px;
   height: 100px;
   display: flex;
   align-items: center;
@@ -49,7 +49,7 @@
 
 .card-number .growth {
   font-size: 14px;
-  color: rgb(43, 217, 43);
+  color: green;
   margin-left: 10px;
   display: flex;
   align-items: center;

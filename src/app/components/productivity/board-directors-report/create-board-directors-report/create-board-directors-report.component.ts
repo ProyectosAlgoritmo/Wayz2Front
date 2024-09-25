@@ -39,7 +39,7 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
   formularioForm: FormGroup;
   proyectos: any;
   responsables: any;
-  estados: any;
+  etapas: any;
   titulo: string = 'Crear informe de junta directiva';
 
   constructor(
@@ -58,7 +58,8 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
       porcentajeavanceProyectado: [0, Validators.required],
       porcentajeavanceReal: [0, Validators.required],
       fecha: [null, Validators.required],
-      idEstado: [null, Validators.required],
+      idEtapa: [null, Validators.required],
+      estado: [null, Validators.required],
     });
     if (this.data) {
       this.titulo = 'Editar informe de junta directiva';
@@ -71,7 +72,8 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
         porcentajeavanceProyectado: this.data.porcentajeavanceProyectado || 0,
         porcentajeavanceReal: this.data.porcentajeavanceReal || 0,
         fecha: this.data.fecha ? parseISO(this.data.fecha) : null,
-        idEstado: this.data.idEstado || false
+        idEtapa: this.data.idEtapa || null,
+        estado: this.data.estado || false
       });
     }
     this.getResponsable();
@@ -107,7 +109,7 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
     this.productivityService.get('get-status').subscribe({
       next: (data: any) => {
         if (data) {
-          this.estados = data.data;
+          this.etapas = data.data;
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
