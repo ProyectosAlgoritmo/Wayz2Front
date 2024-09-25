@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
@@ -17,6 +17,14 @@ import { ConfigService } from '../../../services/config.service';
 import { AuxService } from '../../../services/aux-service.service';
 import { ProductivityService } from '../../../services/productivity.service';
 import { CreateBoardDirectorsReportComponent } from './create-board-directors-report/create-board-directors-report.component';
+import { BaseChartDirective } from 'ng2-charts';
+import {
+  ChartType,
+  registerables,
+  Chart,
+  ChartOptions,
+  ChartConfiguration,
+} from 'chart.js';
 
 @Component({
   selector: 'app-board-directors-report',
@@ -35,9 +43,11 @@ import { CreateBoardDirectorsReportComponent } from './create-board-directors-re
     SharedModule,
     NzInputModule,
     NzIconModule,
+    BaseChartDirective,
   ],
 })
 export class BoardDirectorsReportComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   displayedColumns: string[] = [
     'nombre',
     'descripcionComite',
@@ -54,9 +64,40 @@ export class BoardDirectorsReportComponent implements OnInit {
     porcentajeavanceProyectado: 'Porcentaje Avance Proyectado',
     porcentajeavanceReal: 'Porcentaje Avance Real',
     fecha: 'Fecha',
-    estado: 'Estado'
+    estado: 'Estado',
   };
-  
+
+  public doughnutChartLabels: string[] = [];
+  public doughnutChartData = {
+    labels: this.doughnutChartLabels,
+    datasets: [
+      {
+        data: [] as number[],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+      },
+    ],
+  };
+
+  public doughnutChartType: ChartType = 'doughnut';
+
+  public doughnutChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+      },
+    },
+    layout: {
+      padding: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: -60, // Quitar el padding
+      },
+    },
+  };
+
   dataSource: any[] = [];
 
   constructor(
@@ -66,21 +107,33 @@ export class BoardDirectorsReportComponent implements OnInit {
     public dialog: MatDialog,
     private router: Router,
     private productivityService: ProductivityService
-  ) {}
+  ) {
+    Chart.register(...registerables);
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     this.GetBoardDirectorsReports();
   }
 
   GetBoardDirectorsReports() {
     this.productivityService.get('get-board-directors-report').subscribe({
-      next: (data:any) => {
-        this.dataSource = data.data;
+      next: (data: any) => {
+        this.dataSource = data.data.data;
+        this.doughnutChartData.labels = data.data.grafica.map((r: any) => r.nombre);
+        this.doughnutChartData.datasets[0].data = data.data.grafica.map(
+          (r: any) => r.porcentaje
+        );
+        if (this.chart) {
+          this.chart.update();
+        }
         this.auxService.cerrarVentanaCargando();
       },
       error: (error) => {
-        this.auxService.AlertError('Error al cargar el reporte de junta directiva:', error);
-      }
+        this.auxService.AlertError(
+          'Error al cargar el reporte de junta directiva:',
+          error
+        );
+      },
     });
   }
 
@@ -91,7 +144,7 @@ export class BoardDirectorsReportComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateBoardDirectorsReportComponent, {
       data: event,
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // Si el resultado es true, se vuelve a obtener la lista de clientes
         this.configService.ObtenerFCTipo().subscribe({
@@ -99,8 +152,11 @@ export class BoardDirectorsReportComponent implements OnInit {
             this.GetBoardDirectorsReports();
           },
           error: (error) => {
-            this.auxService.AlertError('Error al cargar los tipos de categoría (flujo de caja):', error);
-          }
+            this.auxService.AlertError(
+              'Error al cargar los tipos de categoría (flujo de caja):',
+              error
+            );
+          },
         });
       }
     });
@@ -131,18 +187,21 @@ export class BoardDirectorsReportComponent implements OnInit {
 
   CreateAction() {
     const dialogRef = this.dialog.open(CreateBoardDirectorsReportComponent);
-    dialogRef.afterClosed().subscribe(result => {
-          if (result) {
-            // Si el resultado es true, se vuelve a obtener la lista de clientes
-            this.configService.ObtenerFCTipo().subscribe({
-              next: (data) => {
-                this.GetBoardDirectorsReports();
-              },
-              error: (error) => {
-                this.auxService.AlertError('Error al crear el reporte de junta directiva:', error);
-              }
-            });
-          }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Si el resultado es true, se vuelve a obtener la lista de clientes
+        this.configService.ObtenerFCTipo().subscribe({
+          next: (data) => {
+            this.GetBoardDirectorsReports();
+          },
+          error: (error) => {
+            this.auxService.AlertError(
+              'Error al crear el reporte de junta directiva:',
+              error
+            );
+          },
+        });
+      }
     });
   }
 }

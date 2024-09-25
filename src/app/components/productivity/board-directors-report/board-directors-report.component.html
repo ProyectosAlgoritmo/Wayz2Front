@@ -4,7 +4,16 @@
   <div class="table-container">
 
       <div class="divtable">
-        <h2 class="title-heading">Crear informe de junta directiva</h2>
+        <h2 class="title-heading">Informe de junta directiva</h2>
+
+        <div style="width: 200px; height: 200px;">
+          <canvas baseChart
+            [data]="doughnutChartData"
+            [type]="doughnutChartType"
+            [options]="doughnutChartOptions">
+          </canvas>
+        </div>
+
           <app-table [dataSource]="dataSource" [displayedColumns]="displayedColumns" [enableSearch]="true"
               [enablePaginator]="true" [pageSize]="10" [showActions]="true" [ActionEdit]="true"
               [columnNames]="columnNames" [ActionLeft]="true" (editAction)="onEditAction($event)"
