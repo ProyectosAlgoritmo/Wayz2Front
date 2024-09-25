@@ -18,6 +18,7 @@ import { AuxService } from '../../../services/aux-service.service';
 import { ProductivityService } from '../../../services/productivity.service';
 import { CreateBoardDirectorsReportComponent } from './create-board-directors-report/create-board-directors-report.component';
 import { BaseChartDirective } from 'ng2-charts';
+import { NzCardModule } from 'ng-zorro-antd/card';
 import {
   ChartType,
   registerables,
@@ -25,6 +26,8 @@ import {
   ChartOptions,
   ChartConfiguration,
 } from 'chart.js';
+import { CardPercentageComponent } from '../../shared/card-percentage/card-percentage.component';
+
 
 @Component({
   selector: 'app-board-directors-report',
@@ -44,6 +47,8 @@ import {
     NzInputModule,
     NzIconModule,
     BaseChartDirective,
+    NzCardModule,
+    CardPercentageComponent,
   ],
 })
 export class BoardDirectorsReportComponent implements OnInit {
@@ -99,7 +104,10 @@ export class BoardDirectorsReportComponent implements OnInit {
   };
 
   dataSource: any[] = [];
-
+  iconTheme: 'user' | null | undefined = 'user';
+  objativesCard: number = 10;
+  titleCard: string = 'Objetivos Cumplidos';
+  growthCard: string = '0 ';
   constructor(
     private sharedStateService: SharedStateService,
     private configService: ConfigService,
