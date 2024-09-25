@@ -43,7 +43,7 @@ export class CreateProjectComponent implements OnInit {
   lideres: any;
   zona: any;
   unidades: any;
-  estados: any;
+  etapas: any;
   date = null;
   titulo = 'Crear proyecto';
 
@@ -61,11 +61,12 @@ export class CreateProjectComponent implements OnInit {
       nombre: ['', Validators.required],
       tipoProyecto: [''],
       liderProyecto: ['', Validators.required],
-      idEstado: [null, Validators.required],
+      idEtapa: [null, Validators.required],
+      estado: [false, Validators.required],
       idZona: ['', Validators.required],
       idUnidad: ['', Validators.required],
-      porcentajeavanceProyectado: [null, Validators.required],
-      porcentajeavanceReal: [null, Validators.required],
+      porcentajeavanceProyectado: [0, Validators.required],
+      porcentajeavanceReal: [0, Validators.required],
       fechaInicio: ['', Validators.required],
       fechaFinal: ['', Validators.required],
     });
@@ -76,7 +77,8 @@ export class CreateProjectComponent implements OnInit {
         nombre: this.data.nombre || '',
         tipoProyecto: this.data.tipoProyecto || '',
         liderProyecto: this.data.idLiderProyecto || 0,
-        idEstado: this.data.idEstado || null,
+        idEtapa: this.data.idEtapa || null,
+        estado: this.data.estado || false,
         idZona: this.data.idZona || 0,
         idUnidad: this.data.idUnidad || 0,
         porcentajeavanceProyectado: this.data.porcentajeavanceProyectado || 0,
@@ -148,7 +150,7 @@ export class CreateProjectComponent implements OnInit {
     this.productivityService.get('get-status').subscribe({
       next: (data: any) => {
         if (data) {
-          this.estados = data.data;
+          this.etapas = data.data;
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }

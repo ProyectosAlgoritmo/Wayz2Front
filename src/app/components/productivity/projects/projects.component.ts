@@ -66,11 +66,12 @@ export class ProjectsComponent implements OnInit {
     { title: 'Acciones', field: 'Acciones', sortDirection: null },
     { title: 'Proyecto', field: 'nombre', sortDirection: null },
     { title: 'Lider de proyecto', field: 'liderProyecto', sortDirection: null },
-    { title: 'Estado', field: 'estado', sortDirection: null },
     { title: 'Zona', field: 'zona', sortDirection: null },
     { title: 'Unidad', field: 'unidad', sortDirection: null },
     { title: 'Porcentaje avance Proyectado', field: 'porcentajeavanceProyectado', sortDirection: null },
     { title: 'Porcentaje avance real', field: 'porcentajeavanceReal', sortDirection: null },
+    { title: 'Etapa', field: 'etapa', sortDirection: null },
+    { title: 'Estado', field: 'estado', sortDirection: null },
     { title: 'Fecha de inicio', field: 'fechaInicio', sortDirection: null },
     { title: 'Fecha final', field: 'fechaFinal', sortDirection: null },
   ];
