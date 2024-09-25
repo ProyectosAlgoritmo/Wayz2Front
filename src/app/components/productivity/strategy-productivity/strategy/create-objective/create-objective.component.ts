@@ -38,7 +38,7 @@ export class CreateObjectiveComponent implements OnInit {
   strategicForm: FormGroup;
   estrategia: any;
   switchValue = false;
-  estados: any;
+  etapas: any;
   titulo: string = 'Crear objetivo';
   constructor(
     private fb: FormBuilder,
@@ -54,8 +54,8 @@ export class CreateObjectiveComponent implements OnInit {
       idEstrategia: ['', Validators.required],
       porcentajeavanceReal: [0,Validators.required],
       porcentajeavanceProyectado: [0,Validators.required],
-      etapa: ['',Validators.required],
-      idEstado: [null,Validators.required],
+      idEtapa: [null, Validators.required],
+      estado: [false, Validators.required],
     });
     if (this.data) {
       this.titulo = 'Editar objetivo';
@@ -65,8 +65,8 @@ export class CreateObjectiveComponent implements OnInit {
         idEstrategia: this.data.idEstrategia || '', 
         porcentajeavanceReal: this.data.porcentajeavance_real || 0,
         porcentajeavanceProyectado: this.data.porcentajeavance_proyectado || 0,
-        etapa: this.data.etapa || '',
-        idEstado: this.data.idEstado || true,   
+        idEtapa: this.data.idEtapa || null,
+        estado: this.data.estado || false 
       });
     }
     this.getStrategy();
@@ -101,7 +101,7 @@ export class CreateObjectiveComponent implements OnInit {
     this.productivityService.get('get-status').subscribe({
       next: (data: any) => {
         if (data) {
-          this.estados = data.data;
+          this.etapas = data.data;
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }

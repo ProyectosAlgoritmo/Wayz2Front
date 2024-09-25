@@ -123,6 +123,7 @@ export class StrategyComponent implements OnInit {
       title: 'Porcentaje Avance Proyectado',
       field: 'porcentajeavance_proyectado',
     },
+    { title: 'Etapa', field: 'etapa' },
     { title: 'Estado', field: 'estado' },
   ];
 
@@ -155,6 +156,7 @@ export class StrategyComponent implements OnInit {
 
   onEditAction(event: any) {
     console.log('event', event);
+    event.estado = event.estado == 'activo' ? true : false;
     if (event.table == 'principal') {
       const dialogRef = this.dialog.open(CreateStrategyComponent, {
         data: event,

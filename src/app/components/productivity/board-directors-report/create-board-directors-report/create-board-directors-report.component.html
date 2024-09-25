@@ -55,11 +55,11 @@
       
       <nz-form-item>
         <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="id" style="text-align: left;">Etapa</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un estado">
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar una etapa">
           <nz-select
             nzShowSearch
             nzAllowClear
-            nzPlaceHolder="Seleccione un estado"
+            nzPlaceHolder="Seleccione una etapa"
             formControlName="idEtapa"
             required>
             <nz-option *ngFor="let etapas of etapas" [nzLabel]="etapas.nombre" [nzValue]="etapas.idEtapa"></nz-option>
