@@ -28,7 +28,6 @@ import {
 } from 'chart.js';
 import { CardPercentageComponent } from '../../shared/card-percentage/card-percentage.component';
 
-
 @Component({
   selector: 'app-board-directors-report',
   templateUrl: './board-directors-report.component.html',
@@ -89,8 +88,8 @@ export class BoardDirectorsReportComponent implements OnInit {
           '#FF9F40', // Naranja
           '#00FF00', // Verde brillante
           '#FF4500', // Rojo anaranjado
-          '#9400D3'  // Violeta oscuro
-        ]
+          '#9400D3', // Violeta oscuro
+        ],
       },
     ],
   };
@@ -99,10 +98,18 @@ export class BoardDirectorsReportComponent implements OnInit {
 
   public doughnutChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
-        position: 'right',
+        position: 'right', // Mantener la posición de la leyenda a la derecha
+        labels: {
+          padding: 20, // Aumentar el espacio entre las etiquetas y la gráfica
+          font: {
+            size: 12, // Ajustar el tamaño de la fuente de las etiquetas para que sean legibles
+          },
+          usePointStyle: true, // Hacer los puntos de las leyendas más pequeños
+        },
       },
     },
     layout: {
@@ -110,7 +117,7 @@ export class BoardDirectorsReportComponent implements OnInit {
         left: 0,
         right: 0,
         top: 0,
-        bottom: -60, // Quitar el padding
+        bottom: 0, // Eliminar padding extra si las etiquetas están a los lados
       },
     },
   };
@@ -139,7 +146,9 @@ export class BoardDirectorsReportComponent implements OnInit {
     this.productivityService.get('get-board-directors-report').subscribe({
       next: (data: any) => {
         this.dataSource = data.data.data;
-        this.doughnutChartData.labels = data.data.grafica.map((r: any) => r.nombre);
+        this.doughnutChartData.labels = data.data.grafica.map(
+          (r: any) => r.nombre
+        );
         this.doughnutChartData.datasets[0].data = data.data.grafica.map(
           (r: any) => r.porcentaje
         );

@@ -105,24 +105,26 @@
       </ng-container>
     </tbody>
   </nz-table>
+
+  <div class="paginator-container">
+    <nz-pagination 
+      [nzPageSize]="pageSize"
+      [nzTotal]="sortedData.length"
+      [(nzPageIndex)]="currentPage"
+      [nzShowTotal]="totalTemplate"
+      (nzPageIndexChange)="onPageChange($event)">
+    </nz-pagination>
+    
+    <ng-template #totalTemplate let-total>
+      Registros mostrados {{ (currentPage - 1) * pageSize + 1 }} - 
+      {{ (currentPage * pageSize) < total ? (currentPage * pageSize) : total }} 
+      de {{ total }} registros
+    </ng-template>
+    
+    </div>
+    
 </div>
 
 
-<div class="paginator-container">
-  <nz-pagination 
-    [nzPageSize]="pageSize"
-    [nzTotal]="sortedData.length"
-    [(nzPageIndex)]="currentPage"
-    [nzShowTotal]="totalTemplate"
-    (nzPageIndexChange)="onPageChange($event)">
-  </nz-pagination>
-  
-  <ng-template #totalTemplate let-total>
-    Registros mostrados {{ (currentPage - 1) * pageSize + 1 }} - 
-    {{ (currentPage * pageSize) < total ? (currentPage * pageSize) : total }} 
-    de {{ total }} registros
-  </ng-template>
-  
-  </div>
 </div>
 

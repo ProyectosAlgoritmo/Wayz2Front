@@ -124,10 +124,18 @@ export class ProjectsComponent implements OnInit {
 
   public doughnutChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: true,
-        position: 'right',
+        position: 'right', // Mantener la posición de la leyenda a la derecha
+        labels: {
+          padding: 20, // Aumentar el espacio entre las etiquetas y la gráfica
+          font: {
+            size: 12, // Ajustar el tamaño de la fuente de las etiquetas para que sean legibles
+          },
+          usePointStyle: true, // Hacer los puntos de las leyendas más pequeños
+        },
       },
     },
     layout: {
@@ -135,10 +143,11 @@ export class ProjectsComponent implements OnInit {
         left: 0,
         right: 0,
         top: 0,
-        bottom: -60, // Quitar el padding
+        bottom: 0, // Eliminar padding extra si las etiquetas están a los lados
       },
     },
   };
+
 
   iconTheme: 'user' | null | undefined = 'user';
   objativesCard: number = 10;
