@@ -80,7 +80,17 @@ export class BoardDirectorsReportComponent implements OnInit {
     datasets: [
       {
         data: [] as number[],
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+        backgroundColor: [
+          '#FF6384', // Rojo-rosado
+          '#36A2EB', // Azul
+          '#FFCE56', // Amarillo
+          '#4BC0C0', // Verde azulado
+          '#9966FF', // Púrpura
+          '#FF9F40', // Naranja
+          '#00FF00', // Verde brillante
+          '#FF4500', // Rojo anaranjado
+          '#9400D3'  // Violeta oscuro
+        ]
       },
     ],
   };

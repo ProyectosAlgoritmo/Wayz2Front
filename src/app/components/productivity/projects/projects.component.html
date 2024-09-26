@@ -32,6 +32,25 @@
           </div>
         </mat-toolbar>
       </div>
+      <div class="headerGraphi">
+        <div style="width: 200px; height: 200px">
+          <canvas
+            baseChart
+            [data]="doughnutChartData"
+            [type]="doughnutChartType"
+            [options]="doughnutChartOptions"
+          >
+          </canvas>
+        </div>
+
+        <app-card-percentage
+          [iconType]="'user'"
+          [title]="titleCard"
+          [number]="objativesCard"
+          [growth]="growthCard"
+          [growthColor]="'green'"
+        ></app-card-percentage>
+      </div>
 
       <app-table-with-rows-child
         [listOfData]="dataForTable"

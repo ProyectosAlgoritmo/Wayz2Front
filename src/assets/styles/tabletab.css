@@ -77,3 +77,10 @@
   flex-shrink: 0;
   width: 200px; /* Ajusta el ancho como desees */
 }
+
+.headerGraphi{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}

@@ -96,5 +96,13 @@
   /*text-align: center;
   border-bottom: 0.5px solid #e0e0e0; /* Línea discreta debajo */
 }
+
+.headerGraphi{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
   
   

@@ -1,4 +1,4 @@
-import { Component, OnInit, Provider } from '@angular/core';
+import { Component, OnInit, Provider, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -20,6 +20,11 @@ import { AuxService } from '../../../services/aux-service.service';
 import { ProductivityService } from '../../../services/productivity.service';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { CreateProjectStatusComponent } from './create-project-status/create-project-status.component';
+import { Chart, ChartConfiguration, ChartType } from 'chart.js';
+import { CardPercentageComponent } from '../../shared/card-percentage/card-percentage.component';
+import { BaseChartDirective } from 'ng2-charts';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { registerables } from 'chart.js';
 
 @Component({
   selector: 'app-projects',
@@ -47,10 +52,13 @@ import { CreateProjectStatusComponent } from './create-project-status/create-pro
     NzSelectModule,
     NzIconModule,
     SharedModule,
+    BaseChartDirective,
+    NzCardModule,
+    CardPercentageComponent,
   ],
 })
 export class ProjectsComponent implements OnInit {
-
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   [x: string]: any;
   dataForTable: any[] = [];
   dateYear: any[] = [];
@@ -60,7 +68,9 @@ export class ProjectsComponent implements OnInit {
     public dialog: MatDialog,
     private auxService: AuxService,
     private productivityService: ProductivityService
-  ) {}
+  ) {
+    Chart.register(...registerables);
+  }
 
   mainTableColumns = [
     { title: 'Acciones', field: 'Acciones', sortDirection: null },
@@ -89,6 +99,52 @@ export class ProjectsComponent implements OnInit {
     { title: 'Fecha de revision', field: 'fechaRevision', sortDirection: null },
   ];
 
+  public doughnutChartLabels: string[] = [];
+  public doughnutChartData = {
+    labels: this.doughnutChartLabels,
+    datasets: [
+      {
+        data: [] as number[],
+        backgroundColor: [
+          '#FF6384', // Rojo-rosado
+          '#36A2EB', // Azul
+          '#FFCE56', // Amarillo
+          '#4BC0C0', // Verde azulado
+          '#9966FF', // Púrpura
+          '#FF9F40', // Naranja
+          '#00FF00', // Verde brillante
+          '#FF4500', // Rojo anaranjado
+          '#9400D3'  // Violeta oscuro
+        ]
+      },
+    ],
+  };
+
+  public doughnutChartType: ChartType = 'doughnut';
+
+  public doughnutChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'right',
+      },
+    },
+    layout: {
+      padding: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: -60, // Quitar el padding
+      },
+    },
+  };
+
+  iconTheme: 'user' | null | undefined = 'user';
+  objativesCard: number = 10;
+  titleCard: string = 'Objetivos Cumplidos';
+  growthCard: string = '0 ';
+
   onSearchChange(): void {
     this.auxService.updateSearch(this.searchValue);
   }
@@ -103,8 +159,17 @@ export class ProjectsComponent implements OnInit {
   getProjects() {
     this.auxService.ventanaCargando();
     this.productivityService.get('get-projects').subscribe(async (data) => {
+      this.dataForTable = data.data.data;
+      this.doughnutChartData.labels = data.data.grafica.map((r: any) => r.nombre);
+      this.doughnutChartData.datasets[0].data = data.data.grafica.map(
+        (r: any) => r.porcentaje
+      );
+      if (this.chart) {
+        this.chart.update();
+      }
+      this.objativesCard = data.data.card.total;
+      this.growthCard = parseFloat(data.data.card.porcentaje).toFixed(2);
       this.auxService.cerrarVentanaCargando();
-      this.dataForTable = data.data;
     });
   }
   
