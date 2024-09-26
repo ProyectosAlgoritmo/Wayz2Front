@@ -35,9 +35,11 @@ import { th } from 'date-fns/locale';
   ],
 })
 export class CreateObjectiveComponent implements OnInit {
-  strategicForm: FormGroup;
+  formularioForm: FormGroup;
   estrategia: any;
   switchValue = false;
+  isReadonly = true;
+  estapaDisabled = true;
   etapas: any;
   titulo: string = 'Crear objetivo';
   constructor(
@@ -46,9 +48,9 @@ export class CreateObjectiveComponent implements OnInit {
     private permisosService: PermisosService,
     private auxService: AuxService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CreatetypebalanceComponent>
+    private dialogRef: MatDialogRef<CreateObjectiveComponent>
   ) {
-    this.strategicForm = this.fb.group({
+    this.formularioForm = this.fb.group({
       idObjetivos: [0, ],
       nombre: ['', Validators.required],
       idEstrategia: ['', Validators.required],
@@ -59,7 +61,7 @@ export class CreateObjectiveComponent implements OnInit {
     });
     if (this.data) {
       this.titulo = 'Editar objetivo';
-      this.strategicForm.patchValue({
+      this.formularioForm.patchValue({
         idObjetivos: this.data.id || 0, 
         nombre: this.data.nombre || '', 
         idEstrategia: this.data.idEstrategia || '', 
@@ -69,21 +71,64 @@ export class CreateObjectiveComponent implements OnInit {
         estado: this.data.estado || false 
       });
     }
+    this.dialogRef.backdropClick().subscribe(() => {
+      this.onCancel(); 
+    });
     this.getStrategy();
-    this.getStrategy();
-    this.GetStatus();
+    this.GetStage();
   }
   ngOnInit() {}
 
   onCancel(): void {
     this.dialogRef.close();
+    if (this.data) {
+      this.data.estado = this.data.estado ? 'activo' : 'inactivo';
+    }
+  }
+
+  onInpuPorcentajeReal(event: any) {
+    const porcentajeavanceReal = event.target.value;
+    if (porcentajeavanceReal == 100) {
+      let etapa = this.etapas.find(
+        (x: any) => x.nombre.toString().toLowerCase() == 'completado'
+      );
+      this.formularioForm.patchValue({
+        idEtapa: etapa.idEtapa,
+      });
+      this.estapaDisabled = false;
+    } else {
+      this.formularioForm.patchValue({
+        idEtapa: null,
+      });
+      this.estapaDisabled = true;
+    }
+    this.isReadonly = true;
+  }
+
+  async onEtapaChange(event: any) {
+    if (this.etapas) {
+      let etapa = this.etapas.find((x: any) => x.idEtapa == event);
+      if (etapa && etapa.nombre.toString().toLowerCase() === 'completado') {
+        this.formularioForm.patchValue({
+          porcentajeavanceReal: 100,
+        });
+        this.isReadonly = false;
+      } else {
+        if (this.formularioForm.value.porcentajeavanceReal == 100) {
+          this.formularioForm.patchValue({
+            porcentajeavanceReal: null,
+          });
+        }
+        this.isReadonly = true;
+      }
+    }
   }
 
   getStrategy() {
     this.productivityService.get('get-strategy').subscribe({
       next: (data) => {
         if (data.success) {
-          this.estrategia = data.data; // Vincula los datos al formulario
+          this.estrategia = data.data; 
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
@@ -97,11 +142,12 @@ export class CreateObjectiveComponent implements OnInit {
     });
   }
 
-  GetStatus() {
-    this.productivityService.get('get-status').subscribe({
+  GetStage() {
+    this.productivityService.get('get-stage').subscribe({
       next: (data: any) => {
         if (data) {
           this.etapas = data.data;
+          this.onEtapaChange(this.data.idEtapa);
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
@@ -121,13 +167,13 @@ export class CreateObjectiveComponent implements OnInit {
   }
 
   updateObjective() {
-    if (this.strategicForm.valid) {
+    if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
         .Update(
           'update-objective',
-          this.strategicForm.value
+          this.formularioForm.value
         )
         .subscribe({
           next: async (data) => {
@@ -161,13 +207,13 @@ export class CreateObjectiveComponent implements OnInit {
     }
   }
   createObjective() {
-    if (this.strategicForm.valid) {
+    if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
 
       this.productivityService
         .Create(
           'create-objective',
-          this.strategicForm.value
+          this.formularioForm.value
         )
         .subscribe({
           next: async (data) => {

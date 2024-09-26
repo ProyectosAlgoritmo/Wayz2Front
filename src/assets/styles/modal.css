@@ -29,3 +29,12 @@
 
   }
 
+  .readonly-input {
+    background-color: rgba(128, 128, 128, 0.316);
+    border: 0.5px solid rgba(0, 0, 0, 0.212);
+  }
+  
+  .active-input {
+    background-color: white;
+  }
+

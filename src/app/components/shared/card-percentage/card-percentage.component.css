@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20px; /* Espacio entre el icono y los textos */
+  margin-right: 15px; /* Espacio entre el icono y los textos */
 }
 
 .icon-container i {
@@ -48,9 +48,9 @@
 }
 
 .card-number .growth {
-  font-size: 14px;
+  font-size: 15px;
   color: green;
-  margin-left: 10px;
+  margin-left: 0px;
   display: flex;
   align-items: center;
 }

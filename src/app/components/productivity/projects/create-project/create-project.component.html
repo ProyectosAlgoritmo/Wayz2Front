@@ -72,7 +72,7 @@
       <nz-form-item>
         <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="porcentajeavanceReal" style="text-align: left;">Porcentaje real</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
-          <input nz-input type="number"   formControlName="porcentajeavanceReal" name="porcentajeavanceReal" required />
+            <input nz-input type="number" (input)="onInpuPorcentajeReal($event)" formControlName="porcentajeavanceReal" name="porcentajeavanceReal" required [readonly]="!isReadonly" [ngClass]="{'readonly-input': !isReadonly, 'active-input': isReadonly}" />
         </nz-form-control>
       </nz-form-item>
 
@@ -80,11 +80,13 @@
         <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="id" style="text-align: left;">Etapa</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar una etapa">
           <nz-select
+            [nzDisabled]="!estapaDisabled"
             nzShowSearch
             nzAllowClear
             nzPlaceHolder="Seleccione una etapa"
             formControlName="idEtapa"
-            required>
+            required
+            (ngModelChange)="onEtapaChange($event)">
             <nz-option *ngFor="let etapas of etapas" [nzLabel]="etapas.nombre" [nzValue]="etapas.idEtapa"></nz-option>
           </nz-select>
         </nz-form-control>

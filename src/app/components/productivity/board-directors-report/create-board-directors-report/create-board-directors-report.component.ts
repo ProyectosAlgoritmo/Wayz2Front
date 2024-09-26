@@ -16,6 +16,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { DateService } from '../../../../services/data-service.service';
 import { format, parseISO } from 'date-fns';
+import { el, tr } from 'date-fns/locale';
 
 @Component({
   selector: 'app-create-board-directors-report',
@@ -40,6 +41,8 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
   proyectos: any;
   responsables: any;
   etapas: any;
+  isReadonly: boolean = true;
+  estapaDisabled: boolean = true;
   titulo: string = 'Crear informe de junta directiva';
 
   constructor(
@@ -51,7 +54,7 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
     private dialogRef: MatDialogRef<CreateBoardDirectorsReportComponent>
   ) {
     this.formularioForm = this.fb.group({
-      idInforme: [0, ],
+      idInforme: [0],
       nombre: [null, Validators.required],
       descripcionComite: [null, Validators.required],
       responsable: [null, Validators.required],
@@ -73,11 +76,14 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
         porcentajeavanceReal: this.data.porcentajeavanceReal || 0,
         fecha: this.data.fecha ? parseISO(this.data.fecha) : null,
         idEtapa: this.data.idEtapa || null,
-        estado: this.data.estado || false
+        estado: this.data.estado || false,
       });
     }
+    this.dialogRef.backdropClick().subscribe(() => {
+      this.onCancel();
+    });
     this.getResponsable();
-    this.GetStatus();
+    this.GetStage();
   }
   ngOnInit() {}
 
@@ -87,8 +93,49 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
 
   onCancel(): void {
     this.dialogRef.close();
+    if (this.data) {
+      this.data.estado = this.data.estado ? 'activo' : 'inactivo';
+    }
   }
-  
+
+  onInpuPorcentajeReal(event: any) {
+    const porcentajeavanceReal = event.target.value;
+    if (porcentajeavanceReal == 100) {
+      let etapa = this.etapas.find(
+        (x: any) => x.nombre.toString().toLowerCase() == 'completado'
+      );
+      this.formularioForm.patchValue({
+        idEtapa: etapa.idEtapa,
+      });
+      this.estapaDisabled = false;
+    } else {
+      this.formularioForm.patchValue({
+        idEtapa: null,
+      });
+      this.estapaDisabled = true;
+    }
+    this.isReadonly = true;
+  }
+
+  async onEtapaChange(event: any) {
+    if (this.etapas) {
+      let etapa = this.etapas.find((x: any) => x.idEtapa == event);
+      if (etapa && etapa.nombre.toString().toLowerCase() === 'completado') {
+        this.formularioForm.patchValue({
+          porcentajeavanceReal: 100,
+        });
+        this.isReadonly = false;
+      } else {
+        if (this.formularioForm.value.porcentajeavanceReal == 100) {
+          this.formularioForm.patchValue({
+            porcentajeavanceReal: null,
+          });
+        }
+        this.isReadonly = true;
+      }
+    }
+  }
+
   getResponsable() {
     this.dateService.cargarVendedor().subscribe({
       next: (data) => {
@@ -97,25 +144,25 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
         }
       },
       error: (error) => {
-        this.auxService.AlertError(
-          'Error al cargar los responsables:',
-          error
-        );
+        this.auxService.AlertError('Error al cargar los responsables:', error);
       },
     });
   }
 
-  GetStatus() {
-    this.productivityService.get('get-status').subscribe({
+  GetStage() {
+    this.productivityService.get('get-stage').subscribe({
       next: (data: any) => {
         if (data) {
           this.etapas = data.data;
+          if (this.data && this.data.idEtapa) {
+            this.onEtapaChange(this.data.idEtapa);
+          }
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
-        this.auxService.AlertError('Error al cargar llas unidades:', error);
+        this.auxService.AlertError('Error al cargar las unidades:', error);
       },
     });
   }
@@ -198,10 +245,7 @@ export class CreateBoardDirectorsReportComponent implements OnInit {
           },
           error: (error) => {
             this.auxService.cerrarVentanaCargando();
-            this.auxService.AlertError(
-              'Error al crear el registro',
-              error
-            );
+            this.auxService.AlertError('Error al crear el registro', error);
           },
         });
     } else {

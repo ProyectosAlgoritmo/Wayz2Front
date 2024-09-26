@@ -19,6 +19,7 @@ import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { DateService } from '../../../../services/data-service.service';
+import { el } from 'date-fns/locale';
 
 @Component({
   selector: 'app-create-project',
@@ -46,6 +47,8 @@ export class CreateProjectComponent implements OnInit {
   etapas: any;
   date = null;
   titulo = 'Crear proyecto';
+  isReadonly: boolean = true;
+  estapaDisabled: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -87,10 +90,13 @@ export class CreateProjectComponent implements OnInit {
         fechaFinal: parseISO(this.data.fechaFinal) || '',
       });
     }
+    this.dialogRef.backdropClick().subscribe(() => {
+      this.onCancel();
+    });
     this.getLideres();
     this.getZona();
     this.getUnidades();
-    this.GetStatus();
+    this.GetStage();
   }
   ngOnInit() {}
 
@@ -98,8 +104,49 @@ export class CreateProjectComponent implements OnInit {
     console.log('onChange: ', result);
   }
 
+  onInpuPorcentajeReal(event: any) {
+    const porcentajeavanceReal = event.target.value;
+    if (porcentajeavanceReal == 100) {
+      let etapa = this.etapas.find(
+        (x: any) => x.nombre.toString().toLowerCase() == 'completado'
+      );
+      this.formularioForm.patchValue({
+        idEtapa: etapa.idEtapa,
+      });
+      this.estapaDisabled = false;
+    } else {
+      this.formularioForm.patchValue({
+        idEtapa: null,
+      });
+      this.estapaDisabled = true;
+    }
+    this.isReadonly = true;
+  }
+
+  async onEtapaChange(event: any) {
+    if (this.etapas) {
+      let etapa = this.etapas.find((x: any) => x.idEtapa == event);
+      if (etapa && etapa.nombre.toString().toLowerCase() === 'completado') {
+        this.formularioForm.patchValue({
+          porcentajeavanceReal: 100,
+        });
+        this.isReadonly = false;
+      } else {
+        if (this.formularioForm.value.porcentajeavanceReal == 100) {
+          this.formularioForm.patchValue({
+            porcentajeavanceReal: null,
+          });
+        }
+        this.isReadonly = true;
+      }
+    }
+  }
+
   onCancel(): void {
     this.dialogRef.close();
+    if (this.data) {
+      this.data.estado = this.data.estado ? 'activo' : 'inactivo';
+    }
   }
 
   getLideres() {
@@ -146,17 +193,20 @@ export class CreateProjectComponent implements OnInit {
     });
   }
 
-  GetStatus() {
-    this.productivityService.get('get-status').subscribe({
+  GetStage() {
+    this.productivityService.get('get-stage').subscribe({
       next: (data: any) => {
         if (data) {
           this.etapas = data.data;
+          if (this.data && this.data.idEtapa) {
+            this.onEtapaChange(this.data.idEtapa);
+          }
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
       error: (error) => {
-        this.auxService.AlertError('Error al cargar llas unidades:', error);
+        this.auxService.AlertError('Error al cargar las unidades:', error);
       },
     });
   }

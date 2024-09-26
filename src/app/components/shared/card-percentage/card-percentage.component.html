@@ -8,8 +8,9 @@
       <div class="card-number">
         <span class="number">{{ number }}</span>
         <span class="growth">
-          <i nz-icon [nzType]="growthIconType" nzTheme="outline"></i>
-            {{ growth }} % <span style="color: black;">&nbsp;&nbsp;este mes</span>
+            <i nz-icon [nzType]="growthIconType" nzTheme="outline"></i>
+            <span [style.color]="growthColor">{{ growth }} %</span> 
+            <span [style.color]="textoGrowthColor">&nbsp;&nbsp;{{ textoGrowth }}</span>
         </span>
       </div>
     </div>
