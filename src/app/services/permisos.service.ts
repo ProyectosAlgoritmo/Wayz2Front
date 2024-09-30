@@ -30,4 +30,20 @@ export class PermisosService {
     const headers = this.getHeaders();
     return this.httpClient.get(`${this.apiUrl}/Get-token-Empresa/${idEmpresa}`, { headers });
   }
+
+  UpdateEnterprise(data: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.put(`${this.apiUrl}/update-enterprise`,data, { headers });
+  }
+
+  CreateEnterprise(data: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.post(`${this.apiUrl}/create-enterprise`,data, { headers });
+  }
+
+  GetEnterprise(id: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/get-enterprise/${id}`, { headers });
+  }
+
 }

@@ -1,21 +1,29 @@
 <div class="content-container">
-    
-    
   <div class="table-container">
- 
-  <div class="divtable">
+    <div class="divtable">
+      <div>
+        <app-buttonstrategic
+          (click)="CreateAction()"
+          mat-button
+          [label]="'Crear Empresa'"
+          style="margin: 10px"
+        >
+        </app-buttonstrategic>
+      </div>
 
-      <app-table 
-      [dataSource]="dataSource" 
-      [displayedColumns]="displayedColumns" 
-      [enableSearch]="true" 
-      [pageSize]="10"
-      [showActions]="true"
-      [ActionGo]="true"
-      (goAction)="onGoAction($event)"
-      > <!-- Aquí puedes establecer true o false según sea necesario -->
+      <app-table
+        [dataSource]="dataSource"
+        [displayedColumns]="displayedColumns"
+        [enableSearch]="true"
+        [pageSize]="10"
+        [showActions]="true"
+        [ActionEdit]="true"
+        [ActionGo]="true"
+        (editAction)="onEditAction($event)"
+        (goAction)="onGoAction($event)"
+      >
+        <!-- Aquí puedes establecer true o false según sea necesario -->
       </app-table>
-  
- </div>
-</div>
+    </div>
+  </div>
 </div>
