@@ -110,7 +110,7 @@ export class CreateUserComponent implements OnInit {
         }
       },
       error: (error:any) => {
-        this.auxService.AlertError('Error al cargar llas unidades:', error);
+        this.auxService.AlertError('Error al cargar los roles:', error);
       },
     });
   }
