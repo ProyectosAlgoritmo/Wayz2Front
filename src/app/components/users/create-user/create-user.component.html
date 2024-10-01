@@ -1,0 +1,93 @@
+<h3 mat-dialog-title class="dialog-title">{{ titulo }}</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="formularioForm">
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombre" style="text-align: left;">Nombre</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="nombre" name="nombre" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellido" style="text-align: left;">Apellido</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="apellido" name="apellido" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correoElectronico" style="text-align: left;">Correo Electrónico</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar un correo válido">
+          <input nz-input formControlName="correoElectronico" type="email" name="correoElectronico" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefono" style="text-align: left;">Teléfono</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="telefono" type="tel" name="telefono" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="username" style="text-align: left;">Nombre de usuario</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="username" name="username" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="tipoIdentificacion" style="text-align: left;">Tipo de Identificación</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="tipoIdentificacion" name="tipoIdentificacion" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="identificacion" style="text-align: left;">Identificación</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="identificacion" name="identificacion" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fechaNacimiento" style="text-align: left;">Fecha de Nacimiento</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la fecha de nacimiento">
+          <nz-date-picker formControlName="fechaNacimiento"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fechaIngresoEmpresa" style="text-align: left;">Fecha de Ingreso</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la fecha de ingreso">
+          <nz-date-picker formControlName="fechaIngresoEmpresa"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idRol" style="text-align: left;">Rol</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un rol">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione un rol"
+            formControlName="idRol"
+            required>
+            <nz-option *ngFor="let rol of roles" [nzLabel]="rol.rol" [nzValue]="rol.idRol"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  </mat-dialog-actions>
+</div>

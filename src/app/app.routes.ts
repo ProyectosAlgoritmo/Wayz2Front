@@ -26,6 +26,7 @@ import { ResultStatusComponent } from './components/financialperformance/result-
 import { StrategyProductivityComponent } from './components/productivity/strategy-productivity/strategy-productivity.component';
 import { ProjectsComponent } from './components/productivity/projects/projects.component';
 import { BoardDirectorsReportComponent } from './components/productivity/board-directors-report/board-directors-report.component';
+import { UsersComponent } from './components/users/users.component';
 
 
 export const routes: Routes = [
@@ -50,6 +51,7 @@ export const routes: Routes = [
     { path: 'strategy-productivity', component: StrategyProductivityComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'board-directors-report', component: BoardDirectorsReportComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'users', component: UsersComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
 
     // desempeño financiero
 

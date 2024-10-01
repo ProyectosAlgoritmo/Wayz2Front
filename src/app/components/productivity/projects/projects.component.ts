@@ -29,7 +29,8 @@ import { registerables } from 'chart.js';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.css'],standalone: true,
+  styleUrls: ['./projects.component.css'],
+  standalone: true,
   providers: [
     {
       provide: NZ_ICONS,
@@ -150,7 +151,7 @@ export class ProjectsComponent implements OnInit {
 
 
   iconTheme: 'user' | null | undefined = 'user';
-  objativesCard: number = 10;
+  objativesCard: number = 0;
   titleCard: string = 'Objetivos Cumplidos';
   growthCard: string = '0 ';
 

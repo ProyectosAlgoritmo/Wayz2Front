@@ -124,7 +124,7 @@ export class BoardDirectorsReportComponent implements OnInit {
 
   dataSource: any[] = [];
   iconTheme: 'user' | null | undefined = 'user';
-  objativesCard: number = 10;
+  objativesCard: number = 0;
   titleCard: string = 'Objetivos Cumplidos';
   growthCard: string = '0 ';
   constructor(
