@@ -18,9 +18,9 @@ import { parseISO } from 'date-fns';
 
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css'],
+  selector: 'app-create-role',
+  templateUrl: './create-role.component.html',
+  styleUrls: ['./create-role.component.css'],
   standalone: true,
   imports: [
     NzInputModule,
@@ -35,11 +35,11 @@ import { parseISO } from 'date-fns';
     NzSwitchModule,
   ],
 })
-export class CreateUserComponent implements OnInit {
+export class CreateRoleComponent implements OnInit {
   formularioForm: FormGroup;
   roles: any;
   date = null;
-  titulo = 'Crear proyecto';
+  titulo = 'Crear rol';
   isReadonly: boolean = true;
   estapaDisabled: boolean = true;
 
@@ -48,43 +48,23 @@ export class CreateUserComponent implements OnInit {
     private auxService: AuxService,
     private usersService: UsersService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<CreateUserComponent>
+    private dialogRef: MatDialogRef<CreateRoleComponent>
   ) {
     this.formularioForm = this.fb.group({
-      idUsuario: [null],
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      correoElectronico: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.required],
-      username: ['', Validators.required],
-      tipoIdentificacion: ['', Validators.required],
-      identificacion: ['', Validators.required],
-      fechaNacimiento: [null, Validators.required],
-      fechaIngresoEmpresa: [null, Validators.required],
-      idRol: [null, Validators.required],
-      bActivo: [false, Validators.required],
+      idRol: [null],
+      rol: ['', Validators.required],
+      
     });
     if (this.data) {
-      this.titulo = 'Editar usuario';
+      this.titulo = 'Editar rol';
       this.formularioForm.patchValue({
-        idUsuario: this.data.idUsuario || 0,
-        nombre: this.data.nombre || '',
-        apellido: this.data.apellido || '',
-        correoElectronico: this.data.correoElectronico || '',
-        telefono: this.data.telefono || '',
-        username: this.data.username || '',
-        tipoIdentificacion: this.data.tipoIdentificacion || '',
-        identificacion: this.data.identificacion || '',
-        fechaNacimiento: this.data.fechaNacimiento ? parseISO(this.data.fechaNacimiento) : null,
-        fechaIngresoEmpresa: this.data.fechaIngresoEmpresa ? parseISO(this.data.fechaIngresoEmpresa) : null,
         idRol: this.data.idRol || 0,
-        bActivo: this.data.bActivo || false,
+        rol: this.data.rol || ''
       });
     }
     this.dialogRef.backdropClick().subscribe(() => {
       this.onCancel();
     });
-    this.getRole();
   }
   ngOnInit() {}
 
@@ -96,23 +76,8 @@ export class CreateUserComponent implements OnInit {
   onCancel(): void {
     this.dialogRef.close();
     if (this.data) {
-      this.data.bActivo = this.data.bActivo ? 'activo' : 'inactivo';
+      this.data.estado = this.data.estado ? 'activo' : 'inactivo';
     }
-  }
-
-  getRole() {
-    this.usersService.get('get-roles').subscribe({
-      next: (data: any) => {
-        if (data) {
-          this.roles = data.data;
-        } else {
-          this.auxService.AlertWarning('Error', data.message);
-        }
-      },
-      error: (error:any) => {
-        this.auxService.AlertError('Error al cargar llas unidades:', error);
-      },
-    });
   }
 
   guardarCambios() {
@@ -126,16 +91,8 @@ export class CreateUserComponent implements OnInit {
   updateUser() {
     if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
-      this.formularioForm.patchValue({
-        fechaNacimiento: new Date(this.formularioForm.value.fechaNacimiento)
-          .toISOString()
-          .split('T')[0],
-        fechaIngresoEmpresa: new Date(this.formularioForm.value.fechaIngresoEmpresa)
-          .toISOString()
-          .split('T')[0],
-      });
       this.usersService
-        .Update('update-user', this.formularioForm.value)
+        .Update('update-role', this.formularioForm.value)
         .subscribe({
           next: async (data:any) => {
             this.auxService.cerrarVentanaCargando();
@@ -170,16 +127,8 @@ export class CreateUserComponent implements OnInit {
   createUser() {
     if (this.formularioForm.valid) {
       this.auxService.ventanaCargando();
-      this.formularioForm.patchValue({
-        fechaNacimiento: new Date(this.formularioForm.value.fechaNacimiento)
-          .toISOString()
-          .split('T')[0],
-        fechaIngresoEmpresa: new Date(this.formularioForm.value.fechaIngresoEmpresa)
-          .toISOString()
-          .split('T')[0],
-      });
       this.usersService
-        .Create('create-user', this.formularioForm.value)
+        .Create('create-role', this.formularioForm.value)
         .subscribe({
           next: async (data:any) => {
             this.auxService.cerrarVentanaCargando();

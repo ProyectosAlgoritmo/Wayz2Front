@@ -20,12 +20,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/table-with-rows-child.component';
 import { UsersService } from '../../../services/users.service';
-import { CreateUserComponent } from './create-user/create-user.component';
+import { CreateRoleComponent } from './create-role/create-role.component';
 
 @Component({
-  selector: 'app-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css'],
+  selector: 'app-role',
+  templateUrl: './role.component.html',
+  styleUrls: ['./role.component.css'],
   standalone: true,
   imports: [
     MatToolbarModule,
@@ -42,34 +42,14 @@ import { CreateUserComponent } from './create-user/create-user.component';
     TableWithRowsChildComponent,
   ],
 })
-export class UsersComponent implements OnInit {
+export class RoleComponent implements OnInit {
   displayedColumns: string[] = [
-    'nombre',
-    'apellido',
-    'correoElectronico',
-    'telefono',
-    'username',
-    'tipoIdentificacion',
-    'identificacion',
-    'fechaNacimiento',
-    'fechaIngresoEmpresa',
     'rol',
-    'bActivo',
   ];
 
   // Nombres amigables de las columnas
   columnNames = {
-    nombre: 'Nombre',
-    apellido: 'Apellido',
-    correoElectronico: 'Correo electrónico',
-    telefono: 'Teléfono',
-    username: 'Nombre de usuario',
-    tipoIdentificacion: 'Tipo de identificación',
-    identificacion: 'Identificación',
-    fechaNacimiento: 'Fecha de nacimiento',
-    fechaIngresoEmpresa: 'Fecha de ingreso ',
     rol: 'Rol',
-    bActivo: 'Estado',
   };
 
   dataSource: any[] = [];
@@ -87,12 +67,12 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.GetUsers();
+    this.GetRol();
   }
 
-  GetUsers() {
+  GetRol() {
     this.auxService.ventanaCargando();
-    this.usersService.get('get-users').subscribe({
+    this.usersService.get('get-roles').subscribe({
       next: (data) => {
         this.dataSource = data.data;
         this.originalDataSource = data.data;
@@ -124,50 +104,23 @@ export class UsersComponent implements OnInit {
   }
 
   onEditAction(event: any) {
-    event.bActivo = event.bActivo === 'activo' ? true : false;
-    const dialogRef = this.dialog.open(CreateUserComponent, {
+    const dialogRef = this.dialog.open(CreateRoleComponent, {
       data: event,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.GetUsers();
+        this.GetRol();
       }
     });
   }
 
   CreateAction() {
-    const dialogRef = this.dialog.open(CreateUserComponent);
+    const dialogRef = this.dialog.open(CreateRoleComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.GetUsers();
+        this.GetRol();
       }
-    });
-  }
-
-  // Función para eliminar un usuario
-  onDeleteAction(event: any) {
-    this.auxService.ventanaCargando();
-    this.usersService.Delete('delete-user', event.idUsuario).subscribe({
-      next: async (data: any) => {
-        this.auxService.cerrarVentanaCargando();
-        if (data.success) {
-          await this.auxService.AlertSuccess(
-            'Usuario eliminado correctamente',
-            data.message
-          );
-          this.GetUsers();
-        } else {
-          this.auxService.AlertWarning(
-            'Error al eliminar el usuario',
-            data.message
-          );
-        }
-      },
-      error: (error: any) => {
-        this.auxService.cerrarVentanaCargando();
-        this.auxService.AlertError('Error al eliminar el usuario', error.message);
-      },
     });
   }
 }
