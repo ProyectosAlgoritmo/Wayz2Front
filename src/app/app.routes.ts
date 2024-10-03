@@ -28,6 +28,7 @@ import { ProjectsComponent } from './components/productivity/projects/projects.c
 import { BoardDirectorsReportComponent } from './components/productivity/board-directors-report/board-directors-report.component';
 import { UsersComponent } from './components/users-module/users/users.component';
 import { UsersModuleComponent } from './components/users-module/users-module.component';
+import { WalletComponent } from './components/wallet/wallet.component';
 
 
 
@@ -54,6 +55,7 @@ export const routes: Routes = [
     { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'board-directors-report', component: BoardDirectorsReportComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'users', component: UsersModuleComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'wallet', component: WalletComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
 
     // desempeño financiero
 
