@@ -97,7 +97,7 @@ export class CreateProjectStatusComponent implements OnInit {
     this.productivityService.get('get-projects').subscribe({
       next: (data) => {
         if (data.success) {
-          this.proyectos = data.data; // Vincula los datos al formulario
+          this.proyectos = data.data.data; // Vincula los datos al formulario
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }

@@ -35,6 +35,7 @@ const USERS_DATA: UserData[] = [
   {Formulario: 'Ingresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaIngresosProyectados', storedprocedure: '[desempenofinanciero].[ImportIngresosproyectados]', modelImport: 'ImportModels/Ingresosproyectados.xlsx'},
   {Formulario: 'Egresos reales', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosReales', storedprocedure: '[desempenofinanciero].[ImportEgresosreales]', modelImport: 'ImportModels/EgresosReal.xlsx'},
   {Formulario: 'Egresos proyectados', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloEntradaEgresosProyectados', storedprocedure: '[desempenofinanciero].[ImportEgresosproyectados]', modelImport: 'ImportModels/EgresosProyectado.xlsx'},
+  {Formulario: 'Cartera', Carpeta: 'DesempenoFinanciero/', modeldata: '@ModeloCartera', storedprocedure: '[cartera].[ImportCartera]', modelImport: 'ImportModels/EgresosProyectado.xlsx'},
  ];
 
 @Component({

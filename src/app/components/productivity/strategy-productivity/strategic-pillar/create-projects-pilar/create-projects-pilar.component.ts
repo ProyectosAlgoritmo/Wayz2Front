@@ -83,7 +83,8 @@ export class CreateProjectsPilarComponent implements OnInit {
     this.productivityService.get('get-projects').subscribe({
       next: (data) => {
         if (data.success) {
-          this.projects = data.data; // Vincula los datos al formulario
+          this.projects = data.data.data.filter((x:any) => x.estrategico == 'activo'); // Vincula los datos al formulario
+          console.log('datos ',data.data.data);
         } else {
           this.auxService.AlertWarning('Error', data.message);
         }

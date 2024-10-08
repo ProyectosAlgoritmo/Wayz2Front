@@ -81,7 +81,7 @@ columnNames = {
 };
 
 
-
+  dates: any = {};
   dataSource: any[] = [];
   dataForTable: any[] = [];
   originalDataSource: any[] = [];
@@ -94,15 +94,27 @@ columnNames = {
     private cdr: ChangeDetectorRef
   ) {
     this.sharedStateService.updateSuggestedQuestions([]);
+    const currentYear = new Date().getFullYear(); // Obtiene el año actual
+
+    this.dates = {
+      FechaInicio: `${currentYear}-01-01`, // Establece la fecha de inicio al 1 de enero del año actual
+      FechaFin: `${currentYear}-12-31`     // Establece la fecha de fin al 31 de diciembre del año actual
+    };
   }
 
   ngOnInit(): void {
     this.GetWallets();
   }
 
+  handleDateSelected(datesselect: string[]): void {
+    this.dates = datesselect;
+    this.GetWallets(); 
+    // Aquí puedes manejar las fechas seleccionadas
+  }
+
   GetWallets() {
     this.auxService.ventanaCargando();
-    this.walletService.get('get-wallets').subscribe({
+    this.walletService.post('get-wallets',this.dates).subscribe({
       next: (data) => {
         this.dataSource = data.data;
         this.originalDataSource = data.data;

@@ -72,9 +72,11 @@ export class CreateProjectComponent implements OnInit {
       porcentajeavanceReal: [0, Validators.required],
       fechaInicio: ['', Validators.required],
       fechaFinal: ['', Validators.required],
+      estrategico: [false, Validators.required],
     });
     if (this.data) {
       this.titulo = 'Editar proyecto';
+      console.log(data);
       this.formularioForm.patchValue({
         idProyecto: this.data.id || 0,
         nombre: this.data.nombre || '',
@@ -82,6 +84,7 @@ export class CreateProjectComponent implements OnInit {
         liderProyecto: this.data.idLiderProyecto || 0,
         idEtapa: this.data.idEtapa || null,
         estado: this.data.estado || false,
+        estrategico: this.data.estrategico || false,
         idZona: this.data.idZona || 0,
         idUnidad: this.data.idUnidad || 0,
         porcentajeavanceProyectado: this.data.porcentajeavanceProyectado || 0,
@@ -146,6 +149,7 @@ export class CreateProjectComponent implements OnInit {
     this.dialogRef.close();
     if (this.data) {
       this.data.estado = this.data.estado ? 'activo' : 'inactivo';
+      this.data.estrategico = this.data.estrategico ? 'activo' : 'inactivo';
     }
   }
 

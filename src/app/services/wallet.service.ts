@@ -32,7 +32,7 @@ export class WalletService {
     );
   }
 
-  Update(link: string, Data: any): Observable<any> {
+  put(link: string, Data: any): Observable<any> {
     const headers = this.getHeaders();
     const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
     return this.httpClient
@@ -40,7 +40,7 @@ export class WalletService {
       .pipe(catchError(this.auxService.handleError.bind(this)));
   }
 
-  Create(link: string, Data: any): Observable<any> {
+  post(link: string, Data: any): Observable<any> {
     const headers = this.getHeaders();
     const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
     return this.httpClient

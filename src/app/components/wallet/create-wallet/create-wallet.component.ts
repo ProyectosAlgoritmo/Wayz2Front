@@ -168,7 +168,7 @@ export class CreateWalletComponent implements OnInit {
         
       });
       this.walletService
-        .Update('update-wallet', this.formularioForm.value)
+        .put('update-wallet', this.formularioForm.value)
         .subscribe({
           next: async (data:any) => {
             this.auxService.cerrarVentanaCargando();
@@ -215,7 +215,7 @@ export class CreateWalletComponent implements OnInit {
           .split('T')[0],
       });
       this.walletService
-        .Create('create-wallet', this.formularioForm.value)
+        .post('create-wallet', this.formularioForm.value)
         .subscribe({
           next: async (data:any) => {
             this.auxService.cerrarVentanaCargando();

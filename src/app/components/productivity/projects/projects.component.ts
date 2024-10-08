@@ -85,6 +85,7 @@ export class ProjectsComponent implements OnInit {
     { title: 'Estado', field: 'estado', sortDirection: null },
     { title: 'Fecha de inicio', field: 'fechaInicio', sortDirection: null },
     { title: 'Fecha final', field: 'fechaFinal', sortDirection: null },
+    { title: 'Estrategico', field: 'estrategico', sortDirection: null },
   ];
 
   subTableColumns = [
@@ -190,6 +191,7 @@ export class ProjectsComponent implements OnInit {
 
   onEditAction(event: any) {
     event.estado = event.estado == 'activo' ? true : false;
+    event.estrategico = event.estrategico == 'activo' ? true : false;
     if (event.table == 'principal') {
       const dialogRef = this.dialog.open(CreateProjectComponent, {
         data: event,
