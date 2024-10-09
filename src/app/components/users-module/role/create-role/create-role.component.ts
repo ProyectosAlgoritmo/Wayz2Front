@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -15,6 +15,7 @@ import { AuxService } from '../../../../services/aux-service.service';
 import { UsersService } from '../../../../services/users.service';
 import { SharedModule } from '../../../shared/shared.module';
 import { parseISO } from 'date-fns';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 
 @Component({
@@ -33,6 +34,8 @@ import { parseISO } from 'date-fns';
     NzFormModule,
     NzDatePickerModule,
     NzSwitchModule,
+    FormsModule,
+    NzCheckboxModule
   ],
 })
 export class CreateRoleComponent implements OnInit {
@@ -53,13 +56,17 @@ export class CreateRoleComponent implements OnInit {
     this.formularioForm = this.fb.group({
       idRol: [null],
       rol: ['', Validators.required],
-      
+      allChecked: [false],
+      checkOptionsOne: [[]]
     });
+    
     if (this.data) {
       this.titulo = 'Editar rol';
       this.formularioForm.patchValue({
         idRol: this.data.idRol || 0,
-        rol: this.data.rol || ''
+        rol: this.data.rol || '',
+        allChecked: this.data.allChecked || false,
+        checkOptionsOne: this.data.checkOptionsOne || []
       });
     }
     this.dialogRef.backdropClick().subscribe(() => {
@@ -159,5 +166,34 @@ export class CreateRoleComponent implements OnInit {
         'Por favor, revisa los campos y corrige los errores.'
       );
     }
+  }
+
+  /*chackbox*/
+  allChecked = false;
+indeterminate = true;
+checkOptionsOne = [
+  { label: 'Apple', value: 'Apple', checked: true },
+  { label: 'Pear', value: 'Pear', checked: false },
+  { label: 'Orange', value: 'Orange', checked: false }
+];
+  updateAllChecked() {
+    // Actualiza todas las opciones con el valor de allChecked
+    this.checkOptionsOne = this.checkOptionsOne.map(option => ({
+      ...option,
+      checked: this.allChecked
+    }));
+  
+    // Actualiza la indeterminación
+    this.updateSingleChecked();
+  }
+  
+  updateSingleChecked() {
+    // Verifica si todos los elementos están seleccionados o si hay algunos seleccionados
+    const allChecked = this.checkOptionsOne.every(option => option.checked);
+    const indeterminate = this.checkOptionsOne.some(option => option.checked) && !allChecked;
+  
+    // Actualiza el estado de allChecked y indeterminate
+    this.allChecked = allChecked;
+    this.indeterminate = indeterminate;
   }
 }

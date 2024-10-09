@@ -11,12 +11,31 @@
           <input nz-input formControlName="rol" name="rol" required />
         </nz-form-control>
       </nz-form-item>
+
+      <div style="border-bottom: 1px solid rgb(233, 233, 233);">
+        <label
+          nz-checkbox
+          [(ngModel)]="allChecked"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="updateAllChecked()"
+          [nzIndeterminate]="indeterminate"
+        >
+          Check all
+        </label>
+      </div>
+      <br />
       
+      <nz-checkbox-group
+        [(ngModel)]="checkOptionsOne"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="updateSingleChecked()"
+      ></nz-checkbox-group>
+    
     </form>
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar]="true"></app-buttonstrategic>
     <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
   </mat-dialog-actions>
 </div>
