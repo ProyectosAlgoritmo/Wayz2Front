@@ -4,9 +4,29 @@
       <div class="headerclass">
         <h2 class="title-heading"></h2>
 
+        <div class="headerGraphi">
+          <div style="width: 250px; height: 200px">
+            <canvas
+              baseChart
+              [data]="doughnutChartData"
+              [type]="doughnutChartType"
+              [options]="doughnutChartOptions"
+            >
+            </canvas>
+          </div>
+  
+          <app-card-percentage
+            [iconType]="'user'"
+            [title]="titleCard"
+            [number]="objativesCard"
+            [growth]="growthCard"
+            [growthColor]="'green'"
+          ></app-card-percentage>
+        </div>
+
         <mat-toolbar class="background-white-title-botton">
           <div >
-            <app-buttonstrategic (click)="CreateAction()" mat-button [label]="'Crear proyecto'" style="margin: 10px;">
+            <app-buttonstrategic (click)="CreateAction()" mat-button [label]="'Crear proyecto'" >
             </app-buttonstrategic>
             
             <app-buttonstrategic (click)="CreateProjectStatus()" mat-button [label]="'Crear estado del proyecto'">
@@ -32,25 +52,7 @@
           </div>
         </mat-toolbar>
       </div>
-      <div class="headerGraphi">
-        <div style="width: 250px; height: 200px">
-          <canvas
-            baseChart
-            [data]="doughnutChartData"
-            [type]="doughnutChartType"
-            [options]="doughnutChartOptions"
-          >
-          </canvas>
-        </div>
-
-        <app-card-percentage
-          [iconType]="'user'"
-          [title]="titleCard"
-          [number]="objativesCard"
-          [growth]="growthCard"
-          [growthColor]="'green'"
-        ></app-card-percentage>
-      </div>
+      
 
       <app-table-with-rows-child
         [listOfData]="dataForTable"

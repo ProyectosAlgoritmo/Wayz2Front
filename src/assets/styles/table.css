@@ -57,11 +57,11 @@
   
 
   /* Varis botones en la tabla*/
-.headerclass{
+/* .headerclass{
 
   margin-right: 20px;
   margin-left: 20px;
-}
+} */
 
 .spacermoreinputs {
   flex-grow: 1;
