@@ -1,2 +1,6 @@
 @import "../../../../../assets/styles/modal.css";
 
+.ant-checkbox-wrapper + .ant-checkbox-wrapper {
+    margin-left: 0px;
+    
+}

@@ -16,17 +16,17 @@
       <!-- Contenedor para los grupos de checkboxes -->
       <div formArrayName="checkboxGroups">
         <!-- Iterar sobre cada grupo de checkboxes -->
-        <div *ngFor="let group of checkboxGroupsControls.controls; let i = index" [formGroupName]="i" style="margin-top: 20px;">
-          <div style="border-bottom: 1px solid rgb(233, 233, 233); padding-bottom: 5px;">
+        <div *ngFor="let group of checkboxGroupsControls.controls; let i = index" [formGroupName]="i" style="margin-top: 30px;">
+          <div style="border-bottom: 1px solid rgb(233, 233, 233); padding-bottom: 5px; ">
             <!-- Checkbox "Check all" -->
             <label nz-checkbox 
                    formControlName="allChecked"
                    [nzIndeterminate]="group.get('indeterminate')?.value">
-              Check all {{ checkboxGroups[i].groupName | titlecase }}
+             <h3>{{ checkboxGroups[i].groupName | titlecase }}</h3>
             </label>
           </div>
           <br />
-          <div formArrayName="options">
+          <div formArrayName="options" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; justify-items: start;">
             <!-- Checkboxes individuales -->
             <label nz-checkbox 
                    *ngFor="let optionCtrl of getCheckboxGroupControls(i).controls; let j = index" 
@@ -34,6 +34,7 @@
               {{ checkboxGroups[i].options[j].label }}
             </label>
           </div>
+          
         </div>
       </div>
 

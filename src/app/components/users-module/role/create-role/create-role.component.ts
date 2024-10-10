@@ -15,6 +15,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { AuxService } from '../../../../services/aux-service.service';
 import { UsersService } from '../../../../services/users.service';
 import { SharedModule } from '../../../shared/shared.module';
+import { el } from 'date-fns/locale';
 
 @Component({
   selector: 'app-create-role',
@@ -41,23 +42,7 @@ export class CreateRoleComponent implements OnInit {
   titulo: string = 'Crear rol';
 
   // Definir los grupos de checkboxes
-  checkboxGroups = [
-    {
-      groupName: 'compra',
-      options: [
-        { label: 'Apple', value: 'Apple' },
-        { label: 'Pear', value: 'Pear' },
-        { label: 'Orange', value: 'Orange' }
-      ]
-    },
-    {
-      groupName: 'venta',
-      options: [
-        { label: 'Banana', value: 'Banana' },
-        { label: 'Mango', value: 'Mango' },
-        { label: 'Grapes', value: 'Grapes' }
-      ]
-    }
+  checkboxGroups:any = [
   ];
 
   constructor(
@@ -81,6 +66,8 @@ export class CreateRoleComponent implements OnInit {
         rol: this.data.rol || '',
       });
       // Opcional: Inicializar checkboxGroups basado en los datos recibidos
+    }else{
+      this.GetPermissions();
     }
 
     // Cerrar el diálogo al hacer clic fuera
@@ -90,19 +77,34 @@ export class CreateRoleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeCheckboxGroups();
+    
+  }
+
+  GetPermissions() {
+    this.auxService.ventanaCargando();
+    this.usersService.get('get-permissions').subscribe({
+      next: (data) => {
+        console.log(data.data);
+        this.checkboxGroups = data.data;
+        this.initializeCheckboxGroups();
+        this.auxService.cerrarVentanaCargando();
+      },
+      error: (error) => {
+        this.auxService.AlertError('Error al cargar los usuarios:', error);
+      },
+    });
   }
 
   // Inicializar los grupos de checkboxes en el formulario
   initializeCheckboxGroups() {
     const checkboxGroupsControl = this.formularioForm.get('checkboxGroups') as FormArray;
-    this.checkboxGroups.forEach(group => {
+    this.checkboxGroups.forEach((group:any) => {
       const groupForm = this.fb.group({
         groupName: [group.groupName],
         allChecked: [false],
         indeterminate: [false],
         options: this.fb.array(
-          group.options.map(option => new FormControl(false))
+          group.options.map((option:any) => new FormControl(false))
         )
       });
 
@@ -115,7 +117,7 @@ export class CreateRoleComponent implements OnInit {
             indeterminate: dataGroup.selected.length > 0 && dataGroup.selected.length < group.options.length
           });
           const optionsControl = groupForm.get('options') as FormArray;
-          group.options.forEach((option, index) => {
+          group.options.forEach((option: { value: any; }, index: number) => {
             optionsControl.at(index).setValue(dataGroup.selected.includes(option.value));
           });
         }
