@@ -98,59 +98,6 @@ export class CreateRoleComponent implements OnInit {
     });
   }
 
-  // Inicializar los grupos de checkboxes en el formulario
-  // initializeCheckboxGroups() {
-  //   const checkboxGroupsControl = this.formularioForm.get('checkboxGroups') as FormArray;
-  //   this.checkboxGroups.forEach((group:any) => {
-  //     const groupForm = this.fb.group({
-  //       groupName: [group.groupName],
-  //       allChecked: [false],
-  //       indeterminate: [false],
-  //       options: this.fb.array(
-  //         group.options.map((option:any) => new FormControl(false))
-  //       )
-  //     });
-
-  //     // Si estás editando, puedes establecer los valores iniciales aquí
-  //     if (this.data && this.data.checkboxGroups) {
-  //       const dataGroup = this.data.checkboxGroups.find((dg: any) => dg.groupName === group.groupName);
-  //       if (dataGroup) {
-  //         groupForm.patchValue({
-  //           allChecked: dataGroup.selected.length === group.options.length,
-  //           indeterminate: dataGroup.selected.length > 0 && dataGroup.selected.length < group.options.length
-  //         });
-  //         const optionsControl = groupForm.get('options') as FormArray;
-  //         group.options.forEach((option: { value: any; }, index: number) => {
-  //           optionsControl.at(index).setValue(dataGroup.selected.includes(option.value));
-  //         });
-  //       }
-  //     }
-
-  //     // Suscribirse a cambios en las opciones para actualizar 'allChecked' e 'indeterminate'
-  //     const options = groupForm.get('options') as FormArray;
-  //     options.valueChanges.subscribe(values => {
-  //       const allChecked = values.every((val: boolean) => val);
-  //       const noneChecked = values.every((val: boolean) => !val);
-  //       groupForm.patchValue({
-  //         allChecked: allChecked,
-  //         indeterminate: !allChecked && values.some((val: boolean) => val)
-  //       }, { emitEvent: false });
-  //     });
-
-  //     // Suscribirse a cambios en 'allChecked' para actualizar todas las opciones
-  //     groupForm.get('allChecked')?.valueChanges.subscribe((checked: boolean | null) => {
-  //       const options = groupForm.get('options') as FormArray;
-  //       options.controls.forEach(control => control.setValue(checked));
-  //     });
-
-  //     checkboxGroupsControl.push(groupForm);
-  //   });
-  // }
-
-  // // Obtener los controles de checkboxGroups
-  // get checkboxGroupsControls() {
-  //   return this.formularioForm.get('checkboxGroups') as FormArray;
-  // }
 
   initializeCheckboxGroups() {
     const checkboxGroupsControl = this.formularioForm.get('checkboxGroups') as FormArray;
