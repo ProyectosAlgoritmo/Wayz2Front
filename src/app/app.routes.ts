@@ -29,6 +29,8 @@ import { BoardDirectorsReportComponent } from './components/productivity/board-d
 import { UsersComponent } from './components/users-module/users/users.component';
 import { UsersModuleComponent } from './components/users-module/users-module.component';
 import { WalletComponent } from './components/wallet/wallet.component';
+import { InventoryComponent } from './components/Inventory/Inventory/Inventory.component';
+import { PurchaseOrderComponent } from './components/Inventory/purchase-order/purchase-order.component';
 
 
 
@@ -56,6 +58,8 @@ export const routes: Routes = [
     { path: 'board-directors-report', component: BoardDirectorsReportComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'users', component: UsersModuleComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'wallet', component: WalletComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'inventory', component: InventoryComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'purchase-order', component: PurchaseOrderComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
 
     // desempeño financiero
 

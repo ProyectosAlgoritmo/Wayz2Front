@@ -1,0 +1,71 @@
+<h3 mat-dialog-title class="dialog-title">{{ titulo }}</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="formularioForm">
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="proveedor" style="text-align: left;">Proveedor</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar el proveedor">
+          <input nz-input formControlName="proveedor" name="proveedor" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="descripcion" style="text-align: left;">Descripción</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la descripción">
+          <input nz-input formControlName="descripcion" name="descripcion" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fechaOrdenCompra" style="text-align: left;">Fecha de Orden de Compra</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la fecha de orden de compra">
+          <nz-date-picker formControlName="fechaOrdenCompra"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fechaPactadaEntrada" style="text-align: left;">Fecha Pactada de Entrega</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la fecha pactada de entrega">
+          <nz-date-picker formControlName="fechaPactadaEntrada"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fechaRealEntrega" style="text-align: left;">Fecha Real de Entrega</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la fecha real de entrega">
+          <nz-date-picker formControlName="fechaRealEntrega"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="cantidad" style="text-align: left;">Cantidad</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la cantidad">
+          <input nz-input formControlName="cantidad" name="cantidad" type="number" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="valorUnitario" style="text-align: left;">Valor Unitario</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar el valor unitario">
+          <input nz-input formControlName="valorUnitario" name="valorUnitario" type="number" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="cerrada" style="text-align: left;">Cerrada</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24">
+          <nz-switch formControlName="cerrada"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+       
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  </mat-dialog-actions>
+</div>
