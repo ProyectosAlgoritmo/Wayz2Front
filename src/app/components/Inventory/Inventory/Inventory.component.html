@@ -17,6 +17,9 @@
         [showInputdate]="true"
         [date]="[dates.FechaInicio, dates.FechaFin]"
         (dateSelected)="handleDateSelected($event)"
+        [ActionImportGo] ="true"
+        [ActionDelete]="true"
+        (deleteAction)="onDeleteAction($event)"
       >
       </app-table>
     </div>

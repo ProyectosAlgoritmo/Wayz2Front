@@ -152,7 +152,7 @@ export class InventoryComponent implements OnInit {
   // Función para eliminar un usuario
   onDeleteAction(event: any) {
     this.auxService.ventanaCargando();
-    this.inventoryService.Delete('delete-inventory', event.idUsuario).subscribe({
+    this.inventoryService.Delete('delete-inventory', event.idInventario).subscribe({
       next: async (data: any) => {
         this.auxService.cerrarVentanaCargando();
         if (data.success) {

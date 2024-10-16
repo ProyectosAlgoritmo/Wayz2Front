@@ -99,7 +99,7 @@ export class CreatePurchaseOrderComponent implements OnInit {
   onCancel(): void {
     this.dialogRef.close();
     if (this.data) {
-      this.data.cerrada = this.data.cerrada ? 'activo' : 'inactivo';
+      this.data.cerrada = this.data.cerrada ? 'Si' : 'No';
     }
   }
 

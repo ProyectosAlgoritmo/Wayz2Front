@@ -128,7 +128,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   onEditAction(event: any) {
-    event.cerrada = event.cerrada === 'activo' ? true : false;
+    event.cerrada = event.cerrada === 'Si' ? true : false;
     const dialogRef = this.dialog.open(CreatePurchaseOrderComponent, {
       data: event,
     });
@@ -152,7 +152,7 @@ export class PurchaseOrderComponent implements OnInit {
   // Función para eliminar un usuario
   onDeleteAction(event: any) {
     this.auxService.ventanaCargando();
-    this.inventoryService.Delete('delete-purchase-order', event.idUsuario).subscribe({
+    this.inventoryService.Delete('delete-purchase-order', event.idOrdenCompra).subscribe({
       next: async (data: any) => {
         this.auxService.cerrarVentanaCargando();
         if (data.success) {
