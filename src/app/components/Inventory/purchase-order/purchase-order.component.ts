@@ -152,7 +152,7 @@ export class PurchaseOrderComponent implements OnInit {
   // Función para eliminar un usuario
   onDeleteAction(event: any) {
     this.auxService.ventanaCargando();
-    this.inventoryService.Delete('delete-purchase-order', event.idOrdenCompra).subscribe({
+    this.inventoryService.Delete('delete-purchase-orders', event.idOrdenCompra).subscribe({
       next: async (data: any) => {
         this.auxService.cerrarVentanaCargando();
         if (data.success) {

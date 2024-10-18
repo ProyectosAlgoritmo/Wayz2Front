@@ -42,7 +42,7 @@ export class InventoryComponent implements OnInit {
     'fecha',
     'fechaCompra',  // Cambié según tu nueva columna
     'fechaVencimiento',  // Cambié según tu nueva columna
-    'idTipoInventario',  // Cambié según tu nueva columna
+    'tipoInventario',  // Cambié según tu nueva columna
     'proveedor',  // Nueva columna
     'descripcion',  // Nueva columna
     'cantidad',  // Nueva columna
@@ -55,7 +55,7 @@ export class InventoryComponent implements OnInit {
     fecha: 'Fecha',
     fechaCompra: 'Fecha de Compra',  // Ajustado al nuevo campo
     fechaVencimiento: 'Fecha de Vencimiento',
-    idTipoInventario: 'ID Tipo Inventario',
+    tipoInventario: 'Tipo de inventario',
     proveedor: 'Proveedor',
     descripcion: 'Descripción',
     cantidad: 'Cantidad',
