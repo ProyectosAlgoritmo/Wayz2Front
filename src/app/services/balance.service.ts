@@ -68,27 +68,49 @@ export class BalanceService {
     
     const data = [
       {
-        id: 1,
-        dato1: 'John Brown',
-        dato2: 32,
-        dato3: 'New York No. 1 Lake Park',
-        description: 'My name is John Brown, I am 32 years old, living in New York No. 1 Lake Park.',
-        subData: [
-          { nombre: 'John Brown', apellido: 32, edad: 'New York No. 1 Lake Park', familia: 'YES. ' },
-          { nombre: 'Jim Green', apellido: 42, edad: 'London No. 1 Lake Park', familia: 'YES. ' }
+        "id": 1,
+        "empresa": "Empresa ABC",
+        "Nombre": "Estrategia A",
+        "Descripcion": "Descripción de la estrategia A",
+        "subData": [
+          {
+            "id": 1,
+            "estrategia": 1,
+            "Nombre": "Objetivo A1",
+            "Etapa": "Inicial",
+            "Porcentajeavance_real": 50,
+            "Porcentajeavance_proyectado": 80,
+            "Estado": true
+          },
+          {
+            "id": 2,
+            "estrategia": 1,
+            "Nombre": "Objetivo A2",
+            "Etapa": "Intermedia",
+            "Porcentajeavance_real": 30,
+            "Porcentajeavance_proyectado": 70,
+            "Estado": true
+          }
         ]
       },
       {
-        id: 2,
-        dato1: 'Jim Green',
-        dato2: 42,
-        dato3: 'London No. 1 Lake Park',
-        description: 'My name is Jim Green, I am 42 years old, living in London No. 1 Lake Park.',
-        subData: [
-          { nombre: 'Joe Black', apellido: 32, edad: 'Sidney No. 1 Lake Park', familia: 'YES. ' }
+        "id": 2,
+        "empresa": "Empresa XYZ",
+        "Nombre": "Estrategia B",
+        "Descripcion": "Descripción de la estrategia B",
+        "subData": [
+          {
+            "id": 3,
+            "estrategia": 2,
+            "Nombre": "Objetivo B1",
+            "Etapa": "Inicial",
+            "Porcentajeavance_real": 60,
+            "Porcentajeavance_proyectado": 90,
+            "Estado": false
+          }
         ]
       }
-    ];
+    ]    
     return of(data);
   }
 }

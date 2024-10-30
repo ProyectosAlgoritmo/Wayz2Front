@@ -20,3 +20,7 @@ button.BotonVerde {
     min-height: 40px;  /* Cambia el valor según tus necesidades */
 }
 
+button{
+    margin-right: 20px;
+}
+

@@ -23,6 +23,15 @@ import { CashFlowConfigComponent } from './components/config/cash-flow-config/ca
 import { BalanceComponent as Balance } from './components/financialperformance/balance/balance.component';
 import { ActivitylogComponent } from './components/activitylog/activitylog.component';
 import { ResultStatusComponent } from './components/financialperformance/result-status/result-status.component';
+import { StrategyProductivityComponent } from './components/productivity/strategy-productivity/strategy-productivity.component';
+import { ProjectsComponent } from './components/productivity/projects/projects.component';
+import { BoardDirectorsReportComponent } from './components/productivity/board-directors-report/board-directors-report.component';
+import { UsersComponent } from './components/users-module/users/users.component';
+import { UsersModuleComponent } from './components/users-module/users-module.component';
+import { WalletComponent } from './components/wallet/wallet.component';
+import { InventoryComponent } from './components/Inventory/Inventory/Inventory.component';
+import { PurchaseOrderComponent } from './components/Inventory/purchase-order/purchase-order.component';
+
 
 
 export const routes: Routes = [
@@ -44,11 +53,18 @@ export const routes: Routes = [
     { path: 'balanceconfig', component: BalanceconfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'incomestatementconfig', component: IncomeStatementConfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'cashflowconfig', component: CashFlowConfigComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'strategy-productivity', component: StrategyProductivityComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'board-directors-report', component: BoardDirectorsReportComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'users', component: UsersModuleComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'wallet', component: WalletComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'inventory', component: InventoryComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'purchase-order', component: PurchaseOrderComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
 
     // desempeño financiero
 
     { path: 'income', component: IncomeComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'Expenses', component: ExpensesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+    { path: 'expenses', component: ExpensesComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'reporte/:pageName', component: PowerBiReportComponent, canActivate: [AuthGuard] },  // Ruta dinámica para diferentes páginas del reporte
 
 

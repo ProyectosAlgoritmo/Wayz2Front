@@ -1,0 +1,18 @@
+<nz-card [nzBordered]="false" class="custom-card">
+  <div class="card-content">
+    <div class="icon-container">
+      <i nz-icon [nzType]="iconType" [nzTheme]="'outline'"></i>
+    </div>
+    <div class="card-details">
+      <h3>{{ title }}</h3>
+      <div class="card-number">
+        <span class="number">{{ number }}</span>
+        <span class="growth">
+            <i nz-icon [nzType]="growthIconType" nzTheme="outline"></i>
+            <span [style.color]="growthColor">{{ growth }} %</span> 
+            <span [style.color]="textoGrowthColor">&nbsp;&nbsp;{{ textoGrowth }}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</nz-card>

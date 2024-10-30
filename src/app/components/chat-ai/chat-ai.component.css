@@ -1,57 +1,65 @@
 .chat-fixed {
-    position: fixed;
-    bottom: 0;
-    right: 20px;
-    width: 300px;
-    height: 500px;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    border-radius: 8px 8px 0 0;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .chat-body {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 10px;
-  }
-  
-  .chat-footer {
-    padding: 10px;
-    border-top: 1px solid #ccc;
-    display: flex;
-  }
-  
-  .chat-footer input {
-    flex-grow: 1;
-    margin-right: 10px;
-  }
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 400px;
+  height: 600px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  flex-direction: column;
+}
 
-  /*
-  .message-left {
-    text-align: left;
-  }
-  
-  .message-right {
-    text-align: right;
-  }
-  
-  .message-right .ant-list-item-meta {
-    flex-direction: row-reverse; 
-  }
-  
-  .message-right .ant-list-item-meta-title {
-    text-align: right; 
-  } 
+.chat-body {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px; /* Ajusta el tamaño máximo de la sección de chat para que las preguntas sugeridas no se vean afectadas */
+}
 
-  */
+.chat-body.has-questions {
+  /* Si hay preguntas sugeridas, reducimos el max-height */
+  max-height: calc(100% - 250px) !important; /* Ajusta según el tamaño de las preguntas sugeridas */
+}
+.chat-body.no-questions{
 
+  max-height: calc(100% - 90px);
+}
 
- 
+.chat-footer {
+  padding: 10px;
+  border-top: 1px solid #ccc;
+}
 
+.chat-footer input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
 
-  
-  
+.suggested-questions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: #f9f9f9;
+  height: 200px; /* Fija la altura de la sección de preguntas sugeridas */
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.suggested-questions button {
+  flex-grow: 1;
+  text-align: center;
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+  height: auto;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: normal;
+}

@@ -24,6 +24,11 @@ export class financialperformanceService {
     });
   }
 
+  GetDatapost(link: string, Data: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.post(`${this.apiUrl}/${link}`, Data, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+   }
+
    GetData(link: string): Observable<any> {
     const headers = this.getHeaders();
     return this.httpClient.get(`${this.apiUrl}/${link}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));

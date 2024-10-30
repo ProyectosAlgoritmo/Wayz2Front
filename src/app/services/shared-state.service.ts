@@ -19,6 +19,17 @@ export class SharedStateService {
   public isChatVisible$ = this.isChatVisibleSubject.asObservable();
 
 
+  private isVisiblestatecompany = new BehaviorSubject<boolean>(true);
+  public isVisiblestatecompany$ = this.isVisiblestatecompany.asObservable();
+
+
+
+  private suggestedQuestionsSubject = new BehaviorSubject<{ question: string, api: string }[]>([]);
+
+
+  suggestedQuestions$ = this.suggestedQuestionsSubject.asObservable();
+
+
   toggleChatVisibility(state: boolean): void {
     this.isChatVisibleSubject.next(state);
   }
@@ -36,4 +47,14 @@ export class SharedStateService {
     sessionStorage.setItem('id_empresa', idEmpresa);
     this.notificationStateSource.next(idEmpresa);
   }
+
+
+  updateSuggestedQuestions(questions: { question: string, api: string }[]): void {
+    this.suggestedQuestionsSubject.next(questions);
+  }
+
+  statecompanyVisible(state: boolean): void {
+    this.isVisiblestatecompany.next(state);
+  }
+  
 }

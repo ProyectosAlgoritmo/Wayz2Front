@@ -1,0 +1,27 @@
+<div class="content-container">
+  <div class="table-container">
+    <div class="divtable">
+      <h2 class="title-heading">Orden de Compra</h2>
+      <app-table
+        [dataSource]="dataSource"
+        [displayedColumns]="displayedColumns"
+        [enableSearch]="true"
+        [pageSize]="10"
+        [showActions]="true"
+        [ActionEdit]="true"
+        [columnNames]="columnNames"
+        [ActionLeft]="true"
+        (editAction)="onEditAction($event)"
+        [ActionCreate]="true"
+        (Create)="CreateAction()"
+        [showInputdate]="true"
+        [date]="[dates.FechaInicio, dates.FechaFin]"
+        (dateSelected)="handleDateSelected($event)"
+        [ActionImportGo] ="true"
+        [ActionDelete]="true"
+        (deleteAction)="onDeleteAction($event)"
+      >
+      </app-table>
+    </div>
+  </div>
+</div>

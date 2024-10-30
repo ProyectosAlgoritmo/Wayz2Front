@@ -1,7 +1,7 @@
 .full-page-container {
   display: flex;
   flex-direction: column;
-  height: 70vh; /* Usar toda la altura disponible de la ventana */
+  height: 65vh; /* Usar toda la altura disponible de la ventana */
 
   background-color: transparent !important;
 }
@@ -19,6 +19,10 @@
   justify-content: flex-end; /* Alinea el contenido a la derecha */
   align-items: center;
   gap: 10px; /* Espacio entre elementos */
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  left: 0;
 }
 
 .background-white-title-botton {
@@ -45,4 +49,18 @@ th, td {
   min-width: 120px; /* Mínimo para mantener alineado el contenido */
 }
 
+a{
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+}
+
+
+.min-column-width {
+  width: 150px !important;
+}
+
+.nz-table th {
+  min-width: 150px !important; /* Aplica el ancho mínimo a las columnas */
+}
 

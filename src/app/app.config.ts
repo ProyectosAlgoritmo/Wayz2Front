@@ -13,12 +13,16 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
+
+
+
 registerLocaleData(en);
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes), provideAnimationsAsync(), provideAnimationsAsync(),
-  provideHttpClient(withFetch()), provideNzI18n(en_US), importProvidersFrom(FormsModule), provideAnimationsAsync(), provideHttpClient(),
+  provideHttpClient(withFetch()), provideNzI18n(en_US), 
+  importProvidersFrom(FormsModule), provideAnimationsAsync(), provideHttpClient(),
    JwtHelperService,{ provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore())]

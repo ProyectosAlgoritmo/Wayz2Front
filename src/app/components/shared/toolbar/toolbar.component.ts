@@ -52,6 +52,7 @@ export class ToolbarComponent {
   notificationSubscription!: Subscription;
   Companyestate: boolean = false;
   notificationNumber: number= 0; 
+  isVisiblestatecompany: boolean = false;
 
   userInput: string = '';
   chatResponse: string = '';
@@ -75,23 +76,19 @@ export class ToolbarComponent {
   }
 
   ngOnInit(): void {
-    // Usa el servicio para obtener el estado de la notificación
-    // Escuchar cambios en el id_empresa en localStorage
-    //this.localStorageSubscription = fromEvent(window, 'storage').subscribe(() => {
-    //  this.subscribeToNotificationState();
-    //});
-
+  
     this.localStorageSubscription = this.sharedStateService.notificationState$.subscribe(idEmpresa => {
       //this.notificationState = idEmpresa;
       this.subscribeToNotificationState();  // Actualiza la UI o realiza acciones necesarias
     });
 
-    // Inicializar suscripción
-    //this.subscribeToNotificationState();
-
     // Subscribe to menu visibility changes
     this.sharedStateService.isVisibleMenu$.subscribe(isVisible => {
       this.isVisibleMenu = isVisible;
+    });
+
+    this.sharedStateService.isVisiblestatecompany$.subscribe(isVisible => {
+      this.isVisiblestatecompany = isVisible;
     });
   }
 
@@ -149,7 +146,10 @@ logout()
   }
 
   updateNotificationIcon(state: string) {
-    switch (state) {
+
+    if(this.isVisiblestatecompany == true)
+    {
+      switch (state) {
       case 'OK':
         this.notificationIcon = 'check_circle';
         break;
@@ -164,7 +164,11 @@ logout()
           break;
       default:
         this.notificationIcon = '';
-    }
+     }
+   }
+   else{
+    this.notificationIcon = '';
+   }
   }
 
 

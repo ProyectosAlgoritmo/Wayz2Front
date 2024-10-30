@@ -1,103 +1,187 @@
-import { NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { NzTableModule } from 'ng-zorro-antd/table';
-import { AuxService } from '../../../services/aux-service.service';
 import { Subscription } from 'rxjs';
+import { AuxService } from '../../../services/aux-service.service';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
-
 
 @Component({
   selector: 'app-table-with-rows-child',
   templateUrl: './table-with-rows-child.component.html',
   styleUrls: ['./table-with-rows-child.component.css'],
-  imports: [NzTableModule, NgFor, NgIf, FormsModule, NzIconModule,NzInputModule,NzPaginationModule],
+  imports: [
+    NzTableModule,
+    NgFor,
+    NgIf,
+    FormsModule,
+    NzIconModule,
+    NzInputModule,
+    NzPaginationModule,
+  ],
   standalone: true,
 })
 export class TableWithRowsChildComponent implements OnInit {
-  columns: Array<{
-    title: string;
-    field: string;
-    sortDirection: 'ascend' | 'descend' | null;
-  }> = [];
-
-  columnsMeses: Array<{
-    title: string;
-    field: string;
-    sortDirection: 'ascend' | 'descend' | null;
-  }> = []
-  subColumns: Array<{ title: string; field: string }> = [];
-  expandSet = new Set<number>();
-  private _listOfData: any[] = [];
-  sortedData: any[] = [];
-  searchValue = '';
+  // Definición de las columnas y subcolumnas como @Input() para recibirlas desde el componente padre
+  @Input() columns: Array<{ title: string; field: string; sortDirection: 'ascend' | 'descend' | null }> = [];
+  @Input() subColumns: Array<{ title: string; field: string }> = [];
+  @Input() listOfData: any[] = []; // Datos principales
+  @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
   @Input() ActionEdit: boolean = false;
+  @Output() deleteAction = new EventEmitter<any>();
+  @Input() pageSize: number = 10;
+  @Input() emitEditEvent: boolean = false; 
   @Output() subTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
   @Output() mainTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
+  @Input() allowEditAction: boolean = true;  
+  @Input() allowDeleteAction: boolean = true; 
+   
 
+  expandSet = new Set<number>();
+  sortedData: any[] = [];
   paginatedData: any[] = [];
   currentPage: number = 1;
-
+  searchValue = '';
   private searchSubscription: Subscription = new Subscription();
-  constructor(private auxService: AuxService) {
-    this._listOfData = [...this.sortedData];
-    console.log(this.columns); 
-  }
 
+  constructor(private auxService: AuxService) {
+    // this.allowEditAction = true;  
+    // this.allowDeleteAction = true; 
+  }
 
   ngOnInit() {
-    this.searchSubscription = this.auxService
-      .getSearchObservable()
-      .subscribe((searchTerm) => {
-        this.onSearch(searchTerm);
-      });
+    // Suscripción a los términos de búsqueda
+    this.searchSubscription = this.auxService.getSearchObservable().subscribe((searchTerm) => {
+      this.onSearch(searchTerm);
+    });
 
-      console.log(this.columns); 
-
-      //this.columns.push('Acciones');
-
-    
-
-    
-  }
-
-
-
-  // @Input()
-  // set listOfData(value: any[]) {
-  //   this._listOfData = value;
-  //   this.initializeColumns();
-  //   this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
-  //   this.updatePaginatedData();
-  // }
-  @Input()
-  set listOfData(value: any[]) {
-    // Asegurarse de que el valor es un array, o bien lo inicializamos con un array vacío
-    this._listOfData = Array.isArray(value) ? value : [];
-    console.log('data table con su table', this._listOfData);
-    // Solo inicializar columnas si hay datos disponibles
-    if (this._listOfData.length > 0) {
+    // Genera columnas automáticamente si no se proporcionan desde el componente padre
+    if (!this.columns.length && this.listOfData.length) {
       this.initializeColumns();
-      this.sortedData = [...this._listOfData]; // Inicializa los datos ordenados
-      this.updatePaginatedData();
-    } else {
-      console.warn('listOfData está vacío o no es un array.');
     }
   }
-  @Input() pageSize: number = 10;
 
-  get listOfData(): any[] {
-    return this._listOfData;
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['listOfData']) {
+      this.sortedData = [...this.listOfData];
+      this.updatePaginatedData();
+      if (!this.columns.length) {
+        this.initializeColumns(); // Inicializa columnas si no se han recibido del padre
+      }
+    }
   }
 
+  // Inicializa las columnas basadas en los datos, si no se reciben desde el componente padre
+  initializeColumns(): void {
+    if (this.listOfData.length > 0) {
+      const firstRow = this.listOfData[0];
+      if (firstRow) {
+        // Configurar columnas automáticamente si no se pasan desde el padre
+        this.columns = Object.keys(firstRow)
+          .filter(key => key !== 'subData' && key !== 'id')
+          .map(key => ({
+            title: key,
+            field: key,
+            sortDirection: null // Ninguna columna ordenada inicialmente
+          }));
+      }
+
+      // Inicializa las subcolumnas si hay datos en `subData`
+      const firstRowWithSubData = this.listOfData.find(item => item.subData && item.subData.length > 0);
+      if (firstRowWithSubData) {
+        const firstSubRow = firstRowWithSubData.subData[0];
+        this.subColumns = Object.keys(firstSubRow).map(key => ({
+          title: key,
+          field: key
+        }));
+      }
+
+      // Agregar la columna 'Acciones' al principio de ambas tablas
+      this.columns.unshift({
+        title: 'Acciones',
+        field: 'Acciones',
+        sortDirection: null
+      });
+      this.subColumns.unshift({ title: 'Acciones', field: 'Acciones' });
+    }
+  }
+
+  // Expande o colapsa filas
+  onExpandChange(id: number, checked: boolean): void {
+    if (checked) {
+      this.expandSet.add(id); // Añadir id si la fila está expandida
+    } else {
+      this.expandSet.delete(id); // Eliminar id si la fila está colapsada
+    }
+  }
+
+  // Ordena los datos al hacer click en la cabecera de la columna
+  sortData(field: string): void {
+    const column = this.columns.find(col => col.field === field);
+    if (column) {
+      column.sortDirection = column.sortDirection === 'ascend' ? 'descend' : 'ascend'; // Cambia la dirección de ordenación
+      this.sortedData.sort((a, b) => {
+        const valueA = a[field];
+        const valueB = b[field];
+        if (valueA < valueB) return column.sortDirection === 'ascend' ? -1 : 1;
+        if (valueA > valueB) return column.sortDirection === 'ascend' ? 1 : -1;
+        return 0;
+      });
+    }
+    this.updatePaginatedData();
+  }
+
+  // Guarda la edición en la tabla principal
+  saveMainTableEdit(data: any): void {
+    this.mainTableDataSaved.emit(data);
+    data.isEditing = false;
+  }
+
+  // Guarda la edición en la subtabla
+  saveSubTableEdit(data: any): void {
+    this.subTableDataSaved.emit(data);
+    data.isEditing = false;
+  }
+
+
+  toggleEdit(data: any, isEditing: boolean, table:string): void {
+    data.table = table;
+    if (this.emitEditEvent) {
+      if (isEditing) {
+        this.editClicked.emit(data);  // Si emitEditEvent es true, se emite el evento al padre
+      }
+    } else {
+      data.isEditing = isEditing;  // Si emitEditEvent es false, se activa la edición local
+    }
+  }
+
+  onDelete(element: any, table: string) {
+    element.table = table;
+    this.deleteAction.emit(element);
+  }
+
+  // Actualiza los datos paginados
+  updatePaginatedData(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedData = this.sortedData.slice(startIndex, endIndex);
+  }
+
+  // Cambia la página actual
+  onPageChange(pageIndex: number): void {
+    this.currentPage = pageIndex;
+    this.updatePaginatedData();
+  }
+
+  // Realiza la búsqueda en la tabla
   onSearch(searchValue: string): void {
     if (!searchValue) {
-      this.sortedData = [...this._listOfData];
+      this.sortedData = [...this.listOfData];
     } else {
       const searchLower = searchValue.toLowerCase();
-      this.sortedData = this._listOfData.filter((item) => {
+      this.sortedData = this.listOfData.filter((item) => {
         return Object.keys(item).some((key) =>
           this.prepareSearchString(item[key]).includes(searchLower)
         );
@@ -106,6 +190,7 @@ export class TableWithRowsChildComponent implements OnInit {
     this.updatePaginatedData(); // Asegúrate de actualizar los datos paginados después de la búsqueda
   }
 
+  // Prepara el valor para la búsqueda
   prepareSearchString(value: any): string {
     if (value == null) return ''; // Manejar valores nulos o indefinidos
     return value.toString().toLowerCase(); // Convertir cualquier tipo de valor a string en minúsculas
@@ -116,135 +201,4 @@ export class TableWithRowsChildComponent implements OnInit {
       this.searchSubscription.unsubscribe();
     }
   }
-
-  initializeColumns(): void {
-    // Verificar si _listOfData está definido y tiene al menos un elemento
-    if (this._listOfData && this._listOfData.length > 0) {
-      // Configurar las columnas para la tabla principal
-      const firstRow = this._listOfData[0];
-  
-      // Verificar que la primera fila no sea nula o indefinida
-      if (firstRow) {
-        this.columns = Object.keys(firstRow)
-          .filter(
-            (key) => key !== 'subData' && key !== 'id' && key !== 'description'
-          )
-          .map((key) => ({
-            title: key,
-            field: key,
-            sortDirection: null, // Ninguna columna ordenada inicialmente
-          }));
-      } else {
-        console.warn('La primera fila de _listOfData está vacía o es nula.');
-      }
-  
-      if (this._listOfData && this._listOfData.length > 0) {
-        const index = this._listOfData.findIndex(item => item && item.subData !== null);
-        if (index !== -1) {
-          // Configurar las columnas para la subtabla, si existe subData
-          const index = this._listOfData.findIndex(item => item.subData !== null);
-          const firstSubRow = this._listOfData[index].subData?.[0];
-          if (firstSubRow) {
-            this.subColumns = Object.keys(firstSubRow).map((key) => ({
-              title: key,
-              field: key,
-            }));
-          } else {
-            console.warn('La subData o la primera fila de subData está vacía o no existe.');
-          }
-        } 
-      }
-
-      
-    } else {
-      console.warn('_listOfData está vacío o no ha sido inicializado.');
-    }
-
-   
-
-    this.columnsMeses = [...this.columns];  // Crea una copia del arreglo
-    
-    const indexc = this.columnsMeses.findIndex(column => column.field === 'descripcion');
-    if (indexc !== -1) {
-     this.columnsMeses.splice(indexc, 1);  // Remueve 'Descripcion' solo de columnsMeses
-     }
-     
-     console.log(this.columns);  // Aquí columns permanecerá intacto
-     
-     this.columns.unshift({
-      title: 'Acciones',
-      field: 'Acciones',
-      sortDirection: null
-    });  // Agrega 'Acciones' solo a columns
-    
-
-
-
-    this.subColumns.unshift({title: 'Acciones',
-      field: 'Acciones'})
-
-      const index = this.subColumns.findIndex(column => column.field === 'id');
-      if (index !== -1) {
-        this.subColumns.splice(index, 1);
-      }
-
-  }
-
-  // Este Set se usa para guardar las filas que están expandidas
-
-onExpandChange(id: number, checked: boolean): void {
-  if (checked) {
-    this.expandSet.add(id); // Añade el id si la fila está expandida
-  } else {
-    this.expandSet.delete(id); // Elimina el id si la fila no está expandida
-  }
-}
-
-  // Método para manejar la ordenación
-  sortData(field: string): void {
-    const column = this.columns.find((col) => col.field === field);
-    if (column) {
-      column.sortDirection =
-        column.sortDirection === 'ascend' ? 'descend' : 'ascend'; // Cambia la dirección de ordenación
-      this.sortedData.sort((a, b) => {
-        const valueA = a[field];
-        const valueB = b[field];
-        if (valueA < valueB) {
-          return column.sortDirection === 'ascend' ? -1 : 1;
-        }
-        if (valueA > valueB) {
-          return column.sortDirection === 'ascend' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-
-    this.updatePaginatedData();
-  }
-  saveMainTableEdit(data: any): void {
-    this.mainTableDataSaved.emit(data);
-    data.isEditing = false;  
-  }
-  
-  saveSubTableEdit(data: any): void {
-    this.subTableDataSaved.emit(data);
-    data.isEditing = false;
-  }
-  
-  toggleEdit(data: any, isEditing: boolean): void {
-    data.isEditing = isEditing;
-  }
-
-
-  updatePaginatedData(): void {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.paginatedData = this.sortedData.slice(startIndex, endIndex);
-  }
-  
-  onPageChange(pageIndex: number): void {
-    this.currentPage = pageIndex;
-    this.updatePaginatedData();
-  }
-  
 }

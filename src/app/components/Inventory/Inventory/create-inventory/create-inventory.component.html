@@ -1,0 +1,87 @@
+<h3 mat-dialog-title class="dialog-title">{{ titulo }}</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="formularioForm">
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fecha" style="text-align: left;">Fecha</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la fecha">
+          <nz-date-picker nzMode="month" formControlName="fecha" ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fechaCompra" style="text-align: left;">Fecha de Compra</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la fecha de compra">
+          <nz-date-picker formControlName="fechaCompra"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="fechaVencimiento" style="text-align: left;">Fecha de Vencimiento</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la fecha de vencimiento">
+          <nz-date-picker formControlName="fechaVencimiento"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idTipoInventario" style="text-align: left;">Tipo de Inventario</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un tipo de inventario">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione un tipo de inventario"
+            formControlName="idTipoInventario"
+            required>
+            <nz-option *ngFor="let tipo of tiposInventario" [nzLabel]="tipo.nombre" [nzValue]="tipo.idTipoInventario"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="proveedor" style="text-align: left;">Proveedor</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar el proveedor">
+          <input nz-input formControlName="proveedor" name="proveedor" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="descripcion" style="text-align: left;">Descripción</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la descripción">
+          <input nz-input formControlName="descripcion" name="descripcion" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="cantidad" style="text-align: left;">Cantidad</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la cantidad">
+          <input nz-input formControlName="cantidad" name="cantidad" type="number" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="valorUnitario" style="text-align: left;">Valor Unitario</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar el valor unitario">
+          <input nz-input formControlName="valorUnitario" name="valorUnitario" type="number" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="ubicacion" style="text-align: left;">Ubicación</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar la ubicación">
+          <input nz-input formControlName="ubicacion" name="ubicacion" required />
+        </nz-form-control>
+      </nz-form-item>
+      
+      
+      
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  </mat-dialog-actions>
+</div>

@@ -6,7 +6,7 @@
     margin-top: -5px;
     background-color: #f1f5fa;
     border-radius: 8px;
-    height: 77vh; /* Ajusta este valor según tus necesidades */
+    height: 90vh; /* Ajusta este valor según tus necesidades */
   }
   
   .divtable{
@@ -76,4 +76,11 @@
 .nz-input-group {
   flex-shrink: 0;
   width: 200px; /* Ajusta el ancho como desees */
+}
+
+.headerGraphi{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }

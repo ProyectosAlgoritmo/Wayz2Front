@@ -1,0 +1,75 @@
+<h3 mat-dialog-title class="dialog-title">{{ titulo }}</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="formularioForm">
+
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombre" style="text-align: left;">Nombre</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input   formControlName="nombre" name="nombre" required />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="id" style="text-align: left;">Estrategia</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar una estrategia">
+          <nz-select
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione una estrategia"
+            formControlName="idEstrategia"
+            required>
+            <nz-option *ngFor="let estrategias of estrategia" [nzLabel]="estrategias.nombre" [nzValue]="estrategias.id"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="porcentajeavanceReal" style="text-align: left;">Porcentaje real</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input type="number" (input)="onInpuPorcentajeReal($event)" formControlName="porcentajeavanceReal" name="porcentajeavanceReal" required [readonly]="!isReadonly" [ngClass]="{'readonly-input': !isReadonly, 'active-input': isReadonly}" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="porcentajeavanceProyectado" style="text-align: left;">Porcentaje proyectado</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input type="number" formControlName="porcentajeavanceProyectado" name="porcentajeavanceProyectado" style="width: 100%;" />
+        </nz-form-control>
+      </nz-form-item>
+      
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="id" style="text-align: left;">Etapa</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar una etapa">
+          <nz-select
+            [nzDisabled]="!estapaDisabled"
+            nzShowSearch
+            nzAllowClear
+            nzPlaceHolder="Seleccione una etapa"
+            formControlName="idEtapa"
+            required (ngModelChange)="onEtapaChange($event)">
+            <nz-option *ngFor="let etapas of etapas" [nzLabel]="etapas.nombre" [nzValue]="etapas.idEtapa"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="estado" style="text-align: left;">Estado</nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24">
+          <nz-switch formControlName="estado"></nz-switch>
+        </nz-form-control>
+      </nz-form-item>
+      
+      
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  </mat-dialog-actions>
+</div>

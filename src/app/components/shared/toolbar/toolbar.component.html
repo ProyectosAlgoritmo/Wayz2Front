@@ -24,14 +24,15 @@
 
    
 
-    <button mat-icon-button matTooltip="Estado de la empresa" (click)="gologactivities()">
+    <button *ngIf="isVisiblestatecompany" mat-icon-button matTooltip="Estado de la empresa" (click)="gologactivities()">
       <div class="icon-container">
         <mat-icon [ngClass]="{'rotating-icon': notificationIcon === 'autorenew'}">
           {{ notificationIcon }}
         </mat-icon>
-        <span matBadge="{{ notificationNumber }}"  matBadgeColor="primary" class="numbericon"></span>
+        <span matBadge="{{ notificationNumber }}" matBadgeColor="primary" class="numbericon"></span>
       </div>
     </button>
+    
     
   
     <button mat-icon-button matTooltip="Chat con AI" (click)="toggleChat()">
@@ -47,6 +48,9 @@
       </button>
       <button mat-menu-item routerLink="/">
         <mat-icon>business</mat-icon><span>Mis empresas</span>
+      </button>
+      <button mat-menu-item routerLink="/users">
+        <mat-icon>persons</mat-icon><span>Usuarios</span>
       </button>
       <button mat-menu-item routerLink="/dashboard">
         <mat-icon>help</mat-icon><span>Ayuda</span>

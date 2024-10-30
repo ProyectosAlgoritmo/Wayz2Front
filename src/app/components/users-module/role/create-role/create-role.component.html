@@ -1,0 +1,61 @@
+<h3 mat-dialog-title class="dialog-title">{{ titulo }}</h3>
+<hr class="division-line">
+<div class="importdata">
+
+  <mat-dialog-content>
+    <form [formGroup]="formularioForm">
+
+      <!-- Campo para el nombre del rol -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="rol" style="text-align: left;">Rol</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+          <input nz-input formControlName="rol" name="rol" required />
+        </nz-form-control>
+      </nz-form-item>
+
+      <!-- Contenedor para los grupos de checkboxes -->
+      <div formArrayName="checkboxGroups">
+        <!-- Iterar sobre cada grupo de checkboxes -->
+        <div *ngFor="let group of checkboxGroupsControls.controls; let i = index" [formGroupName]="i" style="margin-top: 30px;">
+          <div style="border-bottom: 1px solid rgb(233, 233, 233); padding-bottom: 5px; ">
+            <!-- Checkbox "Check all" -->
+            <label nz-checkbox 
+                   formControlName="allChecked"
+                   [nzIndeterminate]="group.get('indeterminate')?.value">
+             <h3>{{ checkboxGroups[i].groupName | titlecase }}</h3>
+            </label>
+          </div>
+          <br />
+          <div formArrayName="options" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; justify-items: start;">
+            <!-- Checkboxes individuales -->
+            <label nz-checkbox 
+                   *ngFor="let optionCtrl of getCheckboxGroupControls(i).controls; let j = index" 
+                   [formControlName]="j">
+              {{ checkboxGroups[i].options[j].label }}
+            </label>
+          </div>
+          
+        </div>
+      </div>
+
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <app-buttonstrategic 
+      mat-button 
+      [label]="'Cancelar'" 
+      [customClass]="'BotonGris'" 
+      (click)="onCancel()" 
+      class="botonmargen" 
+      [cancelar]="true">
+    </app-buttonstrategic>
+    <app-buttonstrategic 
+      mat-button 
+      [label]="'Guardar'" 
+      [customClass]="'BotonVerde'" 
+      (click)="guardarCambios()" 
+      class="botonmargen">
+    </app-buttonstrategic>
+  </mat-dialog-actions>
+</div>

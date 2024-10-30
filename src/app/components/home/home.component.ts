@@ -19,6 +19,8 @@ import { SharedModule } from '../shared/shared.module';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateEnterpriseComponent } from '../create-enterprise/create-enterprise.component';
 
 
 
@@ -36,8 +38,10 @@ export class HomeComponent {
   
 
   constructor(private sharedStateService: SharedStateService, private permisosService: PermisosService
-    ,private auxService: AuxService, private router: Router
-  ){}
+    ,private auxService: AuxService, private router: Router, public dialog: MatDialog,
+  ){
+    this.sharedStateService.updateSuggestedQuestions([]);
+  }
 
   displayedColumns: string[] = ['empresa'];
   dataSource: any[] = [];
@@ -46,6 +50,7 @@ export class HomeComponent {
 
   ngOnInit(): void {
     this.sharedStateService.toggleSidenavVisible(false);
+    this.sharedStateService.statecompanyVisible(false);
 
 
     this.auxService.ventanaCargando();
@@ -58,7 +63,7 @@ export class HomeComponent {
 
           if(!data.warning){
 
-            this.dataSource = data.data;
+            this.dataSource = Array.isArray(data.data) ? data.data : [];
 
           }
           else{
@@ -81,6 +86,22 @@ export class HomeComponent {
       },
     }); 
    
+  }
+
+  onEditAction(event: any) {
+    const dialogRef = this.dialog.open(CreateEnterpriseComponent, {
+      data: { idclient: event.idEmpresa }
+
+    });
+  }
+
+  CreateAction() {
+    const dialogRef = this.dialog.open(CreateEnterpriseComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.ngOnInit();
+      }
+    });
   }
 
   applyFilter(event: Event): void {

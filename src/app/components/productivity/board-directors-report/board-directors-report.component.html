@@ -1,0 +1,45 @@
+<div class="content-container">
+  <div class="table-container">
+    <div class="divtable">
+      <h2 class="title-heading">Informe de junta directiva</h2>
+
+      <div class="headerGraphi">
+        <div style="width: 250px; height: 200px">
+          <canvas
+            baseChart
+            [data]="doughnutChartData"
+            [type]="doughnutChartType"
+            [options]="doughnutChartOptions"
+          >
+          </canvas>
+        </div>
+
+        <app-card-percentage
+          [iconType]="'user'"
+          [title]="titleCard"
+          [number]="objativesCard"
+          [growth]="growthCard"
+          [growthColor]="'green'"
+        ></app-card-percentage>
+      </div>
+
+      <app-table
+        [dataSource]="dataSource"
+        [displayedColumns]="displayedColumns"
+        [enableSearch]="true"
+        [enablePaginator]="true"
+        [pageSize]="10"
+        [showActions]="true"
+        [ActionEdit]="true"
+        [columnNames]="columnNames"
+        [ActionLeft]="true"
+        (editAction)="onEditAction($event)"
+        [ActionCreate]="true"
+        [ActionDelete]="true"
+        (deleteAction)="onDeleteAction($event)"
+        (Create)="CreateAction()"
+      >
+      </app-table>
+    </div>
+  </div>
+</div>

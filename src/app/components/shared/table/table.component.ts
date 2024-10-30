@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
 import { CloudDownloadOutline, CloudUploadOutline, PlayCircleOutline, EyeOutline, EditOutline } from '@ant-design/icons-angular/icons';
 import { Router } from '@angular/router';
+import { format } from 'date-fns'; // Usar date-fns para formatear fechas
 
 @Component({
   selector: 'app-table',
@@ -29,6 +30,7 @@ export class TableComponent implements OnInit {
   @Input() enableSearch: boolean = true;
   @Input() ActionLeft: boolean = false;
   @Input() showActions: boolean = false;
+  @Input() showInputdate: boolean = false;
   @Input() ActionEdit: boolean = false;  
   @Input() ActionDelete: boolean = false;  
   @Input() ActionView: boolean = false;  
@@ -46,17 +48,22 @@ export class TableComponent implements OnInit {
   @Output() deleteAction = new EventEmitter<any>();
 
   @Output() Create = new EventEmitter<any>();
+  @Output() dateSelected: EventEmitter<any> = new EventEmitter();
 
   columnsToDisplay: string[] = [];
   paginatedData: any[] = [];
   currentPage: number = 1;
   originalDataSource: any[] = [];
+  selectedYearMonth: string | undefined;
+  dateYearMonth = [];
+  @Input() date: [Date, Date] | undefined;
   
 
   constructor(private router: Router) {
   }
 
   ngOnInit(): void {
+    
 
     this.columnsToDisplay = [...this.displayedColumns]; 
     if (this.showActions) {
@@ -68,6 +75,54 @@ export class TableComponent implements OnInit {
     }
     //this.updatePaginatedData();
   }
+
+  // onChangedate(result: Date[]): void {
+  //   if (result && result.length === 2) {
+  //     // Obtener el primer día del mes del inicio
+  //     const startDate = new Date(result[0].getFullYear(), result[0].getMonth(), 1);
+      
+  //     // Obtener el último día del mes del fin
+  //     const endDate = new Date(result[1].getFullYear(), result[1].getMonth() + 1, 0); // `0` es el último día del mes anterior
+  
+  //     const formattedRequestDate = {
+  //       FechaInicio: format(startDate, 'yyyy-MM-dd'), // Formatear la fecha de inicio al formato AAAA-MM-DD
+  //       FechaFin: format(endDate, 'yyyy-MM-dd')       // Formatear la fecha de fin al formato AAAA-MM-DD
+  //     };
+  
+  //     this.dateSelected.emit(formattedRequestDate); // Emitir el objeto con las fechas formateadas
+  //   }
+  // }
+
+  onChangedate(result: Date[]): void {
+    if (result && result.length === 2) {
+      // Obtener el primer día del mes del inicio
+      const startDate = new Date(result[0].getFullYear(), result[0].getMonth(), 1);
+      
+      // Obtener el último día del mes del fin
+      const endDate = new Date(result[1].getFullYear(), result[1].getMonth() + 1, 0); // `0` es el último día del mes anterior
+  
+      const formattedRequestDate = {
+        FechaInicio: format(startDate, 'yyyy-MM-dd'), // Formatear la fecha de inicio al formato AAAA-MM-DD
+        FechaFin: format(endDate, 'yyyy-MM-dd')       // Formatear la fecha de fin al formato AAAA-MM-DD
+      };
+  
+      this.dateSelected.emit(formattedRequestDate); // Emitir el objeto con las fechas formateadas
+    } else if (!result || result.length === 0) {
+      // Si el rango de fechas está vacío (por ejemplo, al presionar el botón de cerrar)
+      const currentYear = new Date().getFullYear();
+      const startOfYear = new Date(currentYear, 0, 1);  // 1 de enero
+      const endOfYear = new Date(currentYear, 11, 31);  // 31 de diciembre
+  
+      const formattedRequestDate = {
+        FechaInicio: format(startOfYear, 'yyyy-MM-dd'), // Restablecer la fecha de inicio al 1 de enero del año actual
+        FechaFin: format(endOfYear, 'yyyy-MM-dd')       // Restablecer la fecha de fin al 31 de diciembre del año actual
+      };
+  
+      this.date = [startOfYear, endOfYear]; // Restablecer el rango de fechas en el picker
+      this.dateSelected.emit(formattedRequestDate); // Emitir el objeto con las fechas restauradas
+    }
+  }
+  
 
   ngOnChanges(): void {
     this.originalDataSource = [...this.dataSource];

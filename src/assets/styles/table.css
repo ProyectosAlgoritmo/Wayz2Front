@@ -7,7 +7,7 @@
     margin-bottom: 10px;
     background-color: #f1f5fa;
     border-radius: 8px;
-    height: 85vh; /* Ajusta este valor según tus necesidades */
+    height: 90vh; /* Ajusta este valor según tus necesidades */
   }
   
   .divtable{
@@ -57,11 +57,11 @@
   
 
   /* Varis botones en la tabla*/
-.headerclass{
+/* .headerclass{
 
   margin-right: 20px;
   margin-left: 20px;
-}
+} */
 
 .spacermoreinputs {
   flex-grow: 1;
@@ -96,5 +96,13 @@
   /*text-align: center;
   border-bottom: 0.5px solid #e0e0e0; /* Línea discreta debajo */
 }
+
+.headerGraphi{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
   
   
