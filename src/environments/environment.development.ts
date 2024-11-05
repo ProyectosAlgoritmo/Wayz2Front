@@ -1,7 +1,7 @@
 export const environment = {
     production: false, 
-    apiUrl: 'https://localhost:7278/api',
-    //apiUrl: 'http://localhost:5215/api',
+    //apiUrl: 'https://localhost:7278/api',
+    apiUrl: 'http://localhost:5215/api',
     firebase: {
         apiKey: "AIzaSyADks6IO7oQRGVDlsQQ-UmbB4kxXPrPabg",
         authDomain: "strategicview-ba3c4.firebaseapp.com",
