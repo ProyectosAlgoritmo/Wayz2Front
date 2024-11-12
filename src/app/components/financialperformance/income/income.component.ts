@@ -34,7 +34,7 @@ export class IncomeComponent {
     nombreVendedor: 'Vendedor', 
     codigoProducto: 'Codigo del producto', 
     conceptoIngreso: 'Concepto de ingreso', 
-    cantidadReal: 'Cantidad rela', 
+    cantidadReal: 'Cantidad real', 
     cantidadProyectada: 'Cantidad Proyectada',
     valorIngresoReal: 'Ingreso real', 
     valorIngresoProyectado: 'Ingreso Proyectado'
