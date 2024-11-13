@@ -1,5 +1,5 @@
 
-
+<div class="modal-fondo">
 <h3 mat-dialog-title class="dialog-title">{{ titulo }}</h3>
 
 <hr class="division-line">
@@ -157,5 +157,6 @@
   <app-buttonstrategic *ngIf="current < 2" mat-button [label]="'Siguiente'" [customClass]="'BotonGris'" (click)="next()" class="botonmargen" ></app-buttonstrategic>
   <app-buttonstrategic *ngIf="current === 2" mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
   </mat-dialog-actions>
+</div>
 </div>
 

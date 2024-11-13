@@ -32,7 +32,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen"></app-buttonstrategic>
+    <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
     <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
   </mat-dialog-actions>
 </div>

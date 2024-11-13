@@ -19,7 +19,7 @@
             <nz-select
               class="select-input"
               [(ngModel)]="selectedYear"
-              nzPlaceHolder="Seleccione una fecha">
+              [nzPlaceHolder]="selectedYear">
               <nz-option nzLabel="Seleccione una fecha" disabled selected></nz-option>
               <nz-option
                 *ngFor="let year of dateYear"

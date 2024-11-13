@@ -35,9 +35,9 @@
               <a *ngIf="!data.isEditing" (click)="toggleEdit(data, true, 'principal')">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </a>
-              <a (click)="onDelete(data,'principal')" *ngIf="!data.isDelete">
+              <!-- <a (click)="onDelete(data,'principal')" *ngIf="!data.isDelete">
                 <span nz-icon nzType="delete" nzTheme="outline"></span>
-              </a>
+              </a> -->
               <a *ngIf="data.isEditing" (click)="saveMainTableEdit(data)"><span nz-icon nzType="save" nzTheme="outline" style="font-size: 20px; margin-left:10px"></span></a>
               <a *ngIf="data.isEditing" (click)="toggleEdit(data, false,'principal')"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
             </td>
@@ -76,9 +76,9 @@
                       <a *ngIf="!subItem.isEditing && allowEditAction" (click)="toggleEdit(subItem, true,'subTable')">
                         <i nz-icon nzType="edit" nzTheme="outline"></i>
                       </a>
-                      <a (click)="onDelete(subItem,'subTable')" *ngIf="allowDeleteAction">
+                      <!-- <a (click)="onDelete(subItem,'subTable')" *ngIf="allowDeleteAction">
                         <span nz-icon nzType="delete" nzTheme="outline"></span>
-                      </a>
+                      </a> -->
                       <a *ngIf="subItem.isEditing" (click)="saveSubTableEdit(subItem)"><span nz-icon nzType="save" nzTheme="outline"></span></a>
                       <a *ngIf="subItem.isEditing" (click)="toggleEdit(subItem, false,'subTable')"><i nz-icon nzType="close" nzTheme="outline" style="font-size: 20px; margin-left:10px"></i></a>
                     </td>

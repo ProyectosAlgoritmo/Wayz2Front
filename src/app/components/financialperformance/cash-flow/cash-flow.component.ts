@@ -66,6 +66,7 @@ export class CashFlowComponent implements OnInit {
 
   ngOnInit() {
     this.getCashFlow();
+    //this.selectedYear = '2023';
     // this.financialperformanceService.getDataStructure1().subscribe((data) => {
     //   this.dataForTable = data;
     // });
