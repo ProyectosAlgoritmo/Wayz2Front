@@ -135,7 +135,7 @@ export class CreatePurchaseOrderComponent implements OnInit {
             if (data.success) {
               await this.auxService.AlertSuccess(
                 'Datos actualizados correctamente',
-                data.message
+                ''
               );
               this.dialogRef.close(true);
             } else {
@@ -184,7 +184,7 @@ export class CreatePurchaseOrderComponent implements OnInit {
             if (data.success) {
               await this.auxService.AlertSuccess(
                 'Datos registrados correctamente',
-                data.message
+                ''
               );
               this.dialogRef.close(true);
             } else {

@@ -176,7 +176,7 @@ columnNames = {
         if (data.success) {
           await this.auxService.AlertSuccess(
             'Registro eliminado correctamente',
-            data.message
+            ''
           );
           this.GetWallets();
         } else {

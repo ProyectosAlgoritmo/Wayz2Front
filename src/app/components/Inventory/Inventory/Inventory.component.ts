@@ -158,7 +158,7 @@ export class InventoryComponent implements OnInit {
         if (data.success) {
           await this.auxService.AlertSuccess(
             'Registro eliminado correctamente',
-            data.message
+            ''
           );
           this.GetInventory();
         } else {
