@@ -17,6 +17,9 @@ export class BalanceconfigComponent {
     
   }
 
+  onIne() {
+    this.sharedStateService.toggleSidenavVisible(true);
+  }
   
 
 }

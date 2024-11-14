@@ -85,6 +85,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharedStateService.toggleSidenavVisible(true);
     this.GetPurchaseOrder();
   }
 

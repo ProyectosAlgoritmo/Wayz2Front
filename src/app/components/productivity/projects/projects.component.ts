@@ -25,6 +25,7 @@ import { CardPercentageComponent } from '../../shared/card-percentage/card-perce
 import { BaseChartDirective } from 'ng2-charts';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { registerables } from 'chart.js';
+import { SharedStateService } from '../../../services/shared-state.service';
 
 @Component({
   selector: 'app-projects',
@@ -68,7 +69,8 @@ export class ProjectsComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private auxService: AuxService,
-    private productivityService: ProductivityService
+    private productivityService: ProductivityService,
+    private sharedStateService: SharedStateService
   ) {
     Chart.register(...registerables);
   }
@@ -162,6 +164,7 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit() {
     this.getProjects();
+    this.sharedStateService.toggleSidenavVisible(true);
     // this.productivityService.getDataStructure1().subscribe((data) => {
     //   this.dataForTable = data;
     // });

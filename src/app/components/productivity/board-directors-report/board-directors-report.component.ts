@@ -133,12 +133,14 @@ export class BoardDirectorsReportComponent implements OnInit {
     private auxService: AuxService,
     public dialog: MatDialog,
     private router: Router,
-    private productivityService: ProductivityService
+    private productivityService: ProductivityService,
+    
   ) {
     Chart.register(...registerables);
   }
 
   ngOnInit() {
+    this.sharedStateService.toggleSidenavVisible(true);
     this.GetBoardDirectorsReports();
   }
 

@@ -18,6 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TableWithRowsChildSubcolumnComponent } from '../../shared/table-with-rows-child-Subcolumn/table-with-rows-child-Subcolumn.component';
 import { SharedModule } from '../../shared/shared.module';
 import { BalanceService } from '../../../services/balance.service';
+import { SharedStateService } from '../../../services/shared-state.service';
 @Component({
   selector: 'app-balance',
   templateUrl: './balance.component.html',
@@ -56,7 +57,8 @@ export class BalanceComponent implements OnInit {
   private _selectedYear: string = new Date().getFullYear().toString();
   constructor(
     private balanceService: BalanceService,
-    private auxService: AuxService
+    private auxService: AuxService,
+    private sharedStateService: SharedStateService
   ) {}
 
   onSearchChange(): void {
@@ -65,6 +67,7 @@ export class BalanceComponent implements OnInit {
 
   ngOnInit() {
     this.getBalance();
+    this.sharedStateService.toggleSidenavVisible(true);
     // this.balanceService.getDataStructure1().subscribe((data) => {
     //   this.dataForTable = data;
     // });

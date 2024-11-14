@@ -16,5 +16,8 @@ export class IncomeStatementConfigComponent {
   constructor(private sharedStateService: SharedStateService)  { this.sharedStateService.updateSuggestedQuestions([]);
     
   }
+  onInit() {
+    this.sharedStateService.toggleSidenavVisible(true);
+  }
 
 }

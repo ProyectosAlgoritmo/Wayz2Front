@@ -91,7 +91,7 @@ columnNames = {
     private walletService: WalletService,
     private auxService: AuxService,
     public dialog: MatDialog,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
     this.sharedStateService.updateSuggestedQuestions([]);
     const currentYear = new Date().getFullYear(); // Obtiene el año actual
@@ -103,6 +103,7 @@ columnNames = {
   }
 
   ngOnInit(): void {
+    this.sharedStateService.toggleSidenavVisible(true);
     this.GetWallets();
   }
 

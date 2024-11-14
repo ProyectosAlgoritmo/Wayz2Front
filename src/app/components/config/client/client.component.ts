@@ -56,6 +56,7 @@ export class ClientComponent implements OnInit {
     this.originalDataSource = [...this.dataSource];
 
     this.sharedStateService.toggleSidenavVisible(true);
+    
 
     this.auxService.ventanaCargando();
     this.configService.ObtenerClients().subscribe({

@@ -85,6 +85,7 @@ export class InventoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharedStateService.toggleSidenavVisible(true);
     this.GetInventory();
   }
 

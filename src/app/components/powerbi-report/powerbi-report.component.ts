@@ -187,6 +187,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { powerbiService } from '../../services/powerbi.service';
 import { filter } from 'rxjs/operators';
+import { SharedStateService } from '../../services/shared-state.service';
 
 @Component({
   selector: 'app-powerbi-report',
@@ -198,9 +199,11 @@ import { filter } from 'rxjs/operators';
 export class PowerBiReportComponent implements OnInit {
   private report: pbi.Report | null = null; // Inicializamos como null
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private powerbiService: powerbiService) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router,
+    private sharedStateService: SharedStateService, private powerbiService: powerbiService) {}
 
   ngOnInit(): void {
+    this.sharedStateService.toggleSidenavVisible(true);
     const workspaceId = "98a959ef-cba7-420c-9c1b-4033999fc6fd";
     const reportId = "81946e85-f5d3-423e-994b-9ce0f350df39";
     const datasetId = "6e70e1d6-ffed-4066-9bf0-f6dc9950587f";

@@ -23,6 +23,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateEnterpriseComponent } from '../create-enterprise/create-enterprise.component';
 import { da, tr } from 'date-fns/locale';
 import { NgIf } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { set } from 'date-fns';
 
 
 
@@ -41,6 +43,7 @@ export class HomeComponent {
 
   constructor(private sharedStateService: SharedStateService, private permisosService: PermisosService
     ,private auxService: AuxService, private router: Router, public dialog: MatDialog,
+    public authService: AuthService
   ){
     this.sharedStateService.updateSuggestedQuestions([]);
   }
@@ -142,8 +145,18 @@ export class HomeComponent {
             sessionStorage.setItem('token', data.data.payload);
             
             //localStorage.setItem('permisos', JSON.stringify(data.data.permisos));
-            this.router.navigate(['/import']);
-        
+            let permisos = this.authService.getPermisos();
+            if(permisos != null){
+              let url = permisos[0].permisosHijos[0].url;
+              if(url == null){
+                this.router.navigate(['/import']);
+              }else{
+                this.router.navigate([url.toString()]);
+                // setTimeout(() => {
+                //   location.reload();
+                // }, 1);
+              }
+            }
           }
           else{
             this.auxService.ventanaCargando();

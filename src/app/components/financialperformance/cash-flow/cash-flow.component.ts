@@ -18,6 +18,7 @@ import {
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TableWithRowsChildSubcolumnComponent } from '../../shared/table-with-rows-child-Subcolumn/table-with-rows-child-Subcolumn.component';
 import { SharedModule } from '../../shared/shared.module';
+import { SharedStateService } from '../../../services/shared-state.service';
 
 @Component({
   selector: 'app-cash-flow',
@@ -57,7 +58,8 @@ export class CashFlowComponent implements OnInit {
   private _selectedYear: string = new Date().getFullYear().toString();
   constructor(
     private financialperformanceService: financialperformanceService,
-    private auxService: AuxService
+    private auxService: AuxService,
+    private sharedStateService: SharedStateService
   ) {}
 
   onSearchChange(): void {
@@ -66,6 +68,7 @@ export class CashFlowComponent implements OnInit {
 
   ngOnInit() {
     this.getCashFlow();
+    this.sharedStateService.toggleSidenavVisible(true);
     //this.selectedYear = '2023';
     // this.financialperformanceService.getDataStructure1().subscribe((data) => {
     //   this.dataForTable = data;

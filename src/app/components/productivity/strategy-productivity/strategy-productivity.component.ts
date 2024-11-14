@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { StrategyComponent } from './strategy/strategy.component';
 import { StrategicPillarComponent } from './strategic-pillar/strategic-pillar.component';
+import { SharedStateService } from '../../../services/shared-state.service';
 
 @Component({
   selector: 'app-strategy-productivity',
@@ -12,9 +13,10 @@ import { StrategicPillarComponent } from './strategic-pillar/strategic-pillar.co
 })
 export class StrategyProductivityComponent implements OnInit {
 
-  constructor() { }
+  constructor(private sharedStateService: SharedStateService) { }
 
   ngOnInit() {
+    this.sharedStateService.toggleSidenavVisible(true);
   }
 
 }
