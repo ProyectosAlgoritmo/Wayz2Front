@@ -143,6 +143,7 @@ export class HomeComponent {
 
             sessionStorage.removeItem('token');
             sessionStorage.setItem('token', data.data.payload);
+            localStorage.setItem('idEmpresa', element.idEmpresa);
             
             //localStorage.setItem('permisos', JSON.stringify(data.data.permisos));
             let permisos = this.authService.getPermisos();
