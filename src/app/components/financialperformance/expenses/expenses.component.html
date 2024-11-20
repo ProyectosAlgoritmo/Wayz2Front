@@ -21,6 +21,7 @@
         (editAction)="onEditAction($event)"
         [ActionImportGo] ="true"
         [showInputdate]="true"
+        [date]="[dates.FechaInicio, dates.FechaFin]"
         (dateSelected)="handleDateSelected($event)"
         > <!-- Aquí puedes establecer true o false según sea necesario (editAction)="onEditAction($event)" -->
         </app-table>

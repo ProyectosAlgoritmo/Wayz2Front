@@ -187,6 +187,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { powerbiService } from '../../services/powerbi.service';
 import { filter } from 'rxjs/operators';
+import { SharedStateService } from '../../services/shared-state.service';
 
 @Component({
   selector: 'app-powerbi-report',
@@ -198,35 +199,90 @@ import { filter } from 'rxjs/operators';
 export class PowerBiReportComponent implements OnInit {
   private report: pbi.Report | null = null; // Inicializamos como null
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private powerbiService: powerbiService) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router,
+    private sharedStateService: SharedStateService, private powerbiService: powerbiService) {}
+
+  // ngOnInit(): void {
+  //   this.sharedStateService.toggleSidenavVisible(true);
+  //   const workspaceId = "98a959ef-cba7-420c-9c1b-4033999fc6fd";
+  //   const reportId = "81946e85-f5d3-423e-994b-9ce0f350df39";
+  //   const datasetId = "6e70e1d6-ffed-4066-9bf0-f6dc9950587f";
+  //   const idEmpresa = '1'; // Cambia esto para probar diferentes valores
+
+  //   // Detectar el primer valor de pageName desde la URL
+  //   let pageName = this.route.snapshot.paramMap.get('pageName') || '';
+
+  //   this.loadPowerBiReport(workspaceId, reportId, datasetId, pageName, idEmpresa);
+
+  //   // Detectar cambio de pestaña (ruta) y recargar el informe
+  //   this.router.events.pipe(
+  //     filter(event => event instanceof NavigationEnd)
+  //   ).subscribe(() => {
+  //     // Obtener el nuevo pageName desde la URL y recargar el informe
+  //     pageName = this.route.snapshot.paramMap.get('pageName') || '';
+  //     this.loadPowerBiReport(workspaceId, reportId, datasetId, pageName, idEmpresa);
+  //   });
+  // }
+  updateQuestions() {
+    const newQuestions = [
+      {
+        question: '¿Qué productos o servicios han mostrado las mayores caídas de ventas en el último trimestre y por qué?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Qué clientes muestran el mayor crecimiento en ventas?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Cómo ha variado el margen de ganancia entre las diferentes unidades de negocio en los últimos 12 meses?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Qué áreas presentan los mayores incrementos en costos y cómo podemos controlarlos?',
+        api: 'financialperformance/Get-expenses'
+      }
+    ];
+    // Actualizar las preguntas sugeridas usando el servicio compartido
+    this.sharedStateService.updateSuggestedQuestions(newQuestions);
+    
+  }
 
   ngOnInit(): void {
+    this.updateQuestions();
+    //this.sharedStateService.toggleSidenavVisible(true);
+  
     const workspaceId = "98a959ef-cba7-420c-9c1b-4033999fc6fd";
     const reportId = "81946e85-f5d3-423e-994b-9ce0f350df39";
     const datasetId = "6e70e1d6-ffed-4066-9bf0-f6dc9950587f";
-    const idEmpresa = '1'; // Cambia esto para probar diferentes valores
-
+    const idEmpresa = parseInt(localStorage.getItem('idEmpresa') || '0', 10); 
+  
     // Detectar el primer valor de pageName desde la URL
     let pageName = this.route.snapshot.paramMap.get('pageName') || '';
-
-    this.loadPowerBiReport(workspaceId, reportId, datasetId, pageName, idEmpresa);
-
+  
+    // Cargar el reporte con el filtro y la página inicial
+    this.loadPowerBiReport(workspaceId, reportId, datasetId, idEmpresa, pageName);
+  
     // Detectar cambio de pestaña (ruta) y recargar el informe
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
+      filter((event) => event instanceof NavigationEnd)
     ).subscribe(() => {
-      // Obtener el nuevo pageName desde la URL y recargar el informe
       pageName = this.route.snapshot.paramMap.get('pageName') || '';
-      this.loadPowerBiReport(workspaceId, reportId, datasetId, pageName, idEmpresa);
+      this.loadPowerBiReport(workspaceId, reportId, datasetId, idEmpresa, pageName);
     });
   }
-
-  loadPowerBiReport(workspaceId: string, reportId: string, datasetId: string, pageName: string, idEmpresa: string): void {
-    const request = { workspaceId: workspaceId, reportId: reportId, datasetId: datasetId };
-
+  
+  loadPowerBiReport(
+    workspaceId: string,
+    reportId: string,
+    datasetId: string,
+    idEmpresa: number,
+    pageName?: string // Opcional, para manejar navegación entre páginas
+  ): void {
+    const request = { workspaceId, reportId, datasetId };
+  
     this.powerbiService.getToken(request).subscribe((response) => {
       const embedUrl = `https://app.powerbi.com/reportEmbed?reportId=${reportId}&groupId=${workspaceId}`;
-
+      // console.log('URL de inserción:', response.embedToken);
       const config: pbi.IEmbedConfiguration = {
         type: 'report',
         id: reportId,
@@ -236,7 +292,7 @@ export class PowerBiReportComponent implements OnInit {
         settings: {
           panes: {
             filters: {
-              visible: false,
+              visible: true, // Cambiar a true para mostrar el panel de filtros durante depuración
             },
           },
           navContentPaneEnabled: false,
@@ -246,47 +302,50 @@ export class PowerBiReportComponent implements OnInit {
           },
         },
       };
-
+  
       const embedContainer = document.getElementById('embedContainer');
       if (embedContainer) {
-        const powerbi = new pbi.service.Service(pbi.factories.hpmFactory, pbi.factories.wpmpFactory, pbi.factories.routerFactory);
-
+        const powerbi = new pbi.service.Service(
+          pbi.factories.hpmFactory,
+          pbi.factories.wpmpFactory,
+          pbi.factories.routerFactory
+        );
+  
         if (this.report) {
-          // Si ya hay un informe embebido, simplemente navega a la nueva página
-          this.report.getPages().then((pages) => {
-            const page = pages.find(p => p.name === pageName);
-            if (page) {
-              page.setActive();
+          // Si ya hay un reporte embebido, actualiza la página y el filtro
+          this.report?.getPages().then((pages) => {
+            if (pageName) {
+              const page = pages.find((p) => p.name === pageName);
+              if (page) {
+                page.setActive();
+              }
             }
+            this.applyFilter(idEmpresa);
           });
         } else {
-          // Si es la primera vez que se carga el informe, embébelo
+          // Embebe un nuevo reporte
           this.report = powerbi.embed(embedContainer, config) as pbi.Report;
-
+  
           this.report.on('loaded', () => {
             console.log('Reporte cargado con éxito');
-
-            // Verificar que this.report no sea null
-            if (this.report) {
-              // Aplicar el filtro para id_empresa
-              const filter = {
-                $schema: "http://powerbi.com/product/schema#basic",
-                target: {
-                  table: "administracion.TbCliente",
-                  column: "id_empresa",
-                },
-                operator: "In",
-                values: [idEmpresa],
-              } as pbi.models.IBasicFilter;
-
-              this.report.updateFilters(pbi.models.FiltersOperations.Replace, [filter])
-                .then(() => {
-                  console.log(`Filter applied for id_empresa: ${idEmpresa}`);
-                })
-                .catch((error) => {
-                  console.error('Error applying filter:', error);
-                });
-            }
+  
+            // Navegar a la página específica si pageName está definido
+            this.report?.getPages().then((pages) => {
+              if (pageName) {
+                const page = pages.find((p) => p.name === pageName);
+                if (page) {
+                  page.setActive();
+                }
+              }
+            });
+  
+            // Aplica el filtro por idEmpresa después de que el reporte esté cargado
+            this.applyFilter(idEmpresa);
+          });
+  
+          // Manejo de errores en el reporte
+          this.report.on('error', (error) => {
+            console.error('Error al cargar el reporte:', error);
           });
         }
       } else {
@@ -294,7 +353,67 @@ export class PowerBiReportComponent implements OnInit {
       }
     });
   }
-}
+
+  applyFilter(idEmpresa: number): void {
+    if (this.report) {
+      const filter: pbi.models.IBasicFilter = {
+        $schema: 'http://powerbi.com/product/schema#basic',
+        target: { table: 'administracion TbEmpresas', column: 'id_empresa' },
+        operator: 'In',
+        values: [idEmpresa],
+        filterType: pbi.models.FilterType.Basic
+      };
+
+      this.report
+        .setFilters([filter])
+        .then(() => {
+          console.log(`Filtro aplicado correctamente para id_empresa: ${idEmpresa}`);
+        })
+        .catch((error) => {
+          console.error('Error aplicando el filtro con setFilters:', error);
+        });
+    } else {
+      console.error('this.report es null o undefined');
+    }
+  }
+  
+  // applyFilter(idEmpresa: string): void {
+  //   if (this.report) {
+  //     const filter: pbi.models.IBasicFilter = {
+  //       $schema: 'http://powerbi.com/product/schema#basic',
+  //       target: {
+  //         table: 'administracion TbEmpresas', // Cambia al nombre real de tu tabla
+  //         column: 'id_empresa',              // Cambia al nombre real de tu columna
+  //       },
+  //       operator: 'In',
+  //       values: [idEmpresa],
+  //       filterType: pbi.models.FilterType.Basic,
+  //     };
+  
+  //     this.report
+  //       .setFilters([filter])
+  //       .then(() => {
+  //         console.log(`Filtro aplicado correctamente para id_empresa: ${idEmpresa}`);
+  //         // Verificar los filtros aplicados
+  //         if (this.report) {
+  //           return this.report.getFilters();
+  //         } else {
+  //           console.error('this.report es null o undefined');
+  //           return Promise.reject('this.report es null o undefined');
+  //         }
+  //       })
+  //       .then((filters) => {
+  //         console.log('Filtros actualmente aplicados:', filters);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Error al aplicar o verificar el filtro:', error);
+  //       });
+  //   } else {
+  //     console.error('this.report es null o undefined');
+  //   }
+  // }
+  
+}  
  
 
 /* import { Component, OnInit } from '@angular/core';

@@ -88,7 +88,7 @@ export class CreateStrategyComponent implements OnInit {
             if (data.success) {
               await this.auxService.AlertSuccess(
                 'Datos actualizados correctamente',
-                data.message
+                ''
               );
               this.dialogRef.close(true);
             } else {

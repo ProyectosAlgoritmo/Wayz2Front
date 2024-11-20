@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { UsersComponent } from "./users/users.component";
 import { RoleComponent } from "./role/role.component";
+import { SharedStateService } from '../../services/shared-state.service';
 
 
 @Component({
@@ -13,9 +14,10 @@ import { RoleComponent } from "./role/role.component";
 })
 export class UsersModuleComponent implements OnInit {
 
-  constructor() { }
+  constructor(private sharedStateService: SharedStateService) { }
 
   ngOnInit() {
+    this.sharedStateService.toggleSidenavVisible(true);
   }
 
 }

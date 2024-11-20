@@ -142,7 +142,7 @@ export class CreateUserComponent implements OnInit {
             if (data.success) {
               await this.auxService.AlertSuccess(
                 'Datos actualizados correctamente',
-                data.message
+                ''
               );
               this.dialogRef.close(true);
             } else {
@@ -186,7 +186,7 @@ export class CreateUserComponent implements OnInit {
             if (data.success) {
               await this.auxService.AlertSuccess(
                 'Datos registrados correctamente',
-                data.message
+                ''
               );
               this.dialogRef.close(true);
             } else {

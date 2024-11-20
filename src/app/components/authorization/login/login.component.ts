@@ -70,8 +70,8 @@ export class LoginComponent {
       this.accesoServicio.login(email, password).subscribe({
         next:(data) => {
           if(data.success){
-
              if(data.message == "Credenciales correctas"){
+              localStorage.setItem("rol", data.data.rol);
                 this.router.navigate(['/']);
              }else{
               this.auxService.cerrarVentanaCargando();
