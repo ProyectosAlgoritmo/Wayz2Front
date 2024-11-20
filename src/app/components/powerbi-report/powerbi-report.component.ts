@@ -223,15 +223,38 @@ export class PowerBiReportComponent implements OnInit {
   //     this.loadPowerBiReport(workspaceId, reportId, datasetId, pageName, idEmpresa);
   //   });
   // }
+  updateQuestions() {
+    const newQuestions = [
+      {
+        question: '¿Qué productos o servicios han mostrado las mayores caídas de ventas en el último trimestre y por qué?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Qué clientes muestran el mayor crecimiento en ventas?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Cómo ha variado el margen de ganancia entre las diferentes unidades de negocio en los últimos 12 meses?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Qué áreas presentan los mayores incrementos en costos y cómo podemos controlarlos?',
+        api: 'financialperformance/Get-expenses'
+      }
+    ];
+    // Actualizar las preguntas sugeridas usando el servicio compartido
+    this.sharedStateService.updateSuggestedQuestions(newQuestions);
+    
+  }
 
   ngOnInit(): void {
-    
-    this.sharedStateService.toggleSidenavVisible(true);
+    this.updateQuestions();
+    //this.sharedStateService.toggleSidenavVisible(true);
   
     const workspaceId = "98a959ef-cba7-420c-9c1b-4033999fc6fd";
     const reportId = "81946e85-f5d3-423e-994b-9ce0f350df39";
     const datasetId = "6e70e1d6-ffed-4066-9bf0-f6dc9950587f";
-    const idEmpresa = parseInt(localStorage.getItem('idEmpresa') || '0', 10); // Convertir a entero y manejar valores nulos
+    const idEmpresa = parseInt(localStorage.getItem('idEmpresa') || '0', 10); 
   
     // Detectar el primer valor de pageName desde la URL
     let pageName = this.route.snapshot.paramMap.get('pageName') || '';

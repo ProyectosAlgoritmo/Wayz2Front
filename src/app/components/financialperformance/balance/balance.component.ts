@@ -65,9 +65,35 @@ export class BalanceComponent implements OnInit {
     this.auxService.updateSearch(this.searchValue);
   }
 
+  updateQuestions() {
+    const newQuestions = [
+      {
+        question: '¿Qué productos o servicios han mostrado las mayores caídas de ventas en el último trimestre y por qué?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Qué clientes muestran el mayor crecimiento en ventas?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Cómo ha variado el margen de ganancia entre las diferentes unidades de negocio en los últimos 12 meses?',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: '¿Qué áreas presentan los mayores incrementos en costos y cómo podemos controlarlos?',
+        api: 'financialperformance/Get-expenses'
+      }
+    ];
+    // Actualizar las preguntas sugeridas usando el servicio compartido
+    this.sharedStateService.updateSuggestedQuestions(newQuestions);
+    
+  }
+
+
   ngOnInit() {
     this.getBalance();
     this.sharedStateService.toggleSidenavVisible(true);
+    this.updateQuestions();
     // this.balanceService.getDataStructure1().subscribe((data) => {
     //   this.dataForTable = data;
     // });
