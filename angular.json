@@ -13,6 +13,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "powerbi-client",
+              "sweetalert2"
+            ],
             "outputPath": "dist/strategicview",
             "index": "src/index.html",
             "browser": "src/main.ts",
