@@ -1,7 +1,7 @@
 export const environment = {
     production: true, 
     //apiUrl: 'https://tks.iterumconnections.net/api',
-    apiUrl: 'http://18.191.230.69/api',
+    apiUrl: 'http://18.191.230.69:5000/api',
     firebase: {
         apiKey: "AIzaSyADks6IO7oQRGVDlsQQ-UmbB4kxXPrPabg",
         authDomain: "strategicview-ba3c4.firebaseapp.com",
