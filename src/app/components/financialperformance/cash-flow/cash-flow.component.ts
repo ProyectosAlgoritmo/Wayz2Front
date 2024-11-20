@@ -18,7 +18,6 @@ import {
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TableWithRowsChildSubcolumnComponent } from '../../shared/table-with-rows-child-Subcolumn/table-with-rows-child-Subcolumn.component';
 import { SharedModule } from '../../shared/shared.module';
-
 import { SharedStateService } from '../../../services/shared-state.service';
 
 @Component({
