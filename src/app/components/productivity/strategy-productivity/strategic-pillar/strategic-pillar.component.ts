@@ -83,8 +83,32 @@ export class StrategicPillarComponent implements OnInit {
     this.getStrategyPilar();
   }
 
-  ngOnInit(): void {
+  updateQuestions() {
+    const newQuestions = [
+      {
+        question: 'sdfsad',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: 'fsadfsda',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: 'dsfasdf',
+        api: 'financialperformance/Get-income'
+      },
+      {
+        question: 'sdfsdafds',
+        api: 'financialperformance/Get-expenses'
+      }
+    ];
+    // Actualizar las preguntas sugeridas usando el servicio compartido
+    this.sharedStateService.updateSuggestedQuestions(newQuestions);
     
+  }
+
+  ngOnInit(): void {
+    //this.updateQuestions();
   }
 
   onEditClicked(data: any) {
