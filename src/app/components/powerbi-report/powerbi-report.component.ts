@@ -292,7 +292,7 @@ export class PowerBiReportComponent implements OnInit {
         settings: {
           panes: {
             filters: {
-              visible: true, // Cambiar a true para mostrar el panel de filtros durante depuración
+              visible: false, // Cambiar a true para mostrar el panel de filtros durante depuración
             },
           },
           navContentPaneEnabled: false,
