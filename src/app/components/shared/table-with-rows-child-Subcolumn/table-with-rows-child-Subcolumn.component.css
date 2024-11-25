@@ -4,6 +4,7 @@
   height: 70vh; /* Usar toda la altura disponible de la ventana */
 
   background-color: transparent !important;
+  overflow-y: auto;
 }
 
 .table-container {

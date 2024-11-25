@@ -16,13 +16,16 @@
 
 .paginator-container {
   display: flex;
-  justify-content: flex-end; /* Alinea el contenido a la derecha */
+  justify-content: flex-end;
   align-items: center;
-  gap: 10px; /* Espacio entre elementos */
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
+  gap: 10px;
+  position: absolute; /* Fijo en la parte inferior */
+  bottom: 0;
   left: 0;
+  right: 0;
+  padding: 10px;
+  /* background-color: white; */
+  z-index: 1; /* Asegura que esté por encima de otros elementos */
 }
 
 .background-white-title-botton {
@@ -63,4 +66,37 @@ a{
 .nz-table th {
   min-width: 150px !important; /* Aplica el ancho mínimo a las columnas */
 }
+
+@media (max-width: 768px) {
+  .paginator-container {
+    position: relative; /* Se posiciona como parte del flujo normal */
+    bottom: auto; /* Elimina la posición inferior */
+    left: 0;
+    right: 0;
+    margin-top: 10px; /* Agrega un poco de espacio entre la tabla y el paginador */
+    justify-content: center; /* Centra el paginador en pantallas pequeñas */
+    padding: 5px;
+    background-color: transparent; /* Fondo transparente para integrarse con el diseño */
+  }
+
+  .table-container {
+    overflow: auto; /* Permite desplazamiento si la tabla es demasiado grande */
+    margin-bottom: 0; /* Elimina el espacio extra debajo de la tabla */
+  }
+}
+
+.full-page-container {
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Asegura que el paginador absoluto se posicione dentro de este contenedor */
+  overflow: hidden; /* Evita que el contenido desborde */
+}
+
+.table-container {
+  flex-grow: 1;
+  overflow-y: auto; /* Permite scroll solo para la tabla */
+  margin-bottom: 60px; /* Deja espacio para el paginador en pantallas grandes */
+}
+
+
 
