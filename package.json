@@ -30,7 +30,7 @@
     "powerbi-client": "^2.23.1",
     "powerbi-client-angular": "^3.0.5",
     "rxjs": "~7.8.0",
-    "sweetalert2": "^11.6.13",
+    "sweetalert2": "^11.14.5",
     "tslib": "^2.3.0",
     "xls": "^0.5.1",
     "xlsx": "^0.18.5",
