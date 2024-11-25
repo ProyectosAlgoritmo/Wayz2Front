@@ -61,7 +61,7 @@ export class StrategicPillarComponent implements OnInit {
   ];
 
   subTableColumns = [
-    { title: 'Acciones', field: 'Acciones', sortDirection: null },
+    // { title: 'Acciones', field: 'Acciones', sortDirection: null },
     { title: 'Proyecto', field: 'nombre', sortDirection: null },
     { title: 'Lider de proyecto', field: 'liderProyecto', sortDirection: null },
     { title: 'Estado', field: 'estado', sortDirection: null },
