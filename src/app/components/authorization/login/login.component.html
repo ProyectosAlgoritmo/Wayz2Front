@@ -10,7 +10,7 @@
             <input matInput formControlName="email" type="email">
           </mat-form-field>  
   
-          <a class="forgot-password">¿Olvidaste tu contraseña?</a>
+          <a (click)="goToRecovery()" class="forgot-password">¿Olvidaste tu contraseña?</a>
   
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Contraseña</mat-label>

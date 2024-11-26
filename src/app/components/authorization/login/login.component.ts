@@ -58,6 +58,10 @@ export class LoginComponent {
     }
   }
 
+  goToRecovery() {
+    this.router.navigate(['/recovery-password']);
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
 
@@ -88,8 +92,7 @@ export class LoginComponent {
           console.log(error.message);
         },
       })
-
-
     }
   }
+
 }

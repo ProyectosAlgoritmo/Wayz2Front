@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AuxService } from './aux-service.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -44,6 +44,34 @@ export class AuthService {
         sessionStorage.setItem('permisos', JSON.stringify(user.data.permisos));
         this.loggedIn.next(true);     
        
+        }
+        return user;
+        
+
+      }));
+  }
+
+  changePassword(link: string,password:string, token:string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.httpClient
+    .post(`${this.apiUrl}/${link}`,{password: password}, { headers })
+    .pipe(
+      catchError((error) => {
+        console.log(link); 
+        return this.auxService.handleError(error);
+      })
+    );
+  }
+
+  RecoveryPass(Email: string, url: string): Observable<any> {
+    //eturn this.httpClient.post<any>(this.api + '/auth' , {Email, Password})
+    return this.httpClient.post<any>(`${this.apiUrl}/auth/RecoveryPass`, { Email, url })
+      .pipe(map(user => {
+        // Guarda detalles de usuario y token en el local storage para mantener al usuario logueado
+        this.auxService.cerrarVentanaCargando();
+        if(user.data != null){
         }
         return user;
         

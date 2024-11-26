@@ -31,6 +31,8 @@ import { UsersModuleComponent } from './components/users-module/users-module.com
 import { WalletComponent } from './components/wallet/wallet.component';
 import { InventoryComponent } from './components/Inventory/Inventory/Inventory.component';
 import { PurchaseOrderComponent } from './components/Inventory/purchase-order/purchase-order.component';
+import { RecoveryPasswordComponent } from './components/authorization/recovery-password/recovery-password.component';
+import { ChangePasswordComponent } from './components/authorization/change-password/change-password.component';
 
 
 
@@ -39,6 +41,8 @@ export const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard], data: { requireIdEmpresa: false }}, 
     { path: 'dashboard', component: KeyperformanindicatorsComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true } },
     { path: 'login', component: LoginComponent },
+    { path: 'recovery-password', component: RecoveryPasswordComponent },
+    { path: 'change-password/:token', component: ChangePasswordComponent },
     { path: 'import', component: ImportComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'clients', component: ClientComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
     { path: 'businessunit', component: BusinessunitComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
