@@ -6,6 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AuxService } from './aux-service.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { el } from 'date-fns/locale';
 
 @Injectable({
   providedIn: 'root'
@@ -40,10 +41,14 @@ export class AuthService {
         this.auxService.cerrarVentanaCargando();
         if(user.data != null){
         
-        sessionStorage.setItem('token', user.data.payload);
-        sessionStorage.setItem('permisos', JSON.stringify(user.data.permisos));
-        this.loggedIn.next(true);     
-       
+          sessionStorage.setItem('permisos', JSON.stringify(user.data.permisos));
+          if(user.message == "Cambiar contraseña"){
+            //sessionStorage.setItem('token', user.data.payload);
+            this.loggedIn.next(false);     
+          }else{
+            sessionStorage.setItem('token', user.data.token);
+            this.loggedIn.next(true);
+          }
         }
         return user;
         
@@ -51,19 +56,28 @@ export class AuthService {
       }));
   }
 
-  changePassword(link: string,password:string, token:string): Observable<any> {
+  changePassword(link: string, password: string, token: string): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
+  
     return this.httpClient
-    .post(`${this.apiUrl}/${link}`,{password: password}, { headers })
-    .pipe(
-      catchError((error) => {
-        console.log(link); 
-        return this.auxService.handleError(error);
-      })
-    );
+      .post(`${this.apiUrl}/${link}`, { password: password }, { headers })
+      .pipe(
+        map((response: any) => {
+          // Validar la respuesta: suponer que la respuesta tiene un campo "status" o "message"
+          if (response.message && localStorage.getItem("cambio") != null) {
+            this.loggedIn.next(true);
+          } 
+          return response;
+        }),
+        catchError((error) => {
+          console.error('Error al cambiar la contraseña:', error);
+          return this.auxService.handleError(error); // Usar el servicio auxiliar para manejar el error
+        })
+      );
   }
+  
 
   RecoveryPass(Email: string, url: string): Observable<any> {
     //eturn this.httpClient.post<any>(this.api + '/auth' , {Email, Password})

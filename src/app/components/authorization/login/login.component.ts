@@ -74,6 +74,14 @@ export class LoginComponent {
       this.accesoServicio.login(email, password).subscribe({
         next:(data) => {
           if(data.success){
+             if(data.message == "Cambiar contraseña"){
+              this.auxService.cerrarVentanaCargando();
+              localStorage.setItem("cambio", data.data.identificacion);
+              this.router.navigate(['/change-password',data.data.payload]);
+              localStorage.setItem("rol", data.data.rol);
+              localStorage.removeItem("token");
+              return;
+             }
              if(data.message == "Credenciales correctas"){
               localStorage.setItem("rol", data.data.rol);
                 this.router.navigate(['/']);

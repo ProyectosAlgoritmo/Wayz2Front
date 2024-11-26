@@ -64,7 +64,6 @@ export class ChangePasswordComponent implements OnInit {
 
   ngOnInit() {
     this.token = this.route.snapshot.paramMap.get('token') || '';
-    console.log('token', this.token);
     this.isLogged = this.authService.isAuthenticatedBool();
 
     if (this.isLogged) {
@@ -73,6 +72,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('cmabio ',localStorage.getItem("cambio"));
     if (this.changeForm.valid) {
       const password = this.changeForm.value.password;
       const rpassword = this.changeForm.value.password;
@@ -85,6 +85,14 @@ export class ChangePasswordComponent implements OnInit {
         return;
       }
 
+      if (password == localStorage.getItem("cambio")) {
+        this.auxService.AlertWarning(
+          'Cambio de contraseña',
+          'La contraseña no puede ser igual a su identificacion'
+        );
+        return;
+      }
+
 
       this.auxService.ventanaCargando();
 
@@ -92,7 +100,12 @@ export class ChangePasswordComponent implements OnInit {
         .changePassword('Auth/change-password', password, this.token)
         .subscribe({
           next: (data) => {
+            console.log('data', this.token);
             if (data.success) {
+              if(localStorage.getItem("cambio") != null){
+                localStorage.removeItem("cambio");
+                sessionStorage.setItem('token', this.token);
+              }
               this.router.navigate(['/']);
               this.auxService.cerrarVentanaCargando();
             } else {
