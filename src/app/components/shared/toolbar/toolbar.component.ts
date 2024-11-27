@@ -33,6 +33,7 @@ import { Router } from '@angular/router';
 
 
 
+
 @Component({
   selector: 'app-toolbar',
   standalone: true,
@@ -137,6 +138,8 @@ goHome()
 logout()
 {
    this.authservice.logout(); 
+   localStorage.clear();
+   sessionStorage.clear();
 }
 
   toggleSidenav(): void {

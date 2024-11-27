@@ -44,10 +44,10 @@ export class AuthService {
           sessionStorage.setItem('permisos', JSON.stringify(user.data.permisos));
           if(user.message == "Cambiar contraseña"){
             //sessionStorage.setItem('token', user.data.payload);
-            this.loggedIn.next(false);     
+            //this.loggedIn.next(false);     
           }else{
-            sessionStorage.setItem('token', user.data.token);
-            this.loggedIn.next(true);
+            sessionStorage.setItem('token', user.data.payload);
+            this.loggedIn.next(true);  
           }
         }
         return user;
