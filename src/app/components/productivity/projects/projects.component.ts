@@ -165,20 +165,24 @@ export class ProjectsComponent implements OnInit {
   updateQuestions() {
     const newQuestions = [
       {
-        question: '¿Qué productos o servicios han mostrado las mayores caídas de ventas en el último trimestre y por qué?',
-        api: 'financialperformance/Get-income'
+        question: '¿Cuál es el estado actual de los proyectos estratégicos, incluyendo porcentaje de avance, proyectos completados, en curso y retrasados?',
+        api: 'Productivity/get-projects-ia'
       },
       {
-        question: '¿Qué clientes muestran el mayor crecimiento en ventas?',
-        api: 'financialperformance/Get-income'
+        question: "¿Qué proyectos estratégicos están fuera de su cronograma y cuál es la desviación promedio respecto al plan inicial?",
+        api: 'Productivity/get-projects-ia'
       },
       {
-        question: '¿Cómo ha variado el margen de ganancia entre las diferentes unidades de negocio en los últimos 12 meses?',
-        api: 'financialperformance/Get-income'
+        question: "¿Qué factores están contribuyendo más al retraso de los proyectos estratégicos y cómo podrían mitigarse?",
+        api: 'Productivity/get-projects-ia'
       },
       {
-        question: '¿Qué áreas presentan los mayores incrementos en costos y cómo podemos controlarlos?',
-        api: 'financialperformance/Get-expenses'
+        question: "¿Qué proyectos estratégicos tienen mayores riesgos identificados y cuál es su probabilidad de impacto en la ejecución?",
+        api: 'Productivity/get-projects-ia'
+      },
+      {
+        question: "¿Qué proyectos están en riesgo de no completarse según el cronograma actual y cuál es el plan de recuperación sugerido?",
+        api: 'Productivity/get-projects-ia'
       }
     ];
     // Actualizar las preguntas sugeridas usando el servicio compartido
