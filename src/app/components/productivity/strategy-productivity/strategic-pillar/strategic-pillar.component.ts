@@ -86,21 +86,29 @@ export class StrategicPillarComponent implements OnInit {
   updateQuestions() {
     const newQuestions = [
       {
-        question: 'sdfsad',
-        api: 'financialperformance/Get-income'
+        question: '¿Cuál es el avance porcentual global de los pilares estratégicos, destacando los que presentan mayor rezago?  ',
+        api: 'financialperformance/get-strategic-pillar-ia'
       },
       {
-        question: 'fsadfsda',
-        api: 'financialperformance/Get-income'
+        question: '¿Qué metas específicas dentro de los pilares estratégicos están atrasadas y cuál es el impacto potencial en los objetivos estratégicos generales?',
+        api: 'financialperformance/get-strategic-pillar-ia'
       },
       {
-        question: 'dsfasdf',
-        api: 'financialperformance/Get-income'
+        question: '¿Cuál es la tendencia histórica en el cumplimiento de los objetivos de cada pilar estratégico en los últimos trimestres?',
+        api: 'financialperformance/get-strategic-pillar-ia'
       },
       {
-        question: 'sdfsdafds',
-        api: 'financialperformance/Get-expenses'
-      }
+        question: '¿Cómo se compara el avance entre los diferentes pilares estratégicos y qué aprendizajes podemos extraer de los pilares con mejor desempeño?',
+        api: 'financialperformance/get-strategic-pillar-ia'
+      },
+      {
+        question: '¿Qué áreas dentro de los pilares estratégicos requieren intervención inmediata para evitar riesgos en la ejecución?',
+        api: 'financialperformance/get-strategic-pillar-ia'
+      },
+      {
+        question: '¿Cuál es el pronóstico de cumplimiento de los objetivos estratégicos al final del periodo, basándote en el avance actual y las tendencias proyectadas?',
+        api: 'financialperformance/get-strategic-pillar-ia'
+      },
     ];
     // Actualizar las preguntas sugeridas usando el servicio compartido
     this.sharedStateService.updateSuggestedQuestions(newQuestions);
