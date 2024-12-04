@@ -22,7 +22,6 @@ export class StrategyProductivityComponent implements OnInit {
     }
   }
   updateQuestionsForPillar() {
-    alert('updateQuestionsForPillar');
     const newQuestions = [
       {
         question: '¿Cuál es el avance porcentual global de los pilares estratégicos, destacando los que presentan mayor rezago?  ',
