@@ -33,13 +33,14 @@ import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/
 })
 export class ClientComponent implements OnInit {
 
-  displayedColumns: string[] = ['nombreCliente', 'tipoIdentificacion', 'identificacion', 'pais', 'ciudad'];
+  displayedColumns: string[] = ['nombreCliente', 'tipoIdentificacion', 'identificacion', 'pais', 'ciudad', 'limiteCreditoDias'];
   columnNames = {
     nombreCliente: 'Nombre del cliente',
     tipoIdentificacion: 'Tipo de identificación',
     identificacion: 'Identificación',
     pais: 'País',
-    ciudad: 'Ciudad'
+    ciudad: 'Ciudad',
+    limiteCreditoDias: 'Límite de Crédito'
   };
   dataSource: any[] = [];
   dataForTable: any[] = [];
