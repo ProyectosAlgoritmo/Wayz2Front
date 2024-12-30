@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Strategicview": {
+    "wayz2": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -17,7 +17,7 @@
               "powerbi-client",
               "sweetalert2"
             ],
-            "outputPath": "dist/strategicview/",
+            "outputPath": "dist/wayz2/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -74,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Strategicview:build:production"
+              "buildTarget": "wayz2:build:production"
             },
             "development": {
-              "buildTarget": "Strategicview:build:development"
+              "buildTarget": "wayz2:build:development"
             }
           },
           "defaultConfiguration": "development"
