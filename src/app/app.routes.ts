@@ -16,6 +16,7 @@ import { UsersComponent } from './components/users-module/users/users.component'
 import { UsersModuleComponent } from './components/users-module/users-module.component';
 import { RecoveryPasswordComponent } from './components/authorization/recovery-password/recovery-password.component';
 import { ChangePasswordComponent } from './components/authorization/change-password/change-password.component';
+import { CompanyComponent } from './components/config/company/company.component';
 
 
 
@@ -36,6 +37,7 @@ export const routes: Routes = [
 
     // desempeño financiero
     { path: 'reporte/:pageName', component: PowerBiReportComponent, canActivate: [AuthGuard] },  // Ruta dinámica para diferentes páginas del reporte
+    { path: 'company', component: CompanyComponent, canActivate: [AuthGuard] },  // Ruta dinámica para diferentes páginas del reporte
 
 
     { path: 'activitylog', component: ActivitylogComponent, canActivate: [AuthGuard] }  // Ruta dinámica para diferentes páginas del reporte

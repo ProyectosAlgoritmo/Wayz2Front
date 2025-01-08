@@ -28,6 +28,12 @@ export class ConfigService {
   //Clients
 
 
+  getCompanys(): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/Get-All-Machines`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+
   ObtenerClients(): Observable<any> {
     const headers = this.getHeaders();
     return this.httpClient.get(`${this.apiUrl}/Get-Clients`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
@@ -300,4 +306,21 @@ export class ConfigService {
     const url = `${this.apiUrl}/Create-FC-type`; // Endpoint para actualizar un cliente
     return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
+
+  Update(link: string, Data: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
+    return this.httpClient
+      .put(url, Data, { headers })
+      .pipe(catchError(this.auxService.handleError.bind(this)));
+  }
+
+  Create(link: string, Data: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
+    return this.httpClient
+      .post(url, Data, { headers })
+      .pipe(catchError(this.auxService.handleError.bind(this)));
+  }
+  
 }

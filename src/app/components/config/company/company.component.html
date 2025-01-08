@@ -1,0 +1,26 @@
+<div class="content-container">
+  <div class="table-container">
+   
+
+    <div class="divtable">
+
+     <h2 class="title-heading">Machine</h2>
+      <app-table
+        [dataSource]="dataSource" 
+        [displayedColumns]="displayedColumns"
+        [enableSearch]="true"
+        [pageSize]="10"
+        [showActions]="true"
+        [ActionEdit]="true"
+        [columnNames]="columnNames"
+        [ActionLeft]="true"
+        (editAction)="onEditAction($event)"
+        [ActionCreate] ="true"
+        (createAction)="CreateAction()"
+      >
+        <!-- Aquí puedes establecer true o false según sea necesario -->
+      </app-table>
+    </div>
+   
+  </div>
+</div>
