@@ -13,13 +13,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 @Component({
-  selector: 'app-edit-company',
+  selector: 'app-edit-machine',
   standalone: true,
   imports: [NzInputModule, NzIconModule, CommonModule, ReactiveFormsModule, MatDialogModule, SharedModule, NzFormModule],
-  templateUrl: './edit-company.component.html',
-  styleUrls: ['./edit-company.component.css']
+  templateUrl: './edit-machine.component.html',
+  styleUrls: ['./edit-machine.component.css']
 })
-export class EditCompanyComponent implements OnInit {
+export class EditMachineComponent implements OnInit {
 idMachine: number;
 formularioForm: FormGroup;
 
@@ -28,7 +28,7 @@ formularioForm: FormGroup;
     private configService: ConfigService,
     private auxService: AuxService,
     @Inject(MAT_DIALOG_DATA) public data: any, 
-    private dialogRef: MatDialogRef<EditCompanyComponent>
+    private dialogRef: MatDialogRef<EditMachineComponent>
   ) {
     this.idMachine = data.idMachine;
     this.formularioForm = this.fb.group({

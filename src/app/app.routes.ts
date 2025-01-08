@@ -16,31 +16,68 @@ import { UsersComponent } from './components/users-module/users/users.component'
 import { UsersModuleComponent } from './components/users-module/users-module.component';
 import { RecoveryPasswordComponent } from './components/authorization/recovery-password/recovery-password.component';
 import { ChangePasswordComponent } from './components/authorization/change-password/change-password.component';
-import { CompanyComponent } from './components/config/company/company.component';
-
-
+import { MachineComponent } from './components/config/machine/machine.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [AuthGuard],
+    data: { requireIdEmpresa: false },
+  },
+  {
+    path: 'dashboard',
+    component: KeyperformanindicatorsComponent,
+    canActivate: [AuthGuard],
+    data: { requireIdEmpresa: true },
+  },
+  { path: 'login', component: LoginComponent },
+  { path: 'recovery-password', component: RecoveryPasswordComponent },
+  { path: 'change-password/:token', component: ChangePasswordComponent },
+  {
+    path: 'import',
+    component: ImportComponent,
+    canActivate: [AuthGuard],
+    data: { requireIdEmpresa: true },
+  },
+  {
+    path: 'clients',
+    component: ClientComponent,
+    canActivate: [AuthGuard],
+    data: { requireIdEmpresa: true },
+  },
+  {
+    path: 'businessunit',
+    component: BusinessunitComponent,
+    canActivate: [AuthGuard],
+    data: { requireIdEmpresa: true },
+  },
+  {
+    path: 'supervisor',
+    component: SupervisorComponent,
+    canActivate: [AuthGuard],
+    data: { requireIdEmpresa: true },
+  },
 
-    { path: '', component: HomeComponent, canActivate: [AuthGuard], data: { requireIdEmpresa: false }}, 
-    { path: 'dashboard', component: KeyperformanindicatorsComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true } },
-    { path: 'login', component: LoginComponent },
-    { path: 'recovery-password', component: RecoveryPasswordComponent },
-    { path: 'change-password/:token', component: ChangePasswordComponent },
-    { path: 'import', component: ImportComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'clients', component: ClientComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'businessunit', component: BusinessunitComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-    { path: 'supervisor', component: SupervisorComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
-   
-    { path: 'table', component: TableWithRowsChildComponent  },
-    { path: 'users', component: UsersModuleComponent, canActivate: [AuthGuard] , data: { requireIdEmpresa: true }  },
+  { path: 'table', component: TableWithRowsChildComponent },
+  {
+    path: 'users',
+    component: UsersModuleComponent,
+    canActivate: [AuthGuard],
+    data: { requireIdEmpresa: true },
+  },
 
-    // desempeño financiero
-    { path: 'reporte/:pageName', component: PowerBiReportComponent, canActivate: [AuthGuard] },  // Ruta dinámica para diferentes páginas del reporte
-    { path: 'company', component: CompanyComponent, canActivate: [AuthGuard] },  // Ruta dinámica para diferentes páginas del reporte
+  // desempeño financiero
+  {
+    path: 'reporte/:pageName',
+    component: PowerBiReportComponent,
+    canActivate: [AuthGuard],
+  }, // Ruta dinámica para diferentes páginas del reporte
+  { path: 'machine', component: MachineComponent, canActivate: [AuthGuard] }, // Ruta dinámica para diferentes páginas del reporte
 
-
-    { path: 'activitylog', component: ActivitylogComponent, canActivate: [AuthGuard] }  // Ruta dinámica para diferentes páginas del reporte
-
+  {
+    path: 'activitylog',
+    component: ActivitylogComponent,
+    canActivate: [AuthGuard],
+  }, // Ruta dinámica para diferentes páginas del reporte
 ];
- 

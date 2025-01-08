@@ -21,10 +21,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { MatDialog } from '@angular/material/dialog';
 
 import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/table-with-rows-child.component';
-import { EditCompanyComponent } from './edit-company/edit-company.component';
+import { EditMachineComponent } from './edit-machine/edit-machine.component';
 
 @Component({
-  selector: 'app-company',
+  selector: 'app-machine',
   standalone: true,
   imports: [
     MatToolbarModule,
@@ -40,10 +40,10 @@ import { EditCompanyComponent } from './edit-company/edit-company.component';
     NzIconModule,
     TableWithRowsChildComponent,
   ],
-  templateUrl: './company.component.html',
-  styleUrls: ['./company.component.css'],
+  templateUrl: './machine.component.html',
+  styleUrls: ['./machine.component.css'],
 })
-export class CompanyComponent implements OnInit {
+export class MachineComponent implements OnInit {
   displayedColumns: string[] = ['name'];
   columnNames = {
     name: 'Name',
@@ -68,8 +68,8 @@ export class CompanyComponent implements OnInit {
     this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
-    this.configService.getCompanys().subscribe({
-      next: (data) => {
+    this.configService.getMachines().subscribe({
+      next: (data:any) => {
         if (data.success) {
           this.auxService.cerrarVentanaCargando();
 
@@ -77,14 +77,14 @@ export class CompanyComponent implements OnInit {
             this.dataSource = Array.isArray(data.data) ? data.data : [];
           } else {
             this.auxService.ventanaCargando();
-            this.auxService.AlertWarning('Companys', data.message);
+            this.auxService.AlertWarning('machines', data.message);
           }
         } else {
           this.auxService.ventanaCargando();
           this.auxService.AlertWarning('Error', data.message);
         }
       },
-      error: (error) => {
+      error: (error:any) => {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
         this.auxService.AlertError('Error al cargar los clientes:', error);
@@ -112,34 +112,34 @@ export class CompanyComponent implements OnInit {
   }
 
   CreateAction() {
-    const dialogRef = this.dialog.open(EditCompanyComponent);
+    const dialogRef = this.dialog.open(EditMachineComponent);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getCompany();
+        this.getmachine();
       }
     });
   }
 
-  getCompany() {
+  getmachine() {
     this.auxService.ventanaCargando();
-    this.configService.getCompanys().subscribe({
-      next: (data) => {
+    this.configService.getMachines().subscribe({
+      next: (data:any) => {
         this.dataSource = data.data;
         this.auxService.cerrarVentanaCargando();
       },
-      error: (error) => {
+      error: (error:any) => {
         this.auxService.AlertError('Error al cargar los clientes:', error);
       },
     });
   }
 
   onEditAction(event: any) {
-    const dialogRef = this.dialog.open(EditCompanyComponent, {
+    const dialogRef = this.dialog.open(EditMachineComponent, {
       data: event,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.getCompany();
+        this.getmachine();
       }
     });
   }
