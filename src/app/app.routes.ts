@@ -17,6 +17,7 @@ import { UsersModuleComponent } from './components/users-module/users-module.com
 import { RecoveryPasswordComponent } from './components/authorization/recovery-password/recovery-password.component';
 import { ChangePasswordComponent } from './components/authorization/change-password/change-password.component';
 import { MachineComponent } from './components/config/machine/machine.component';
+import { CrewsComponent } from './components/crews/crews.component';
 
 export const routes: Routes = [
   {
@@ -72,12 +73,13 @@ export const routes: Routes = [
     path: 'reporte/:pageName',
     component: PowerBiReportComponent,
     canActivate: [AuthGuard],
-  }, // Ruta dinámica para diferentes páginas del reporte
-  { path: 'machine', component: MachineComponent, canActivate: [AuthGuard] }, // Ruta dinámica para diferentes páginas del reporte
+  }, 
+  { path: 'machine', component: MachineComponent, canActivate: [AuthGuard] }, 
+  { path: 'crews', component: CrewsComponent, canActivate: [AuthGuard] }, 
 
   {
     path: 'activitylog',
     component: ActivitylogComponent,
     canActivate: [AuthGuard],
-  }, // Ruta dinámica para diferentes páginas del reporte
+  }, 
 ];

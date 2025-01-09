@@ -1,0 +1,25 @@
+@import '../../../assets/styles/table.css';
+.grid-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .grid-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  form label {
+    font-weight: bold;
+  }
+  
+  .nz-select {
+    width: 100%;
+  }
+  
+  .nz-table {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
