@@ -66,16 +66,7 @@
           <tr *ngFor="let item of crewTable.data">
             <td>{{ item.team }}</td>
             <td>
-              <nz-select
-                formControlName="crewNumber"
-                nzPlaceHolder="Select a crew"
-              >
-                <nz-option
-                  *ngFor="let number of crewNumbers"
-                  [nzValue]="number"
-                  [nzLabel]="number + (number === 1 ? ' crew' : ' crews')"
-                ></nz-option>
-              </nz-select>
+              {{ item.name }}
             </td>
           </tr>
         </tbody>
