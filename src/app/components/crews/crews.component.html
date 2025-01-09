@@ -63,10 +63,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of crewTable.data">
+          <tr *ngFor="let item of crewTable.data; let i = index">
             <td>{{ item.team }}</td>
             <td>
-              {{ item.name }}
+              <!-- Input con NZ-Zorro y ngModel -->
+              <input
+                nz-input
+                type="text"
+                [(ngModel)]="item.name"
+                (ngModelChange)="onNameChange(i, $event)"
+              />
             </td>
           </tr>
         </tbody>

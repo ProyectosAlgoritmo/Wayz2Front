@@ -1,11 +1,12 @@
 import { NgFor } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzPaginationComponent } from 'ng-zorro-antd/pagination';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+
 @Component({
   selector: 'app-crews',
   standalone: true,
@@ -17,6 +18,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
     NzTimePickerModule,
     NzPaginationComponent,
     NgFor,
+    FormsModule,
   ],
   templateUrl: './crews.component.html',
   styleUrls: ['./crews.component.css'],
@@ -32,6 +34,7 @@ export class CrewsComponent implements OnInit {
    // Datos para las tablas
    crewData: any[] = []; // Datos dinámicos para tripulaciones
    shiftData: any[] = []; // Turnos dinámicos
+   crewDataInput: string[] = [];
  
    // Valores adicionales del formulario
    date: any | null = null;
@@ -67,12 +70,18 @@ export class CrewsComponent implements OnInit {
     //   { date: '2025-01-10 14:00', team: 'Team 6' },
     // ];
    }
+
+   onNameChange(index: number, newValue: string): void {
+    // Actualizas el arreglo independiente con el valor que se va tecleando
+    this.crewDataInput[index] = newValue;
+    console.log(`Nombre de la fila ${index}: ${newValue}`);
+  }
  
    // Genera dinámicamente los datos de las tripulaciones
    generateCrewData(crewCount: number): void {
      this.crewData = Array.from({ length: crewCount }, (_, i) => ({
        team: i + 1,
-       name: `${i + 1}${this.getOrdinalSuffix(i + 1)}`,
+       name: ``,
      }));
    }
  
@@ -130,6 +139,7 @@ export class CrewsComponent implements OnInit {
       console.error('Error generating shifts:', error);
       this.shiftData = []; // Resetea si ocurre un error
     }
+    console.log(`input ${this.crewDataInput}`);
   }
   
 
@@ -144,12 +154,12 @@ export class CrewsComponent implements OnInit {
   
   
  
-   // Devuelve el sufijo ordinal para los números
-   getOrdinalSuffix(number: number): string {
-     const suffixes = ['th', 'st', 'nd', 'rd'];
-     const value = number % 100;
-     return suffixes[(value - 20) % 10] || suffixes[value] || suffixes[0];
-   }
+  //  // Devuelve el sufijo ordinal para los números
+  //  getOrdinalSuffix(number: number): string {
+  //    const suffixes = ['th', 'st', 'nd', 'rd'];
+  //    const value = number % 100;
+  //    return suffixes[(value - 20) % 10] || suffixes[value] || suffixes[0];
+  //  }
  
    // Lógica de cambio de fechas
    onChange(result: any): void {
