@@ -20,22 +20,22 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   styleUrls: ['./edit-machine.component.css']
 })
 export class EditMachineComponent implements OnInit {
-idMachine: number;
+idMachine: number = 0;
 formularioForm: FormGroup;
-
-  constructor(
-    private fb: FormBuilder,
-    private configService: ConfigService,
-    private auxService: AuxService,
-    @Inject(MAT_DIALOG_DATA) public data: any, 
-    private dialogRef: MatDialogRef<EditMachineComponent>
-  ) {
-    this.idMachine = data.idMachine;
-    this.formularioForm = this.fb.group({
-      idMachine: [0, ],
-      name: ['', Validators.required],
-    });
-    if (this.data) {
+titulo: string = 'Create machine';
+constructor(
+  private fb: FormBuilder,
+  private configService: ConfigService,
+  private auxService: AuxService,
+  @Inject(MAT_DIALOG_DATA) public data: any, 
+  private dialogRef: MatDialogRef<EditMachineComponent>
+) {
+  this.formularioForm = this.fb.group({
+    idMachine: [0, ],
+    name: ['', Validators.required],
+  });
+  if (this.data) {
+      this.titulo = 'Edit machine';
       console.log(this.data);
       this.formularioForm.patchValue({
         idMachine: this.data.idMachine,

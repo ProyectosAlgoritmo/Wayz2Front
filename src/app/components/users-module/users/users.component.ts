@@ -58,19 +58,20 @@ export class UsersComponent implements OnInit {
   ];
 
   // Nombres amigables de las columnas
-  columnNames = {
-    nombre: 'Nombre',
-    apellido: 'Apellido',
-    correoElectronico: 'Correo electrónico',
-    telefono: 'Teléfono',
-    username: 'Nombre de usuario',
-    tipoIdentificacion: 'Tipo de identificación',
-    identificacion: 'Identificación',
-    fechaNacimiento: 'Fecha de nacimiento',
-    fechaIngresoEmpresa: 'Fecha de ingreso ',
-    rol: 'Rol',
-    bActivo: 'Estado',
-  };
+  columnNames  = {
+    nombre: 'Name',
+    apellido: 'surnames',
+    correoElectronico: 'Email',
+    telefono: 'Phone',
+    username: 'Username',
+    tipoIdentificacion: 'ID Type',
+    identificacion: 'Identification',
+    fechaNacimiento: 'Date of Birth',
+    fechaIngresoEmpresa: 'Start date',
+    rol: 'Role',
+    bActivo: 'Status',
+};
+
 
   dataSource: any[] = [];
   dataForTable: any[] = [];
@@ -124,7 +125,7 @@ export class UsersComponent implements OnInit {
   }
 
   onEditAction(event: any) {
-    event.bActivo = event.bActivo === 'activo' ? true : false;
+    event.bActivo = event.bActivo === 'active' ? true : false;
     const dialogRef = this.dialog.open(CreateUserComponent, {
       data: event,
     });

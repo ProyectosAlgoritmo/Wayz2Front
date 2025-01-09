@@ -119,6 +119,7 @@ export class MachineComponent implements OnInit {
       }
     });
   }
+  
 
   getmachine() {
     this.auxService.ventanaCargando();

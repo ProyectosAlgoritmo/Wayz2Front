@@ -39,7 +39,7 @@ export class CreateUserComponent implements OnInit {
   formularioForm: FormGroup;
   roles: any;
   date = null;
-  titulo = 'Crear proyecto';
+  titulo = 'Create User';
   isReadonly: boolean = true;
   estapaDisabled: boolean = true;
 
@@ -65,7 +65,7 @@ export class CreateUserComponent implements OnInit {
       bActivo: [false, Validators.required],
     });
     if (this.data) {
-      this.titulo = 'Editar usuario';
+      this.titulo = 'Edit User';
       this.formularioForm.patchValue({
         idUsuario: this.data.idUsuario || 0,
         nombre: this.data.nombre || '',
@@ -96,7 +96,7 @@ export class CreateUserComponent implements OnInit {
   onCancel(): void {
     this.dialogRef.close();
     if (this.data) {
-      this.data.bActivo = this.data.bActivo ? 'activo' : 'inactivo';
+      this.data.bActivo = this.data.bActivo ? 'Active' : 'inactive';
     }
   }
 
@@ -110,7 +110,7 @@ export class CreateUserComponent implements OnInit {
         }
       },
       error: (error:any) => {
-        this.auxService.AlertError('Error al cargar los roles:', error);
+        this.auxService.AlertError('Error loading roles:', error);
       },
     });
   }
@@ -141,13 +141,13 @@ export class CreateUserComponent implements OnInit {
             this.auxService.cerrarVentanaCargando();
             if (data.success) {
               await this.auxService.AlertSuccess(
-                'Datos actualizados correctamente',
+                'Data updated successfully.',
                 ''
               );
               this.dialogRef.close(true);
             } else {
               this.auxService.AlertWarning(
-                'Error al actualizar el registro',
+                'Error updating the record.',
                 data.message
               );
             }
@@ -155,15 +155,15 @@ export class CreateUserComponent implements OnInit {
           error: (error:any) => {
             this.auxService.cerrarVentanaCargando();
             this.auxService.AlertError(
-              'Error al actualizar el registro',
+              'Error updating the record.',
               error.message
             );
           },
         });
     } else {
       this.auxService.AlertWarning(
-        'Formulario inválido',
-        'Por favor, revisa los campos y corrige los errores.'
+        'Invalid form.',
+        'Please review the fields and correct the errors.'
       );
     }
   }
@@ -185,13 +185,13 @@ export class CreateUserComponent implements OnInit {
             this.auxService.cerrarVentanaCargando();
             if (data.success) {
               await this.auxService.AlertSuccess(
-                'Datos registrados correctamente',
+                'Data registered successfully.',
                 ''
               );
               this.dialogRef.close(true);
             } else {
               this.auxService.AlertWarning(
-                'Error al crear el registro',
+                'Error creating the record.',
                 data.message
               );
             }
@@ -199,15 +199,15 @@ export class CreateUserComponent implements OnInit {
           error: (error:any) => {
             this.auxService.cerrarVentanaCargando();
             this.auxService.AlertError(
-              'Error al crear el registro',
+              'Error creating the record.',
               error.message
             );
           },
         });
     } else {
       this.auxService.AlertWarning(
-        'Formulario inválido',
-        'Por favor, revisa los campos y corrige los errores.'
+        'Invalid form.',
+        'Please review the fields and correct the errors.'
       );
     }
   }
