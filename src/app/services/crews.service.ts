@@ -7,11 +7,11 @@ import { AuxService } from './aux-service.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ProductivityService {
+export class CrewsService {
   readonly apiUrl: string;
 
   constructor(private httpClient: HttpClient, private auxService: AuxService) {
-    this.apiUrl = environment.apiUrl + '/Productivity';
+    this.apiUrl = environment.apiUrl + '/Crews';
   }
 
   getHeaders(): HttpHeaders {
@@ -55,40 +55,5 @@ export class ProductivityService {
   }
  
 
-  getDataStructure1(): Observable<any[]> {
-    
-    const data = [
-      {
-        "idEstrategia": 1,
-        "nombre": "Proyecto Alpha",
-        "estrategia": "Crecimiento de Mercado",
-        "descripcion": "Expansión a nuevos mercados internacionales"
-      },
-      {
-        "idEstrategia": 2,
-        "nombre": "Proyecto Beta",
-        "estrategia": "Diferenciación de Producto",
-        "descripcion": "Desarrollo de características únicas para nuevos productos"
-      },
-      {
-        "idEstrategia": 3,
-        "nombre": "Proyecto Gamma",
-        "estrategia": "Liderazgo en Costos",
-        "descripcion": "Reducción de costos operativos para aumentar la competitividad"
-      },
-      {
-        "idEstrategia": 4,
-        "nombre": "Proyecto Delta",
-        "estrategia": "Innovación Disruptiva",
-        "descripcion": "Implementación de tecnologías emergentes en el modelo de negocio"
-      },
-      {
-        "idEstrategia": 5,
-        "nombre": "Proyecto Epsilon",
-        "estrategia": "Alianzas Estratégicas",
-        "descripcion": "Colaboración con empresas clave en la industria para compartir recursos"
-      }
-    ];
-    return of(data);
-  }
+ 
 }

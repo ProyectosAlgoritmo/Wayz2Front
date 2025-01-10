@@ -5,6 +5,11 @@
 
       <form [formGroup]="crewForm" class="grid-form">
         <div class="grid-item">
+          <label>Name</label>
+          <input nz-input formControlName="name" name="required" required />
+        </div>
+
+        <div class="grid-item">
           <label>Shift Hours</label>
           <nz-select formControlName="shiftHours" nzPlaceHolder="Select a time">
             <nz-option nzValue="8" nzLabel="8 hours"></nz-option>
@@ -93,12 +98,30 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of shiftData">
+          <tr *ngFor="let item of shiftData; let i = index">
+            <!-- Fecha y hora -->
             <td>{{ item.date }}</td>
-            <td>{{ item.team }}</td>
+
+            <!-- Select para Team -->
+            <td>
+              <nz-select
+                nzPlaceHolder="Select a team"
+                [(ngModel)]="item.team"
+                (ngModelChange)="onTeamChange(i, $event)"
+              >
+                <!-- Las opciones provienen de crewDataInput -->
+                <nz-option
+                  *ngFor="let c of crewDataInput"
+                  [nzValue]="c"
+                  [nzLabel]="c"
+                >
+                </nz-option>
+              </nz-select>
+            </td>
           </tr>
         </tbody>
       </nz-table>
     </div>
+    <app-buttonstrategic mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
   </div>
 </div>

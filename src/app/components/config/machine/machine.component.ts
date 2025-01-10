@@ -18,10 +18,13 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/table-with-rows-child.component';
 import { EditMachineComponent } from './edit-machine/edit-machine.component';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'app-machine',
@@ -39,6 +42,11 @@ import { EditMachineComponent } from './edit-machine/edit-machine.component';
     NzInputModule,
     NzIconModule,
     TableWithRowsChildComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    SharedModule,
+    NzFormModule,
   ],
   templateUrl: './machine.component.html',
   styleUrls: ['./machine.component.css'],
@@ -69,7 +77,7 @@ export class MachineComponent implements OnInit {
 
     this.auxService.ventanaCargando();
     this.configService.getMachines().subscribe({
-      next: (data:any) => {
+      next: (data: any) => {
         if (data.success) {
           this.auxService.cerrarVentanaCargando();
 
@@ -84,7 +92,7 @@ export class MachineComponent implements OnInit {
           this.auxService.AlertWarning('Error', data.message);
         }
       },
-      error: (error:any) => {
+      error: (error: any) => {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
         this.auxService.AlertError('Error al cargar los clientes:', error);
@@ -119,16 +127,15 @@ export class MachineComponent implements OnInit {
       }
     });
   }
-  
 
   getmachine() {
     this.auxService.ventanaCargando();
     this.configService.getMachines().subscribe({
-      next: (data:any) => {
+      next: (data: any) => {
         this.dataSource = data.data;
         this.auxService.cerrarVentanaCargando();
       },
-      error: (error:any) => {
+      error: (error: any) => {
         this.auxService.AlertError('Error al cargar los clientes:', error);
       },
     });
