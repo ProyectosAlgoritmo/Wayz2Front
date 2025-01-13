@@ -17,63 +17,63 @@
     <!-- Paso 1: Información de la Empresa -->
     <div *ngIf="current === 0">
       <nz-form-item style="margin-top: 30px;">
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="industria" style="text-align: left;">Industria</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="industria" style="text-align: left;">Industry</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="industria" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombreEmpresa" style="text-align: left;">Nombre Empresa</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombreEmpresa" style="text-align: left;">Company Name</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="nombreEmpresa" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="pais" style="text-align: left;">País</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="pais" style="text-align: left;">Country</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="pais" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="departamento" style="text-align: left;">Departamento</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="departamento" style="text-align: left;">State</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="departamento" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="ciudad" style="text-align: left;">Ciudad</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="ciudad" style="text-align: left;">City</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="ciudad" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="codigoPostal" style="text-align: left;">Código Postal</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="codigoPostal" style="text-align: left;">Postal Code</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input type="number" formControlName="codigoPostal" />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="direccionEmpresa" style="text-align: left;">Dirección Empresa</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="direccionEmpresa" style="text-align: left;">Company Address</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="direccionEmpresa" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefonoEmpresa" style="text-align: left;">Teléfono Empresa</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefonoEmpresa" style="text-align: left;">Company Phone</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="telefonoEmpresa" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correoEmpresa" style="text-align: left;">Correo Empresa</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correoEmpresa" style="text-align: left;">Company Email</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar un correo válido">
           <input nz-input type="email" formControlName="correoEmpresa" required />
         </nz-form-control>
@@ -83,28 +83,28 @@
     <!-- Paso 2: Información del Gerente -->
     <div *ngIf="current === 1" style="margin-top: 30px;">
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombreGerente" style="text-align: left;">Nombre del Gerente</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombreGerente" style="text-align: left;">Manager Name</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="nombreGerente" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellidoGerente" style="text-align: left;">Apellido del Gerente</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellidoGerente" style="text-align: left;">Manager Last Name</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="apellidoGerente" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefonoGerente" style="text-align: left;">Teléfono del Gerente</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefonoGerente" style="text-align: left;">Manager Phone</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="telefonoGerente" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correoGerente" style="text-align: left;">Correo del Gerente</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correoGerente" style="text-align: left;">Manager Email</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar un correo válido">
           <input nz-input type="email" formControlName="correoGerente" required />
         </nz-form-control>
@@ -114,35 +114,35 @@
     <!-- Paso 3: Información del Responsable -->
     <div *ngIf="current === 2" style="margin-top: 30px;">
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombreResponsable" style="text-align: left;">Nombre del Responsable</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombreResponsable" style="text-align: left;">Responsible Person's Name</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="nombreResponsable" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellidoResponsable" style="text-align: left;">Apellido del Responsable</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellidoResponsable" style="text-align: left;">Responsible Person's Last Name</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="apellidoResponsable" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefonoResponsable" style="text-align: left;">Teléfono del Responsable</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefonoResponsable" style="text-align: left;">Responsible Person's Phone</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="telefonoResponsable" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correoResponsable" style="text-align: left;">Correo del Responsable</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correoResponsable" style="text-align: left;">Responsible Person's Email</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar un correo válido">
           <input nz-input type="email" formControlName="correoResponsable" required />
         </nz-form-control>
       </nz-form-item>
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="cargoResponsable" style="text-align: left;">Cargo del Responsable</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="cargoResponsable" style="text-align: left;">Responsible Person's Position</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
           <input nz-input formControlName="cargoResponsable" required />
         </nz-form-control>

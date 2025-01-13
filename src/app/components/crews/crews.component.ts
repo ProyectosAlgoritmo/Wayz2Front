@@ -119,40 +119,40 @@ export class CrewsComponent implements OnInit {
     const isvalidCrews = this.validCrews();
     const isvalidShifts = this.validShifts();
 
-    // if (isvalidCrews && validCrewsForm && isvalidShifts) {
-    //   this.combinedData = {
-    //     crewsDataForm: this.crewsDataForm,
-    //     crewData: this.crewData,
-    //     shiftData: this.shiftData,
-    //   };
-    //   this.auxService.ventanaCargando();
-    //   this.crewsService.Create('add-crew-full', this.combinedData).subscribe({
-    //     next: async (data: any) => {
-    //       this.auxService.cerrarVentanaCargando();
-    //       if (data.success) {
-    //         this.clearAllData();
-    //         await this.auxService.AlertSuccess(
-    //           'Data updated successfully.',
-    //           ''
-    //         );
-    //       } else {
-    //         this.auxService.AlertWarning(
-    //           'Error creating the record.',
-    //           data.message
-    //         );
-    //       }
-    //     },
-    //     error: (error: any) => {
-    //       this.auxService.cerrarVentanaCargando();
-    //       this.auxService.AlertError(
-    //         'Error creating the record.',
-    //         error.message
-    //       );
-    //     },
-    //   });
-    // } else {
-    //   console.log('Validation failed. Data not saved.');
-    // }
+    if (isvalidCrews && validCrewsForm && isvalidShifts) {
+      this.combinedData = {
+        crewsDataForm: this.crewsDataForm,
+        crewData: this.crewData,
+        shiftData: this.shiftData,
+      };
+      this.auxService.ventanaCargando();
+      this.crewsService.Create('add-crew-full', this.combinedData).subscribe({
+        next: async (data: any) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success) {
+            this.clearAllData();
+            await this.auxService.AlertSuccess(
+              'Data updated successfully.',
+              ''
+            );
+          } else {
+            this.auxService.AlertWarning(
+              'Error creating the record.',
+              data.message
+            );
+          }
+        },
+        error: (error: any) => {
+          this.auxService.cerrarVentanaCargando();
+          this.auxService.AlertError(
+            'Error creating the record.',
+            error.message
+          );
+        },
+      });
+    } else {
+      console.log('Validation failed. Data not saved.');
+    }
   }
 
   clearAllData() {
@@ -303,9 +303,20 @@ export class CrewsComponent implements OnInit {
 
 
   onNameChange(index: number, newValue: string): void {
-    // Actualizas el arreglo independiente con el valor que se va tecleando
+    // 1. Obtén el valor anterior del arreglo
+    const previousValue = this.crewDataInput[index];
+  
+    // 2. Actualiza tu arreglo de "inputs"
     this.crewDataInput[index] = newValue;
     console.log(`Nombre de la fila ${index}: ${newValue}`);
+  
+    // 3. Recorre shiftData y reemplaza el valor anterior por el nuevo
+    //    en caso de que alguno lo estuviera usando como 'team'
+    this.shiftData.forEach((shift) => {
+      if (shift.team === previousValue) {
+        shift.team = newValue;
+      }
+    });
   }
 
   onTeamChange(index: number, newTeam: string): void {
