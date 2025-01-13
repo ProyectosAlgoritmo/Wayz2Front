@@ -1,2 +1,15 @@
 @import "../../../../../assets/styles/modal.css";
 
+.forgot-password {
+    display: block;
+    text-align: right; /* Puedes cambiar esto a left si prefieres */
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #005ed3;
+  }
+  
+  .forgot-password:hover {
+    color: #005ed3;
+  }
+

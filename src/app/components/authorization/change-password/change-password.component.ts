@@ -72,23 +72,22 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('cmabio ',localStorage.getItem("cambio"));
     if (this.changeForm.valid) {
       const password = this.changeForm.value.password;
       const rpassword = this.changeForm.value.password;
 
       if (password !== rpassword) {
         this.auxService.AlertWarning(
-          'Cambio de contraseña',
-          'Las contraseñas no coinciden'
+          'Password Change',
+          'The passwords do not match'
         );
         return;
       }
 
       if (password == localStorage.getItem("cambio")) {
         this.auxService.AlertWarning(
-          'Cambio de contraseña',
-          'La contraseña no puede ser igual a su identificacion'
+          'Password Change',
+          'The password cannot be the same as your identification.'
         );
         return;
       }
@@ -107,10 +106,11 @@ export class ChangePasswordComponent implements OnInit {
                 sessionStorage.setItem('token', this.token);
               }
               this.router.navigate(['/']);
-              this.auxService.cerrarVentanaCargando();
+              this.auxService.AlertWarning('Password Change', data.message);
+              //this.auxService.cerrarVentanaCargando();
             } else {
               this.auxService.cerrarVentanaCargando();
-              this.auxService.AlertWarning('Cambio de contraseña', data.message);
+              this.auxService.AlertWarning('Password Change', data.message);
               //alert("Error desconocido");
             }
           },

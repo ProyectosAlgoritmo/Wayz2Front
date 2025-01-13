@@ -48,11 +48,6 @@ export class UsersComponent implements OnInit {
     'apellido',
     'correoElectronico',
     'telefono',
-    'username',
-    'tipoIdentificacion',
-    'identificacion',
-    'fechaNacimiento',
-    'fechaIngresoEmpresa',
     'rol',
     'bActivo',
   ];
@@ -63,11 +58,6 @@ export class UsersComponent implements OnInit {
     apellido: 'surnames',
     correoElectronico: 'Email',
     telefono: 'Phone',
-    username: 'Username',
-    tipoIdentificacion: 'ID Type',
-    identificacion: 'Identification',
-    fechaNacimiento: 'Date of Birth',
-    fechaIngresoEmpresa: 'Start date',
     rol: 'Role',
     bActivo: 'Status',
 };

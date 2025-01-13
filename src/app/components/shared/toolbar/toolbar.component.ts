@@ -30,6 +30,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { Router } from '@angular/router';
+import { CreateUserComponent } from '../../users-module/users/create-user/create-user.component';
 
 
 
@@ -123,6 +124,17 @@ export class ToolbarComponent {
         });
     }
   }
+
+  Profile() {
+      const dialogRef = this.dialog.open(CreateUserComponent, {
+        data: {isProfile: true},
+      });
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          //this.GetUsers();
+        }
+      });
+    }
 
 gologactivities(){
   this.router.navigate(['/activitylog']);

@@ -47,17 +47,17 @@
         <mat-icon>person</mat-icon><span>Cuenta</span>
       </button> -->
       <button mat-menu-item routerLink="/">
-        <mat-icon>business</mat-icon><span>Mis empresas</span>
+        <mat-icon>business</mat-icon><span>My companies</span>
       </button>
-      <button mat-menu-item routerLink="/users">
-        <mat-icon>persons</mat-icon><span>Usuarios</span>
+      <button mat-menu-item (click)="Profile()">
+        <mat-icon>persons</mat-icon><span>Profile</span>
       </button>
       <!-- <button mat-menu-item routerLink="/dashboard">
         <mat-icon>help</mat-icon><span>Ayuda</span>
       </button> -->
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon>Cerrar sesión
+        <mat-icon>exit_to_app</mat-icon>Log out
       </button>
     </mat-menu>
 

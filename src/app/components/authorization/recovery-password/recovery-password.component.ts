@@ -95,17 +95,17 @@ export class RecoveryPasswordComponent implements OnInit {
       this.accesoServicio.RecoveryPass(email, url).subscribe({
         next: async (data) => {
           if (data.success) {
-            await this.auxService.AlertWarning('Olvide mi contraseña ', data.message);
+            await this.auxService.AlertWarning('I forgot my password ', data.message);
             this.router.navigate(['/login']);
             this.auxService.cerrarVentanaCargando();
           } else {
             this.auxService.cerrarVentanaCargando();
-            this.auxService.AlertWarning('Olvide mi contraseña ', data.message);
+            this.auxService.AlertWarning('I forgot my password ', data.message);
           }
         },
         error: (error) => {
           this.auxService.cerrarVentanaCargando();
-          this.auxService.AlertWarning('Olvide mi contraseña ', error.message);
+          this.auxService.AlertWarning('I forgot my password ', error.message);
         },
       });
     }
