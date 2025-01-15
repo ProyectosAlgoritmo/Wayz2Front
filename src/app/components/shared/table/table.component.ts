@@ -23,6 +23,7 @@ import { format } from 'date-fns'; // Usar date-fns para formatear fechas
 })
 export class TableComponent implements OnInit {
   @Input() dataSource: any[] = []; 
+  @Input() checkActive: boolean = false;
   @Input() displayedColumns: string[] = [];
   @Input() columnNames: { [key: string]: string } = {};
   @Input() pageSize: number = 2;

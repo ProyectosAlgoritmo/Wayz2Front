@@ -1,0 +1,54 @@
+@import "../../../../assets/styles/table.css";
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  font-weight: bold;
+}
+
+.nz-select {
+  width: 100%;
+}
+
+.nz-table {
+  margin-top: 20px;
+  width: 100%;
+}
+
+h3 {
+  margin-top: 20px;
+}
+input {
+  width: 100%;
+  height: 30px;
+}
+
+app-buttonstrategic {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  float: right;
+}
+
+/* Borde gris por defecto */
+input[nz-input], select[nz-select] {
+  border: 1px solid #d9d9d9; /* Gris por defecto */
+  border-radius: 4px;
+  padding: 4px 8px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Borde azul de Ant Design al enfocar */
+input[nz-input]:focus, select[nz-select]:focus {
+  border-color: #1890ff; /* Azul de Ant Design */
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); /* Sombra suave */
+}
+

@@ -9,9 +9,23 @@
   
   
         <nz-form-item>
-          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="name" style="text-align: left;">Name Company</nz-form-label>
+          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="name" style="text-align: left;">Name Machine</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
             <input nz-input   formControlName="name" name="required" required />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="crews" style="text-align: left;">Crews</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un crews">
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select a crew"
+              formControlName="idCrew"
+              required>
+              <nz-option *ngFor="let crew of crews" [nzLabel]="crew.name" [nzValue]="crew.idCrew"></nz-option>
+            </nz-select>
           </nz-form-control>
         </nz-form-item>
 

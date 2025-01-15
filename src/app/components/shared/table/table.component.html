@@ -47,65 +47,76 @@
 </mat-toolbar>
 
 <div class="table-container">
-<nz-table 
+  <nz-table 
   #basicTable 
   [nzData]="dataSource" 
   [nzPageSize]="pageSize" 
   [nzFrontPagination]="false" 
-  [nzScroll]="{  x: '1200px', y: '340px' }" 
+  [nzScroll]="{ x: '1200px', y: '340px' }"
 >
-  <thead>
-    <tr>
-      <ng-container *ngFor="let column of columnsToDisplay">
-        <th *ngIf="column !== 'Acciones'"  nz-th>{{ getColumnDisplayName(column) }}</th>
-        <th *ngIf="column === 'Acciones'" nz-th>Actions</th>
+<thead>
+  <tr>
+    <th *ngIf="columnsToDisplay.includes('Acciones')" nz-th>Actions</th>
+    <th *ngIf="checkActive" nz-th>Active</th>
+    <ng-container *ngFor="let column of columnsToDisplay">
+      <th *ngIf="column !== 'Acciones'" nz-th>{{ getColumnDisplayName(column) }}</th>
+    </ng-container>
+  </tr>
+</thead>
+
+<tbody>
+  <tr *ngFor="let element of paginatedData">
+    <!-- Columna Actions -->
+    <td *ngIf="columnsToDisplay.includes('Acciones')" nz-td>
+      <ng-container *ngIf="ActionExport">
+        <a (click)="onExport(element)">
+          <i nz-icon nzType="cloud-download" nzTheme="outline"></i>
+        </a>
+        <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
       </ng-container>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let element of paginatedData">
-      <ng-container *ngFor="let column of columnsToDisplay">
-        <td *ngIf="column !== 'Acciones'" nz-td>{{ element[column] }}</td>
-        
-        <td *ngIf="column === 'Acciones'" nz-td>
-          <ng-container *ngIf="ActionExport">
-            <a (click)="onExport(element)">
-              <i nz-icon nzType="cloud-download" nzTheme="outline"></i>
-            </a>
-            <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
-          </ng-container>
-          <ng-container *ngIf="ActionImport">
-            <a (click)="onImport(element)">
-              <i nz-icon nzType="cloud-upload" nzTheme="outline"></i>
-            </a>
-            <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
-          </ng-container>
-          <ng-container *ngIf="ActionGo">
-            <a (click)="onGo(element)">
-              <i nz-icon nzType="play-circle" nzTheme="outline"></i>
-            </a>
-            <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
-          </ng-container>
-          <ng-container *ngIf="ActionView">
-            <a (click)="onGo(element)">
-              <i nz-icon nzType="eye" nzTheme="outline"></i>
-            </a>
-            <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
-          </ng-container>
-          <ng-container *ngIf="ActionEdit && (element.isEditable ? false : true)">
-            <a (click)="onEdit(element)">
-              <i nz-icon nzType="edit" nzTheme="outline"></i>
-            </a>
-          </ng-container>
-          <ng-container *ngIf="ActionDelete && (element.isEditable ? false : true)">
-            <a (click)="onDelete(element)">
-              <span nz-icon nzType="delete" nzTheme="outline"></span>
-            </a>
-          </ng-container>
-        </td>
+      <ng-container *ngIf="ActionImport">
+        <a (click)="onImport(element)">
+          <i nz-icon nzType="cloud-upload" nzTheme="outline"></i>
+        </a>
+        <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
       </ng-container>
-    </tr>
-  </tbody>
+      <ng-container *ngIf="ActionGo">
+        <a (click)="onGo(element)">
+          <i nz-icon nzType="play-circle" nzTheme="outline"></i>
+        </a>
+        <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
+      </ng-container>
+      <ng-container *ngIf="ActionView">
+        <a (click)="onGo(element)">
+          <i nz-icon nzType="eye" nzTheme="outline"></i>
+        </a>
+        <nz-divider nzType="vertical" class="invisible-divider"></nz-divider>
+      </ng-container>
+      <ng-container *ngIf="ActionEdit && (element.isEditable ? false : true)">
+        <a (click)="onEdit(element)">
+          <i nz-icon nzType="edit" nzTheme="outline"></i>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="ActionDelete && (element.isEditable ? false : true)">
+        <a (click)="onDelete(element)">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </a>
+      </ng-container>
+    </td>
+
+    <!-- Columna Active -->
+    <td *ngIf="checkActive" nz-td>
+      <input type="checkbox" [checked]="element.isActive" disabled />
+    </td>
+
+    <!-- Otras Columnas -->
+    <ng-container *ngFor="let column of columnsToDisplay">
+      <td *ngIf="column !== 'Acciones'" nz-td>{{ element[column] }}</td>
+    </ng-container>
+  </tr>
+</tbody>
+
+
 </nz-table>
 </div>
 </div>

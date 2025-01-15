@@ -92,7 +92,7 @@ export class LoginComponent {
 
           }else{
             this.auxService.cerrarVentanaCargando();
-            alert("Error desconocido");
+            
           }
         },
         error: (error) => {

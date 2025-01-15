@@ -322,5 +322,10 @@ export class ConfigService {
       .post(url, Data, { headers })
       .pipe(catchError(this.auxService.handleError.bind(this)));
   }
+
+  Delete(link: string, id: number,): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.delete(`${this.apiUrl}/${link}/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
   
 }

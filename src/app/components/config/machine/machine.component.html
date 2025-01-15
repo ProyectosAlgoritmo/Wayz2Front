@@ -17,6 +17,9 @@
         (editAction)="onEditAction($event)"
         [ActionCreate] ="true"
         (Create)="CreateAction()"
+        [ActionDelete]="true"
+        (deleteAction)="onDeleteAction($event)"
+        [checkActive]="true"
       >
         <!-- Aquí puedes establecer true o false según sea necesario -->
       </app-table>

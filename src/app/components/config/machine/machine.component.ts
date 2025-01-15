@@ -52,9 +52,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
   styleUrls: ['./machine.component.css'],
 })
 export class MachineComponent implements OnInit {
-  displayedColumns: string[] = ['name'];
+  displayedColumns: string[] = ['name', 'crew',];
   columnNames = {
     name: 'Name',
+    crew: 'Crew',
   };
   dataSource: any[] = [];
   dataForTable: any[] = [];
@@ -71,9 +72,6 @@ export class MachineComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.originalDataSource = [...this.dataSource];
-
-    this.sharedStateService.toggleSidenavVisible(true);
 
     this.auxService.ventanaCargando();
     this.configService.getMachines().subscribe({
@@ -96,6 +94,32 @@ export class MachineComponent implements OnInit {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
         this.auxService.AlertError('Error al cargar los clientes:', error);
+      },
+    });
+  }
+
+  // Función para eliminar un usuario
+  onDeleteAction(event: any) {
+    this.auxService.ventanaCargando();
+    this.configService.Delete('Delete-Machine', event.idMachine).subscribe({
+      next: async (data: any) => {
+        this.auxService.cerrarVentanaCargando();
+        if (data.success) {
+          await this.auxService.AlertSuccess(
+            'Machine deleted successfully.',
+            data.message
+          );
+          this.getmachine();
+        } else {
+          this.auxService.AlertWarning(
+            'Error deleting the machine.',
+            data.message
+          );
+        }
+      },
+      error: (error: any) => {
+        this.auxService.cerrarVentanaCargando();
+        this.auxService.AlertError('Error deleting the machine.', error.message);
       },
     });
   }

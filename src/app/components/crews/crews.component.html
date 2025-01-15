@@ -1,127 +1,20 @@
 <div class="content-container">
   <div class="table-container">
     <div class="divtable">
-      <h2>New Crew</h2>
-
-      <form [formGroup]="crewForm" class="grid-form">
-        <div class="grid-item">
-          <label>Name</label>
-          <input nz-input formControlName="name" name="required" required />
-        </div>
-
-        <div class="grid-item">
-          <label>Shift Hours</label>
-          <nz-select formControlName="shiftHours" nzPlaceHolder="Select a time">
-            <nz-option nzValue="8" nzLabel="8 hours"></nz-option>
-            <nz-option nzValue="12" nzLabel="12 hours"></nz-option>
-          </nz-select>
-        </div>
-
-        <div class="grid-item">
-          <label>Days Until Pattern Repeats</label>
-          <nz-select formControlName="patternDays" nzPlaceHolder="Select a day">
-            <nz-option
-              *ngFor="let day of days"
-              [nzValue]="day"
-              [nzLabel]="day + ' days'"
-            ></nz-option>
-          </nz-select>
-        </div>
-
-        <div class="grid-item">
-          <label>1st Day of Rotation</label>
-          <nz-date-picker
-            formControlName="rotationDay"
-            (ngModelChange)="onChange($event)"
-          ></nz-date-picker>
-        </div>
-
-        <div class="grid-item">
-          <label>Number of Crews</label>
-          <nz-select formControlName="crewNumber" nzPlaceHolder="Select a crew">
-            <nz-option
-              *ngFor="let number of crewNumbers"
-              [nzValue]="number"
-              [nzLabel]="number + (number === 1 ? ' crew' : ' crews')"
-            ></nz-option>
-          </nz-select>
-        </div>
-
-        <div class="grid-item">
-          <label>Start Time of First Shift</label>
-          <nz-time-picker formControlName="startTime"></nz-time-picker>
-        </div>
-      </form>
-
-      <h3>Crews</h3>
-      <nz-table
-        #crewTable
-        [nzData]="crewData"
-        [nzBordered]="true"
-        [nzShowPagination]="true"
-        [nzPageSize]="5"
+      <h2 class="title-heading">Crews</h2>
+      <app-table
+        [checkActive]="true"
+        [dataSource]="dataSource"
+        [displayedColumns]="displayedColumns"
+        [enableSearch]="true"
+        [pageSize]="10"
+        [ActionEdit]="true"
+        [columnNames]="columnNames"
+        [ActionLeft]="true"
+        [ActionCreate]="true"
+        (Create)="CreateAction()"
       >
-        <thead>
-          <tr>
-            <th>Team</th>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of crewTable.data; let i = index">
-            <td>{{ item.team }}</td>
-            <td>
-              <!-- Input con NZ-Zorro y ngModel -->
-              <input
-                nz-input
-                type="text"
-                [(ngModel)]="item.name"
-                (ngModelChange)="onNameChange(i, $event)"
-              />
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
-
-      <h3>Shifts</h3>
-      <nz-table
-        #shiftTable
-        [nzData]="shiftData"
-        [nzBordered]="true"
-        [nzShowPagination]="true"
-        [nzPageSize]="5"
-      >
-        <thead>
-          <tr>
-            <th>Date and Time</th>
-            <th>Team</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of shiftData; let i = index">
-            <!-- Fecha y hora -->
-            <td>{{ item.date }}</td>
-
-            <!-- Select para Team -->
-            <td>
-              <nz-select
-                nzPlaceHolder="Select a team"
-                [(ngModel)]="item.team"
-                (ngModelChange)="onTeamChange(i, $event)"
-              >
-                <!-- Las opciones provienen de crewDataInput -->
-                <nz-option
-                  *ngFor="let c of crewDataInput"
-                  [nzValue]="c"
-                  [nzLabel]="c"
-                >
-                </nz-option>
-              </nz-select>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+      </app-table>
     </div>
-    <app-buttonstrategic mat-button [label]="'Save'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
   </div>
 </div>
