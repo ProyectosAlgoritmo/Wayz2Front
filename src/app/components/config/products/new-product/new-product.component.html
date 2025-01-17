@@ -9,25 +9,38 @@
   
   
         <nz-form-item>
-          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="name" style="text-align: left;">Name Machine</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
-            <input nz-input   formControlName="name" name="required" required />
+          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="name" style="text-align: left;">Name Product</nz-form-label>
+          <nz-form-control
+            nzHasFeedback
+            [nzSm]="15"
+            [nzXs]="24"
+            nzErrorTip="You must fill out this field.">
+            <input
+              nz-input
+              formControlName="name"
+              name="required"
+              required />
           </nz-form-control>
         </nz-form-item>
-
+        
         <nz-form-item>
-          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="crews" style="text-align: left;">Crews</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
+          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="machines" style="text-align: left;">Machines</nz-form-label>
+          <nz-form-control
+            nzHasFeedback
+            [nzSm]="15"
+            [nzXs]="24"
+            nzErrorTip="Debes seleccionar un Machines">
             <nz-select
               nzShowSearch
               nzAllowClear
-              nzPlaceHolder="Select a crew"
-              formControlName="idCrew"
+              nzPlaceHolder="Select a machine"
+              formControlName="idMachine"
               required>
-              <nz-option *ngFor="let crew of crews" [nzLabel]="crew.name" [nzValue]="crew.idCrew"></nz-option>
+              <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name" [nzValue]="machine.idMachine"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
+        
 
       </form>
     </mat-dialog-content>

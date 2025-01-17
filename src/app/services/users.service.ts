@@ -25,8 +25,7 @@ export class UsersService {
     return this.httpClient
     .get(`${this.apiUrl}/${link}`, { headers })
     .pipe(
-      catchError((error) => {
-        console.log(link); 
+      catchError((error) => { 
         return this.auxService.handleError(error);
       })
     );

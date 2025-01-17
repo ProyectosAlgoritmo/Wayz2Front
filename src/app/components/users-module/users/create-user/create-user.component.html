@@ -8,28 +8,28 @@
 
       <nz-form-item>
         <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombre" style="text-align: left;">Name</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
           <input nz-input formControlName="nombre" name="nombre"  required />
         </nz-form-control>
       </nz-form-item>
       
       <nz-form-item>
         <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellido" style="text-align: left;">surnames</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
           <input nz-input formControlName="apellido" name="apellido" required />
         </nz-form-control>
       </nz-form-item>
       
       <nz-form-item>
         <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="correoElectronico" style="text-align: left;">Email</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar un correo válido">
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must enter a valid email.">
           <input nz-input formControlName="correoElectronico" type="email" name="correoElectronico"  required />
         </nz-form-control>
       </nz-form-item>
       
       <nz-form-item>
         <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="telefono" style="text-align: left;">Phone number</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes ingresar este campo">
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
           <input nz-input formControlName="telefono" type="tel" name="telefono" required />
         </nz-form-control>
       </nz-form-item>
@@ -37,7 +37,7 @@
       
       <nz-form-item *ngIf="isInfoPersonal">
         <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="idRol" style="text-align: left;">Rol</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="Debes seleccionar un rol">
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
           <nz-select 
             nzShowSearch
             nzAllowClear

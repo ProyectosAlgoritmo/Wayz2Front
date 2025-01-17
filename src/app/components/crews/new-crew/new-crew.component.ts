@@ -170,12 +170,10 @@ clearCrewsDataForm() {
 
 clearCrewData() {
   this.crewData = [];
-  console.log('CrewData cleared:', this.crewData);
 }
 
 clearShiftData() {
   this.shiftData = [];
-  console.log('ShiftData cleared:', this.shiftData);
 }
 
 validCrewsForm(): boolean {

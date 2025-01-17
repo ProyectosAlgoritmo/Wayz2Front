@@ -307,6 +307,18 @@ export class ConfigService {
     return this.httpClient.post(url, UnitData, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
 
+  get(link: string,): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient
+    .get(`${this.apiUrl}/${link}`, { headers })
+    .pipe(
+      catchError((error) => {
+        console.log(link); 
+        return this.auxService.handleError(error);
+      })
+    );
+  }
+
   Update(link: string, Data: any): Observable<any> {
     const headers = this.getHeaders();
     const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente

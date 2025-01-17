@@ -58,19 +58,19 @@ export class CreateUserComponent implements OnInit {
     private dialogRef: MatDialogRef<CreateUserComponent>
   ) {
     this.recoveryForm = this.fb.group({
-      email: [null, ],
+      email: [null],
       url: [this.url(), [Validators.required]],
       rememberMe: [false],
     });
     this.isInfoPersonal = true;
     this.formularioForm = this.fb.group({
       idUsuario: [null],
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
-      correoElectronico: ['', [Validators.required, Validators.email]],
-      telefono: ['', Validators.required],
+      nombre: [null, Validators.required],
+      apellido: [null, Validators.required],
+      correoElectronico: [null, [Validators.required, Validators.email]],
+      telefono: [null, Validators.required],
       idRol: [null, Validators.required],
-      bActivo: [false,],
+      bActivo: [false],
     });
     this.isEnableEmail();
     if (this.data) {
@@ -97,8 +97,8 @@ export class CreateUserComponent implements OnInit {
     this.getRole();
   }
   ngOnInit() {
-    this.recoveryForm.patchValue({ url: this.url()+'change-password/' });
-    console.log('url: ',this.recoveryForm.value.url);
+    this.recoveryForm.patchValue({ url: this.url() + 'change-password/' });
+    console.log('url: ', this.recoveryForm.value.url);
   }
 
   isDisableEmail(): void {
@@ -107,28 +107,27 @@ export class CreateUserComponent implements OnInit {
       emailControl.disable(); // Deshabilita solo el campo de email
     }
   }
-  
+
   isEnableEmail(): void {
     const emailControl = this.formularioForm.get('correoElectronico');
     if (emailControl) {
       emailControl.enable(); // Habilita solo el campo de email
     }
   }
-  
+
   url() {
     // Obtener la URL completa
     let urlCompleta = window.location.href;
-  
+
     // Definir la expresión regular para capturar la parte deseada de la URL hasta el primer '/'
     let expresionRegular = /(https?:\/\/[^\/]+\/)/;
-  
+
     // Ejecutar la expresión regular en la URL completa
     let coincidencias = expresionRegular.exec(urlCompleta);
-  
+
     // Retornar la parte deseada de la URL
     return coincidencias ? coincidencias[1] : '';
   }
-  
 
   // goToLogin() {
   //   this.router.navigate(['/login']);
@@ -144,7 +143,10 @@ export class CreateUserComponent implements OnInit {
       this.accesoServicio.RecoveryPass(email, url).subscribe({
         next: async (data) => {
           if (data.success) {
-            await this.auxService.AlertWarning('Change my password ', data.message);
+            await this.auxService.AlertWarning(
+              'Change my password ',
+              data.message
+            );
             //this.router.navigate(['/login']);
             this.auxService.cerrarVentanaCargando();
           } else {
@@ -191,7 +193,7 @@ export class CreateUserComponent implements OnInit {
       next: (data: any) => {
         if (data) {
           this.titulo = 'Edit Profile';
-          let profile= data.data;
+          let profile = data.data;
           this.formularioForm.patchValue({
             idUsuario: profile.idUsuario || 0,
             nombre: profile.nombre || '',
@@ -213,6 +215,22 @@ export class CreateUserComponent implements OnInit {
   }
 
   guardarCambios() {
+    // Marca todos los controles como tocados
+    this.formularioForm.markAllAsTouched();
+
+    // Fuerza la actualización de validez de cada control
+    Object.keys(this.formularioForm.controls).forEach((key) => {
+      this.formularioForm.get(key)?.updateValueAndValidity();
+    });
+
+    // Verifica si el formulario es válido
+    if (this.formularioForm.invalid) {
+      this.auxService.AlertWarning(
+        'Invalid form.',
+        'Please review the fields and correct the errors.'
+      );
+      return;
+    }
     if (this.data) {
       this.updateUser();
     } else {

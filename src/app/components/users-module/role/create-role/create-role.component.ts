@@ -169,6 +169,22 @@ export class CreateRoleComponent implements OnInit {
 
   // Guardar los cambios
   guardarCambios() {
+    // Marca todos los controles como tocados
+    this.formularioForm.markAllAsTouched();
+
+    // Fuerza la actualización de validez de cada control
+    Object.keys(this.formularioForm.controls).forEach((key) => {
+      this.formularioForm.get(key)?.updateValueAndValidity();
+    });
+
+    // Verifica si el formulario es válido
+    if (this.formularioForm.invalid) {
+      this.auxService.AlertWarning(
+        'Invalid form.',
+        'Please review the fields and correct the errors.'
+      );
+      return;
+    }
     if (this.formularioForm.valid) {
       // Preparar los datos de los checkboxes
       const selectedOptions = this.formularioForm.value.checkboxGroups.map((group: any, index: number) => ({

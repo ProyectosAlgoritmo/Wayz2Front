@@ -104,7 +104,7 @@ export class AuxService {
   }
 
   async AlertConfirmation(title: string, 
-    text: string = "¡No podrás revertir esta acción una vez que confirmes!", 
+    text: string = "You will not be able to undo this action once you confirm!", 
     confirmButtonText: string = 'Confirmar') {
     return await Swal.fire({
       title: title,
@@ -145,19 +145,19 @@ export class AuxService {
     if (error.status === 404) {
       // Aquí puedes manejar el error 401
       return throwError(
-        'Hubo un problema con la solicitud. Intente nuevamente más tarde.'
+        'There was an issue with the request. Please try again later.'
       );
     }
     if (error.status === 401) {
       // Aquí puedes manejar el error 401
       return throwError(
-        'No autorizado. Por favor, consulte con el administrador'
+        'Not authorized. Please consult with the administrator.'
       );
     } else {
       console.log('No autorizado. Por favor, inicie sesión.');
       // Otros errores pueden manejarse aquí
       return throwError(
-        'Hubo un problema con la solicitud. Intente nuevamente más tarde.'
+        'There was an issue with the request. Please try again later.'
       );
     }
   }
