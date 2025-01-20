@@ -97,7 +97,6 @@ export class LoginComponent {
         },
         error: (error) => {
           this.auxService.cerrarVentanaCargando();
-          console.log(error.message);
         },
       })
     }

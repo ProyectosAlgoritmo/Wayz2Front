@@ -89,8 +89,6 @@ export class FileUploadImportComponent {
           this.importService.getUrlBucket(csvFile, fileName).pipe(
             switchMap(response => this.importService.uploadFileToS3(response.url, csvFile))
           ).subscribe(() => {
-            
-            console.log('File uploaded successfully');
 
             const payload = {FileUrl: fileName,  modeldata: this.modeldata, storedprocedure: this.storedprocedure };
 

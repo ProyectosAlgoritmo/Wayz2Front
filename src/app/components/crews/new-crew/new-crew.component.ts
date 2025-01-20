@@ -144,8 +144,6 @@ guardarCambios() {
         );
       },
     });
-  } else {
-    console.log('Validation failed. Data not saved.');
   }
 }
 
@@ -153,7 +151,6 @@ clearAllData() {
   this.clearCrewsDataForm();
   this.clearCrewData();
   this.clearShiftData();
-  console.log('All data cleared.');
 }
 
 clearCrewsDataForm() {
@@ -165,7 +162,6 @@ clearCrewsDataForm() {
     startTime: null,
     name: null,
   });
-  console.log('CrewsDataForm cleared:', this.crewForm.value);
 }
 
 clearCrewData() {
@@ -218,9 +214,6 @@ validCrewsForm(): boolean {
         'Data invalid.','Error: Number of Crews is required.');
     return false;
   }
-
-  // Si pasa todas las validaciones
-  console.log('Validation successful:', this.crewsDataForm);
   return true;
 }
 
@@ -249,9 +242,6 @@ validCrews(): boolean {
       return false;
     }
   }
-
-  // Si todos los elementos son válidos
-  console.log('Validation successful for all crewData:', this.crewData);
   return true;
 }
 
@@ -287,9 +277,6 @@ validCrews(): boolean {
       return false;
     }
   }
-
-  // Si todos los elementos son válidos
-  console.log('Validation successful for all shiftData:', this.shiftData);
   return true;
 }
 
@@ -300,7 +287,6 @@ onNameChange(index: number, newValue: string): void {
 
   // 2. Actualiza tu arreglo de "inputs"
   this.crewDataInput[index] = newValue;
-  console.log(`Nombre de la fila ${index}: ${newValue}`);
 
   // 3. Recorre shiftData y reemplaza el valor anterior por el nuevo
   //    en caso de que alguno lo estuviera usando como 'team'
@@ -312,7 +298,6 @@ onNameChange(index: number, newValue: string): void {
 }
 
 onTeamChange(index: number, newTeam: string): void {
-  console.log(`Shift ${index} cambió su team a: ${newTeam}`);
 }
 
 // Genera dinámicamente los datos de las tripulaciones
@@ -378,14 +363,11 @@ generateShifts(): void {
     }
 
     // Asignar los datos generados a shiftData
-    this.shiftData = [...nuevosDatos]; // Usar el spread operator para crear una nueva referencia
-
-    console.log('Shift Data:', this.shiftData);
+    this.shiftData = [...nuevosDatos];
   } catch (error) {
     console.error('Error generating shifts:', error);
     this.shiftData = []; // Resetea si ocurre un error
   }
-  console.log(`input ${this.crewDataInput}`);
 }
 
 private formatDateTime(date: Date): string {
@@ -406,6 +388,5 @@ private formatDateTime(date: Date): string {
 
 // Lógica de cambio de fechas
 onChange(result: any): void {
-  console.log('onChange: ', result);
 }
 }

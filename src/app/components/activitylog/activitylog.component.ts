@@ -66,7 +66,7 @@ export class ActivitylogComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log(error.message);
+
       },
     }); 
    

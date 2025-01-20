@@ -50,8 +50,7 @@ export class EditSupervisorComponent {
   }
 
   cargarDetalles() {
-    this.auxService.ventanaCargando();
-    console.log(this.idVendedor); 
+    this.auxService.ventanaCargando(); 
     this.configService.ObtenerDetail(this.idVendedor, 'Get-Detail-supervisor').subscribe({
       next: (data) => {
         this.auxService.cerrarVentanaCargando();
@@ -102,7 +101,6 @@ export class EditSupervisorComponent {
         },
         error: (error) => {
           this.auxService.cerrarVentanaCargando();
-          console.log(error.status); 
           this.auxService.AlertError('Error al actualizar el cliente:', error);
         }
       });

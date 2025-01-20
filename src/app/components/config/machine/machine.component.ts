@@ -92,7 +92,6 @@ export class MachineComponent implements OnInit {
       },
       error: (error: any) => {
         this.auxService.cerrarVentanaCargando();
-        console.log(error.status);
         this.auxService.AlertError('Error listing the data:', error);
       },
     });

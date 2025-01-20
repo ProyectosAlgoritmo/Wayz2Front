@@ -83,8 +83,7 @@ export class ChatAIComponent implements AfterViewChecked {
 
       this.chatService.getChatResponse(chatHistoryRequest).subscribe(response => {
         this.messages.push({ role: 'AI', content: response.choices[0].message.content });
-        this.messagesfront.push({ role: 'AI', content: response.choices[0].message.content });
-        //console.log(response.choices[0].message.content);
+        this.messagesfront.push({ role: 'AI', content: response.choices[0].message.content });;
       });
       this.userInput = '';
       this.userrequest = '';
@@ -107,8 +106,6 @@ export class ChatAIComponent implements AfterViewChecked {
           this.auxService.cerrarVentanaCargando();
 
           if(!data.warning){
-
-            console.log(data.data); 
             //this.userInput = question.question + 'La data es la siguiente' + ;  // Inserta la pregunta seleccionada en el campo de entrada
             const formattedData = JSON.stringify(data.data, null, 2);  // Formatea los datos como JSON con indentación
             this.userInput = question.question;  // Inserta la pregunta y la data en el campo de entrada

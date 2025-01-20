@@ -43,7 +43,6 @@ export class TableWithRowsChildSubcolumnComponent implements OnInit {
   private searchSubscription: Subscription = new Subscription();
   constructor(private auxService: AuxService) {
     this._listOfData = [...this.sortedData];
-    console.log(this.columns); 
   }
 
 
@@ -53,14 +52,6 @@ export class TableWithRowsChildSubcolumnComponent implements OnInit {
       .subscribe((searchTerm) => {
         this.onSearch(searchTerm);
       });
-
-      console.log(this.columns); 
-
-      //this.columns.push('Acciones');
-
-    
-
-    
   }
 
 
@@ -76,7 +67,6 @@ export class TableWithRowsChildSubcolumnComponent implements OnInit {
   set listOfData(value: any[]) {
     // Asegurarse de que el valor es un array, o bien lo inicializamos con un array vacío
     this._listOfData = Array.isArray(value) ? value : [];
-    console.log('data table con su table', this._listOfData);
     // Solo inicializar columnas si hay datos disponibles
     if (this._listOfData.length > 0) {
       this.initializeColumns();
@@ -166,10 +156,7 @@ export class TableWithRowsChildSubcolumnComponent implements OnInit {
     
     const indexc = this.columnsMeses.findIndex(column => column.field === 'descripcion');
     if (indexc !== -1) {
-     this.columnsMeses.splice(indexc, 1);  // Remueve 'Descripcion' solo de columnsMeses
-     }
-     
-     console.log(this.columns);  // Aquí columns permanecerá intacto
+     this.columnsMeses.splice(indexc, 1);
      
      this.columns.unshift({
       title: 'Acciones',

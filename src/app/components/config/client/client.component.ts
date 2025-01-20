@@ -89,7 +89,6 @@ export class ClientComponent implements OnInit {
       },
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
-        console.log(error.status);
         this.auxService.AlertError('Error listing the data:', error);
       },
     });

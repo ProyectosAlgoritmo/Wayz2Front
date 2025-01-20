@@ -58,7 +58,6 @@ export class EditclientComponent {
 
   cargarDetalles() {
     this.auxService.ventanaCargando();
-    console.log(this.idcliente); 
     this.configService.ObtenerDetailClient(this.idcliente).subscribe({
       next: (data) => {
         this.auxService.cerrarVentanaCargando();
@@ -88,9 +87,6 @@ export class EditclientComponent {
   guardarCambios() {
     if (this.clientForm.valid) {
       this.auxService.ventanaCargando();
-
-      console.log(this.idcliente)
-
       this.configService.actualizarCliente(this.idcliente, this.clientForm.value).subscribe({
         next: (data) => {
           if (data.success) {
@@ -109,8 +105,7 @@ export class EditclientComponent {
           }
         },
         error: (error) => {
-          this.auxService.cerrarVentanaCargando();
-          console.log(error.status); 
+          this.auxService.cerrarVentanaCargando(); 
           this.auxService.AlertError('Error al actualizar el cliente:', error);
         }
       });

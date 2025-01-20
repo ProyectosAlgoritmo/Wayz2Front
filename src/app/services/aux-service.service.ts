@@ -154,7 +154,6 @@ export class AuxService {
         'Not authorized. Please consult with the administrator.'
       );
     } else {
-      console.log('No autorizado. Por favor, inicie sesión.');
       // Otros errores pueden manejarse aquí
       return throwError(
         'There was an issue with the request. Please try again later.'

@@ -120,8 +120,6 @@ export class BusinessunitComponent implements OnInit {
 
 
 CreateAction() {
-  console.log(event); 
-  
   const dialogRef = this.dialog.open(CreatebusinessunitComponent); 
   
   dialogRef.afterClosed().subscribe(result => {

@@ -92,19 +92,6 @@ export class ImportComponent {
     const dialogRef = this.dialog.open(FileUploadImportComponent, {
       data: { additionalData, carpeta, modeldata, storedprocedure }
     });
-
-    //dialogRef.afterClosed().subscribe(result => {
-    //  if (result) {
-     //   console.log('File selected:', result);
-     //   this.uploadFile(result); // Llama a tu método para subir el archivo
-     // }
-    //});
-
-
-   // this.importService.ImportDesempenofinanciero(fileUrl, bucketName, objectName).subscribe(response => {
-   //   console.log(response);
-    //});
-
   }
 
 
@@ -115,11 +102,8 @@ export class ImportComponent {
     const modeldata = element.modeldata;
     const storedprocedure = element.storedprocedure;
 
-    console.log(element); 
-
     this.importService.getPreSignedDownloadUrl(element.modelImport).subscribe(response => {
       const downloadUrl = response.url;
-      console.log(response.url); 
       
       this.importService.downloadFileFromS3(downloadUrl).subscribe(blob => {
         // Crear un enlace para descargar el archivo
@@ -136,8 +120,7 @@ export class ImportComponent {
   }
 
   uploadFile(file: File): void {
-    // Lógica para subir el archivo
-    console.log('Uploading file:', file);
+
   }
   
 

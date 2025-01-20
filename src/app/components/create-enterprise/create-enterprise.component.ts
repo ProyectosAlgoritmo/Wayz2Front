@@ -94,7 +94,7 @@ export class CreateEnterpriseComponent implements OnInit {
   ngOnInit() {}
 
   onChange(result: any): void {
-    console.log('onChange: ', result);
+
   }
 
   getEnterprise() {
@@ -102,7 +102,6 @@ export class CreateEnterpriseComponent implements OnInit {
     this.permisosService.GetEnterprise(this.data.idclient).subscribe({
       next: (data) => {
         if (data.success) {
-          console.log('data', data);
           this.auxService.cerrarVentanaCargando();
             this.formularioForm.patchValue({
               // Datos de la empresa
@@ -136,7 +135,6 @@ export class CreateEnterpriseComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log(error.message);
       },
     });
   }
@@ -301,7 +299,6 @@ export class CreateEnterpriseComponent implements OnInit {
   }
 
   done(): void {
-    console.log('done');
   }
 
   changeContent(): void {

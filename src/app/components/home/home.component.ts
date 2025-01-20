@@ -103,7 +103,6 @@ export class HomeComponent {
         }
       },
       error: (error) => {
-        console.log(error.message);
       },
     }); 
    
@@ -171,7 +170,6 @@ export class HomeComponent {
         }
       },
       error: (error) => {
-        console.log(error.message);
       },
     }); 
   }

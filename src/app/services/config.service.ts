@@ -313,7 +313,6 @@ export class ConfigService {
     .get(`${this.apiUrl}/${link}`, { headers })
     .pipe(
       catchError((error) => {
-        console.log(link); 
         return this.auxService.handleError(error);
       })
     );

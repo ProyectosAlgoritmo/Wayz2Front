@@ -69,7 +69,6 @@ export class EditMachineComponent implements OnInit {
         // this.dataSource = data.data;
         this.crews = data.data.filter((x: any) => x.isActive);
         let idCrew = this.crews.filter((x: any) => x.idCrew == this.formularioForm.get('idCrew')?.value);
-        console.log('hola ', idCrew);
         if (idCrew.length == 0) {
           this.auxService.AlertWarning('Warning', 'This crew is no longer available');
           this.formularioForm.get('idCrew')?.setValue(null);

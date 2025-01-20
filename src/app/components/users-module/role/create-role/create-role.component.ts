@@ -87,7 +87,6 @@ export class CreateRoleComponent implements OnInit {
     }
     this.usersService.get(`get-permissions/${idRol}`).subscribe({
       next: (data) => {
-        console.log(data.data);
         this.checkboxGroups = data.data;
         this.initializeCheckboxGroups();
         this.auxService.cerrarVentanaCargando();

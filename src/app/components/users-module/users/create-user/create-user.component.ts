@@ -98,7 +98,6 @@ export class CreateUserComponent implements OnInit {
   }
   ngOnInit() {
     this.recoveryForm.patchValue({ url: this.url() + 'change-password/' });
-    console.log('url: ', this.recoveryForm.value.url);
   }
 
   isDisableEmail(): void {
@@ -163,7 +162,6 @@ export class CreateUserComponent implements OnInit {
   }
 
   onChange(result: any): void {
-    console.log('onChange: ', result);
   }
 
   onCancel(): void {

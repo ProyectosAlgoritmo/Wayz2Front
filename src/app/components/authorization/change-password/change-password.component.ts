@@ -99,7 +99,6 @@ export class ChangePasswordComponent implements OnInit {
         .changePassword('Auth/change-password', password, this.token)
         .subscribe({
           next: (data) => {
-            console.log('data', this.token);
             if (data.success) {
               if(localStorage.getItem("cambio") != null){
                 localStorage.removeItem("cambio");
@@ -116,7 +115,6 @@ export class ChangePasswordComponent implements OnInit {
           },
           error: (error) => {
             this.auxService.cerrarVentanaCargando();
-            console.log(error.message);
           },
         });
     }

@@ -97,8 +97,6 @@ export class SupervisorComponent {
   }
 
   onEditAction(event: any) {
-    console.log(event); 
-    
     const dialogRef = this.dialog.open(EditSupervisorComponent, {
         data: { idVendedor: event.idVendedor }
 

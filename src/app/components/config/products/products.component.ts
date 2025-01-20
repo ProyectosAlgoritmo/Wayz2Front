@@ -143,7 +143,6 @@ displayedColumns: string[] = ['name', 'machine',];
       },
       error: (error: any) => {
         this.auxService.cerrarVentanaCargando();
-        console.log(error.status);
         this.auxService.AlertError('Error loading products: ', error);
       },
     });
