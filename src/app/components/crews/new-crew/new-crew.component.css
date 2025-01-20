@@ -52,3 +52,9 @@ input[nz-input]:focus, select[nz-select]:focus {
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2); /* Sombra suave */
 }
 
+.hederShifts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+

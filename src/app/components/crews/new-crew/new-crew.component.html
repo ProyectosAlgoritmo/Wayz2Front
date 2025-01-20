@@ -86,7 +86,14 @@
         </tbody>
       </nz-table>
 
-      <h3>Shifts</h3>
+      <div class="hederShifts"><h3>Shifts</h3>
+        <app-buttonstrategic
+        mat-button
+        [label]="'Generate Shifts'"
+        [customClass]="'BotonVerde'"
+        (click)="fillTeamSelect()"
+        class="botonmargen"
+      ></app-buttonstrategic></div>
       <nz-table
         #shiftTable
         [nzData]="shiftData"
@@ -133,5 +140,6 @@
       (click)="guardarCambios()"
       class="botonmargen"
     ></app-buttonstrategic>
+    
   </div>
 </div>

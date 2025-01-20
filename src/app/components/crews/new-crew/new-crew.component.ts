@@ -379,6 +379,31 @@ private formatDateTime(date: Date): string {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
+fillTeamSelect(): void {
+  if (!this.crewDataInput || this.crewDataInput.length === 0) {
+    this.auxService.AlertWarning('No data', 'The crewDataInput array is empty.');
+    return;
+  }
+
+  // Recorre los turnos y asigna los valores de crewDataInput en orden
+  this.shiftData.forEach((shift, index) => {
+    const team = this.crewDataInput[index % this.crewDataInput.length]; // Asignar en orden cíclico
+    shift.team = team;
+  });
+
+  this.auxService.AlertSuccess('Success', 'Teams have been assigned in order.');
+}
+
+hasDuplicateData(): boolean {
+  if (!this.crewDataInput || this.crewDataInput.length === 0) {
+    return false; // No hay duplicados si el array está vacío
+  }
+
+  const dataSet = new Set(this.crewDataInput); // Convierte el array en un conjunto
+  return dataSet.size !== this.crewDataInput.length; // Compara tamaños para detectar duplicados
+}
+
+
 // Lógica de cambio de fechas
 onChange(result: any): void {
 }

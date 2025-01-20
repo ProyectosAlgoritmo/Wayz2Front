@@ -81,7 +81,7 @@ export const routes: Routes = [
   { path: 'crews', component: CrewsComponent, canActivate: [AuthGuard] }, 
   { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] }, 
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] }, 
-  { path: 'categorys', component: CategorysComponent, canActivate: [AuthGuard] }, 
+  { path: 'categories', component: CategorysComponent, canActivate: [AuthGuard] }, 
 
   {
     path: 'activitylog',
