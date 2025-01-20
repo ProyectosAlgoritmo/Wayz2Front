@@ -70,7 +70,16 @@ displayedColumns: string[] = ['name', 'machine',];
   }
 
   // Función para eliminar un usuario
-  onDeleteAction(event: any) {
+  async onDeleteAction(event: any) {
+    const confirmed = await this.auxService.AlertConfirmation(
+      'Are you sure you want to delete this record?',
+      'This action cannot be undone.',
+      'Yes, delete it!'
+    );
+  
+    if (!confirmed) {
+      return; // Si no confirma, no continúa con la eliminación
+    }
     this.auxService.ventanaCargando();
     this.configService.Delete('Delete-Product', event.idProduct).subscribe({
       next: async (data: any) => {

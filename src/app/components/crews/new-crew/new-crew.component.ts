@@ -379,13 +379,6 @@ private formatDateTime(date: Date): string {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
-//  // Devuelve el sufijo ordinal para los números
-//  getOrdinalSuffix(number: number): string {
-//    const suffixes = ['th', 'st', 'nd', 'rd'];
-//    const value = number % 100;
-//    return suffixes[(value - 20) % 10] || suffixes[value] || suffixes[0];
-//  }
-
 // Lógica de cambio de fechas
 onChange(result: any): void {
 }

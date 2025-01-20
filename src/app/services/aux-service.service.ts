@@ -103,10 +103,12 @@ export class AuxService {
     });
   }
 
-  async AlertConfirmation(title: string, 
-    text: string = "You will not be able to undo this action once you confirm!", 
-    confirmButtonText: string = 'Confirmar') {
-    return await Swal.fire({
+  async AlertConfirmation(
+    title: string,
+    text: string = "You will not be able to undo this action once you confirm!",
+    confirmButtonText: string = 'Confirmar'
+  ): Promise<boolean> {
+    const result = await Swal.fire({
       title: title,
       text: text,
       icon: 'warning',
@@ -114,9 +116,12 @@ export class AuxService {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: confirmButtonText,
-      cancelButtonText: 'Cnacelar'
+      cancelButtonText: 'Cancelar', // Corrige el texto de "Cnacelar"
     });
+  
+    return result.isConfirmed; 
   }
+  
 
   validateInteger(value: string): string {
     // Eliminar cualquier carácter que no sea un número entero
