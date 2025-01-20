@@ -94,6 +94,7 @@ export class CrewsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sharedStateService.toggleSidenavVisible(true);
     this.GetCrews();
   }
 

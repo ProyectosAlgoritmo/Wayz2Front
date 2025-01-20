@@ -57,7 +57,6 @@ export class NewProductComponent implements OnInit {
     });
     if (this.data) {
       this.titulo = 'Edit product';
-      console.log(this.data);
       this.formularioForm.patchValue({
         idProduct: this.data.idProduct,
         name: this.data.name,

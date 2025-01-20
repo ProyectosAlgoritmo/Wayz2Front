@@ -20,6 +20,7 @@ import { MachineComponent } from './components/config/machine/machine.component'
 import { CrewsComponent } from './components/crews/crews.component';
 import { NewCrewComponent } from './components/crews/new-crew/new-crew.component';
 import { ProductsComponent } from './components/config/products/products.component';
+import { CategorysComponent } from './components/config/categorys/categorys.component';
 
 export const routes: Routes = [
   {
@@ -76,10 +77,11 @@ export const routes: Routes = [
     component: PowerBiReportComponent,
     canActivate: [AuthGuard],
   }, 
-  { path: 'machine', component: MachineComponent, canActivate: [AuthGuard] }, 
+  { path: 'machines', component: MachineComponent, canActivate: [AuthGuard] }, 
   { path: 'crews', component: CrewsComponent, canActivate: [AuthGuard] }, 
   { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] }, 
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] }, 
+  { path: 'categorys', component: CategorysComponent, canActivate: [AuthGuard] }, 
 
   {
     path: 'activitylog',

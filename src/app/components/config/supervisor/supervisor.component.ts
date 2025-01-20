@@ -114,7 +114,7 @@ export class SupervisorComponent {
                 this.auxService.cerrarVentanaCargando();
               },
               error: (error) => {
-                this.auxService.AlertError('Error al cargar los clientes:', error);
+                this.auxService.AlertError('Error listing the data:', error);
               }
             });
           }

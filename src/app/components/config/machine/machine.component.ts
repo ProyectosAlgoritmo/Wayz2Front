@@ -93,7 +93,7 @@ export class MachineComponent implements OnInit {
       error: (error: any) => {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
-        this.auxService.AlertError('Error al cargar los clientes:', error);
+        this.auxService.AlertError('Error listing the data:', error);
       },
     });
   }
@@ -160,7 +160,7 @@ export class MachineComponent implements OnInit {
         this.auxService.cerrarVentanaCargando();
       },
       error: (error: any) => {
-        this.auxService.AlertError('Error al cargar los clientes:', error);
+        this.auxService.AlertError('Error listing the data:', error);
       },
     });
   }

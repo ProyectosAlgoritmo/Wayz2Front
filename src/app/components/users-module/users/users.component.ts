@@ -49,17 +49,15 @@ export class UsersComponent implements OnInit {
     'correoElectronico',
     'telefono',
     'rol',
-    'bActivo',
   ];
 
   // Nombres amigables de las columnas
   columnNames  = {
-    nombre: 'Name',
-    apellido: 'surnames',
+    nombre: 'First name',
+    apellido: 'Last name',
     correoElectronico: 'Email',
     telefono: 'Phone',
     rol: 'Role',
-    bActivo: 'Status',
 };
 
 

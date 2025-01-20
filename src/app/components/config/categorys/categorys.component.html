@@ -4,7 +4,7 @@
 
     <div class="divtable">
 
-     <h2 class="title-heading">Users</h2>
+     <h2 class="title-heading">Categorys</h2>
       <app-table
         [dataSource]="dataSource" 
         [displayedColumns]="displayedColumns"
@@ -17,8 +17,10 @@
         (editAction)="onEditAction($event)"
         [ActionCreate] ="true"
         (Create)="CreateAction()"
-        [checkActive]="true"
+        [ActionDelete]="true"
+        (deleteAction)="onDeleteAction($event)"
       >
+        <!-- Aquí puedes establecer true o false según sea necesario -->
       </app-table>
     </div>
    

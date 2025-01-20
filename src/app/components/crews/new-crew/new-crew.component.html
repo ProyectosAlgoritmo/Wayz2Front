@@ -49,7 +49,10 @@
 
         <div class="grid-item">
           <label>Start Time of First Shift</label>
-          <nz-time-picker formControlName="startTime" nzFormat="HH:mm"></nz-time-picker>
+          <nz-time-picker
+            formControlName="startTime"
+            nzFormat="HH:mm"
+          ></nz-time-picker>
         </div>
       </form>
 
@@ -109,6 +112,7 @@
                 [(ngModel)]="item.team"
                 (ngModelChange)="onTeamChange(i, $event)"
               >
+                <nz-option nzValue="Down" nzLabel="Down"></nz-option>
                 <!-- Las opciones provienen de crewDataInput -->
                 <nz-option
                   *ngFor="let c of crewDataInput"
@@ -122,6 +126,12 @@
         </tbody>
       </nz-table>
     </div>
-    <app-buttonstrategic mat-button [label]="'Save'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+    <app-buttonstrategic
+      mat-button
+      [label]="'Save'"
+      [customClass]="'BotonVerde'"
+      (click)="guardarCambios()"
+      class="botonmargen"
+    ></app-buttonstrategic>
   </div>
 </div>

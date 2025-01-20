@@ -68,7 +68,7 @@ export class EditSupervisorComponent {
       },
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
-        this.auxService.AlertError('Error al cargar los clientes:', error);
+        this.auxService.AlertError('Error listing the data:', error);
       },
     });
   }

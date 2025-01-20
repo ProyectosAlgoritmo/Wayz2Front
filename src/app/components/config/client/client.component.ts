@@ -90,7 +90,7 @@ export class ClientComponent implements OnInit {
       error: (error) => {
         this.auxService.cerrarVentanaCargando();
         console.log(error.status);
-        this.auxService.AlertError('Error al cargar los clientes:', error);
+        this.auxService.AlertError('Error listing the data:', error);
       },
     });
   }
@@ -129,7 +129,7 @@ export class ClientComponent implements OnInit {
             this.auxService.cerrarVentanaCargando();
           },
           error: (error) => {
-            this.auxService.AlertError('Error al cargar los clientes:', error);
+            this.auxService.AlertError('Error listing the data:', error);
           }
         });
       }

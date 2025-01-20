@@ -7,14 +7,14 @@
     <form [formGroup]="formularioForm">
 
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombre" style="text-align: left;">Name</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="nombre" style="text-align: left;">First name</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
           <input nz-input formControlName="nombre" name="nombre"  required />
         </nz-form-control>
       </nz-form-item>
       
       <nz-form-item>
-        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellido" style="text-align: left;">surnames</nz-form-label>
+        <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="apellido" style="text-align: left;">Last name</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
           <input nz-input formControlName="apellido" name="apellido" required />
         </nz-form-control>
