@@ -95,43 +95,42 @@
         class="botonmargen"
       ></app-buttonstrategic></div>
       <nz-table
-        #shiftTable
-        [nzData]="shiftData"
-        [nzBordered]="true"
-        [nzShowPagination]="true"
-        [nzPageSize]="5"
-      >
-        <thead>
-          <tr>
-            <th>Date and Time</th>
-            <th>Team</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of shiftData; let i = index">
-            <!-- Fecha y hora -->
-            <td>{{ item.date }}</td>
-
-            <!-- Select para Team -->
-            <td>
-              <nz-select
-                nzPlaceHolder="Select a team"
-                [(ngModel)]="item.team"
-                (ngModelChange)="onTeamChange(i, $event)"
+      #basicTable
+      [nzData]="shiftData"
+      [nzBordered]="true"
+      [nzFrontPagination]="true"
+      [nzTotal]="shiftData.length"
+      [nzPageSize]="pageSize"
+      [nzPageIndex]="currentPage"
+      (nzPageIndexChange)="pageIndexChanged($event)"
+    >
+      <thead>
+        <tr>
+          <th>Date and Time</th>
+          <th>Team</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of basicTable.data; let i = index">
+          <td>{{ item.date }}</td>
+          <td>
+            <nz-select
+              nzPlaceHolder="Select a team"
+              [(ngModel)]="item.team"
+              (ngModelChange)="onTeamChange(i, $event)"
+            >
+              <nz-option nzValue="Down" nzLabel="Down"></nz-option>
+              <nz-option
+                *ngFor="let c of crewDataInput"
+                [nzValue]="c"
+                [nzLabel]="c"
               >
-                <nz-option nzValue="Down" nzLabel="Down"></nz-option>
-                <!-- Las opciones provienen de crewDataInput -->
-                <nz-option
-                  *ngFor="let c of crewDataInput"
-                  [nzValue]="c"
-                  [nzLabel]="c"
-                >
-                </nz-option>
-              </nz-select>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
+              </nz-option>
+            </nz-select>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
     </div>
     <app-buttonstrategic
       mat-button
