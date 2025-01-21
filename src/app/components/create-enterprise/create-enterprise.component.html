@@ -152,10 +152,10 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <app-buttonstrategic mat-button [label]="'Cancelar'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
+  <app-buttonstrategic mat-button [label]="'Cancel'" [customClass]="'BotonGris'" (click)="onCancel()" class="botonmargen" [cancelar] ="true"></app-buttonstrategic>
   <app-buttonstrategic *ngIf="current > 0" mat-button [label]="'Anterioro'" [customClass]="'BotonGris'" (click)="pre()" class="botonmargen" ></app-buttonstrategic>
   <app-buttonstrategic *ngIf="current < 2" mat-button [label]="'Siguiente'" [customClass]="'BotonGris'" (click)="next()" class="botonmargen" ></app-buttonstrategic>
-  <app-buttonstrategic *ngIf="current === 2" mat-button [label]="'Guardar'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
+  <app-buttonstrategic *ngIf="current === 2" mat-button [label]="'Save'" [customClass]="'BotonVerde'" (click)="guardarCambios()" class="botonmargen"></app-buttonstrategic>
   </mat-dialog-actions>
 </div>
 </div>
