@@ -21,6 +21,7 @@ import { CrewsComponent } from './components/crews/crews.component';
 import { NewCrewComponent } from './components/crews/new-crew/new-crew.component';
 import { ProductsComponent } from './components/config/products/products.component';
 import { CategorysComponent } from './components/config/categorys/categorys.component';
+import { CenterlineComponent } from './components/centerline/centerline.component';
 
 export const routes: Routes = [
   {
@@ -82,6 +83,7 @@ export const routes: Routes = [
   { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] }, 
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] }, 
   { path: 'categories', component: CategorysComponent, canActivate: [AuthGuard] }, 
+  { path: 'centerline', component: CenterlineComponent, canActivate: [AuthGuard] }, 
 
   {
     path: 'activitylog',

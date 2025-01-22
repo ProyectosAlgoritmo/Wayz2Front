@@ -116,7 +116,7 @@ export class AuxService {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: confirmButtonText,
-      cancelButtonText: 'Cancelar', // Corrige el texto de "Cnacelar"
+      cancelButtonText: 'Cancel', // Corrige el texto de "Cnacelar"
     });
   
     return result.isConfirmed; 

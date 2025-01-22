@@ -1,3 +1,23 @@
-<p>
-  centerline works!
-</p>
+<div class="content-container">
+  <div class="table-container">
+    <div class="divtable">
+      <h2 class="title-heading">Crews</h2>
+      <app-table
+        [showActions]="true"
+        [ActionDelete]="true"
+        [dataSource]="dataSource"
+        [displayedColumns]="displayedColumns"
+        [enableSearch]="true"
+        [pageSize]="10"
+        [ActionEdit]="true"
+        [columnNames]="columnNames"
+        [ActionLeft]="true"
+        [ActionCreate]="true"
+        (deleteAction)="onDeleteAction($event)"
+        (editAction)="onEditAction($event)"
+        (Create)="CreateAction()"
+      >
+      </app-table>
+    </div>
+  </div>
+</div>

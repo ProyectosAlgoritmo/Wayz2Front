@@ -148,39 +148,6 @@ export class CrewsComponent implements OnInit {
     this.router.navigate(['/new-crews']);
   }
 
-  // Función para eliminar un usuario
-  async onDeleteAction(event: any) {
-    const confirmed = await this.auxService.AlertConfirmation(
-      'Are you sure you want to delete this record?',
-      'This action cannot be undone.',
-      'Yes, delete it!'
-    );
-  
-    if (!confirmed) {
-      return; // Si no confirma, no continúa con la eliminación
-    }
-    this.auxService.ventanaCargando();
-    this.crewsService.Delete('delete-user', event.idUsuario).subscribe({
-      next: async (data: any) => {
-        this.auxService.cerrarVentanaCargando();
-        if (data.success) {
-          await this.auxService.AlertSuccess(
-            'Usuario eliminado correctamente',
-            data.message
-          );
-          this.GetCrews();
-        } else {
-          this.auxService.AlertWarning(
-            'Error al eliminar el usuario',
-            data.message
-          );
-        }
-      },
-      error: (error: any) => {
-        this.auxService.cerrarVentanaCargando();
-        this.auxService.AlertError('Error al eliminar el usuario', error.message);
-      },
-    });
-  }
+ 
 }
 
