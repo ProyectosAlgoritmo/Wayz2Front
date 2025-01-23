@@ -25,14 +25,7 @@
   left: 0;
 }
 
-.background-white-title-botton {
-  background-color: transparent;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-  padding: 1px 0; /* Ajusta el padding según sea necesario */
-}
+
 
 .invisible-divider {
   border-left-color: transparent; /* Hace invisible el borde izquierdo (vertical) */

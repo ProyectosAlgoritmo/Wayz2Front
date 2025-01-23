@@ -23,6 +23,7 @@ import { ProductsComponent } from './components/config/products/products.compone
 import { CategorysComponent } from './components/config/categorys/categorys.component';
 import { CenterlineComponent } from './components/centerline/centerline.component';
 import { LimitsAndTargetsComponent } from './components/limits-and-targets/limits-and-targets.component';
+import { UpdateTargetAndLimitsProductComponent } from './components/limits-and-targets/update-target-and-limits-product/update-target-and-limits-product.component';
 
 export const routes: Routes = [
   {
@@ -78,18 +79,30 @@ export const routes: Routes = [
     path: 'reporte/:pageName',
     component: PowerBiReportComponent,
     canActivate: [AuthGuard],
-  }, 
-  { path: 'machines', component: MachineComponent, canActivate: [AuthGuard] }, 
-  { path: 'crews', component: CrewsComponent, canActivate: [AuthGuard] }, 
-  { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] }, 
-  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] }, 
-  { path: 'categories', component: CategorysComponent, canActivate: [AuthGuard] }, 
-  { path: 'centerline', component: CenterlineComponent, canActivate: [AuthGuard] }, 
-  { path: 'limits-and-targets', component: LimitsAndTargetsComponent, canActivate: [AuthGuard] }, 
+  },
+  { path: 'machines', component: MachineComponent, canActivate: [AuthGuard] },
+  { path: 'crews', component: CrewsComponent, canActivate: [AuthGuard] },
+  { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] },
+  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
+  {
+    path: 'categories',
+    component: CategorysComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'centerline',
+    component: CenterlineComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'limits-and-targets',
+    component: LimitsAndTargetsComponent,
+    canActivate: [AuthGuard],
+  },
 
   {
     path: 'activitylog',
     component: ActivitylogComponent,
     canActivate: [AuthGuard],
-  }, 
+  },
 ];
