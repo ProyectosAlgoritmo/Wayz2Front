@@ -42,6 +42,7 @@ export class CenterlineComponent implements OnInit {
   displayedColumns: string[] = [
     'name',
     'category',
+    'machine',
   ];
   
 
@@ -49,6 +50,7 @@ export class CenterlineComponent implements OnInit {
   columnNames = {
     name: 'Name',
     category: 'Category',
+    machine: 'Machine',
     
 };
 

@@ -1,0 +1,154 @@
+<div class="content-container">
+  <div class="table-container">
+    <div class="content-container">
+      <h2 class="title-heading">Change target and limits for CL</h2>
+    
+      <form [formGroup]="formularioForm" class="form-grid">
+        <!-- Primera fila -->
+        <div class="form-group">
+          <label for="idMachine" class="form-label">Select machine:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must select a machine."
+          >
+            <nz-select
+              id="idMachine"
+              formControlName="idMachine"
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select machine"
+              (ngModelChange)="onMachineChange($event)"
+            >
+              <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name" [nzValue]="machine.idMachine"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+    
+        <div class="form-group">
+          <label for="idCategory" class="form-label">Select category:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must select a category."
+          >
+            <nz-select
+              id="idCategory"
+              formControlName="idCategory"
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select category"
+              (ngModelChange)="onCategoryChange($event)"
+            >
+              <nz-option *ngFor="let category of categories" [nzLabel]="category.name" [nzValue]="category.idCategory"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+    
+        <div class="form-group">
+          <label for="idCenterline" class="form-label">Select centerline:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must select a centerline."
+          >
+            <nz-select
+              id="idCenterline"
+              formControlName="idCenterline"
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select centerline"
+            >
+              <nz-option *ngFor="let centerline of centerlines" [nzLabel]="centerline.name" [nzValue]="centerline.idCenterline"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+    
+        <!-- Segunda fila -->
+        <div class="form-group">
+          <label for="idProduct" class="form-label">Select product:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must select a product."
+          >
+            <nz-select
+              id="idProduct"
+              formControlName="idProduct"
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select product"
+            >
+              <nz-option *ngFor="let product of products" [nzLabel]="product.name" [nzValue]="product.idProduct"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+    
+        <div class="form-group">
+          <label for="target" class="form-label">New target:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must enter a target."
+          >
+            <input id="target" formControlName="target" nz-input type="text" placeholder="Target" />
+          </nz-form-control>
+        </div>
+    
+        <div class="form-group">
+          <label for="max" class="form-label">New max:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must enter a maximum value."
+          >
+            <input id="max" formControlName="max" nz-input type="number" placeholder="Max" />
+          </nz-form-control>
+        </div>
+    
+        <!-- Tercera fila -->
+        <div class="form-group">
+          <label for="min" class="form-label">New min:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must enter a minimum value."
+          >
+            <input id="min" formControlName="min" nz-input type="number" placeholder="Min" />
+          </nz-form-control>
+        </div>
+    
+        <div class="align-row">
+          <label nz-checkbox formControlName="degree360" class="form-checkbox">
+            360 deg variable
+          </label>
+        </div>
+    
+        <div class="form-group form-group-buuton">
+          <app-buttonstrategic
+            mat-button
+            [label]="'Change the theory of operation'"
+            [customClass]="'BotonAzul'"
+            class="boton-margen"
+          ></app-buttonstrategic>
+        </div>
+      </form>
+    
+      <!-- Botones de Cancelar y Guardar -->
+      <div class="button-container">
+        <app-buttonstrategic
+          mat-button
+          [label]="'Cancel'"
+          [customClass]="'BotonGris'"
+          (click)="onCancel()"
+          class="boton-margen"
+          [cancelar]="true"
+        ></app-buttonstrategic>
+    
+        <app-buttonstrategic
+          mat-button
+          [label]="'Save'"
+          [customClass]="'BotonAzul'"
+          (click)="guardarCambios()"
+          class="boton-margen"
+        ></app-buttonstrategic>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+</div>

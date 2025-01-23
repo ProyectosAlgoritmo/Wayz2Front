@@ -1,0 +1,76 @@
+@import '../../../../assets/styles/table.css';
+.content-container {
+    padding: 16px;
+  }
+  
+  .title-heading {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas iguales */
+    gap: 50px;
+}
+
+@media (max-width: 961px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales en pantallas pequeñas */
+    }
+}
+@media (max-width: 755px) {
+    .form-grid {
+        grid-template-columns: repeat(1, 1fr); /* 1 columnas iguales en pantallas pequeñas */
+    }
+}
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+.form-group-buuton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: flex-start; /* Alinea a la izquierda */
+    margin-top: 30px;
+}
+  
+  .form-inline {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .form-checkbox {
+    font-weight: bold;
+  }
+  
+  .form-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .boton-margen {
+    margin-top: 16px;
+  }
+
+
+.align-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-start;
+    margin-top: 30px; 
+}
+
+  
