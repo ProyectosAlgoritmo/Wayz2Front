@@ -3,10 +3,7 @@
     <div class="divtable">
       <div class="headerclass">
         <h2 class="title-heading">Proyectos</h2>
-
-        
       </div>
-      
 
       <app-table-with-rows-child
         [listOfData]="dataForTable"
@@ -14,6 +11,9 @@
         [subColumns]="subTableColumns"
         [ActionEdit]="true"
         [emitEditEvent]="true"
+        (editClicked)="onEditClicked($event)"
+        (subTableDataSaved)="onSubTableDataSaved($event)"
+        (subTableDataCanceled)="onSubTableDataCanceled($event)"
       ></app-table-with-rows-child>
     </div>
   </div>

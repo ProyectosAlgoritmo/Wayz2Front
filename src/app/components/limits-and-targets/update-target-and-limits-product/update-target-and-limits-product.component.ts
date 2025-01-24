@@ -24,6 +24,7 @@ import { CardPercentageComponent } from '../../shared/card-percentage/card-perce
 import { SharedModule } from '../../shared/shared.module';
 import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/table-with-rows-child.component';
 import { LimitsAndTargetService } from '../../../services/limitsAndTarget.service';
+import { da, ro, tr } from 'date-fns/locale';
 
 @Component({
   selector: 'app-update-target-and-limits-product',
@@ -67,34 +68,167 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private auxService: AuxService,
-    private limitsAndTargetService: LimitsAndTargetService,
-    private sharedStateService: SharedStateService
+    private limitsAndTargetService: LimitsAndTargetService
   ) {
     Chart.register(...registerables);
   }
 
   mainTableColumns = [
-    { title: 'Categories', field: 'categories', sortDirection: null },
+    {
+      title: 'Categories',
+      field: 'categories',
+      sortDirection: null,
+      editable: false,
+      controlType: 'text',
+    },
   ];
 
   subTableColumns = [
-    { title: 'Acciones', field: 'Acciones', sortDirection: null },
-    { title: 'Centerline', field: 'centerline', sortDirection: null },
-    { title: 'Current min', field: 'CurrentMin', sortDirection: null },
-    { title: 'Current target', field: 'CurrentTarget', sortDirection: null },
-    { title: 'Current max', field: 'CurrentMax', sortDirection: null },
-    { title: 'New min', field: 'NewMin', sortDirection: null },
-    { title: 'New target', field: 'NewTarget', sortDirection: null },
-    { title: 'New max', field: 'NewMax', sortDirection: null },
-    { title: '360 variable', field: 'degree360', sortDirection: null },
+    {
+      title: 'Acciones',
+      field: 'Acciones',
+      sortDirection: null,
+      editable: false,
+      controlType: 'text',
+    },
+    {
+      title: 'Centerline',
+      field: 'centerline',
+      sortDirection: null,
+      editable: false,
+      controlType: 'text',
+    },
+    {
+      title: 'Current min',
+      field: 'CurrentMin',
+      sortDirection: null,
+      editable: false,
+      controlType: 'text',
+    },
+    {
+      title: 'Current target',
+      field: 'CurrentTarget',
+      sortDirection: null,
+      editable: false,
+      controlType: 'text',
+    },
+    {
+      title: 'Current max',
+      field: 'CurrentMax',
+      sortDirection: null,
+      editable: false,
+      controlType: 'text',
+    },
+    {
+      title: 'New min',
+      field: 'NewMin',
+      sortDirection: null,
+      editable: true,
+      controlType: 'number',
+    },
+    {
+      title: 'New target',
+      field: 'NewTarget',
+      sortDirection: null,
+      editable: true,
+      controlType: 'text',
+    },
+    {
+      title: 'New max',
+      field: 'NewMax',
+      sortDirection: null,
+      editable: true,
+      controlType: 'text',
+    },
+    {
+      title: '360 variable',
+      field: 'Degree360',
+      sortDirection: null,
+      editable: true,
+      controlType: 'checkbox',
+    },
   ];
 
   ngOnInit() {
     this.GetAllLimitsAndTargets();
-    // this.sharedStateService.toggleSidenavVisible(true);
-    // this.productivityService.getDataStructure1().subscribe((data) => {
-    // this.dataForTable = data;
-    // });
+  }
+  onEditClicked(rowData: any) {
+    rowData.isEditing = true;
+  }
+
+  onSubTableDataCanceled(rowData: any) {
+    rowData.isEditing = false;
+    rowData.NewMin = '';
+    rowData.NewMax = '';
+    rowData.NewTarget = '';
+  }
+
+  onSubTableDataSaved(rowData: any) {
+    if (
+      rowData.NewMin.toString().trim() == '' ||
+      typeof parseFloat(rowData.NewMin) != 'number'
+    ) {
+      this.auxService.AlertWarning('Error', 'the new min must be a number');
+      return;
+    }
+    if (
+      rowData.NewMax.toString().trim() == '' ||
+      typeof parseFloat(rowData.NewMax) != 'number'
+    ) {
+      this.auxService.AlertWarning('Error', 'the new max must be a number');
+      return;
+    }
+    if (rowData.NewTarget.toString().trim() == '') {
+      this.auxService.AlertWarning('Error', 'the new target must be a string');
+      return;
+    }
+
+    this.updateLimitsAndTarget(rowData);
+  }
+
+  updateLimitsAndTarget(rowData: any) {
+    let dataApi = {
+      idLimitsAndTargets: rowData.IdLimitsAndTargets,
+      min: rowData.NewMin,
+      max: rowData.NewMax,
+      target: rowData.NewTarget,
+      degree360: rowData.Degree360,
+      IdProduct: 0,
+    };
+    this.auxService.ventanaCargando();
+    this.limitsAndTargetService
+      .Update('Update-LimitsAndTarget', dataApi)
+      .subscribe({
+        next: async (data: any) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success) {
+            await this.auxService.AlertSuccess(
+              'Data registered successfully.',
+              ''
+            );
+            rowData.isEditing = false;
+            rowData.CurrentMin = rowData.NewMin;
+            rowData.CurrentMax = rowData.NewMax;
+            rowData.CurrentTarget = rowData.NewTarget;
+            rowData.Degree360 = rowData.Degree360;
+            rowData.NewMin = '';
+            rowData.NewMax = '';
+            rowData.NewTarget = '';
+          } else {
+            this.auxService.AlertWarning(
+              'Error creating the record.',
+              data.message
+            );
+          }
+        },
+        error: (error: any) => {
+          this.auxService.cerrarVentanaCargando();
+          this.auxService.AlertError(
+            'Error creating the record.',
+            error.message
+          );
+        },
+      });
   }
 
   GetAllLimitsAndTargets() {
@@ -103,7 +237,6 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
       .get('Get-All-LimitsAndTargets')
       .subscribe(async (data: any) => {
         this.dataForTable = data.data;
-        console.log('dataForTable ', this.dataForTable);
         if (this.chart) {
           this.chart.update();
         }
@@ -111,110 +244,4 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
         this.auxService.cerrarVentanaCargando();
       });
   }
-
-  // onEditClicked(data: any) {
-  //   this.onEditAction(data);
-  // }
-
-  // onEditAction(event: any) {
-  //   event.estado = event.estado == 'activo' ? true : false;
-  //   event.estrategico = event.estrategico == 'activo' ? true : false;
-  //   if (event.table == 'principal') {
-  //     const dialogRef = this.dialog.open(CreateProjectComponent, {
-  //       data: event,
-  //     });
-
-  //     dialogRef.afterClosed().subscribe((result) => {
-  //       if (result) {
-  //         this.Get-All-LimitsAndTargets();
-  //       }
-  //     });
-  //   }
-
-  //   if (event.table == 'subTable') {
-  //     const dialogRef = this.dialog.open(CreateProjectStatusComponent, {
-  //       data: event,
-  //     });
-
-  //     dialogRef.afterClosed().subscribe((result) => {
-  //       if (result) {
-  //         this.Get-All-LimitsAndTargets();
-  //       }
-  //     });
-  //   }
-  // }
-
-  // CreateAction() {
-  //   const dialogRef = this.dialog.open(CreateProjectComponent);
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       this.Get-All-LimitsAndTargets();
-  //     }
-  //   });
-  // }
-
-  // CreateProjectStatus() {
-  //   const dialogRef = this.dialog.open(CreateProjectStatusComponent);
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result) {
-  //       this.Get-All-LimitsAndTargets();
-  //     }
-  //   });
-  // }
-
-  // onDeleteAction(event: any) {
-  //   console.log('event ', event);
-  //   if (event.table == 'principal') {
-  //     this.deleteProject(event);
-  //   }
-  //   if (event.table == 'subTable') {
-  //     this.deleteProjectStatus(event);
-  //   }
-  // }
-
-  // async deleteProject(event: any) {
-  //   console.log('event ', event.id);
-  //   const result = await this.auxService.AlertConfirmation(
-  //     'Seguro que desea eliminar este registro?',
-  //     undefined
-  //   );
-  //   if (result.isConfirmed) {
-  //     this.auxService.ventanaCargando();
-  //     this.productivityService
-  //       .Delete('delete-project', event.id)
-  //       .subscribe(async (data:any) => {
-  //         this.auxService.cerrarVentanaCargando();
-  //         if (data.success == true) {
-  //           await this.auxService.AlertSuccess('Ok', data.message);
-  //           this.ngOnInit();
-  //         } else {
-  //           await this.auxService.AlertError('Error', data.message);
-  //           //this.getBalance();
-  //         }
-  //       });
-  //   }
-  // }
-
-  // async deleteProjectStatus(event: any) {
-  //   console.log('event ', event.id);
-  //   const result = await this.auxService.AlertConfirmation(
-  //     'Seguro que desea eliminar este registro?',
-  //     undefined
-  //   );
-  //   if (result.isConfirmed) {
-  //     this.auxService.ventanaCargando();
-  //     this.productivityService
-  //       .Delete('delete-project-state', event.id)
-  //       .subscribe(async (data) => {
-  //         this.auxService.cerrarVentanaCargando();
-  //         if (data.success == true) {
-  //           await this.auxService.AlertSuccess('Ok', data.message);
-  //           this.ngOnInit();
-  //         } else {
-  //           await this.auxService.AlertError('Error', data.message);
-  //           //this.getBalance();
-  //         }
-  //       });
-  //   }
-  // }
 }
