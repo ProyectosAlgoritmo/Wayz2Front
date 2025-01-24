@@ -2,11 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@
 import { Subscription } from 'rxjs';
 import { AuxService } from '../../../services/aux-service.service';
 import { NzTableModule } from 'ng-zorro-antd/table';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf, NgSwitch } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { tr } from 'date-fns/locale';
 
 @Component({
   selector: 'app-table-with-rows-child',
@@ -20,13 +21,15 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
     NzIconModule,
     NzInputModule,
     NzPaginationModule,
+    NgSwitch,
+    CommonModule,
   ],
   standalone: true,
 })
 export class TableWithRowsChildComponent implements OnInit {
   // Definición de las columnas y subcolumnas como @Input() para recibirlas desde el componente padre
-  @Input() columns: Array<{ title: string; field: string; sortDirection: 'ascend' | 'descend' | null }> = [];
-  @Input() subColumns: Array<{ title: string; field: string }> = [];
+  @Input() columns: Array<{ title: string; field: string; sortDirection: 'ascend' | 'descend' | null; editable?: boolean; controlType?: string }> = [];
+  @Input() subColumns: Array<{ title: string; field: string; editable?: boolean; controlType?: string }> = [];
   @Input() listOfData: any[] = []; // Datos principales
   @Output() editClicked: EventEmitter<any> = new EventEmitter<any>();
   @Input() ActionEdit: boolean = false;
@@ -37,6 +40,8 @@ export class TableWithRowsChildComponent implements OnInit {
   @Output() mainTableDataSaved: EventEmitter<any> = new EventEmitter<any>();
   @Input() allowEditAction: boolean = true;  
   @Input() allowDeleteAction: boolean = true; 
+  @Output() subTableDataCanceled: EventEmitter<any> = new EventEmitter<any>();
+
    
 
   expandSet = new Set<number>();
@@ -142,7 +147,7 @@ export class TableWithRowsChildComponent implements OnInit {
   // Guarda la edición en la subtabla
   saveSubTableEdit(data: any): void {
     this.subTableDataSaved.emit(data);
-    data.isEditing = false;
+    //data.isEditing = false;
   }
 
 
@@ -155,6 +160,12 @@ export class TableWithRowsChildComponent implements OnInit {
     } else {
       data.isEditing = isEditing;  // Si emitEditEvent es false, se activa la edición local
     }
+  }
+
+  cancelSubTableEdit(subItem: any): void {
+    // Emitimos al padre que se canceló la edición de este subItem
+    this.subTableDataCanceled.emit(subItem);
+    subItem.isEditing = false;
   }
 
   onDelete(element: any, table: string) {

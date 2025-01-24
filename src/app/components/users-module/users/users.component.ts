@@ -93,24 +93,6 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event): void {
-    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-
-    if (!filterValue) {
-      // Si no hay filtro, restaura los datos originales
-      this.dataSource = [...this.originalDataSource];
-    } else {
-      this.dataSource = this.originalDataSource.filter((item) => {
-        return this.displayedColumns.some((column) => {
-          const columnValue = item[column];
-          return (
-            columnValue &&
-            columnValue.toString().toLowerCase().includes(filterValue)
-          );
-        });
-      });
-    }
-  }
 
   onEditAction(event: any) {
     event.bActivo = event.bActivo === 'active' ? true : false;
@@ -131,41 +113,6 @@ export class UsersComponent implements OnInit {
       if (result) {
         this.GetUsers();
       }
-    });
-  }
-
-  // Función para eliminar un usuario
-  async onDeleteAction(event: any) {
-    const confirmed = await this.auxService.AlertConfirmation(
-      'Are you sure you want to delete this record?',
-      'This action cannot be undone.',
-      'Yes, delete it!'
-    );
-  
-    if (!confirmed) {
-      return; // Si no confirma, no continúa con la eliminación
-    }
-    this.auxService.ventanaCargando();
-    this.usersService.Delete('delete-user', event.idUsuario).subscribe({
-      next: async (data: any) => {
-        this.auxService.cerrarVentanaCargando();
-        if (data.success) {
-          await this.auxService.AlertSuccess(
-            'Usuario eliminado correctamente',
-            data.message
-          );
-          this.GetUsers();
-        } else {
-          this.auxService.AlertWarning(
-            'Error al eliminar el usuario',
-            data.message
-          );
-        }
-      },
-      error: (error: any) => {
-        this.auxService.cerrarVentanaCargando();
-        this.auxService.AlertError('Error al eliminar el usuario', error.message);
-      },
     });
   }
 }

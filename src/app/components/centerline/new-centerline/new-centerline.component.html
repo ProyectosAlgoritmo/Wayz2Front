@@ -6,8 +6,10 @@
   
     <mat-dialog-content>
       <form [formGroup]="formularioForm">
+  
+  
         <nz-form-item>
-          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="name" style="text-align: left;">Name Catategory</nz-form-label>
+          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="name" style="text-align: left;">Name centerline</nz-form-label>
           <nz-form-control
             nzHasFeedback
             [nzSm]="15"
@@ -33,8 +35,27 @@
               nzAllowClear
               nzPlaceHolder="Select a machine"
               formControlName="idMachine"
+              (ngModelChange)="changeMachine($event)"
               required>
               <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name" [nzValue]="machine.idMachine"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+          <nz-form-label [nzSm]="9" [nzXs]="24" nzFor="categories" style="text-align: left;">Category</nz-form-label>
+          <nz-form-control
+            nzHasFeedback
+            [nzSm]="15"
+            [nzXs]="24"
+            nzErrorTip="You must fill out this field.">
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select a category"
+              formControlName="idCategory"
+              required>
+              <nz-option *ngFor="let category of categories" [nzLabel]="category.name" [nzValue]="category.idCategory"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
