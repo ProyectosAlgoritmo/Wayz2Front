@@ -21,6 +21,9 @@ import { CrewsComponent } from './components/crews/crews.component';
 import { NewCrewComponent } from './components/crews/new-crew/new-crew.component';
 import { ProductsComponent } from './components/config/products/products.component';
 import { CategorysComponent } from './components/config/categorys/categorys.component';
+import { TooComponent } from './components/config/too/too.component';
+import { CreateTooComponent } from './components/config/too/create-too/create-too.component';
+import { CreateEditTooComponent } from './components/config/too/create-edit-too/create-edit-too.component';
 
 export const routes: Routes = [
   {
@@ -82,6 +85,9 @@ export const routes: Routes = [
   { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] }, 
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] }, 
   { path: 'categories', component: CategorysComponent, canActivate: [AuthGuard] }, 
+  { path: 'too', component: TooComponent, canActivate: [AuthGuard] }, 
+  { path: 'create-too', component: CreateTooComponent, canActivate: [AuthGuard] }, 
+  { path: 'create-edit-too/:id', component: CreateEditTooComponent, canActivate: [AuthGuard] }, 
 
   {
     path: 'activitylog',
