@@ -127,7 +127,7 @@ export class TooComponent {
   }
 
   CreateAction() {
-    alert('Hola')
+    this.router.navigate(['/create-too'])
   }
 
   getToos() {
