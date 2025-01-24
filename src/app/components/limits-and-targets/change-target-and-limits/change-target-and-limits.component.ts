@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuxService } from '../../../services/aux-service.service';
 import { CenterlineService } from '../../../services/centerline.service';
 import { ConfigService } from '../../../services/config.service';
@@ -42,7 +48,7 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
     private auxService: AuxService,
     private configService: ConfigService,
     private centerlineService: CenterlineService,
-    private limitsAndTargetService: LimitsAndTargetService,
+    private limitsAndTargetService: LimitsAndTargetService
   ) {
     this.formularioForm = this.fb.group({
       idMachine: [null, Validators.required],
@@ -59,7 +65,12 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
   ngOnInit(): void {
     this.getMachines();
   }
-
+  
+  onCategoryChange(categoryId: number): void {
+    this.formularioForm.patchValue({ idCenterline: null });
+    this.getCenterlines(categoryId);
+  }
+  
   onMachineChange(machineId: number): void {
     this.formularioForm.patchValue({
       idCategory: null,
@@ -70,10 +81,6 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
     this.getProducts(machineId);
   }
 
-  onCategoryChange(categoryId: number): void {
-    this.formularioForm.patchValue({ idCenterline: null });
-    this.getCenterlines(categoryId);
-  }
 
   getMachines() {
     this.auxService.ventanaCargando();
@@ -94,12 +101,14 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
       this.categories = []; // Limpia las categorías si no hay máquina seleccionada
       return;
     }
-  
+
     this.auxService.ventanaCargando();
-  
+
     this.configService.get('get-all-Categorys').subscribe({
       next: (data: any) => {
-        this.categories = data.data.filter((x: any) => x.idMachine === idMachine);
+        this.categories = data.data.filter(
+          (x: any) => x.idMachine === idMachine
+        );
         this.auxService.cerrarVentanaCargando();
       },
       error: (error: any) => {
@@ -126,7 +135,9 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
   getCenterlines(idCategory: number): void {
     this.centerlineService.get('Get-All-Centerline').subscribe({
       next: (data: any) => {
-        this.centerlines = data.data.filter((x: any) => x.idCategory == idCategory);
+        this.centerlines = data.data.filter(
+          (x: any) => x.idCategory == idCategory
+        );
         this.auxService.cerrarVentanaCargando();
       },
       error: (error: any) => {
@@ -153,49 +164,59 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
       );
       return;
     }
-    
-      this.createLimitsAndTarget();
-    
+
+    const min = this.formularioForm.get('min')?.value;
+    const max = this.formularioForm.get('max')?.value;
+
+    if (min !== null && max !== null && min > max) {
+      this.auxService.AlertWarning(
+        'Error',
+        'the new min must be less than the new max'
+      );
+      return;
+    }
+
+    this.createLimitsAndTarget();
   }
 
   createLimitsAndTarget(): void {
-      if (this.formularioForm.valid) {
-        this.auxService.ventanaCargando();
-        this.limitsAndTargetService
-          .Create('Add-LimitsAndTarget', this.formularioForm.value)
-          .subscribe({
-            next: async (data: any) => {
-              this.auxService.cerrarVentanaCargando();
-              if (data.success) {
-                this.formularioForm.reset();
-                await this.auxService.AlertSuccess(
-                  'Data registered successfully.',
-                  ''
-                );
-              } else {
-                this.auxService.AlertWarning(
-                  'Error creating the record.',
-                  data.message
-                );
-              }
-            },
-            error: (error: any) => {
-              this.auxService.cerrarVentanaCargando();
-              this.auxService.AlertError(
-                'Error creating the record.',
-                error.message
+    if (this.formularioForm.valid) {
+      this.auxService.ventanaCargando();
+      this.limitsAndTargetService
+        .Create('Add-LimitsAndTarget', this.formularioForm.value)
+        .subscribe({
+          next: async (data: any) => {
+            this.auxService.cerrarVentanaCargando();
+            if (data.success) {
+              this.formularioForm.reset();
+              await this.auxService.AlertSuccess(
+                'Data registered successfully.',
+                ''
               );
-            },
-          });
-      } else {
-        this.auxService.AlertWarning(
-          'Invalid form.',
-          'Please review the fields and correct the errors.'
-        );
-      }
+            } else {
+              this.auxService.AlertWarning(
+                'Error creating the record.',
+                data.message
+              );
+            }
+          },
+          error: (error: any) => {
+            this.auxService.cerrarVentanaCargando();
+            this.auxService.AlertError(
+              'Error creating the record.',
+              error.message
+            );
+          },
+        });
+    } else {
+      this.auxService.AlertWarning(
+        'Invalid form.',
+        'Please review the fields and correct the errors.'
+      );
     }
+  }
 
-    onCancel(){
-      this.formularioForm.reset();
-    }
+  onCancel() {
+    this.formularioForm.reset();
+  }
 }
