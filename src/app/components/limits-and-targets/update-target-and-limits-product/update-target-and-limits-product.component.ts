@@ -1,5 +1,5 @@
 import { Component, OnInit, Provider, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
@@ -25,6 +25,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { TableWithRowsChildComponent } from '../../shared/table-with-rows-child/table-with-rows-child.component';
 import { LimitsAndTargetService } from '../../../services/limitsAndTarget.service';
 import { da, ro, tr } from 'date-fns/locale';
+import { ConfigService } from '../../../services/config.service';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'app-update-target-and-limits-product',
@@ -54,6 +56,8 @@ import { da, ro, tr } from 'date-fns/locale';
     BaseChartDirective,
     NzCardModule,
     CardPercentageComponent,
+    NzFormModule,
+    ReactiveFormsModule
   ],
   templateUrl: './update-target-and-limits-product.component.html',
   styleUrls: ['./update-target-and-limits-product.component.css'],
@@ -62,15 +66,22 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
   [x: string]: any;
   dataForTable: any[] = [];
-  dateYear: any[] = [];
+  machines: any[] = [];
+  products: any[] = [];
   searchValue: string = '';
+  formularioForm: FormGroup;
   emitEditToParent = false;
   constructor(
+    private fb: FormBuilder,
     public dialog: MatDialog,
     private auxService: AuxService,
-    private limitsAndTargetService: LimitsAndTargetService
+    private configService: ConfigService,
+    private limitsAndTargetService: LimitsAndTargetService,
   ) {
-    Chart.register(...registerables);
+    this.formularioForm = this.fb.group({
+      idMachine: [null, Validators.required],
+      idProduct: [null, Validators.required],
+    });
   }
 
   mainTableColumns = [
@@ -150,7 +161,8 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.GetAllLimitsAndTargets();
+    this.getMachines();
+    
   }
   onEditClicked(rowData: any) {
     rowData.isEditing = true;
@@ -162,6 +174,45 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
     rowData.NewMax = '';
     rowData.NewTarget = '';
   }
+
+  onMachineChange(machineId: number): void {
+    this.formularioForm.patchValue({
+      idProduct: null,
+      idCenterline: null,
+    });
+    this.getProducts(machineId);
+  }
+  onProductsChange(IdProduct: number): void {
+    this.GetAllLimitsAndTargets(IdProduct);
+  }
+
+
+  getMachines() {
+    this.auxService.ventanaCargando();
+    this.configService.get('get-all-machines').subscribe({
+      next: (data: any) => {
+        this.machines = data.data;
+        //this.auxService.cerrarVentanaCargando();
+      },
+      error: (error: any) => {
+        this.auxService.AlertError('Error loading machines: ', error);
+      },
+    });
+  }
+
+  getProducts(idMachine: number): void {
+    this.configService.get(`Get-All-Products`).subscribe({
+      next: (data: any) => {
+        this.products = data.data.filter((x: any) => x.idMachine === idMachine);
+        this.auxService.cerrarVentanaCargando();
+      },
+      error: (error: any) => {
+        this.auxService.cerrarVentanaCargando(); // Asegúrate de cerrar la ventana en caso de error
+        this.auxService.AlertError('Error loading categories: ', error);
+      },
+    });
+  }
+
 
   onSubTableDataSaved(rowData: any) {
     if (
@@ -180,6 +231,11 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
     }
     if (rowData.NewTarget.toString().trim() == '') {
       this.auxService.AlertWarning('Error', 'the new target must be a string');
+      return;
+    }
+
+    if(parseFloat(rowData.NewMin) > parseFloat(rowData.NewMax)){
+      this.auxService.AlertWarning('Error', 'the new min must be less than the new max');
       return;
     }
 
@@ -231,7 +287,7 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
       });
   }
 
-  GetAllLimitsAndTargets() {
+  GetAllLimitsAndTargets(IdProduct: number) {
     this.auxService.ventanaCargando();
     this.limitsAndTargetService
       .get('Get-All-LimitsAndTargets')
