@@ -96,7 +96,7 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
 
   subTableColumns = [
     {
-      title: 'Acciones',
+      title: 'Actions',
       field: 'Acciones',
       sortDirection: null,
       editable: false,
@@ -111,49 +111,49 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
     },
     {
       title: 'Current min',
-      field: 'CurrentMin',
+      field: 'currentMin',
       sortDirection: null,
       editable: false,
       controlType: 'text',
     },
     {
       title: 'Current target',
-      field: 'CurrentTarget',
+      field: 'currentTarget',
       sortDirection: null,
       editable: false,
       controlType: 'text',
     },
     {
       title: 'Current max',
-      field: 'CurrentMax',
+      field: 'currentMax',
       sortDirection: null,
       editable: false,
       controlType: 'text',
     },
     {
       title: 'New min',
-      field: 'NewMin',
+      field: 'newMin',
       sortDirection: null,
       editable: true,
       controlType: 'number',
     },
     {
       title: 'New target',
-      field: 'NewTarget',
+      field: 'newTarget',
       sortDirection: null,
       editable: true,
       controlType: 'text',
     },
     {
       title: 'New max',
-      field: 'NewMax',
+      field: 'newMax',
       sortDirection: null,
       editable: true,
       controlType: 'text',
     },
     {
       title: '360 variable',
-      field: 'Degree360',
+      field: 'degree360',
       sortDirection: null,
       editable: true,
       controlType: 'checkbox',
@@ -170,9 +170,9 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
 
   onSubTableDataCanceled(rowData: any) {
     rowData.isEditing = false;
-    rowData.NewMin = '';
-    rowData.NewMax = '';
-    rowData.NewTarget = '';
+    rowData.newMin = '';
+    rowData.newMax = '';
+    rowData.newTarget = '';
   }
 
   onMachineChange(machineId: number): void {
@@ -216,25 +216,25 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
 
   onSubTableDataSaved(rowData: any) {
     if (
-      rowData.NewMin.toString().trim() == '' ||
-      typeof parseFloat(rowData.NewMin) != 'number'
+      rowData.newMin.toString().trim() == '' ||
+      typeof parseFloat(rowData.newMin) != 'number'
     ) {
       this.auxService.AlertWarning('Error', 'the new min must be a number');
       return;
     }
     if (
-      rowData.NewMax.toString().trim() == '' ||
-      typeof parseFloat(rowData.NewMax) != 'number'
+      rowData.newMax.toString().trim() == '' ||
+      typeof parseFloat(rowData.newMax) != 'number'
     ) {
       this.auxService.AlertWarning('Error', 'the new max must be a number');
       return;
     }
-    if (rowData.NewTarget.toString().trim() == '') {
+    if (rowData.newTarget.toString().trim() == '') {
       this.auxService.AlertWarning('Error', 'the new target must be a string');
       return;
     }
 
-    if(parseFloat(rowData.NewMin) > parseFloat(rowData.NewMax)){
+    if(parseFloat(rowData.NewMin) > parseFloat(rowData.newMax) && !rowData.degree360){
       this.auxService.AlertWarning('Error', 'the new min must be less than the new max');
       return;
     }
@@ -244,12 +244,13 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
 
   updateLimitsAndTarget(rowData: any) {
     let dataApi = {
-      idLimitsAndTargets: rowData.IdLimitsAndTargets,
-      min: rowData.NewMin,
-      max: rowData.NewMax,
-      target: rowData.NewTarget,
-      degree360: rowData.Degree360,
-      IdProduct: 0,
+      idLimitsAndTargets: rowData.idLimitsAndTargets,
+      min: rowData.newMin,
+      max: rowData.newMax,
+      target: rowData.newTarget,
+      degree360: rowData.degree360,
+      idProduct: rowData.idProduct,
+      idCenterline: rowData.idCenterline,
     };
     this.auxService.ventanaCargando();
     this.limitsAndTargetService
@@ -263,13 +264,13 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
               ''
             );
             rowData.isEditing = false;
-            rowData.CurrentMin = rowData.NewMin;
-            rowData.CurrentMax = rowData.NewMax;
-            rowData.CurrentTarget = rowData.NewTarget;
-            rowData.Degree360 = rowData.Degree360;
-            rowData.NewMin = '';
-            rowData.NewMax = '';
-            rowData.NewTarget = '';
+            rowData.currentMin = rowData.newMin;
+            rowData.currentMax = rowData.newMax;
+            rowData.currentTarget = rowData.newTarget;
+            rowData.degree360 = rowData.degree360;
+            rowData.newMin = '';
+            rowData.newMax = '';
+            rowData.newTarget = '';
           } else {
             this.auxService.AlertWarning(
               'Error creating the record.',
@@ -288,16 +289,19 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
   }
 
   GetAllLimitsAndTargets(IdProduct: number) {
+    if (IdProduct == null || IdProduct == 0 || IdProduct == undefined) {
+      this.dataForTable = [];
+      return;
+    }
     this.auxService.ventanaCargando();
-    this.limitsAndTargetService
-      .get('Get-All-LimitsAndTargets')
-      .subscribe(async (data: any) => {
+    this.limitsAndTargetService.get(`Get-All-LimitsAndTargets/${IdProduct}`).subscribe({
+      next: (data: any) => {
         this.dataForTable = data.data;
-        if (this.chart) {
-          this.chart.update();
-        }
-
         this.auxService.cerrarVentanaCargando();
-      });
+      },
+      error: (error: any) => {
+        this.auxService.AlertError('Error loading data: ', error);
+      },
+    });
   }
 }

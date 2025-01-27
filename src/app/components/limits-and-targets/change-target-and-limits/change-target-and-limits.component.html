@@ -55,6 +55,7 @@
               nzShowSearch
               nzAllowClear
               nzPlaceHolder="Select centerline"
+              (ngModelChange)="onCenterlineChange($event)"
             >
               <nz-option *ngFor="let centerline of centerlines" [nzLabel]="centerline.name" [nzValue]="centerline.idCenterline"></nz-option>
             </nz-select>
@@ -74,6 +75,7 @@
               nzShowSearch
               nzAllowClear
               nzPlaceHolder="Select product"
+              (ngModelChange)="onProductsChange($event)"
             >
               <nz-option *ngFor="let product of products" [nzLabel]="product.name" [nzValue]="product.idProduct"></nz-option>
             </nz-select>

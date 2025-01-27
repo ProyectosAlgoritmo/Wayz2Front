@@ -18,6 +18,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { SharedModule } from '../../shared/shared.module';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { LimitsAndTargetService } from '../../../services/limitsAndTarget.service';
+import { el, th } from 'date-fns/locale';
 
 @Component({
   selector: 'app-change-target-and-limits',
@@ -42,6 +43,8 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
   categories: any[] = [];
   centerlines: any[] = [];
   products: any[] = [];
+  idProduct: number | null = null;
+  idCenterline: number | null = null;
   formularioForm: FormGroup;
   constructor(
     private fb: FormBuilder,
@@ -65,12 +68,12 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
   ngOnInit(): void {
     this.getMachines();
   }
-  
+
   onCategoryChange(categoryId: number): void {
     this.formularioForm.patchValue({ idCenterline: null });
     this.getCenterlines(categoryId);
   }
-  
+
   onMachineChange(machineId: number): void {
     this.formularioForm.patchValue({
       idCategory: null,
@@ -81,6 +84,52 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
     this.getProducts(machineId);
   }
 
+  onProductsChange(productId: number) {
+    this.idProduct = productId;
+    if (productId && this.idCenterline) {
+      this.GetLimitsAndTarget();
+    }
+  }
+
+  onCenterlineChange(centerlineId: number) {
+    this.idCenterline = centerlineId;
+    if (this.idProduct && centerlineId) {
+      this.GetLimitsAndTarget();
+    }
+  }
+
+  GetLimitsAndTarget() {
+    this.auxService.ventanaCargando();
+    if (this.idProduct && this.idCenterline) {
+      this.limitsAndTargetService
+        .get(`Get-LimitsAndTarget/${this.idProduct}/${this.idCenterline}`)
+        .subscribe({
+          next: (data: any) => {
+            this.auxService.cerrarVentanaCargando();
+            if (data.data) {
+              this.formularioForm.patchValue({
+                min: data.data.min,
+                target: data.data.target,
+                max: data.data.max,
+                degree360: data.data.degree360,
+              });
+            }else{ 
+              this.formularioForm.patchValue({
+                min: null,
+                target: null,
+                max: null,
+                degree360: null,
+              });
+            }
+          },
+          error: (error: any) => {
+            this.auxService.cerrarVentanaCargando();
+          },
+        });
+    }else{
+      this.auxService.cerrarVentanaCargando();
+    }
+  }
 
   getMachines() {
     this.auxService.ventanaCargando();
@@ -167,8 +216,9 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
 
     const min = this.formularioForm.get('min')?.value;
     const max = this.formularioForm.get('max')?.value;
+    const degree360 = this.formularioForm.get('degree360')?.value;
 
-    if (min !== null && max !== null && min > max) {
+    if (min !== null && max !== null && min > max && !degree360) {
       this.auxService.AlertWarning(
         'Error',
         'the new min must be less than the new max'
