@@ -57,6 +57,7 @@ export class TableComponent implements OnInit {
   originalDataSource: any[] = [];
   selectedYearMonth: string | undefined;
   dateYearMonth = [];
+  sortDirections: { [key: string]: 'ascend' | 'descend' | null } = {};
   @Input() date: [Date, Date] | undefined;
   
 
@@ -77,22 +78,7 @@ export class TableComponent implements OnInit {
     //this.updatePaginatedData();
   }
 
-  // onChangedate(result: Date[]): void {
-  //   if (result && result.length === 2) {
-  //     // Obtener el primer día del mes del inicio
-  //     const startDate = new Date(result[0].getFullYear(), result[0].getMonth(), 1);
-      
-  //     // Obtener el último día del mes del fin
-  //     const endDate = new Date(result[1].getFullYear(), result[1].getMonth() + 1, 0); // `0` es el último día del mes anterior
-  
-  //     const formattedRequestDate = {
-  //       FechaInicio: format(startDate, 'yyyy-MM-dd'), // Formatear la fecha de inicio al formato AAAA-MM-DD
-  //       FechaFin: format(endDate, 'yyyy-MM-dd')       // Formatear la fecha de fin al formato AAAA-MM-DD
-  //     };
-  
-  //     this.dateSelected.emit(formattedRequestDate); // Emitir el objeto con las fechas formateadas
-  //   }
-  // }
+
 
   onChangedate(result: Date[]): void {
     if (result && result.length === 2) {
@@ -127,6 +113,40 @@ export class TableComponent implements OnInit {
 
   ngOnChanges(): void {
     this.originalDataSource = [...this.dataSource];
+    this.updatePaginatedData();
+    this.sortDirections = {};  
+  }
+
+  sortData(column: string): void {
+    // 1. Toggle la dirección para la columna clickeada
+    if (!this.sortDirections[column] || this.sortDirections[column] === 'descend') {
+      this.sortDirections[column] = 'ascend';
+    } else {
+      this.sortDirections[column] = 'descend';
+    }
+
+    // 2. Si solo quieres 1 columna ordenada a la vez, limpia las demás
+    Object.keys(this.sortDirections).forEach(col => {
+      if (col !== column) {
+        this.sortDirections[col] = null;
+      }
+    });
+
+    // 3. Aplica el orden a dataSource (o podrías usar sortedData si lo prefieres)
+    this.dataSource.sort((a, b) => {
+      const valA = a[column];
+      const valB = b[column];
+      if (valA == null) return 1;
+      if (valB == null) return -1;
+
+      if (this.sortDirections[column] === 'ascend') {
+        return valA > valB ? 1 : (valA < valB ? -1 : 0);
+      } else {
+        return valA < valB ? 1 : (valA > valB ? -1 : 0);
+      }
+    });
+
+    // 4. Actualizamos la paginación con la data ya ordenada
     this.updatePaginatedData();
   }
 
@@ -170,25 +190,22 @@ export class TableComponent implements OnInit {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-  
-    // Restaura los datos originales si el filtro está vacío
+    // Restaura datos originales si está vacío
     if (!filterValue) {
-        this.dataSource = [...this.originalDataSource];
+      this.dataSource = [...this.originalDataSource];
     } else {
-        // Filtra los datos en base al valor ingresado
-        this.dataSource = this.originalDataSource.filter(item => {
-            return this.displayedColumns.some(column => {
-                const columnValue = item[column];
-                // Verifica si el valor de la columna existe y coincide con el filtro
-                return columnValue && columnValue.toString().toLowerCase().includes(filterValue);
-            });
+      this.dataSource = this.originalDataSource.filter(item => {
+        return this.displayedColumns.some(column => {
+          const columnValue = item[column];
+          return columnValue && columnValue.toString().toLowerCase().includes(filterValue);
         });
+      });
     }
-
+    // Después de filtrar, podrías querer resetear sort
+    this.sortDirections = {};
+    // Y paginar de nuevo
     this.updatePaginatedData();
-
-   
-}
+  }
 
 updatePaginatedData(): void {
   const startIndex = (this.currentPage - 1) * this.pageSize;
