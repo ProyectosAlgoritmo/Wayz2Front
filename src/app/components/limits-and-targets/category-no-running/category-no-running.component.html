@@ -1,0 +1,121 @@
+<div class="content-container">
+  <div class="table-container">
+    <div class="content-container">
+      <h2 class="title-heading">Change target and limits for CL</h2>
+    
+      <form [formGroup]="formularioForm" class="form-grid">
+        <!-- Primera fila -->
+        <div class="form-group">
+          <label for="idMachine" class="form-label">Select machine:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must select a machine."
+          >
+            <nz-select
+              id="idMachine"
+              formControlName="idMachine"
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select machine"
+              (ngModelChange)="onMachineChange($event)"
+            >
+              <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name" [nzValue]="machine.idMachine"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+    
+        <div class="form-group">
+          <label for="idCategory" class="form-label">Select category:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must select a category."
+          >
+            <nz-select
+              id="idCategory"
+              formControlName="idCategory"
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select category"
+              (ngModelChange)="onCategoryChange($event)"
+            >
+              <nz-option *ngFor="let category of categories" [nzLabel]="category.name" [nzValue]="category.idCategory"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+
+    
+        <!-- Segunda fila -->
+        <div class="form-group">
+          <label for="idProduct" class="form-label">Select product:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must select a product."
+          >
+            <nz-select
+              id="idProduct"
+              formControlName="idProduct"
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select product"
+              (ngModelChange)="onProductsChange($event)"
+            >
+              <nz-option *ngFor="let product of products" [nzLabel]="product.name" [nzValue]="product.idProduct"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+
+        <div class="form-group">
+          <label for="idProduct" class="form-label">Select not running / running:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must select a option."
+          >
+            <nz-select
+              id="notRunning"
+              formControlName="notRunning"
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select not running / running"
+            >
+              <nz-option nzLabel="Not running" nzValue="false"></nz-option>
+              <nz-option nzLabel="Running" nzValue="true"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+    
+        <div class="form-group form-group-textarea">
+          <label for="target" class="form-label">Comments:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must enter a target."
+          >
+            <textarea nz-input formControlName="comments" placeholder="Controlled autosize" [nzAutosize]="{ minRows: 5, maxRows: 10 }"></textarea>
+          </nz-form-control>
+        </div>
+      </form>
+    
+      <!-- Botones de Cancelar y Guardar -->
+      <div class="button-container">
+        <app-buttonstrategic
+          mat-button
+          [label]="'Cancel'"
+          [customClass]="'BotonGris'"
+          (click)="onCancel()"
+          class="boton-margen"
+          [cancelar]="true"
+        ></app-buttonstrategic>
+    
+        <app-buttonstrategic
+          mat-button
+          [label]="'Save'"
+          [customClass]="'BotonAzul'"
+          (click)="guardarCambios()"
+          class="boton-margen"
+        ></app-buttonstrategic>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+</div>

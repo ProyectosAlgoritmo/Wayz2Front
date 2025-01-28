@@ -4,11 +4,12 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { UsersComponent } from '../users-module/users/users.component';
 import { ChangeTargetAndLimitsComponent } from './change-target-and-limits/change-target-and-limits.component';
 import { UpdateTargetAndLimitsProductComponent } from "./update-target-and-limits-product/update-target-and-limits-product.component";
+import { CategoryNoRunningComponent } from "./category-no-running/category-no-running.component";
 
 @Component({
   selector: 'app-limits-and-targets',
   standalone: true,
-  imports: [NzTabsModule, ChangeTargetAndLimitsComponent, UsersComponent, RoleComponent, UpdateTargetAndLimitsProductComponent],
+  imports: [NzTabsModule, ChangeTargetAndLimitsComponent, UsersComponent, RoleComponent, UpdateTargetAndLimitsProductComponent, CategoryNoRunningComponent],
   templateUrl: './limits-and-targets.component.html',
   styleUrls: ['./limits-and-targets.component.css']
 })
