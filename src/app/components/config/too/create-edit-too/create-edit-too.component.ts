@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzAlign, NzFlexModule, NzJustify } from 'ng-zorro-antd/flex';
@@ -9,7 +15,13 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import { NzOptionComponent, NzSelectModule } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { ArrowRightOutline, CloudUploadOutline, PlayCircleOutline, EyeOutline, EditOutline, } from '@ant-design/icons-angular/icons';
+import {
+  ArrowRightOutline,
+  CloudUploadOutline,
+  PlayCircleOutline,
+  EyeOutline,
+  EditOutline,
+} from '@ant-design/icons-angular/icons';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialog } from '@angular/material/dialog';
 import { Chart, ChartConfiguration, ChartType } from 'chart.js';
@@ -28,9 +40,11 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { TooService } from '../../../../services/too.service';
 
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
-
-
+import {
+  NzUploadChangeParam,
+  NzUploadModule,
+  NzUploadFile,
+} from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'app-create-edit-too',
@@ -38,9 +52,7 @@ import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
   providers: [
     {
       provide: NZ_ICONS,
-      useValue: [
-        ArrowRightOutline,
-      ],
+      useValue: [ArrowRightOutline],
     },
   ],
   imports: [
@@ -61,15 +73,13 @@ import { NzUploadChangeParam, NzUploadModule } from 'ng-zorro-antd/upload';
     CardPercentageComponent,
     NzFormModule,
     ReactiveFormsModule,
-    NzButtonModule, 
-    NzUploadModule
+    NzButtonModule,
+    NzUploadModule,
   ],
   templateUrl: './create-edit-too.component.html',
-  styleUrl: './create-edit-too.component.css'
+  styleUrl: './create-edit-too.component.css',
 })
-
 export class CreateEditTooComponent implements OnInit {
-
   machines: any[] = [];
   categories: any[] = [];
   centerlines: any[] = [];
@@ -83,7 +93,6 @@ export class CreateEditTooComponent implements OnInit {
   public selectedLAlignment: NzAlign = 'flex-start';
   formularioForm: FormGroup;
   formularioForm2: FormGroup;
-
 
   constructor(
     private router: Router,
@@ -125,7 +134,7 @@ export class CreateEditTooComponent implements OnInit {
       question19: [null, Validators.required],
       question20: [null, Validators.required],
       question21: [null, Validators.required],
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -134,28 +143,28 @@ export class CreateEditTooComponent implements OnInit {
     let pageName = this.route.snapshot.paramMap.get('id') || '';
 
     this.formularioForm2.patchValue({
-      question1: "This centerline is used to control ",
-      question2: "The centerline does this by changing ",
-      question3: "Increasing this value will increase the ",
-      question4: "If the value is to high the ",
-      question5: "If the value is to low the ",
-      question6: "Home",
-      question7: "Next screen",
-      question8: "",
-      question9: "",
-      question10: "",
-      question11: "",
-      question12: "",
-      question13: "",
-      question14: "",
-      question15: "",
-      question16: "",
-      question17: "",
-      question18: "",
-      question19: "",
-      question20: "",
-      question21: "",
-    })
+      question1: 'This centerline is used to control ',
+      question2: 'The centerline does this by changing ',
+      question3: 'Increasing this value will increase the ',
+      question4: 'If the value is to high the ',
+      question5: 'If the value is to low the ',
+      question6: 'Home',
+      question7: 'Next screen',
+      question8: '',
+      question9: '',
+      question10: '',
+      question11: '',
+      question12: '',
+      question13: '',
+      question14: '',
+      question15: '',
+      question16: '',
+      question17: '',
+      question18: '',
+      question19: '',
+      question20: '',
+      question21: '',
+    });
   }
 
   getMachines() {
@@ -190,7 +199,7 @@ export class CreateEditTooComponent implements OnInit {
         error: (error: any) => {
           this.auxService.AlertError('Error loading categories: ', error);
         },
-      })
+      });
     }
   }
   onCategoryChange(categoryId: number): void {
@@ -207,26 +216,61 @@ export class CreateEditTooComponent implements OnInit {
         error: (error: any) => {
           this.auxService.AlertError('Error loading centerlines: ', error);
         },
-      })
+      });
     }
   }
 
   onCenterlineChange(CenterlineId: number): void {
     if (CenterlineId != null) {
-      this.final_centerline = CenterlineId
-      console.log(this.final_centerline)
+      this.final_centerline = CenterlineId;
+      console.log(this.final_centerline);
     }
   }
 
-  handleChange({ file, fileList }: NzUploadChangeParam): void {
-    const status = file.status;
-    if (status !== 'uploading') {
-      console.log(file, fileList);
+  // handleChange({ file, fileList }: NzUploadChangeParam): void {
+  //   const status = file.status;
+  //   if (status !== 'uploading') {
+  //     console.log(file, fileList);
+  //   }
+  //   if (status === 'done') {
+  //     this.messageService.success(`${file.name} file uploaded successfully.`);
+  //   } else if (status === 'error') {
+  //     this.messageService.error(`${file.name} file upload failed.`);
+  //   }
+  // }
+
+  fileList: NzUploadFile[] = [];
+  beforeUpload = (file: NzUploadFile): boolean => {
+    // Verifica que el archivo sea una imagen
+    const isImage = file.type ? file.type.startsWith('image/') : false;
+
+    if (!isImage) {
+      this.messageService.error('Solo se pueden subir imágenes.');
+      return false; // Rechaza el archivo
     }
-    if (status === 'done') {
-      this.messageService.success(`${file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      this.messageService.error(`${file.name} file upload failed.`);
+
+    this.fileList = [...this.fileList, file];
+    return false;
+  };
+
+  guardarImagenes(): void {
+    if (this.fileList.length === 0) {
+      this.messageService.warning('No hay imágenes para guardar.');
+      return;
     }
+
+    console.log('Imágenes seleccionadas:', this.fileList);
+
+    const formData = new FormData();
+    this.fileList.forEach((file: any) => {
+      formData.append('imagenes', file as File);
+    });
+
+    console.log('Contenido de FormData:');
+    for (const pair of (formData as any).entries()) {
+      console.log(`Clave: ${pair[0]}, Valor:`, pair[1]);
+    }
+
+    this.messageService.success('Imágenes listas para ser enviadas.');
   }
 }
