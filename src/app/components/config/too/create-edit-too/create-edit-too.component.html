@@ -189,16 +189,26 @@
                     </div>
                     <div class="question">
                         <span><strong>Image where the centerline can be found</strong></span>
-                        <nz-upload nzType="drag" [nzMultiple]="true" (nzChange)="handleChange($event)">
-                            <p class="ant-upload-drag-icon">
-                                <i nz-icon nzType="inbox"></i>
-                            </p>
-                            <p class="ant-upload-text">Click or drag file to this area to upload</p>
-                            <p class="ant-upload-hint">
-                                Support for a single or bulk upload. Strictly prohibit from uploading company data or
-                                other band files
-                            </p>
+                        <nz-upload
+                        nzType="drag"
+                        [nzMultiple]="true"
+                        [nzShowUploadList]="true"
+                        [nzBeforeUpload]="beforeUpload"
+                        [(nzFileList)]="fileList"
+                        nzAutoUpload="false"
+                        nzAccept="image/*"> <!-- Acepta solo imágenes -->
+                        <p class="ant-upload-drag-icon">
+                            <i nz-icon nzType="inbox"></i>
+                        </p>
+                        <p class="ant-upload-text">Click o arrastra imágenes aquí para subir</p>
+                        <p class="ant-upload-hint">
+                            Solo se permiten archivos de imagen (JPG, PNG, GIF, etc.)
+                        </p>
                         </nz-upload>
+
+                        <button nz-button nzType="primary" (click)="guardarImagenes()">Guardar imágenes</button>
+
+
                     </div>
                     <div class="question">
                         <span><strong>Additional information (manual screen shot, etc.)</strong></span>
