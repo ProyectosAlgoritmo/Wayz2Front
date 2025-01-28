@@ -1,0 +1,66 @@
+<div class="content-container">
+    <div class="table-container responsive-table">
+        <div class="divtable">
+            <div class="headerclass">
+                <h2 class="title-heading">Create Theory of operation</h2>
+                <div class="form-container">
+                    <form [formGroup]="formularioForm" class="form-grid">
+                        <!-- Primera fila -->
+                        <div class="form-group">
+                            <label for="idMachine" class="form-label">Select machine:</label>
+                            <nz-form-control nzHasFeedback nzErrorTip="You must select a machine.">
+                                <nz-select id="idMachine" formControlName="idMachine" nzShowSearch nzAllowClear
+                                    nzPlaceHolder="Select machine" (ngModelChange)="onMachineChange($event)">
+                                    <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name"
+                                        [nzValue]="machine.idMachine"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="idCategory" class="form-label">Select category:</label>
+                            <nz-form-control nzHasFeedback nzErrorTip="You must select a category.">
+                                <nz-select id="idCategory" formControlName="idCategory" nzShowSearch nzAllowClear
+                                    nzPlaceHolder="Select category" (ngModelChange)="onCategoryChange($event)">
+                                    <nz-option *ngFor="let category of categories" [nzLabel]="category.category"
+                                        [nzValue]="category.idCategory"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="idCenterline" class="form-label">Select centerline:</label>
+                            <nz-form-control nzHasFeedback nzErrorTip="You must select a centerline.">
+                                <nz-select id="idCenterline" formControlName="idCenterline" nzShowSearch nzAllowClear
+                                    nzPlaceHolder="Select a centerline" (ngModelChange)="onCenterlineChange($event)">
+                                    <nz-option *ngFor="let centerline of centerlines" [nzLabel]="centerline.name"
+                                        [nzValue]="centerline.idCenterline"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <div class="button-container">
+                        <app-buttonstrategic
+                          mat-button
+                          [label]="'Back'"
+                          [customClass]="'BotonGris'"
+                          (click)="back()"
+                          class="boton-margen"
+                          [cancelar]="true"
+                        ></app-buttonstrategic>
+                    
+                        <app-buttonstrategic
+                          mat-button
+                          [label]="'Continue'"
+                          [customClass]="'BotonAzul'"
+                          (click)="Continue()"
+                          class="boton-margen"
+                        ></app-buttonstrategic>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -33,7 +33,6 @@ import { NewCenterlineComponent } from './new-centerline/new-centerline.componen
     SharedModule,
     NzInputModule,
     NzIconModule,
-    TableWithRowsChildComponent,
   ],
   templateUrl: './centerline.component.html',
   styleUrls: ['./centerline.component.css']
