@@ -38,4 +38,14 @@ export class TooService {
       })
     );
   }
+
+  ObtenerCategorias(id: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/get-all-categories/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
+  ObtenerCenterlines(id: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.get(`${this.apiUrl}/get-all-centerlines/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
 }

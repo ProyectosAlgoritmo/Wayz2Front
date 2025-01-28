@@ -1,1 +1,27 @@
-@import '../../../../../assets/styles/table.css';
+@import "../../../../../assets/styles/table.css";
+
+mat-toolbar{
+    padding: 0px;
+}
+
+.form-container{
+    display: flex;
+    padding-block: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas iguales */
+    gap: 50px;
+}
+
+@media (max-width: 961px) {
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales en pantallas pequeñas */
+    }
+}
+@media (max-width: 755px) {
+    .form-grid {
+        grid-template-columns: repeat(1, 1fr); /* 1 columnas iguales en pantallas pequeñas */
+    }
+}
