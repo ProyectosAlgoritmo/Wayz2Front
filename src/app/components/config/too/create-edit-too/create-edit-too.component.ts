@@ -80,6 +80,7 @@ export class CreateEditTooComponent implements OnInit {
 
   public selectedJustification: NzJustify = 'space-evenly';
   public selectedJustification2: NzJustify = 'space-between';
+  public selectedJustification3: NzJustify = 'center';
   public selectedLAlignment: NzAlign = 'flex-start';
   formularioForm: FormGroup;
   formularioForm2: FormGroup;
@@ -228,5 +229,13 @@ export class CreateEditTooComponent implements OnInit {
     } else if (status === 'error') {
       this.messageService.error(`${file.name} file upload failed.`);
     }
+  }
+
+  Continue(){
+
+  }
+
+  Back(){
+
   }
 }

@@ -189,9 +189,7 @@
                     </div>
                     <div class="question">
                         <span><strong>Image where the centerline can be found</strong></span>
-                        <nz-upload nzType="drag" [nzMultiple]="true"
-                            
-                            (nzChange)="handleChange($event)">
+                        <nz-upload nzType="drag" [nzMultiple]="true" (nzChange)="handleChange($event)">
                             <p class="ant-upload-drag-icon">
                                 <i nz-icon nzType="inbox"></i>
                             </p>
@@ -210,9 +208,16 @@
                 </form>
             </div>
 
-            <div>
-                <div class="button-container">
+            <div class="question">
+                <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification3" [nzAlign]="selectedLAlignment">
+                    <app-buttonstrategic mat-button [label]="'Back'" [customClass]="'BotonGris'" (click)="Back()"
+                        class="boton-margen" [cancelar]="true"></app-buttonstrategic>
 
+                    <app-buttonstrategic mat-button [label]="'Save'" [customClass]="'BotonAzul'" (click)="Continue()"
+                        class="boton-margen"></app-buttonstrategic>
+                </div>
+                <div class="button-container">
+                    
                 </div>
             </div>
         </div>
