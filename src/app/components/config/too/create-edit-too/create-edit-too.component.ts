@@ -84,12 +84,16 @@ export class CreateEditTooComponent implements OnInit {
   categories: any[] = [];
   centerlines: any[] = [];
   searchValue: string = '';
+  Maquina: string = '';
+  Categoria: string = '';
+  Centerline: string = '';
   final_centerline: number = 0;
   enablebutton = false;
   emitEditToParent = false;
 
   public selectedJustification: NzJustify = 'space-evenly';
   public selectedJustification2: NzJustify = 'space-between';
+  public selectedJustification3: NzJustify = 'center';
   public selectedLAlignment: NzAlign = 'flex-start';
   formularioForm: FormGroup;
   formularioForm2: FormGroup;
@@ -113,6 +117,7 @@ export class CreateEditTooComponent implements OnInit {
     });
 
     this.formularioForm2 = this.fb2.group({
+      id_centerline: [null, Validators.required],
       question1: [null, Validators.required],
       question2: [null, Validators.required],
       question3: [null, Validators.required],
@@ -138,11 +143,9 @@ export class CreateEditTooComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMachines();
-    this.final_centerline = 0;
     let pageName = this.route.snapshot.paramMap.get('id') || '';
-
     this.formularioForm2.patchValue({
+      id_centerline: pageName,
       question1: 'This centerline is used to control ',
       question2: 'The centerline does this by changing ',
       question3: 'Increasing this value will increase the ',
@@ -165,14 +168,67 @@ export class CreateEditTooComponent implements OnInit {
       question20: '',
       question21: '',
     });
+
+    this.getMachines();
+    this.getToo(pageName);
+    this.final_centerline = 0;
+  }
+
+  getToo(id: any) {
+    this.auxService.ventanaCargando();
+    this.tooService.get('get-Too/' + id).subscribe({
+      next: (data: any) => {
+        if (data.success) {
+          this.auxService.cerrarVentanaCargando();
+          this.Maquina = data.data[0].machine;
+          this.Categoria = data.data[0].category;
+          this.Centerline = data.data[0].centerline;
+          this.formularioForm2.patchValue({
+            question1: data.data[0].question1,
+            question2: data.data[0].question2,
+            question3: data.data[0].question3,
+            question4: data.data[0].question4,
+            question5: data.data[0].question5,
+            question6: data.data[0].question6,
+            question7: data.data[0].question7,
+            question8: data.data[0].question8,
+            question9: data.data[0].question9,
+            question10: data.data[0].question10,
+            question11: data.data[0].question11,
+            question12: data.data[0].question12,
+            question13: data.data[0].question13,
+            question14: data.data[0].question14,
+            question15: data.data[0].question15,
+            question16: data.data[0].question16,
+            question17: data.data[0].question17,
+            question18: data.data[0].question18,
+            question19: data.data[0].question19,
+            question20: data.data[0].question20,
+            question21: data.data[0].question21,
+          });
+          if (!data.warning) {
+          } else {
+
+          }
+        } else {
+          this.auxService.ventanaCargando();
+          this.auxService.AlertWarning('Error', data.message);
+        }
+      },
+      error: (error: any) => {
+        this.auxService.cerrarVentanaCargando();
+        this.auxService.AlertError('Error loading theory of operation: ', error);
+      },
+    });
   }
 
   getMachines() {
     this.auxService.ventanaCargando();
-    this.configService.get('get-all-machines').subscribe({
+    this.tooService.get('get-all-machines').subscribe({
       next: (data: any) => {
         // this.dataSource = data.data;
         this.machines = data.data;
+        console.log(this.machines)
         this.auxService.cerrarVentanaCargando();
       },
       error: (error: any) => {
@@ -222,22 +278,52 @@ export class CreateEditTooComponent implements OnInit {
 
   onCenterlineChange(CenterlineId: number): void {
     if (CenterlineId != null) {
-      this.final_centerline = CenterlineId;
-      console.log(this.final_centerline);
+      //this.final_centerline = CenterlineId;
+      this.auxService.ventanaCargando();
+      this.tooService.get('get-Too/' + CenterlineId).subscribe({
+        next: (data: any) => {
+          if (data.success) {
+            this.auxService.cerrarVentanaCargando();
+            this.formularioForm2.patchValue({
+              question1: data.data[0].question1,
+              question2: data.data[0].question2,
+              question3: data.data[0].question3,
+              question4: data.data[0].question4,
+              question5: data.data[0].question5,
+              question6: data.data[0].question6,
+              question7: data.data[0].question7,
+              question8: data.data[0].question8,
+              question9: data.data[0].question9,
+              question10: data.data[0].question10,
+              question11: data.data[0].question11,
+              question12: data.data[0].question12,
+              question13: data.data[0].question13,
+              question14: data.data[0].question14,
+              question15: data.data[0].question15,
+              question16: data.data[0].question16,
+              question17: data.data[0].question17,
+              question18: data.data[0].question18,
+              question19: data.data[0].question19,
+              question20: data.data[0].question20,
+              question21: data.data[0].question21,
+            });
+            if (!data.warning) {
+            } else {
+
+            }
+          } else {
+            this.auxService.ventanaCargando();
+            this.auxService.AlertWarning('Error', data.message);
+          }
+        },
+        error: (error: any) => {
+          this.auxService.cerrarVentanaCargando();
+          this.auxService.AlertError('Error loading theory of operation: ', error);
+        },
+      });
     }
   }
 
-  // handleChange({ file, fileList }: NzUploadChangeParam): void {
-  //   const status = file.status;
-  //   if (status !== 'uploading') {
-  //     console.log(file, fileList);
-  //   }
-  //   if (status === 'done') {
-  //     this.messageService.success(`${file.name} file uploaded successfully.`);
-  //   } else if (status === 'error') {
-  //     this.messageService.error(`${file.name} file upload failed.`);
-  //   }
-  // }
 
   fileList: NzUploadFile[] = [];
   beforeUpload = (file: NzUploadFile): boolean => {
@@ -272,5 +358,60 @@ export class CreateEditTooComponent implements OnInit {
     }
 
     this.messageService.success('Imágenes listas para ser enviadas.');
+  }
+
+  Continue() {
+    let dataApi = {
+      idCenterline: this.formularioForm2.value.id_centerline,
+      question1: this.formularioForm2.value.question1,
+      question2: this.formularioForm2.value.question2,
+      question3: this.formularioForm2.value.question3,
+      question4: this.formularioForm2.value.question4,
+      question5: this.formularioForm2.value.question5,
+      question6: this.formularioForm2.value.question6,
+      question7: this.formularioForm2.value.question7,
+      question8: this.formularioForm2.value.question8,
+      question9: this.formularioForm2.value.question9,
+      question10: this.formularioForm2.value.question10,
+      question11: this.formularioForm2.value.question11,
+      question12: this.formularioForm2.value.question12,
+      question13: this.formularioForm2.value.question13,
+      question14: this.formularioForm2.value.question14,
+      question15: this.formularioForm2.value.question15,
+      question16: this.formularioForm2.value.question16,
+      question17: this.formularioForm2.value.question17,
+      question18: this.formularioForm2.value.question18,
+      question19: this.formularioForm2.value.question19,
+      question20: this.formularioForm2.value.question20,
+      question21: this.formularioForm2.value.question21,
+    };
+    console.log(dataApi)
+    this.auxService.ventanaCargando();
+    this.tooService
+      .CreateToo('Add-too', dataApi)
+      .subscribe({
+        next: async (data: any) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success) {
+            await this.auxService.AlertSuccess('Data registered successfully.', '');
+          } else {
+            this.auxService.AlertWarning(
+              'Error creating the record.',
+              data.message
+            );
+          }
+        },
+        error: (error: any) => {
+          this.auxService.cerrarVentanaCargando();
+          this.auxService.AlertError(
+            'Error creating the record.',
+            error.message
+          );
+        },
+      });
+  }
+
+  Back() {
+
   }
 }

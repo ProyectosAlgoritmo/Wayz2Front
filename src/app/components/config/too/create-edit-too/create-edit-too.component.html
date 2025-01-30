@@ -6,15 +6,15 @@
                 <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification" [nzAlign]="selectedLAlignment">
                     <div>
                         <strong>Machine:</strong>
-                        Maquina
+                        {{Maquina}}
                     </div>
                     <div>
                         <strong>Category:</strong>
-                        Maquina
+                        {{Categoria}}
                     </div>
                     <div>
                         <strong>Centerline:</strong>
-                        Maquina
+                        {{Centerline}}
                     </div>
                 </div>
                 <strong>Based on a similar TOO centerline</strong>
@@ -25,7 +25,7 @@
                         <nz-form-control nzHasFeedback nzErrorTip="You must select a machine.">
                             <nz-select id="idMachine" formControlName="idMachine" nzShowSearch nzAllowClear
                                 nzPlaceHolder="Select machine" (ngModelChange)="onMachineChange($event)">
-                                <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name"
+                                <nz-option *ngFor="let machine of machines" [nzLabel]="machine.machine"
                                     [nzValue]="machine.idMachine"></nz-option>
                             </nz-select>
                         </nz-form-control>
@@ -200,9 +200,9 @@
                         <p class="ant-upload-drag-icon">
                             <i nz-icon nzType="inbox"></i>
                         </p>
-                        <p class="ant-upload-text">Click o arrastra imágenes aquí para subir</p>
+                        <p class="ant-upload-text">Click or drag file to this area to upload</p>
                         <p class="ant-upload-hint">
-                            Solo se permiten archivos de imagen (JPG, PNG, GIF, etc.)
+                            Only image files are allowed (JPG, PNG, GIF, etc.)
                         </p>
                         </nz-upload>
 
@@ -215,12 +215,37 @@
                         <textarea nz-input placeholder="Additional information" nzAutosize
                             formControlName="question21"></textarea>
                     </div>
+                    <div class="question">
+                        <nz-upload
+                        nzType="drag"
+                        [nzMultiple]="true"
+                        [nzShowUploadList]="true"
+                        [nzBeforeUpload]="beforeUpload"
+                        [(nzFileList)]="fileList"
+                        nzAutoUpload="false"
+                        nzAccept="image/*"> <!-- Acepta solo imágenes -->
+                        <p class="ant-upload-drag-icon">
+                            <i nz-icon nzType="inbox"></i>
+                        </p>
+                        <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                        <p class="ant-upload-hint">
+                            Only image files are allowed (JPG, PNG, GIF, etc.)
+                        </p>
+                        </nz-upload>
+                    </div>
                 </form>
             </div>
 
-            <div>
-                <div class="button-container">
+            <div class="question">
+                <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification3" [nzAlign]="selectedLAlignment">
+                    <app-buttonstrategic mat-button [label]="'Back'" [customClass]="'BotonGris'" (click)="Back()"
+                        class="boton-margen" [cancelar]="true"></app-buttonstrategic>
 
+                    <app-buttonstrategic mat-button [label]="'Save'" [customClass]="'BotonAzul'" (click)="Continue()"
+                        class="boton-margen"></app-buttonstrategic>
+                </div>
+                <div class="button-container">
+                    
                 </div>
             </div>
         </div>

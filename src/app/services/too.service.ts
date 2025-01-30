@@ -48,4 +48,13 @@ export class TooService {
     const headers = this.getHeaders();
     return this.httpClient.get(`${this.apiUrl}/get-all-centerlines/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
   }
+
+  CreateToo(link: string, Data: any): Observable<any> {
+    const headers = this.getHeaders();
+    const url = `${this.apiUrl}/${link}`; // Endpoint para actualizar un cliente
+    return this.httpClient
+      .post(url, Data, { headers })
+      .pipe(catchError(this.auxService.handleError.bind(this)));
+  }
+
 }
