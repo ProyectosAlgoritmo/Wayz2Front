@@ -1,0 +1,95 @@
+@import "../../../../assets/styles/table.css";
+.table-container {
+  padding: 16px;
+}
+
+.title-heading {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Tres columnas iguales */
+  gap: 50px;
+}
+
+@media (max-width: 961px) {
+  .form-grid {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Dos columnas iguales en pantallas pequeñas */
+  }
+}
+@media (max-width: 755px) {
+  .form-grid {
+    grid-template-columns: repeat(
+      1,
+      1fr
+    ); /* 1 columnas iguales en pantallas pequeñas */
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group-buuton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: flex-start; /* Alinea a la izquierda */
+  margin-top: 30px;
+}
+
+.form-inline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.form-checkbox {
+  font-weight: bold;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.boton-margen {
+  margin-top: 16px;
+}
+
+.align-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 30px;
+  justify-content: start;
+}
+
+.products {
+  width: 50%;
+  height: auto;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: auto;
+  overflow-y: auto;
+  border: 1px solid #d1d1d1;
+  margin: 0 auto; /* Centra el elemento horizontalmente */
+  padding: 20px;
+  background-color: rgba(128, 128, 128, 0.157);
+  border-radius: 30px;
+}
+
+

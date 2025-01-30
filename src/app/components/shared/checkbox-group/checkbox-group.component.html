@@ -1,0 +1,20 @@
+<div *ngFor="let group of groups" class="checkbox-group-container">
+  <!-- Checkbox para seleccionar o deseleccionar todas las opciones del grupo -->
+  <label nz-checkbox class="checkbox-group-label"
+         [nzChecked]="isAllChecked(group)"
+         [nzIndeterminate]="isIndeterminate(group)"
+         (nzCheckedChange)="toggleAll(group, $event)">
+    <strong>{{ group.groupName }}</strong>
+  </label>
+
+  <nz-divider></nz-divider>
+
+  <!-- Opciones individuales del grupo -->
+  <div class="checkbox-options-container">
+    <label nz-checkbox *ngFor="let option of group.options"
+           [(ngModel)]="option.checked"
+           (ngModelChange)="onOptionChange()">
+      {{ option.label }}
+    </label>
+  </div>
+</div>
