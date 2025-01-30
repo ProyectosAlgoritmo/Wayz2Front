@@ -57,6 +57,10 @@ export class ImportService {
       return this.httpClient.put(url, file, { headers, responseType: 'text' });
     }
 
+    deleteFileToS3(url: string, file: File): Observable<any> {
+      const headers = { 'Content-Type': file.type !== '' ? file.type : 'application/octet-stream' };
+      return this.httpClient.delete(url);
+    }
 
 
   // Método para obtener la URL prefirmada desde el backend
