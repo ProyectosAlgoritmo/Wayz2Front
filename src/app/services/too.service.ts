@@ -57,4 +57,9 @@ export class TooService {
       .pipe(catchError(this.auxService.handleError.bind(this)));
   }
 
+  deleteCLImg(id: number): Observable<any> {
+    const headers = this.getHeaders();
+    return this.httpClient.delete(`${this.apiUrl}/delete-CenterlineImg/${id}`, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+  }
+
 }

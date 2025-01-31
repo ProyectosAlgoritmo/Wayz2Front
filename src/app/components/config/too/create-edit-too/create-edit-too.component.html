@@ -89,8 +89,7 @@
                         <span><strong>Enter in the boxes each HMI screen that needs to be clicked on to find the HMI
                                 screen that the centerline is on. Delete “Home” and
                                 “Next Screen” if not an HMI setting</strong></span>
-                        <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification2"
-                            [nzAlign]="selectedLAlignment">
+                        <div class="" nz-flex [nzJustify]="selectedJustification2" [nzAlign]="selectedLAlignment">
                             <div>
                                 <textarea nz-input placeholder="Home" nzAutosize formControlName="question6"></textarea>
                             </div>
@@ -123,7 +122,7 @@
                                 <i class="icon" nz-icon nzType="arrow-right"></i>
                             </div>
                         </div>
-                        <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification2"
+                        <div class="question" nz-flex [nzJustify]="selectedJustification2"
                             [nzAlign]="selectedLAlignment">
                             <div>
                                 <textarea nz-input placeholder="" nzAutosize formControlName="question11"></textarea>
@@ -156,7 +155,7 @@
                                 <i class="icon" nz-icon nzType="arrow-right"></i>
                             </div>
                         </div>
-                        <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification2"
+                        <div class="question" nz-flex [nzJustify]="selectedJustification2"
                             [nzAlign]="selectedLAlignment">
                             <div>
                                 <textarea nz-input placeholder="" nzAutosize formControlName="question16"></textarea>
@@ -189,26 +188,30 @@
                     </div>
                     <div class="question">
                         <span><strong>Image where the centerline can be found</strong></span>
-                        <nz-upload
-                        nzType="drag"
-                        [nzMultiple]="true"
-                        [nzShowUploadList]="true"
-                        [nzBeforeUpload]="beforeUpload"
-                        [(nzFileList)]="fileList"
-                        nzAutoUpload="false"
-                        nzAccept="image/*"> <!-- Acepta solo imágenes -->
-                        <p class="ant-upload-drag-icon">
-                            <i nz-icon nzType="inbox"></i>
-                        </p>
-                        <p class="ant-upload-text">Click or drag file to this area to upload</p>
-                        <p class="ant-upload-hint">
-                            Only image files are allowed (JPG, PNG, GIF, etc.)
-                        </p>
+                        <nz-upload nzType="drag" [nzMultiple]="true" [nzShowUploadList]="true"
+                            [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" nzAutoUpload="false"
+                            nzAccept="image/*"> <!-- Acepta solo imágenes -->
+                            <p class="ant-upload-drag-icon">
+                                <i nz-icon nzType="inbox"></i>
+                            </p>
+                            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                            <p class="ant-upload-hint">
+                                Only image files are allowed (JPG, PNG, GIF, etc.)
+                            </p>
                         </nz-upload>
-
-                        <button nz-button nzType="primary" (click)="guardarImagenes()">Guardar imágenes</button>
-
-
+                    </div>
+                    <div>
+                        <table>
+                            <ng-container *ngFor="let group of images">
+                                <tr>
+                                    <td>
+                                        <img src="https://wayzbucket.s3.us-east-2.amazonaws.com/{{group.url}}" alt="">
+                                    </td>
+                                    <td><a (click)="DeleteImg(group.idImg, group.url)"><i nz-icon
+                                                nzType="delete"></i></a></td>
+                                </tr>
+                            </ng-container>
+                        </table>
                     </div>
                     <div class="question">
                         <span><strong>Additional information (manual screen shot, etc.)</strong></span>
@@ -216,26 +219,33 @@
                             formControlName="question21"></textarea>
                     </div>
                     <div class="question">
-                        <nz-upload
-                        nzType="drag"
-                        [nzMultiple]="true"
-                        [nzShowUploadList]="true"
-                        [nzBeforeUpload]="beforeUpload"
-                        [(nzFileList)]="fileList"
-                        nzAutoUpload="false"
-                        nzAccept="image/*"> <!-- Acepta solo imágenes -->
-                        <p class="ant-upload-drag-icon">
-                            <i nz-icon nzType="inbox"></i>
-                        </p>
-                        <p class="ant-upload-text">Click or drag file to this area to upload</p>
-                        <p class="ant-upload-hint">
-                            Only image files are allowed (JPG, PNG, GIF, etc.)
-                        </p>
+                        <nz-upload nzType="drag" [nzMultiple]="true" [nzShowUploadList]="true"
+                            [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" nzAutoUpload="false"
+                            nzAccept="image/*"> <!-- Acepta solo imágenes -->
+                            <p class="ant-upload-drag-icon">
+                                <i nz-icon nzType="inbox"></i>
+                            </p>
+                            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+                            <p class="ant-upload-hint">
+                                Only image files are allowed (JPG, PNG, GIF, etc.)
+                            </p>
                         </nz-upload>
                     </div>
+                    <div>
+                        <table>
+                            <ng-container *ngFor="let group of machines">
+                                <tr>
+                                    <td>
+                                        <h2>{{group.machine}}</h2>
+                                    </td>
+                                    <td><a href=""><i nz-icon nzType="delete"></i></a></td>
+                                </tr>
+                            </ng-container>
+                        </table>
+                    </div>
                 </form>
-            </div>
 
+            </div>
             <div class="question">
                 <div class="btn-wrappers" nz-flex [nzJustify]="selectedJustification3" [nzAlign]="selectedLAlignment">
                     <app-buttonstrategic mat-button [label]="'Back'" [customClass]="'BotonGris'" (click)="Back()"
@@ -245,7 +255,7 @@
                         class="boton-margen"></app-buttonstrategic>
                 </div>
                 <div class="button-container">
-                    
+
                 </div>
             </div>
         </div>

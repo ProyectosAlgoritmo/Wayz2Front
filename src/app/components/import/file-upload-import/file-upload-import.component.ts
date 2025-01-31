@@ -29,20 +29,21 @@ export class FileUploadImportComponent {
 
   constructor(
     public dialogRef: MatDialogRef<FileUploadImportComponent>,
-    private auxService: AuxService, private importService: ImportService, 
-    @Inject(MAT_DIALOG_DATA) public data: any, 
+    private auxService: AuxService, private importService: ImportService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private notificationService: NotificationService
   ) {
     this.additionalData = data.additionalData;
     this.carpeta = data.carpeta;
     this.modeldata = data.modeldata;
     this.storedprocedure = data.storedprocedure;
+    console.log(this.storedprocedure)
   }
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
 
-    
+
   }
 
   handleChange(info: { file: NzUploadFile, fileList: NzUploadFile[] }): void {
@@ -66,15 +67,15 @@ export class FileUploadImportComponent {
       const nuevoNombreArchivo = `${fechaHoraActual}_${empresaNombre}_${this.additionalData}.csv`.replace(/\s+/g, '_');
 
       const renamedFile = new File([selectedFile], nuevoNombreArchivo, { type: selectedFile.type });
-      
+
 
       const idEmpresa = sessionStorage.getItem('id_empresa')?.toString() || '';
       this.notificationService.updateNotificationState(idEmpresa, 'Importando')
-      .then(() => {
-      })
-      .catch(error => {
-        this.auxService.AlertError('Error al actualizar el estado de la empresa:', error);
-      });
+        .then(() => {
+        })
+        .catch(error => {
+          this.auxService.AlertError('Error al actualizar el estado de la empresa:', error);
+        });
 
 
       /*this.importService.convertXlsxToCsv(renamedFile).then(csvFile => {
@@ -83,47 +84,47 @@ export class FileUploadImportComponent {
           console.error('Error converting file:', error);
         }); */
 
-        const fileName = this.carpeta + renamedFile.name; 
+      const fileName = this.carpeta + renamedFile.name;
 
-        this.importService.convertXlsxToCsv(renamedFile).then(csvFile => {
-          this.importService.getUrlBucket(csvFile, fileName).pipe(
-            switchMap(response => this.importService.uploadFileToS3(response.url, csvFile))
-          ).subscribe(() => {
+      this.importService.convertXlsxToCsv(renamedFile).then(csvFile => {
+        this.importService.getUrlBucket(csvFile, fileName,1).pipe(
+          switchMap(response => this.importService.uploadFileToS3(response.url, csvFile))
+        ).subscribe(() => {
 
-            const payload = {FileUrl: fileName,  modeldata: this.modeldata, storedprocedure: this.storedprocedure };
+          const payload = { FileUrl: fileName, modeldata: this.modeldata, storedprocedure: this.storedprocedure };
 
-            this.importService.ImportDesempenofinanciero(payload)
-              .subscribe(response => {
+          this.importService.ImportDesempenofinanciero(payload)
+            .subscribe(response => {
 
-                this.auxService.cerrarVentanaCargando();
+              this.auxService.cerrarVentanaCargando();
 
-                this.auxService.AlertSuccess("Importar archivo", response.message); 
-                this.dialogRef.close();
-              }, error => {
+              this.auxService.AlertSuccess("Importar archivo", response.message);
+              this.dialogRef.close();
+            }, error => {
 
-                this.auxService.cerrarVentanaCargando();
+              this.auxService.cerrarVentanaCargando();
 
-                this.auxService.AlertError("Importar archivo",'Error al enviar la solicitud de importación:' + error); 
-              });
+              this.auxService.AlertError("Importar archivo", 'Error al enviar la solicitud de importación:' + error);
+            });
 
 
-          }, error => {
-            this.auxService.cerrarVentanaCargando();
-            this.auxService.AlertError("Importar archivo","Error al cargar el archivo: " + error); 
-            
-          });
-        }).catch(error => {
-
+        }, error => {
           this.auxService.cerrarVentanaCargando();
-          this.auxService.AlertError("Importar archivo","Error al convertir el archivo:" + error); 
-          
-        });
+          this.auxService.AlertError("Importar archivo", "Error al cargar el archivo: " + error);
 
-        
-      }
-    
-  
-    
+        });
+      }).catch(error => {
+
+        this.auxService.cerrarVentanaCargando();
+        this.auxService.AlertError("Importar archivo", "Error al convertir el archivo:" + error);
+
+      });
+
+
+    }
+
+
+
   }
 
 }

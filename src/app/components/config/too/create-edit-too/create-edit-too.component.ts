@@ -38,6 +38,8 @@ import { da, ro, tr } from 'date-fns/locale';
 import { ConfigService } from '../../../../services/config.service';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { TooService } from '../../../../services/too.service';
+import { ImportService } from '../../../../services/import.service';
+
 
 import { NzMessageService } from 'ng-zorro-antd/message';
 import {
@@ -45,6 +47,7 @@ import {
   NzUploadModule,
   NzUploadFile,
 } from 'ng-zorro-antd/upload';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-create-edit-too',
@@ -90,6 +93,8 @@ export class CreateEditTooComponent implements OnInit {
   final_centerline: number = 0;
   enablebutton = false;
   emitEditToParent = false;
+  images: any[] = [];
+  additional_files: any[] = [];
 
   public selectedJustification: NzJustify = 'space-evenly';
   public selectedJustification2: NzJustify = 'space-between';
@@ -108,7 +113,8 @@ export class CreateEditTooComponent implements OnInit {
     private configService: ConfigService,
     private limitsAndTargetService: LimitsAndTargetService,
     private tooService: TooService,
-    private messageService: NzMessageService
+    private messageService: NzMessageService,
+    private importService: ImportService,
   ) {
     this.formularioForm = this.fb.group({
       idMachine: [null, Validators.required],
@@ -171,6 +177,7 @@ export class CreateEditTooComponent implements OnInit {
 
     this.getMachines();
     this.getToo(pageName);
+    this.GetImgs(pageName);
     this.final_centerline = 0;
   }
 
@@ -228,7 +235,6 @@ export class CreateEditTooComponent implements OnInit {
       next: (data: any) => {
         // this.dataSource = data.data;
         this.machines = data.data;
-        console.log(this.machines)
         this.auxService.cerrarVentanaCargando();
       },
       error: (error: any) => {
@@ -339,25 +345,64 @@ export class CreateEditTooComponent implements OnInit {
     return false;
   };
 
-  guardarImagenes(): void {
+  guardarImagenes(id: any): void {
     if (this.fileList.length === 0) {
       this.messageService.warning('No hay imágenes para guardar.');
       return;
     }
-
-    console.log('Imágenes seleccionadas:', this.fileList);
-
     const formData = new FormData();
     this.fileList.forEach((file: any) => {
       formData.append('imagenes', file as File);
     });
-
-    console.log('Contenido de FormData:');
     for (const pair of (formData as any).entries()) {
-      console.log(`Clave: ${pair[0]}, Valor:`, pair[1]);
+      const fileName = "centerline/" + id + pair[1].name;
+      this.importService.getUrlBucket(pair[1], fileName, this.formularioForm2.value.id_centerline).pipe(
+        switchMap(response => {
+          return this.importService.uploadFileToS3(response.url, pair[1]);
+        })
+      ).subscribe(() => {
+
+      }, error => {
+        this.auxService.cerrarVentanaCargando();
+        this.auxService.AlertError("Importar archivo", "Error al cargar el archivo: " + error);
+
+      });
     }
 
     this.messageService.success('Imágenes listas para ser enviadas.');
+  }
+
+  GetImgs(idCenterline: any) {
+    this.auxService.ventanaCargando();
+    this.tooService.get('get-CenterlineImg/' + idCenterline).subscribe({
+      next: (data: any) => {
+        // this.dataSource = data.data;
+        this.images = data.data;
+        console.log(this.images)
+        this.auxService.cerrarVentanaCargando();
+      },
+      error: (error: any) => {
+        this.auxService.AlertError('Error loading machines: ', error);
+      },
+    });
+  }
+
+  DeleteImg(id: any, url: any){
+    this.auxService.ventanaCargando();
+    this.importService.deleteUrlBucket(url, id).pipe(
+      switchMap(response =>{
+        console.log("Respuesta: ",response)
+        this.auxService.cerrarVentanaCargando();
+        return this.importService.deleteFileToS3(response.url); 
+      })
+    ).subscribe(() =>{
+
+    },
+    error => {
+      this.auxService.cerrarVentanaCargando();
+      this.auxService.AlertError("Importar archivo", "Error al borrar el archivo: " + error);
+
+    });
   }
 
   Continue() {
@@ -385,7 +430,6 @@ export class CreateEditTooComponent implements OnInit {
       question20: this.formularioForm2.value.question20,
       question21: this.formularioForm2.value.question21,
     };
-    console.log(dataApi)
     this.auxService.ventanaCargando();
     this.tooService
       .CreateToo('Add-too', dataApi)
@@ -393,7 +437,9 @@ export class CreateEditTooComponent implements OnInit {
         next: async (data: any) => {
           this.auxService.cerrarVentanaCargando();
           if (data.success) {
+            await this.guardarImagenes(this.formularioForm2.value.id_centerline);
             await this.auxService.AlertSuccess('Data registered successfully.', '');
+            await this.GetImgs(this.formularioForm2.value.id_centerline)
           } else {
             this.auxService.AlertWarning(
               'Error creating the record.',
@@ -412,6 +458,6 @@ export class CreateEditTooComponent implements OnInit {
   }
 
   Back() {
-
+    this.router.navigate(['/too'])
   }
 }

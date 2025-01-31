@@ -44,12 +44,20 @@ export class ImportService {
     });
   }*/
 
-    getUrlBucket(file: File, carpeta: string): Observable<{ url: string }> {
+    getUrlBucket(file: File, carpeta: string, id: number): Observable<{ url: string }> {
       const headers = this.getHeaders();
       //const fileName = carpeta + file.name; 
       const payload = { ObjectName: carpeta };
   
-      return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-token-Amazon/`, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+      return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-token-Amazon/` + id, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+    }
+
+    deleteUrlBucket(carpeta: string, id: number): Observable<{ url: string }> {
+      const headers = this.getHeaders();
+      //const fileName = carpeta + file.name; 
+      const payload = { ObjectName: carpeta };
+  
+      return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-deleteUrl-Amazon/` + id, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
     }
   
     uploadFileToS3(url: string, file: File): Observable<any> {
@@ -57,6 +65,10 @@ export class ImportService {
       return this.httpClient.put(url, file, { headers, responseType: 'text' });
     }
 
+    deleteFileToS3(url: string): Observable<any> {
+      console.log("Borrar: ", url)
+      return this.httpClient.delete(url);
+    }
 
 
   // Método para obtener la URL prefirmada desde el backend
