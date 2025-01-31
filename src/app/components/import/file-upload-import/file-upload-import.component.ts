@@ -87,7 +87,7 @@ export class FileUploadImportComponent {
       const fileName = this.carpeta + renamedFile.name;
 
       this.importService.convertXlsxToCsv(renamedFile).then(csvFile => {
-        this.importService.getUrlBucket(csvFile, fileName).pipe(
+        this.importService.getUrlBucket(csvFile, fileName,1).pipe(
           switchMap(response => this.importService.uploadFileToS3(response.url, csvFile))
         ).subscribe(() => {
 
