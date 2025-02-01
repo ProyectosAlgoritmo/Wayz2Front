@@ -59,6 +59,22 @@ export class ImportService {
   
       return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-deleteUrl-Amazon/` + id, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
     }
+
+    getUrlBucketFile(file: File, carpeta: string, id: number): Observable<{ url: string }> {
+      const headers = this.getHeaders();
+      //const fileName = carpeta + file.name; 
+      const payload = { ObjectName: carpeta };
+  
+      return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-token-AmazonFile/` + id, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+    }
+
+    deleteUrlBucketFile(carpeta: string, id: number): Observable<{ url: string }> {
+      const headers = this.getHeaders();
+      //const fileName = carpeta + file.name; 
+      const payload = { ObjectName: carpeta };
+  
+      return this.httpClient.post<{ url: string }>(`${this.apiUrl}/Utilities/Get-deleteUrl-AmazonFile/` + id, payload, { headers }).pipe( catchError(this.auxService.handleError.bind(this)));
+    }
   
     uploadFileToS3(url: string, file: File): Observable<any> {
       const headers = { 'Content-Type': file.type !== '' ? file.type : 'application/octet-stream' };

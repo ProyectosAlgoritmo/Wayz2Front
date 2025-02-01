@@ -205,7 +205,7 @@
                             <ng-container *ngFor="let group of images">
                                 <tr>
                                     <td>
-                                        <img src="https://wayzbucket.s3.us-east-2.amazonaws.com/{{group.url}}" alt="">
+                                        <a target="_blank" href="https://wayzbucket.s3.us-east-2.amazonaws.com/{{group.url}}">{{group.url}}</a>
                                     </td>
                                     <td><a (click)="DeleteImg(group.idImg, group.url)"><i nz-icon
                                                 nzType="delete"></i></a></td>
@@ -220,25 +220,26 @@
                     </div>
                     <div class="question">
                         <nz-upload nzType="drag" [nzMultiple]="true" [nzShowUploadList]="true"
-                            [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" nzAutoUpload="false"
-                            nzAccept="image/*"> <!-- Acepta solo imágenes -->
+                            [nzBeforeUpload]="beforeUpload2" [(nzFileList)]="fileList2" nzAutoUpload="false"
+                            nzAccept="*/pdf,image/*"> <!-- Acepta solo imágenes -->
                             <p class="ant-upload-drag-icon">
                                 <i nz-icon nzType="inbox"></i>
                             </p>
                             <p class="ant-upload-text">Click or drag file to this area to upload</p>
                             <p class="ant-upload-hint">
-                                Only image files are allowed (JPG, PNG, GIF, etc.)
+                                Only image or PDF files are allowed (PDF, JPG, PNG, GIF, etc.)
                             </p>
                         </nz-upload>
                     </div>
                     <div>
                         <table>
-                            <ng-container *ngFor="let group of machines">
+                            <ng-container *ngFor="let group of additional_files">
                                 <tr>
                                     <td>
-                                        <h2>{{group.machine}}</h2>
+                                        <a target="_blank" href="https://wayzbucket.s3.us-east-2.amazonaws.com/{{group.url}}">{{group.url}}</a>
                                     </td>
-                                    <td><a href=""><i nz-icon nzType="delete"></i></a></td>
+                                    <td><a (click)="DeleteFile(group.idFile, group.url)"><i nz-icon
+                                        nzType="delete"></i></a></td>
                                 </tr>
                             </ng-container>
                         </table>
