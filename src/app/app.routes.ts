@@ -28,6 +28,7 @@ import { CenterlineComponent } from './components/centerline/centerline.componen
 import { LimitsAndTargetsComponent } from './components/limits-and-targets/limits-and-targets.component';
 import { UpdateTargetAndLimitsProductComponent } from './components/limits-and-targets/update-target-and-limits-product/update-target-and-limits-product.component';
 import { DataEntryComponent } from './components/data-entry/data-entry/data-entry.component';
+import { TablaOrdenableComponent } from './components/shared/tabla-ordenable/tabla-ordenable.component';
 
 export const routes: Routes = [
   {
@@ -97,6 +98,7 @@ export const routes: Routes = [
   { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
   { path: 'data-entry', component: DataEntryComponent, canActivate: [AuthGuard] },
+  { path: 'drop', component: TablaOrdenableComponent, canActivate: [AuthGuard] },
   {
     path: 'categories',
     component: CategorysComponent,
