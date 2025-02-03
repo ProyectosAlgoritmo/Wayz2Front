@@ -1,0 +1,96 @@
+<div class="content-container">
+  <div class="table-container responsive-table">
+    <div class="divtable">
+      <div class="headerclass">
+        <h2 class="title-heading">Data Entry</h2>
+        <div class="form-container">
+          <div class="form-grid">
+            <nz-form-item>
+              <nz-form-label [nzSm]="9" [nzXs]="24">
+                <h3>Machine</h3>
+              </nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="24">
+                <p>{{ machineValue }}</p>
+              </nz-form-control>
+            </nz-form-item>
+            
+            <nz-form-item>
+              <nz-form-label [nzSm]="9" [nzXs]="24">
+                <h3>Product</h3>
+              </nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="24">
+                <p>{{ productValue }}</p>
+              </nz-form-control>
+            </nz-form-item>
+      
+            <nz-form-item>
+              <nz-form-label [nzSm]="9" [nzXs]="24">
+                <h3>Start time</h3>
+              </nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="24">
+                <p>{{ startTimeValue }}</p>
+              </nz-form-control>
+            </nz-form-item>
+      
+            <nz-form-item>
+              <nz-form-label [nzSm]="9" [nzXs]="24">
+                <h3>End time</h3>
+              </nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="24">
+                <p>{{ endTimeValue }}</p>
+              </nz-form-control>
+            </nz-form-item>
+      
+            <nz-form-item>
+              <nz-form-label [nzSm]="9" [nzXs]="24">
+                <h3>Current datetime</h3>
+              </nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="24">
+                <p>{{ currentDatetimeValue }}</p>
+              </nz-form-control>
+            </nz-form-item>
+      
+            <nz-form-item>
+              <nz-form-label [nzSm]="9" [nzXs]="24">
+                <h3>Current shift</h3>
+              </nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="24">
+                <p>{{ currentShiftValue }}</p>
+              </nz-form-control>
+            </nz-form-item>
+      
+            <nz-form-item>
+              <nz-form-label [nzSm]="9" [nzXs]="24">
+                <h3>Current time</h3>
+              </nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="24">
+                <p>{{ currentTimeValue }}</p>
+              </nz-form-control>
+            </nz-form-item>
+      
+            <nz-form-item class="form-item-input">
+              <h3 >Innitials</h3>
+              <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
+                <input nz-input formControlName="initial" name="initial" required />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </div>
+      
+      
+
+      <app-table-with-rows-child
+        [pageSize]="5"
+        [listOfData]="dataForTable"
+        [columns]="mainTableColumns"
+        [subColumns]="subTableColumns"
+        [ActionEdit]="true"
+        [emitEditEvent]="true"
+        (editClicked)="onEditClicked($event)"
+        (subTableDataSaved)="onSubTableDataSaved($event)"
+        (subTableDataCanceled)="onSubTableDataCanceled($event)"
+      ></app-table-with-rows-child>
+    </div>
+  </div>
+</div>

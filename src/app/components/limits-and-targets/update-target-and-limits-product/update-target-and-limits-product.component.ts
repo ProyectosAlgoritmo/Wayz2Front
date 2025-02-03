@@ -252,6 +252,10 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
       idProduct: rowData.idProduct,
       idCenterline: rowData.idCenterline,
     };
+    if(dataApi.min > dataApi.max  && !rowData.degree360){
+      this.auxService.AlertWarning('Error', 'the new min must be less than the new max');
+      return;
+    }
     this.auxService.ventanaCargando();
     this.limitsAndTargetService
       .Update('Update-LimitsAndTarget', dataApi)
