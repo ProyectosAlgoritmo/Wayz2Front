@@ -178,6 +178,7 @@ export class CreateEditTooComponent implements OnInit {
     this.getMachines();
     this.getToo(pageName);
     this.GetImgs(pageName);
+    this.GetFiles(pageName);
     this.final_centerline = 0;
   }
 
@@ -337,11 +338,26 @@ export class CreateEditTooComponent implements OnInit {
     const isImage = file.type ? file.type.startsWith('image/') : false;
 
     if (!isImage) {
-      this.messageService.error('Solo se pueden subir imágenes.');
+      this.messageService.error('You can only upload images.');
       return false; // Rechaza el archivo
     }
 
     this.fileList = [...this.fileList, file];
+    return false;
+  };
+
+  fileList2: NzUploadFile[] = [];
+  beforeUpload2 = (file: NzUploadFile): boolean => {
+    // Verifica que el archivo sea una imagen
+    const isImage = file.type ? file.type.startsWith('image/') : false;
+    const isPdf = file.type ? file.type.endsWith('/pdf') : false;
+
+    if (!isImage && !isPdf) {
+      this.messageService.error('You can only upload images or pdf.');
+      return false; // Rechaza el archivo
+    }
+
+    this.fileList2 = [...this.fileList2, file];
     return false;
   };
 
@@ -368,8 +384,31 @@ export class CreateEditTooComponent implements OnInit {
 
       });
     }
+  }
 
-    this.messageService.success('Imágenes listas para ser enviadas.');
+  guardarArchivos(id: any): void {
+    if (this.fileList2.length === 0) {
+      this.messageService.warning('No hay imágenes para guardar.');
+      return;
+    }
+    const formData = new FormData();
+    this.fileList2.forEach((file: any) => {
+      formData.append('files', file as File);
+    });
+    for (const pair of (formData as any).entries()) {
+      const fileName = "additionalinfo/" + id + pair[1].name;
+      this.importService.getUrlBucketFile(pair[1], fileName, this.formularioForm2.value.id_centerline).pipe(
+        switchMap(response => {
+          return this.importService.uploadFileToS3(response.url, pair[1]);
+        })
+      ).subscribe(() => {
+
+      }, error => {
+        this.auxService.cerrarVentanaCargando();
+        this.auxService.AlertError("Importar archivo", "Error al cargar el archivo: " + error);
+
+      });
+    }
   }
 
   GetImgs(idCenterline: any) {
@@ -393,6 +432,41 @@ export class CreateEditTooComponent implements OnInit {
       switchMap(response =>{
         console.log("Respuesta: ",response)
         this.auxService.cerrarVentanaCargando();
+        this.GetImgs(id);
+        return this.importService.deleteFileToS3(response.url); 
+      })
+    ).subscribe(() =>{
+
+    },
+    error => {
+      this.auxService.cerrarVentanaCargando();
+      this.auxService.AlertError("Importar archivo", "Error al borrar el archivo: " + error);
+
+    });
+  }
+
+  GetFiles(idCenterline: any) {
+    this.auxService.ventanaCargando();
+    this.tooService.get('get-CenterlineFile/' + idCenterline).subscribe({
+      next: (data: any) => {
+        // this.dataSource = data.data;
+        this.additional_files = data.data;
+        console.log(this.additional_files)
+        this.auxService.cerrarVentanaCargando();
+      },
+      error: (error: any) => {
+        this.auxService.AlertError('Error loading machines: ', error);
+      },
+    });
+  }
+
+  DeleteFile(id: any, url: any){
+    this.auxService.ventanaCargando();
+    this.importService.deleteUrlBucketFile(url, id).pipe(
+      switchMap(response =>{
+        console.log("Respuesta: ",response)
+        this.auxService.cerrarVentanaCargando();
+        this.GetFiles(id);
         return this.importService.deleteFileToS3(response.url); 
       })
     ).subscribe(() =>{
@@ -438,8 +512,12 @@ export class CreateEditTooComponent implements OnInit {
           this.auxService.cerrarVentanaCargando();
           if (data.success) {
             await this.guardarImagenes(this.formularioForm2.value.id_centerline);
+            await this.guardarArchivos(this.formularioForm2.value.id_centerline);
             await this.auxService.AlertSuccess('Data registered successfully.', '');
             await this.GetImgs(this.formularioForm2.value.id_centerline)
+            await this.GetFiles(this.formularioForm2.value.id_centerline)
+            this.fileList = [];
+            this.fileList2 = [];
           } else {
             this.auxService.AlertWarning(
               'Error creating the record.',
