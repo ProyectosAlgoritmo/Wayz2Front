@@ -27,6 +27,7 @@ import { CreateEditTooComponent } from './components/config/too/create-edit-too/
 import { CenterlineComponent } from './components/centerline/centerline.component';
 import { LimitsAndTargetsComponent } from './components/limits-and-targets/limits-and-targets.component';
 import { UpdateTargetAndLimitsProductComponent } from './components/limits-and-targets/update-target-and-limits-product/update-target-and-limits-product.component';
+import { ArrangeComponent } from './components/arrange/arrange.component';
 
 export const routes: Routes = [
   {
@@ -110,7 +111,11 @@ export const routes: Routes = [
     component: LimitsAndTargetsComponent,
     canActivate: [AuthGuard],
   },
-
+  {
+    path: 'arrange',
+    component: ArrangeComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'activitylog',
     component: ActivitylogComponent,
