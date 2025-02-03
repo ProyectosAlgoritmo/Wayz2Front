@@ -1,27 +1,36 @@
 @import "../../../../assets/styles/table.css";
 
-mat-toolbar{
-    padding: 0px;
+mat-toolbar {
+  padding: 0px;
 }
 
-.form-container{
-    display: flex;
-    padding: 20px;
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Tres columnas iguales */
-    gap: 50px;
+.ant-form-item {
+  margin-bottom: 0px;
 }
 
-@media (max-width: 961px) {
-    .form-grid {
-        grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales en pantallas pequeñas */
-    }
+nz-form-item {
+  width: 500px;
+  text-align: left;
 }
-@media (max-width: 755px) {
-    .form-grid {
-        grid-template-columns: repeat(1, 1fr); /* 1 columnas iguales en pantallas pequeñas */
-    }
+
+.ant-form-item-label {
+  text-align: left;
+}
+
+.title-heading {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.form-item-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  margin-top: 30px;
 }

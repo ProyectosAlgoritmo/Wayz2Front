@@ -76,6 +76,22 @@
         </div>
 
         <div class="form-group">
+          <label for="min" class="form-label">New min:</label>
+          <nz-form-control
+            nzHasFeedback
+            nzErrorTip="You must enter a minimum value."
+          >
+            <input
+              id="min"
+              formControlName="min"
+              nz-input
+              type="number"
+              placeholder="Min"
+            />
+          </nz-form-control>
+        </div>
+
+        <div class="form-group">
           <label for="target" class="form-label">New target:</label>
           <nz-form-control nzHasFeedback nzErrorTip="You must enter a target.">
             <input
@@ -88,6 +104,7 @@
           </nz-form-control>
         </div>
 
+        <!-- Tercera fila -->
         <div class="form-group">
           <label for="max" class="form-label">New max:</label>
           <nz-form-control
@@ -100,23 +117,6 @@
               nz-input
               type="number"
               placeholder="Max"
-            />
-          </nz-form-control>
-        </div>
-
-        <!-- Tercera fila -->
-        <div class="form-group">
-          <label for="min" class="form-label">New min:</label>
-          <nz-form-control
-            nzHasFeedback
-            nzErrorTip="You must enter a minimum value."
-          >
-            <input
-              id="min"
-              formControlName="min"
-              nz-input
-              type="number"
-              placeholder="Min"
             />
           </nz-form-control>
         </div>

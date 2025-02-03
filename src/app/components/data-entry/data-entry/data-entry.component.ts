@@ -71,6 +71,14 @@ export class DataEntryComponent implements OnInit {
   searchValue: string = '';
   formularioForm: FormGroup;
   emitEditToParent = false;
+  machineValue: string = 'Machine 1';
+  productValue: string = 'Product A';
+  startTimeValue: string = '08:00 AM';
+  endTimeValue: string = '04:00 PM';
+  currentDatetimeValue: string = new Date().toLocaleString();
+  currentShiftValue: string = 'Shift 1';
+  currentTimeValue: string = new Date().toLocaleTimeString();
+  initialValue: string = 'AB';
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
@@ -79,8 +87,7 @@ export class DataEntryComponent implements OnInit {
     private dataEntryService: DataEntryService
   ) {
     this.formularioForm = this.fb.group({
-      idMachine: [null, Validators.required],
-      idProduct: [null, Validators.required],
+      initial: [null, Validators.required],
     });
   }
 
@@ -105,7 +112,10 @@ export class DataEntryComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.getMachines();
+    setInterval(() => {
+      this.currentDatetimeValue = new Date().toLocaleString();
+    }, 1000);
+    this.GetAllDataEntry(5);
   }
   onEditClicked(rowData: any) {
     rowData.isEditing = true;
@@ -118,42 +128,6 @@ export class DataEntryComponent implements OnInit {
     rowData.newTarget = '';
   }
 
-  onMachineChange(machineId: number): void {
-    this.formularioForm.patchValue({
-      idProduct: null,
-      idCenterline: null,
-    });
-    this.getProducts(machineId);
-  }
-  onProductsChange(IdProduct: number): void {
-    this.GetAllDataEntry(IdProduct);
-  }
-
-  getMachines() {
-    this.auxService.ventanaCargando();
-    this.configService.get('get-all-machines').subscribe({
-      next: (data: any) => {
-        this.machines = data.data;
-        this.auxService.cerrarVentanaCargando();
-      },
-      error: (error: any) => {
-        this.auxService.AlertError('Error loading machines: ', error);
-      },
-    });
-  }
-
-  getProducts(idMachine: number): void {
-    this.configService.get(`Get-All-Products`).subscribe({
-      next: (data: any) => {
-        this.products = data.data.filter((x: any) => x.idMachine === idMachine);
-        this.auxService.cerrarVentanaCargando();
-      },
-      error: (error: any) => {
-        this.auxService.cerrarVentanaCargando(); // Asegúrate de cerrar la ventana en caso de error
-        this.auxService.AlertError('Error loading categories: ', error);
-      },
-    });
-  }
 
   onSubTableDataSaved(rowData: any) {
     // if (
@@ -238,7 +212,7 @@ export class DataEntryComponent implements OnInit {
       return;
     }
   
-    this.auxService.ventanaCargando();
+    //this.auxService.ventanaCargando();
     
     this.dataEntryService.get(`Get-All-DataEntry/${IdProduct}`).subscribe({
       next: (data: any) => {
@@ -256,33 +230,33 @@ export class DataEntryComponent implements OnInit {
   private generateSubTableColumns(data: any[]): any[] {
     if (!data || data.length === 0) return [];
   
-    // Lista de columnas que queremos ocultar visualmente
     const hiddenFields = ["idCenterline", "idLimitsAndTargets"];
   
-    // Extraer las claves de la primera fila de `subData`, excluyendo los campos ocultos
-    const columnsFromData = Object.keys(data[0])
-      .filter(key => !hiddenFields.includes(key)) // Filtra las columnas ocultas
-      .map(key => ({
-        title: this.formatTitle(key), // Formatea títulos automáticamente
+    let columnsFromData = Object.keys(data[0])
+      .filter((key) => !hiddenFields.includes(key)) // Asegurar que no se filtren `value` y `comments`
+      .map((key) => ({
+        title: this.formatTitle(key),
         field: key,
         sortDirection: null,
-        editable: key === "value" || key === "comments", // Solo estos dos son editables
-        controlType: this.getControlType(key) // Determina el tipo de control
+        editable: key === "value" || key === "comments",
+        controlType: this.getControlType(key),
       }));
   
-    // Asegurar que siempre exista la columna "Actions"
-    if (!columnsFromData.some(col => col.field === "Acciones")) {
+    // Asegurar que la columna "Actions" siempre esté presente
+    if (!columnsFromData.some((col) => col.field === "Acciones")) {
       columnsFromData.unshift({
         title: "Actions",
         field: "Acciones",
         sortDirection: null,
         editable: false,
-        controlType: "text"
+        controlType: "text",
       });
     }
   
     return columnsFromData;
   }
+  
+  
   
   // Método para definir el tipo de control en la tabla
   private getControlType(key: string): string {
@@ -305,36 +279,32 @@ export class DataEntryComponent implements OnInit {
       idCategories: category.idCategories,
       categories: category.categories,
       subData: category.subData.map((centerline: any) => {
-        let formattedEntry: {
-          idCenterline: any;
-          centerline: any;
-          idLimitsAndTargets: any;
-          min: any;
-          target: any;
-          max: any;
-          degree360: any;
-          value: string;
-          comments: string;
-          [key: string]: any;
-        } = {
+        let formattedEntry: any = {
           idCenterline: centerline.idCenterline,
           centerline: centerline.centerline,
           idLimitsAndTargets: centerline.idLimitsAndTargets,
           min: centerline.min,
           target: centerline.target,
           max: centerline.max,
-          degree360: centerline.degree360, // Mantener como checkbox
-          value: '', // Editable
-          comments: '', // Editable
+          degree360: centerline.degree360,
+          value: centerline.value,
+          comments: centerline.comments,
         };
-
-        // Convertimos crewShifts en Shift1, Shift2, etc. (sin IDs)
-        centerline.crewShifts?.forEach((shift: any, index: number) => {
-          formattedEntry[`Shift${index + 1}`] = shift.shift;
+  
+        // Convertimos crewShifts en encabezados de fecha y concatenamos `value` + `initials`
+        centerline.crewShifts?.forEach((shift: any) => {
+          if (shift.dataEntry) {
+            formattedEntry[shift.shift] = `${shift.dataEntry.value} - ${shift.dataEntry.initials}`;
+          } else {
+            formattedEntry[shift.shift] = ""; // Dejar vacío en lugar de "undefined - undefined"
+          }
         });
-        console.log('formattedEntry ', formattedEntry);
+  
         return formattedEntry;
       }),
     }));
   }
+  
+  
+  
 }
