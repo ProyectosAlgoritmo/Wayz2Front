@@ -1,0 +1,28 @@
+<div class="content-container">
+    <div class="table-container responsive-table">
+        <div class="divtable">
+            <div class="headerclass">
+                <h2 class="title-heading">Arrange machines</h2>
+                Clic, hold, drag and drop
+                <nz-table #basicTable [nzData]="machines" nzBordered [nzFrontPagination]="false" [nzTemplateMode]="true">
+                    <thead>
+                      <tr>
+                        <th>Machine</th>
+                      </tr>
+                    </thead>
+                    <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                      <tr *ngFor="let data of machines" cdkDrag>
+                        <td>{{ data.name }}</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+                <div>
+                    <div class="button-container">
+                        <app-buttonstrategic mat-button [label]="'Save'" [customClass]="'BotonAzul'"
+                            (click)="Continue()" class="boton-margen"></app-buttonstrategic>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
