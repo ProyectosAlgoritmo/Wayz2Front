@@ -3,40 +3,37 @@
         <div class="divtable">
             <div class="headerclass">
                 <h2 class="title-heading">Arrange products</h2>
-                <div class="form-container">
-                    <form [formGroup]="formularioForm" class="form-grid">
-                        <!-- Primera fila -->
-                        <div class="form-group">
-                            <label for="idMachine" class="form-label">Select machine:</label>
-                            <nz-form-control nzHasFeedback nzErrorTip="You must select a machine.">
-                                <nz-select id="idMachine" formControlName="idMachine" nzShowSearch nzAllowClear
-                                    nzPlaceHolder="Select machine" (ngModelChange)="onMachineChange($event)">
-                                    <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name"
-                                        [nzValue]="machine.idMachine"></nz-option>
-                                </nz-select>
-                            </nz-form-control>
-                        </div>
-                    </form>
-                </div>
+                <form [formGroup]="formularioForm" class="form-grid">
+                    <!-- Primera fila -->
+                    <div class="form-group">
+                        <label for="idMachine" class="form-label">Select machine:</label>
+                        <nz-form-control nzHasFeedback nzErrorTip="You must select a machine.">
+                            <nz-select id="idMachine" formControlName="idMachine" nzShowSearch nzAllowClear
+                                nzPlaceHolder="Select machine" (ngModelChange)="onMachineChange($event)">
+                                <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name"
+                                    [nzValue]="machine.idMachine"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </div>
+                </form>
+                Clic, hold, drag and drop
+                <nz-table #basicTable [nzData]="products" nzBordered [nzFrontPagination]="false" [nzTemplateMode]="true">
+                    <thead>
+                      <tr>
+                        <th>Products</th>
+                      </tr>
+                    </thead>
+                    <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                      <tr *ngFor="let data of products" cdkDrag>
+                        <td>{{ data.name }}</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
                 <div>
                     <div class="button-container">
-                        <app-buttonstrategic
-                          mat-button
-                          [label]="'Back'"
-                          [customClass]="'BotonGris'"
-                          (click)="back()"
-                          class="boton-margen"
-                          [cancelar]="true"
-                        ></app-buttonstrategic>
-                    
-                        <app-buttonstrategic
-                          mat-button
-                          [label]="'Continue'"
-                          [customClass]="'BotonAzul'"
-                          (click)="Continue()"
-                          class="boton-margen"
-                        ></app-buttonstrategic>
-                      </div>
+                        <app-buttonstrategic mat-button [label]="'Save'" [customClass]="'BotonAzul'"
+                            (click)="Continue()" class="boton-margen"></app-buttonstrategic>
+                    </div>
                 </div>
             </div>
         </div>

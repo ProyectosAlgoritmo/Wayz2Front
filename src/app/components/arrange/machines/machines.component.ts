@@ -25,7 +25,19 @@ import { ConfigService } from '../../../services/config.service';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { Router } from '@angular/router';
 import { TooService } from '../../../services/too.service';
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { ArrangeService } from '../../../services/arrange.service';
 
+
+
+interface DataItem {
+  key: number;
+  name: string;
+  age: number;
+  address: string;
+}
 
 @Component({
   selector: 'app-machines',
@@ -41,22 +53,17 @@ import { TooService } from '../../../services/too.service';
     SharedModule,
     NzCardModule,
     NzFormModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzTableModule,
+    CommonModule,
+    DragDropModule
   ],
   templateUrl: './machines.component.html',
   styleUrl: './machines.component.css'
 })
 export class MachinesComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'crew',];
-  columnNames = {
-    name: 'Name',
-    crew: 'Crew',
-  };
   dataSource: any[] = [];
   machines: any[] = [];
-  categories: any[] = [];
-  centerlines: any[] = [];
-  searchValue: string = '';
   final_centerline: number = 0;
   formularioForm: FormGroup;
   enablebutton = false;
@@ -66,8 +73,7 @@ export class MachinesComponent implements OnInit {
     public dialog: MatDialog,
     private auxService: AuxService,
     private configService: ConfigService,
-    private router: Router,
-    private tooService: TooService,
+    private arrangeService: ArrangeService
   ) {
     this.formularioForm = this.fb.group({
       idMachine: [null, Validators.required],
@@ -85,7 +91,7 @@ export class MachinesComponent implements OnInit {
     this.configService.get('get-all-machines').subscribe({
       next: (data: any) => {
         // this.dataSource = data.data;
-        this.dataSource = Array.isArray(data.data) ? data.data : [];
+        this.machines = Array.isArray(data.data) ? data.data : [];
         this.auxService.cerrarVentanaCargando();
       },
       error: (error: any) => {
@@ -94,13 +100,33 @@ export class MachinesComponent implements OnInit {
     });
   }
 
-  Continue() {
-    if (this.final_centerline == 0 || this.final_centerline == null)
-      return this.auxService.AlertError('Error','You need to select a centerline');
-    this.router.navigate(['/create-edit-too',this.final_centerline])
+  drop(event: CdkDragDrop<DataItem[]>): void {
+    moveItemInArray(this.machines, event.previousIndex, event.currentIndex);
   }
 
-  back() {
-    this.router.navigate(['/too'])
+  Continue() {
+    this.auxService.ventanaCargando();
+    this.arrangeService
+      .arrange('Arrange-machine', this.machines)
+      .subscribe({
+        next: async (data: any) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success) {
+            return this.auxService.AlertSuccess('Machine arranged successfully.', '');
+          } else {
+            this.auxService.AlertWarning(
+              'Error creating the record.',
+              data.message
+            );
+          }
+        },
+        error: (error: any) => {
+          this.auxService.cerrarVentanaCargando();
+          this.auxService.AlertError(
+            'Error creating the record.',
+            error.message
+          );
+        },
+      });
   }
 }

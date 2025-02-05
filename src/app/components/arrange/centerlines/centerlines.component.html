@@ -1,1 +1,52 @@
-<p>centerlines works!</p>
+<div class="content-container">
+    <div class="table-container responsive-table">
+        <div class="divtable">
+            <div class="headerclass">
+                <h2 class="title-heading">Arrange products</h2>
+                <form [formGroup]="formularioForm" class="form-grid">
+                    <!-- Primera fila -->
+                    <div class="form-group">
+                        <label for="idMachine" class="form-label">Select machine:</label>
+                        <nz-form-control nzHasFeedback nzErrorTip="You must select a machine.">
+                            <nz-select id="idMachine" formControlName="idMachine" nzShowSearch nzAllowClear
+                                nzPlaceHolder="Select machine" (ngModelChange)="onMachineChange($event)">
+                                <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name"
+                                    [nzValue]="machine.idMachine"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </div>
+                    <div class="form-group">
+                        <label for="idCategory" class="form-label">Select category:</label>
+                        <nz-form-control nzHasFeedback nzErrorTip="You must select a category.">
+                            <nz-select id="idCategory" formControlName="idCategory" nzShowSearch nzAllowClear
+                                nzPlaceHolder="Select category" (ngModelChange)="onCategoryChange($event)">
+                                <nz-option *ngFor="let category of categories" [nzLabel]="category.name"
+                                    [nzValue]="category.idCategory"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </div>
+                </form>
+                Clic, hold, drag and drop
+                <nz-table #basicTable [nzData]="categories" nzBordered [nzFrontPagination]="false"
+                    [nzTemplateMode]="true">
+                    <thead>
+                        <tr>
+                            <th>Centerline</th>
+                        </tr>
+                    </thead>
+                    <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                        <tr *ngFor="let data of centerlines" cdkDrag>
+                            <td>{{ data.name }}</td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <div>
+                    <div class="button-container">
+                        <app-buttonstrategic mat-button [label]="'Save'" [customClass]="'BotonAzul'"
+                            (click)="Continue()" class="boton-margen"></app-buttonstrategic>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

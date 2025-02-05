@@ -25,6 +25,17 @@ import { ConfigService } from '../../../services/config.service';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { Router } from '@angular/router';
 import { TooService } from '../../../services/too.service';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { ArrangeService } from '../../../services/arrange.service';
+import { NzTableModule } from 'ng-zorro-antd/table';
+
+interface DataItem {
+  key: number;
+  name: string;
+  age: number;
+  address: string;
+}
 
 @Component({
   selector: 'app-products',
@@ -40,7 +51,10 @@ import { TooService } from '../../../services/too.service';
     SharedModule,
     NzCardModule,
     NzFormModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzTableModule,
+    CommonModule,
+    DragDropModule
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
@@ -49,6 +63,7 @@ export class ProductsComponent implements OnInit {
   machines: any[] = [];
   categories: any[] = [];
   centerlines: any[] = [];
+  products: any[] = [];
   searchValue: string = '';
   final_centerline: number = 0;
   formularioForm: FormGroup;
@@ -61,6 +76,7 @@ export class ProductsComponent implements OnInit {
     private configService: ConfigService,
     private router: Router,
     private tooService: TooService,
+    private arrangeService: ArrangeService
   ) {
     this.formularioForm = this.fb.group({
       idMachine: [null, Validators.required],
@@ -97,15 +113,9 @@ export class ProductsComponent implements OnInit {
         idCategory: null,
         idCenterline: null,
       });
-      this.tooService.ObtenerCategorias(machineId).subscribe({
-        next: (data: any) => {
-          this.categories = data.data;
-          this.auxService.cerrarVentanaCargando();
-        },
-        error: (error: any) => {
-          this.auxService.AlertError('Error loading categories: ', error);
-        },
-      })
+      this.auxService.ventanaCargando();
+      this.getProducts(machineId);
+      this.auxService.cerrarVentanaCargando();
     }
   }
   onCategoryChange(categoryId: number): void {
@@ -126,20 +136,53 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+  drop(event: CdkDragDrop<DataItem[]>): void {
+    moveItemInArray(this.products, event.previousIndex, event.currentIndex);
+  }
+
+  getProducts(idMachine: number): void {
+    this.configService.get('Get-All-Products').subscribe({
+      next: (data: any) => {
+        this.products = data.data.filter((x: any) => x.idMachine === idMachine);
+        this.auxService.cerrarVentanaCargando();
+      },
+      error: (error: any) => {
+        this.auxService.cerrarVentanaCargando(); // Asegúrate de cerrar la ventana en caso de error
+        this.auxService.AlertError('Error loading categories: ', error);
+      },
+    });
+  }
+
   onCenterlineChange(CenterlineId: number): void {
-    if (CenterlineId != null){
+    if (CenterlineId != null) {
       this.final_centerline = CenterlineId
       console.log(this.final_centerline)
     }
   }
 
   Continue() {
-    if (this.final_centerline == 0 || this.final_centerline == null)
-      return this.auxService.AlertError('Error','You need to select a centerline');
-    this.router.navigate(['/create-edit-too',this.final_centerline])
-  }
-
-  back() {
-    this.router.navigate(['/too'])
+    this.auxService.ventanaCargando();
+    this.arrangeService
+      .arrange('Arrange-products', this.products)
+      .subscribe({
+        next: async (data: any) => {
+          this.auxService.cerrarVentanaCargando();
+          if (data.success) {
+            return this.auxService.AlertSuccess('Categories arranged successfully.', '');
+          } else {
+            this.auxService.AlertWarning(
+              'Error creating the record.',
+              data.message
+            );
+          }
+        },
+        error: (error: any) => {
+          this.auxService.cerrarVentanaCargando();
+          this.auxService.AlertError(
+            'Error creating the record.',
+            error.message
+          );
+        },
+      });
   }
 }

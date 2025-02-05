@@ -1,9 +1,4 @@
-<nz-table
-  #basicTable
-  [nzData]="listOfData"
-  nzBordered
-  [nzFrontPagination]="false"
-  [nzTemplateMode]="true">
+<nz-table #basicTable [nzData]="listOfData" nzBordered [nzFrontPagination]="false" [nzTemplateMode]="true">
   <thead>
     <tr>
       <th>Nombre</th>
@@ -11,12 +6,8 @@
       <th>Dirección</th>
     </tr>
   </thead>
-  <tbody
-    cdkDropList
-    (cdkDropListDropped)="drop($event)">
-    <tr
-      *ngFor="let data of listOfData"
-      cdkDrag>
+  <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+    <tr *ngFor="let data of listOfData" cdkDrag>
       <td>{{ data.name }}</td>
       <td>{{ data.age }}</td>
       <td>{{ data.address }}</td>
