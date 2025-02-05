@@ -28,6 +28,8 @@ import {
   EditOutline,
 } from '@ant-design/icons-angular/icons';
 import { DataEntryService } from '../../../services/data-entry.service';
+import { ro, tr } from 'date-fns/locale';
+import { Router, ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-data-entry',
   standalone: true,
@@ -67,29 +69,30 @@ export class DataEntryComponent implements OnInit {
   [x: string]: any;
   dataForTable: any[] = [];
   machines: any[] = [];
-  products: any[] = [];
+  product: any = {};
+  dataOriginal: any[] = [];
   searchValue: string = '';
-  formularioForm: FormGroup;
+  initial: string = '';
   emitEditToParent = false;
-  machineValue: string = 'Machine 1';
-  productValue: string = 'Product A';
-  startTimeValue: string = '08:00 AM';
-  endTimeValue: string = '04:00 PM';
+  machineValue: string = '';
+  productValue: string = '';
+  startTimeValue: string = '';
+  endTimeValue: string = '';
   currentDatetimeValue: string = new Date().toLocaleString();
-  currentShiftValue: string = 'Shift 1';
-  currentTimeValue: string = new Date().toLocaleTimeString();
-  initialValue: string = 'AB';
+  currentShiftValue: string = '';
+  currentTimeValue: string = '';
+  initialValue: string = '';
+  currentShiftId: number = 0;
+  idProduct: number = 0;
   constructor(
+    private router: Router,
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     public dialog: MatDialog,
     private auxService: AuxService,
     private configService: ConfigService,
     private dataEntryService: DataEntryService
-  ) {
-    this.formularioForm = this.fb.group({
-      initial: [null, Validators.required],
-    });
-  }
+  ) {}
 
   mainTableColumns = [
     {
@@ -112,11 +115,138 @@ export class DataEntryComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.idProduct = parseInt(this.route.snapshot.paramMap.get('id') || '0', 0);
     setInterval(() => {
-      this.currentDatetimeValue = new Date().toLocaleString();
+      this.currentDatetimeValue = new Date().toLocaleString(); // Guardamos la fecha como string
+      this.updateCurrentShift();
     }, 1000);
-    this.GetAllDataEntry(5);
+    if (this.idProduct) {
+      this.getProducts(this.idProduct);
+    }
   }
+
+  getProducts(idProduct: number): void {
+    this.configService.get(`Get-Product/${idProduct}`).subscribe({
+      next: (data: any) => {
+        this.product = data.data;
+        this.machineValue = this.product.machine || '';
+        this.productValue = this.product.name || '';
+        this.GetAllDataEntry(this.idProduct);
+      },
+      error: (error: any) => {
+        this.auxService.cerrarVentanaCargando(); // Asegúrate de cerrar la ventana en caso de error
+        this.auxService.AlertError('Error loading categories: ', error);
+      },
+    });
+  }
+
+  updateCurrentShift() {
+    if (!this.dataOriginal || !this.dataOriginal[0]?.subData) {
+      this.resetShiftValues();
+      return;
+    }
+
+    let now = new Date();
+    let foundShift = false; // Flag para saber si se encontró un turno válido en este ciclo
+
+    this.dataOriginal[0].subData.forEach((subDataEntry: any) => {
+      if (!subDataEntry.crewShifts || subDataEntry.crewShifts.length === 0)
+        return;
+
+      let shifts = subDataEntry.crewShifts.map((shift: any) => ({
+        ...shift,
+        shiftTime: new Date(shift.shift), // Convertimos la fecha del turno a Date
+      }));
+
+      // Ordenamos los turnos cronológicamente
+      shifts.sort(
+        (a: { shiftTime: Date }, b: { shiftTime: Date }) =>
+          a.shiftTime.getTime() - b.shiftTime.getTime()
+      );
+
+      // Calcular duración del turno dinámicamente
+      let shiftDuration = this.calculateShiftDuration(shifts);
+
+      let currentShift = null;
+      let nextShift = null;
+
+      // Determinar cuál es el turno actual
+      for (let i = 0; i < shifts.length; i++) {
+        let shiftStart = shifts[i].shiftTime;
+        let shiftEnd =
+          i + 1 < shifts.length
+            ? shifts[i + 1].shiftTime
+            : new Date(shiftStart.getTime() + shiftDuration);
+
+        if (now >= shiftStart && now < shiftEnd) {
+          currentShift = shifts[i];
+          nextShift = shifts[i + 1] || null;
+          foundShift = true;
+          break;
+        }
+      }
+
+      if (currentShift) {
+        this.setShiftValues(currentShift, nextShift, shiftDuration);
+      }
+    });
+
+    // Si no se encontró un turno en esta ejecución, resetear las variables a null
+    if (!foundShift) {
+      this.resetShiftValues();
+    }
+  }
+
+  resetShiftValues() {
+    // Asegurar que no se conserven valores viejos si ya no hay turnos válidos
+    this.currentShiftId = 0;
+    this.currentShiftValue = "No active shift";
+    this.startTimeValue = "--:--";
+    this.endTimeValue = "--:--";
+    this.currentTimeValue = "Not available";
+  }
+
+  // Calcular la duración del turno basada en el primer y segundo turno
+  calculateShiftDuration(shifts: any[]): number {
+    if (shifts.length > 1) {
+      let duration =
+        shifts[1].shiftTime.getTime() - shifts[0].shiftTime.getTime();
+      return duration;
+    }
+    // Si solo hay un turno, asumir 8 horas por defecto
+    return 8 * 60 * 60 * 1000; // 8 horas en milisegundos
+  }
+
+  setShiftValues(
+    currentShift: any,
+    nextShift: any | null,
+    shiftDuration: number
+  ) {
+    this.currentShiftId = currentShift.idCrewShifts; // Guarda el ID del turno actual
+    this.currentShiftValue = currentShift.name || ''; // Nombre del turno actual
+    this.startTimeValue = this.formatTime(currentShift.shiftTime); // Hora de inicio del turno
+    this.endTimeValue = nextShift
+      ? this.formatTime(nextShift.shiftTime)
+      : this.formatTime(
+          new Date(currentShift.shiftTime.getTime() + shiftDuration)
+        ); // Hora de fin
+    this.currentTimeValue = currentShift.shift; // Fecha y hora del turno activo
+
+    // console.log("Turno activo:", {
+    //   id: this.currentShiftId,
+    //   name: this.currentShiftValue,
+    //   start: this.startTimeValue,
+    //   end: this.endTimeValue,
+    //   datetime: this.currentTimeValue,
+    //   duration: shiftDuration / (60 * 60 * 1000) + " horas",
+    // });
+  }
+
+  // Formatea la hora sin segundos
+  formatTime(date: Date): string {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
   onEditClicked(rowData: any) {
     rowData.isEditing = true;
   }
@@ -128,81 +258,93 @@ export class DataEntryComponent implements OnInit {
     rowData.newTarget = '';
   }
 
-
   onSubTableDataSaved(rowData: any) {
-    // if (
-    //   rowData.newMin.toString().trim() == '' ||
-    //   typeof parseFloat(rowData.newMin) != 'number'
-    // ) {
-    //   this.auxService.AlertWarning('Error', 'the new min must be a number');
-    //   return;
-    // }
-    // if (
-    //   rowData.newMax.toString().trim() == '' ||
-    //   typeof parseFloat(rowData.newMax) != 'number'
-    // ) {
-    //   this.auxService.AlertWarning('Error', 'the new max must be a number');
-    //   return;
-    // }
-    // if (rowData.newTarget.toString().trim() == '') {
-    //   this.auxService.AlertWarning('Error', 'the new target must be a string');
-    //   return;
-    // }
-
-    // if (
-    //   parseFloat(rowData.NewMin) > parseFloat(rowData.newMax) &&
-    //   !rowData.degree360
-    // ) {
-    //   this.auxService.AlertWarning(
-    //     'Error',
-    //     'the new min must be less than the new max'
-    //   );
-    //   return;
-    // }
-
-    this.updateLimitsAndTarget(rowData);
+    if (!this.initial || this.initial == '') {
+      this.auxService.AlertWarning(
+        'Please fill all the fields.',
+        'Initials are required.'
+      );
+      return;
+    }
+    if (this.currentShiftId == 0 || !this.currentShiftId) {
+      this.auxService.AlertWarning(
+        'Please fill all the fields.',
+        'There is no active shift.'
+      );
+      return;
+    }
+    if (!rowData.value) {
+      this.auxService.AlertWarning(
+        'Please fill all the fields.',
+        'the value record is required.'
+      );
+      return;
+    }
+    rowData.isEditing = true;
+    if (
+      (rowData.value < rowData.min &&
+        rowData.value > rowData.max &&
+        rowData.value != rowData.target) &&
+      rowData.min < rowData.max
+    ) {
+      rowData.onTarget = false;
+    }
+    if (
+      (rowData.value > rowData.min &&
+        rowData.value < rowData.max &&
+        rowData.value != rowData.target) &&
+      rowData.min > rowData.max
+    ) {
+      rowData.onTarget = false;
+    }
+    this.AddOrUpdateTbDataEntry(rowData);
   }
 
-  updateLimitsAndTarget(rowData: any) {
-    console.log(`rowData`, rowData);
+  AddOrUpdateTbDataEntry(rowData: any) {
     let dataApi = {
+      idDataEntry: null,
       idLimitsAndTargets: rowData.idLimitsAndTargets,
-      min: rowData.newMin,
-      max: rowData.newMax,
-      target: rowData.newTarget,
-      degree360: rowData.degree360,
-      idProduct: rowData.idProduct,
-      idCenterline: rowData.idCenterline,
+      idCrewShifts: this.currentShiftId,
+      value: rowData.value,
+      comments: rowData.comments,
+      initials: this.initial,
+      onTarget: rowData.onTarget,
     };
-    // this.auxService.ventanaCargando();
-    // this.dataEntryService.Update('Update-LimitsAndTarget', dataApi).subscribe({
-    //   next: async (data: any) => {
-    //     this.auxService.cerrarVentanaCargando();
-    //     if (data.success) {
-    //       await this.auxService.AlertSuccess(
-    //         'Data registered successfully.',
-    //         ''
-    //       );
-    //       rowData.isEditing = false;
-    //       rowData.currentMin = rowData.newMin;
-    //       rowData.currentMax = rowData.newMax;
-    //       rowData.currentTarget = rowData.newTarget;
-    //       rowData.degree360 = rowData.degree360;
-    //       rowData.newMin = '';
-    //       rowData.newMax = '';
-    //       rowData.newTarget = '';
-    //     } else {
-    //       this.auxService.AlertWarning(
-    //         'Error creating the record.',
-    //         data.message
-    //       );
-    //     }
-    //   },
-    //   error: (error: any) => {
-    //     this.auxService.cerrarVentanaCargando();
-    //     this.auxService.AlertError('Error creating the record.', error.message);
-    //   },
-    // });
+
+    if (!this.idProduct) {
+      this.auxService.AlertWarning(
+        'Please select a product.',
+        'Select a product to continue.'
+      );
+      return;
+    }
+
+    this.auxService.ventanaCargando();
+    this.dataEntryService.Create('add-DataEntry', dataApi).subscribe({
+      next: async (data: any) => {
+        this.auxService.cerrarVentanaCargando();
+        if (data.success) {
+          await this.auxService.AlertSuccess(
+            'Data registered successfully.',
+            ''
+          );
+          if (this.idProduct) {
+            this.GetAllDataEntry(this.idProduct);
+          }
+        } else {
+          this.auxService.AlertWarning(
+            'Error creating the record.',
+            data.message
+          );
+        }
+      },
+      error: (error: any) => {
+        if (this.idProduct) {
+          this.GetAllDataEntry(this.idProduct);
+        }
+        this.auxService.AlertError('Error creating the record.', error.message);
+      },
+    });
   }
 
   GetAllDataEntry(IdProduct: number) {
@@ -211,13 +353,14 @@ export class DataEntryComponent implements OnInit {
       this.subTableColumns = [];
       return;
     }
-  
-    //this.auxService.ventanaCargando();
-    
+    this.auxService.ventanaCargando();
     this.dataEntryService.get(`Get-All-DataEntry/${IdProduct}`).subscribe({
       next: (data: any) => {
-        this.dataForTable = this.formatDataForTable(data.data); 
-        this.subTableColumns = this.generateSubTableColumns(this.dataForTable[0]?.subData || []);
+        this.dataOriginal = data.data;
+        this.dataForTable = this.formatDataForTable(data.data);
+        this.subTableColumns = this.generateSubTableColumns(
+          this.dataForTable[0]?.subData || []
+        );
         this.auxService.cerrarVentanaCargando();
       },
       error: (error: any) => {
@@ -225,54 +368,50 @@ export class DataEntryComponent implements OnInit {
       },
     });
   }
-  
 
   private generateSubTableColumns(data: any[]): any[] {
     if (!data || data.length === 0) return [];
-  
-    const hiddenFields = ["idCenterline", "idLimitsAndTargets"];
-  
+
+    const hiddenFields = ['idCenterline', 'idLimitsAndTargets'];
+
     let columnsFromData = Object.keys(data[0])
       .filter((key) => !hiddenFields.includes(key)) // Asegurar que no se filtren `value` y `comments`
       .map((key) => ({
         title: this.formatTitle(key),
         field: key,
         sortDirection: null,
-        editable: key === "value" || key === "comments",
+        editable: key === 'value' || key === 'comments',
         controlType: this.getControlType(key),
       }));
-  
+
     // Asegurar que la columna "Actions" siempre esté presente
-    if (!columnsFromData.some((col) => col.field === "Acciones")) {
+    if (!columnsFromData.some((col) => col.field === 'Acciones')) {
       columnsFromData.unshift({
-        title: "Actions",
-        field: "Acciones",
+        title: 'Actions',
+        field: 'Acciones',
         sortDirection: null,
         editable: false,
-        controlType: "text",
+        controlType: 'text',
       });
     }
-  
+
     return columnsFromData;
   }
-  
-  
-  
+
   // Método para definir el tipo de control en la tabla
   private getControlType(key: string): string {
-    if (key === "value" || key === "comments") return "text"; // Editable
-    if (key === "degree360") return "checkbox"; // Checkbox
-    return "text"; // Default
+    if (key === 'value' || key === 'comments') return 'text'; // Editable
+    if (key === 'degree360') return 'checkbox'; // Checkbox
+    return 'text'; // Default
   }
-  
+
   // Método opcional para formatear títulos
   private formatTitle(key: string): string {
     return key
-      .replace(/([a-z])([A-Z])/g, "$1 $2") // Convierte camelCase a "Camel Case"
-      .replace(/_/g, " ") // Reemplaza guiones bajos con espacios
-      .replace(/\b\w/g, char => char.toUpperCase()); // Capitaliza cada palabra
+      .replace(/([a-z])([A-Z])/g, '$1 $2') // Convierte camelCase a "Camel Case"
+      .replace(/_/g, ' ') // Reemplaza guiones bajos con espacios
+      .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitaliza cada palabra
   }
-  
 
   private formatDataForTable(data: any[]): any[] {
     return data.map((category) => ({
@@ -290,21 +429,20 @@ export class DataEntryComponent implements OnInit {
           value: centerline.value,
           comments: centerline.comments,
         };
-  
+
         // Convertimos crewShifts en encabezados de fecha y concatenamos `value` + `initials`
         centerline.crewShifts?.forEach((shift: any) => {
           if (shift.dataEntry) {
-            formattedEntry[shift.shift] = `${shift.dataEntry.value} - ${shift.dataEntry.initials}`;
+            formattedEntry[
+              shift.shift
+            ] = `${shift.dataEntry.value} - ${shift.dataEntry.initials}`;
           } else {
-            formattedEntry[shift.shift] = ""; // Dejar vacío en lugar de "undefined - undefined"
+            formattedEntry[shift.shift] = ''; // Dejar vacío en lugar de "undefined - undefined"
           }
         });
-  
+
         return formattedEntry;
       }),
     }));
   }
-  
-  
-  
 }

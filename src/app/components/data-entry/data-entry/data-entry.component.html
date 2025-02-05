@@ -71,7 +71,7 @@
             <nz-form-item class="form-item-input">
               <h3 >Innitials</h3>
               <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="24" nzErrorTip="You must fill out this field.">
-                <input nz-input formControlName="initial" name="initial" required />
+                <input nz-input [(ngModel)]="initial" name="initial" required />
               </nz-form-control>
             </nz-form-item>
           </div>

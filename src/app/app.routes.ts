@@ -97,7 +97,7 @@ export const routes: Routes = [
   { path: 'crews', component: CrewsComponent, canActivate: [AuthGuard] },
   { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
-  { path: 'data-entry', component: DataEntryComponent, canActivate: [AuthGuard] },
+  { path: 'data-entry/:id', component: DataEntryComponent, canActivate: [AuthGuard] },
   { path: 'drop', component: TablaOrdenableComponent, canActivate: [AuthGuard] },
   {
     path: 'categories',
