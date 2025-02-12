@@ -1,0 +1,60 @@
+<div class="content-container">
+  <div class="table-container responsive-table">
+    <div class="divtable">
+      <div class="headerclass">
+        <h2 class="title-heading">Data Entry</h2>
+      </div>
+
+      <div class="tabla-container">
+        <app-card-data-entry-file
+          [title]="'Current Shift'"
+          [values]="{ complete: 75, onTarget: 50 }"
+          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
+        >
+        </app-card-data-entry-file>
+
+        <app-card-data-entry-file
+          [title]="'Previous Shift'"
+          [values]="{ complete: 75, onTarget: 50 }"
+          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
+        >
+        </app-card-data-entry-file>
+
+        <app-card-data-entry-file
+          [title]="'Current Day'"
+          [values]="{ complete: 50, onTarget: 25 }"
+          [tableData]="{ due: 10, complete: 5, onTarget: 2, offTarget: 3 }"
+        >
+        </app-card-data-entry-file>
+
+        <app-card-data-entry-file
+          [title]="'Previous Day'"
+          [values]="{ complete: 75, onTarget: 50 }"
+          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
+        >
+        </app-card-data-entry-file>
+
+        <app-card-data-entry-file
+          [title]="'Current week'"
+          [values]="{ complete: 75, onTarget: 50 }"
+          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
+        >
+        </app-card-data-entry-file>
+
+        <app-card-data-entry-file
+          [title]="'Previous week'"
+          [values]="{ complete: 75, onTarget: 50 }"
+          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
+        >
+        </app-card-data-entry-file>
+
+        <app-card-data-entry-file
+          [title]="'Current Period'"
+          [values]="{ complete: 75, onTarget: 50 }"
+          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
+        >
+        </app-card-data-entry-file>
+      </div>
+    </div>
+  </div>
+</div>

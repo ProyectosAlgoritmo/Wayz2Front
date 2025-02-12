@@ -30,6 +30,7 @@ import { UpdateTargetAndLimitsProductComponent } from './components/limits-and-t
 import { DataEntryComponent } from './components/data-entry/data-entry/data-entry.component';
 import { TablaOrdenableComponent } from './components/shared/tabla-ordenable/tabla-ordenable.component';
 import { ArrangeComponent } from './components/arrange/arrange.component';
+import { DataEntryFileComponent } from './components/data-entry/data-entry-file/data-entry-file.component';
 
 export const routes: Routes = [
   {
@@ -99,6 +100,7 @@ export const routes: Routes = [
   { path: 'new-crews', component: NewCrewComponent, canActivate: [AuthGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
   { path: 'data-entry/:id', component: DataEntryComponent, canActivate: [AuthGuard] },
+  { path: 'data-entry-file', component: DataEntryFileComponent, canActivate: [AuthGuard] },
   { path: 'drop', component: TablaOrdenableComponent, canActivate: [AuthGuard] },
   {
     path: 'categories',

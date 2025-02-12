@@ -28,8 +28,9 @@ import {
   EditOutline,
 } from '@ant-design/icons-angular/icons';
 import { DataEntryService } from '../../../services/data-entry.service';
-import { ro, tr } from 'date-fns/locale';
+import { de, ro, tr } from 'date-fns/locale';
 import { Router, ActivatedRoute } from '@angular/router';
+import { max } from 'date-fns';
 @Component({
   selector: 'app-data-entry',
   standalone: true,
@@ -200,10 +201,10 @@ export class DataEntryComponent implements OnInit {
   resetShiftValues() {
     // Asegurar que no se conserven valores viejos si ya no hay turnos válidos
     this.currentShiftId = 0;
-    this.currentShiftValue = "No active shift";
-    this.startTimeValue = "--:--";
-    this.endTimeValue = "--:--";
-    this.currentTimeValue = "Not available";
+    this.currentShiftValue = 'No active shift';
+    this.startTimeValue = '--:--';
+    this.endTimeValue = '--:--';
+    this.currentTimeValue = 'Not available';
   }
 
   // Calcular la duración del turno basada en el primer y segundo turno
@@ -281,21 +282,40 @@ export class DataEntryComponent implements OnInit {
       return;
     }
     rowData.isEditing = true;
-    if (
-      (rowData.value < rowData.min &&
-        rowData.value > rowData.max &&
-        rowData.value != rowData.target) &&
-      rowData.min < rowData.max
-    ) {
-      rowData.onTarget = false;
-    }
-    if (
-      (rowData.value > rowData.min &&
-        rowData.value < rowData.max &&
-        rowData.value != rowData.target) &&
-      rowData.min > rowData.max
-    ) {
-      rowData.onTarget = false;
+    const value = parseFloat(rowData.value);
+    const min = parseFloat(rowData.min);
+    const max = parseFloat(rowData.max);
+    const target = isNaN(parseFloat(rowData.target))
+      ? rowData.target
+      : parseFloat(rowData.target);
+
+    // Inicializar onTarget como true por defecto
+    rowData.onTarget = true;
+
+    if (!isNaN(value)) {
+      // 🔹 Si `min` es mayor que `max`, intercambiamos los valores para asegurar un rango correcto
+      const lower = Math.min(min, max);
+      const upper = Math.max(min, max);
+
+      // 🔹 Validar si `value` está fuera del rango [lower, upper]
+      if (value < lower || value > upper) {
+        rowData.onTarget = false;
+      }
+
+      // 🔹 Comparar con `target` si `target` es un número válido
+      if (!isNaN(target) && value !== target) {
+        rowData.onTarget = false;
+      }
+    } else {
+      // 🔹 Si `value` es un texto, compararlo con `target` **ignorando mayúsculas y minúsculas**
+      if (
+        typeof rowData.value === 'string' &&
+        typeof rowData.target === 'string'
+      ) {
+        if (rowData.value.toLowerCase() !== rowData.target.toLowerCase()) {
+          rowData.onTarget = false;
+        }
+      }
     }
     this.AddOrUpdateTbDataEntry(rowData);
   }
@@ -309,6 +329,10 @@ export class DataEntryComponent implements OnInit {
       comments: rowData.comments,
       initials: this.initial,
       onTarget: rowData.onTarget,
+      target: rowData.target,
+      max: rowData.max,
+      min: rowData.min,
+      degree360: rowData.degree360,
     };
 
     if (!this.idProduct) {

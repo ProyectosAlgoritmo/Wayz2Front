@@ -1,0 +1,30 @@
+<div class="card">
+  <h2>{{ title }}</h2>
+  <div class="two-columns-header">
+    <div>% Complete</div>
+    <div>% On Target</div>
+  </div>
+  <div class="two-columns">
+    <div>{{ values.complete }}</div>
+    <div>{{ values.onTarget }}</div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Due</th>
+        <th>Complete</th>
+        <th>On Target</th>
+        <th>Off Target</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ tableData.due }}</td>
+        <td>{{ tableData.complete }}</td>
+        <td>{{ tableData.onTarget }}</td>
+        <td>{{ tableData.offTarget }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

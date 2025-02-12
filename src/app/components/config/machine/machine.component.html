@@ -1,29 +1,10 @@
-<div class="content-container">
-  <div class="table-container">
-   
+<nz-tabset nzType="card">
 
-    <div class="divtable">
-
-     <h2 class="title-heading">Machines</h2>
-      <app-table
-        [dataSource]="dataSource" 
-        [displayedColumns]="displayedColumns"
-        [enableSearch]="true"
-        [pageSize]="10"
-        [showActions]="true"
-        [ActionEdit]="true"
-        [columnNames]="columnNames"
-        [ActionLeft]="true"
-        (editAction)="onEditAction($event)"
-        [ActionCreate] ="true"
-        (Create)="CreateAction()"
-        [ActionDelete]="true"
-        (deleteAction)="onDeleteAction($event)"
-        [checkActive]="true"
-      >
-        <!-- Aquí puedes establecer true o false según sea necesario -->
-      </app-table>
-    </div>
-   
-  </div>
-</div>
+  <nz-tab nzTitle="Machines out off production" >
+    <app-machines-off-production></app-machines-off-production>
+  </nz-tab>
+  
+  <nz-tab nzTitle="Machines in production">
+    <app-machines-production></app-machines-production>
+  </nz-tab>
+</nz-tabset>
