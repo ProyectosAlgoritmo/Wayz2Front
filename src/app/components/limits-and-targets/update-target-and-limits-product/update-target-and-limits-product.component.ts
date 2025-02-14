@@ -216,28 +216,50 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
 
   onSubTableDataSaved(rowData: any) {
     if (
-      rowData.newMin.toString().trim() == '' ||
-      typeof parseFloat(rowData.newMin) != 'number'
+      (rowData.newMin.toString().trim() !== '' && rowData.newMax.toString().trim() === '') ||
+      (rowData.newMax.toString().trim() !== '' && rowData.newMin.toString().trim() === '')
     ) {
-      this.auxService.AlertWarning('Error', 'the new min must be a number');
+      this.auxService.AlertWarning('Error', 'Both new min and new max must be provided together.');
       return;
     }
+    
     if (
-      rowData.newMax.toString().trim() == '' ||
-      typeof parseFloat(rowData.newMax) != 'number'
+      rowData.newMin.toString().trim() !== '' &&
+      typeof parseFloat(rowData.newMin) !== 'number'
     ) {
-      this.auxService.AlertWarning('Error', 'the new max must be a number');
+      this.auxService.AlertWarning('Error', 'The new min must be a number.');
       return;
     }
-    if (rowData.newTarget.toString().trim() == '') {
-      this.auxService.AlertWarning('Error', 'the new target must be a string');
+    
+    if (
+      rowData.newMax.toString().trim() !== '' &&
+      typeof parseFloat(rowData.newMax) !== 'number'
+    ) {
+      this.auxService.AlertWarning('Error', 'The new max must be a number.');
       return;
     }
-
-    if(parseFloat(rowData.NewMin) > parseFloat(rowData.newMax) && !rowData.degree360){
-      this.auxService.AlertWarning('Error', 'the new min must be less than the new max');
+    
+    // Si min y max están vacíos, target es obligatorio
+    if (
+      rowData.newMin.toString().trim() === '' &&
+      rowData.newMax.toString().trim() === '' &&
+      rowData.newTarget.toString().trim() === ''
+    ) {
+      this.auxService.AlertWarning('Error', 'The new target is required if new min and new max are empty.');
       return;
     }
+    
+    // Validar que min no sea mayor que max si alguno de los dos tiene un valor
+    if (
+      rowData.newMin.toString().trim() !== '' &&
+      rowData.newMax.toString().trim() !== '' &&
+      parseFloat(rowData.newMin) > parseFloat(rowData.newMax) &&
+      !rowData.degree360
+    ) {
+      this.auxService.AlertWarning('Error', 'The new min must be less than the new max.');
+      return;
+    }
+    
 
     this.updateLimitsAndTarget(rowData);
   }

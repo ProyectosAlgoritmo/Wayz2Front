@@ -116,9 +116,9 @@ export class TableWithRowsChildComponent implements OnInit {
   // Expande o colapsa filas
   onExpandChange(id: number, checked: boolean): void {
     if (checked) {
-      this.expandSet.add(id); // Añadir id si la fila está expandida
+      this.expandSet.add(id); // Agrega solo este ID
     } else {
-      this.expandSet.delete(id); // Eliminar id si la fila está colapsada
+      this.expandSet.delete(id); // Remueve solo este ID
     }
   }
 

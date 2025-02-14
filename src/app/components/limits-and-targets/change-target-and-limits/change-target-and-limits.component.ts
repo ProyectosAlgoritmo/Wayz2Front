@@ -58,9 +58,9 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
       idCategory: [null, Validators.required],
       idCenterline: [null, Validators.required],
       idProduct: [null, Validators.required],
-      min: [null, Validators.required],
-      target: [null, Validators.required],
-      max: [null, Validators.required],
+      min: [null],
+      target: [null],
+      max: [null],
       degree360: [false],
     });
   }
@@ -113,7 +113,7 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
                 max: data.data.max,
                 degree360: data.data.degree360,
               });
-            }else{ 
+            } else {
               this.formularioForm.patchValue({
                 min: null,
                 target: null,
@@ -126,7 +126,7 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
             this.auxService.cerrarVentanaCargando();
           },
         });
-    }else{
+    } else {
       this.auxService.cerrarVentanaCargando();
     }
   }
@@ -217,11 +217,52 @@ export class ChangeTargetAndLimitsComponent implements OnInit {
     const min = this.formularioForm.get('min')?.value;
     const max = this.formularioForm.get('max')?.value;
     const degree360 = this.formularioForm.get('degree360')?.value;
+    const target = this.formularioForm.get('target')?.value;
 
-    if (min !== null && max !== null && min > max && !degree360) {
+    // Convertir a string solo si hay un valor definido, de lo contrario asignar ''
+    const minStr = min != null ? min.toString().trim() : '';
+    const maxStr = max != null ? max.toString().trim() : '';
+    const targetStr = target != null ? target.toString().trim() : '';
+
+    // Si min o max tiene valor, el otro es obligatorio
+    if ((minStr !== '' && maxStr === '') || (maxStr !== '' && minStr === '')) {
       this.auxService.AlertWarning(
         'Error',
-        'the new min must be less than the new max'
+        'Both min and max must be provided together.'
+      );
+      return;
+    }
+
+    // Validar que min y max sean números SOLO si tienen valor
+    if (minStr !== '' && isNaN(Number(minStr))) {
+      this.auxService.AlertWarning('Error', 'The min value must be a number.');
+      return;
+    }
+
+    if (maxStr !== '' && isNaN(Number(maxStr))) {
+      this.auxService.AlertWarning('Error', 'The max value must be a number.');
+      return;
+    }
+
+    // Si min y max están vacíos, target es obligatorio
+    if (minStr === '' && maxStr === '' && targetStr === '') {
+      this.auxService.AlertWarning(
+        'Error',
+        'The target is required if min and max are empty.'
+      );
+      return;
+    }
+
+    // Validar que min no sea mayor que max si ambos tienen valores
+    if (
+      minStr !== '' &&
+      maxStr !== '' &&
+      Number(minStr) > Number(maxStr) &&
+      !degree360
+    ) {
+      this.auxService.AlertWarning(
+        'Error',
+        'The min value must be less than the max value.'
       );
       return;
     }

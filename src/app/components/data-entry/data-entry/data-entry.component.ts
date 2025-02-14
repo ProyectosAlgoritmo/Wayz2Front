@@ -371,6 +371,8 @@ export class DataEntryComponent implements OnInit {
     });
   }
 
+  
+
   GetAllDataEntry(IdProduct: number) {
     if (!IdProduct) {
       this.dataForTable = [];
@@ -439,7 +441,7 @@ export class DataEntryComponent implements OnInit {
 
   private formatDataForTable(data: any[]): any[] {
     return data.map((category) => ({
-      idCategories: category.idCategories,
+      id: category.idCategories,
       categories: category.categories,
       subData: category.subData.map((centerline: any) => {
         let formattedEntry: any = {
