@@ -15,6 +15,13 @@ import { catchError } from 'rxjs/operators';
 export class AuxService {
   private loadingModal: any; // Variable para almacenar la referencia del modal
   private searchSubject = new BehaviorSubject<string>('');
+  private toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  });
   constructor() {}
 
   // Método para actualizar la búsqueda
@@ -120,6 +127,13 @@ export class AuxService {
     });
   
     return result.isConfirmed; 
+  }
+
+  showToast(icon: 'success' | 'error' | 'warning' | 'info', message: string) {
+    this.toast.fire({
+      icon: icon,
+      title: message,
+    });
   }
   
 

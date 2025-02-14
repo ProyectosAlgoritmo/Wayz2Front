@@ -192,7 +192,7 @@ export class UpdateTargetAndLimitsProductComponent implements OnInit {
     this.configService.get('get-all-machines').subscribe({
       next: (data: any) => {
         this.machines = data.data;
-        //this.auxService.cerrarVentanaCargando();
+        this.auxService.cerrarVentanaCargando();
       },
       error: (error: any) => {
         this.auxService.AlertError('Error loading machines: ', error);

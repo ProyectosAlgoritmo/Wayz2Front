@@ -3,57 +3,79 @@
     <div class="divtable">
       <div class="headerclass">
         <h2 class="title-heading">Data Entry</h2>
+        <div class="form-container">
+          <form [formGroup]="formularioForm" class="form-grid">
+            <!-- Primera fila -->
+            <div class="form-group">
+              <label for="idMachine" class="form-label">Select machine:</label>
+              <nz-form-control
+                nzHasFeedback
+                nzErrorTip="You must select a machine."
+              >
+                <nz-select
+                  id="idMachine"
+                  formControlName="idMachine"
+                  nzShowSearch
+                  nzAllowClear
+                  nzPlaceHolder="Select machine"
+                  (ngModelChange)="onMachineChange($event)"
+                >
+                  <nz-option *ngFor="let machine of machines" [nzLabel]="machine.name" [nzValue]="machine.idMachine"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+
+            <div class="form-group">
+              <label for="idProduct" class="form-label">Select product:</label>
+              <nz-form-control
+                nzHasFeedback
+                nzErrorTip="You must select a product."
+              >
+                <nz-select
+                  id="idProduct"
+                  formControlName="idProduct"
+                  nzShowSearch
+                  nzAllowClear
+                  nzPlaceHolder="Select product"
+                  (ngModelChange)="onProductsChange($event)"
+                >
+                  <nz-option *ngFor="let product of products" [nzLabel]="product.name" [nzValue]="product.idProduct"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </div>
+          </form>
+        </div>
+        <div class="form-group-buuton">
+          <app-buttonstrategic
+            mat-button
+            [label]="'Machine down entire shift'"
+            [customClass]="'BotonAzul'"
+            class="boton-margen"
+          ></app-buttonstrategic>
+          <app-buttonstrategic
+            mat-button
+            [label]="'View changes'"
+            [customClass]="'BotonAzul'"
+            class="boton-margen"
+          ></app-buttonstrategic>
+          <app-buttonstrategic
+            mat-button
+            [label]="'GO'"
+            [customClass]="'BotonAzul'"
+            class="boton-margen"
+            (click)="onGo()"
+          ></app-buttonstrategic>
+        </div>
       </div>
 
       <div class="tabla-container">
-        <app-card-data-entry-file
-          [title]="'Current Shift'"
-          [values]="{ complete: 75, onTarget: 50 }"
-          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
-        >
-        </app-card-data-entry-file>
-
-        <app-card-data-entry-file
-          [title]="'Previous Shift'"
-          [values]="{ complete: 75, onTarget: 50 }"
-          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
-        >
-        </app-card-data-entry-file>
-
-        <app-card-data-entry-file
-          [title]="'Current Day'"
-          [values]="{ complete: 50, onTarget: 25 }"
-          [tableData]="{ due: 10, complete: 5, onTarget: 2, offTarget: 3 }"
-        >
-        </app-card-data-entry-file>
-
-        <app-card-data-entry-file
-          [title]="'Previous Day'"
-          [values]="{ complete: 75, onTarget: 50 }"
-          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
-        >
-        </app-card-data-entry-file>
-
-        <app-card-data-entry-file
-          [title]="'Current week'"
-          [values]="{ complete: 75, onTarget: 50 }"
-          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
-        >
-        </app-card-data-entry-file>
-
-        <app-card-data-entry-file
-          [title]="'Previous week'"
-          [values]="{ complete: 75, onTarget: 50 }"
-          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
-        >
-        </app-card-data-entry-file>
-
-        <app-card-data-entry-file
-          [title]="'Current Period'"
-          [values]="{ complete: 75, onTarget: 50 }"
-          [tableData]="{ due: 10, complete: 7, onTarget: 5, offTarget: 2 }"
-        >
-        </app-card-data-entry-file>
+        <div *ngFor="let entry of dataEntries">
+          <app-card-data-entry-file
+            [title]="entry.title"
+            [values]="entry.values"
+            [tableData]="entry.tableData">
+          </app-card-data-entry-file>
+        </div>
       </div>
     </div>
   </div>
